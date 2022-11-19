@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizRepaymentPlanInfoVoMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizRepaymentPlanInfoVo" >
+		<result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+		<result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+		<result column="borrow_money" property="borrowMoney" jdbcType="DECIMAL" />
+		<result column="borrow_rate" property="borrowRate" jdbcType="DECIMAL" />
+		<result column="manage_expense_rate" property="manageExpenseRate" jdbcType="DECIMAL" />
+		<result column="bor_deadline" property="deadline" jdbcType="VARCHAR" />
+		<result column="repayment_type_name" property="repaymentType" jdbcType="VARCHAR" />
+		<result column="wait_repay_money" property="waitRepayMoney" jdbcType="DECIMAL" />
+		<result column="capital" property="capital" jdbcType="DECIMAL" />
+		<result column="interest" property="interest" jdbcType="DECIMAL" />
+		<result column="management_cost" property="managementCost" jdbcType="DECIMAL" />
+		<result column="latefee" property="latefee" jdbcType="DECIMAL" />
+		<result column="expire_time" property="waitRepayTime" jdbcType="TIMESTAMP" />
+		<result column="current_planindex" property="currentPlanindex" jdbcType="VARCHAR" />
+		<result column="max_planindex" property="maxPlanindex" jdbcType="VARCHAR" />
+		<result column="repaid_capital" property="repaidCapital" jdbcType="DECIMAL" />
+		<result column="repaid_interest" property="repaidInterest" jdbcType="DECIMAL" />
+		<result column="advance_repay_interest" property="advanceRepayInterest" jdbcType="DECIMAL" />
+		<result column="repaid_management_cost" property="repaidManagementCost" jdbcType="DECIMAL" />
+		<result column="advance_repay_management_cost" property="advanceRepayManagementCost" jdbcType="DECIMAL" />
+		<result column="repaid_penalty" property="repaidPenalty" jdbcType="DECIMAL" />
+		<result column="prepayment_fee" property="prepaymentFee" jdbcType="DECIMAL" />
+  	</resultMap>
+	
+	<sql id="Base_Column_List" >
+		b.borrow_code,
+		b.borrow_name,
+		b.borrow_money,
+		b.borrow_rate,
+		b.bor_deadline,
+		b.manage_expense_rate,
+		b.deadline,
+		FUNC_GET_DICT_CONT_NAME (
+			'REPAYMENT_TYPE',
+			b.repayment_type
+		) AS repayment_type_name,
+		IFNULL(r.capital, 0) + IFNULL(r.interest, 0) AS wait_repay_money,
+		r.capital,
+		r.interest,
+		r.management_cost,
+		r.latefee,
+		r.expire_time,
+		r.planindex as current_planindex,
+		(select MAX(c.planindex) from t_biz_repayment_plan c where c.borrow_id = r.borrow_id) as max_planindex
+	</sql>
+	<!-- 通过还款计划ID得到该还款计划信息 -->
+	<select id="getRepaymentInfoVo"  resultMap="BaseResultMap" parameterType="java.lang.String" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM
+			t_biz_repayment_plan r
+		INNER JOIN t_biz_borrow b ON (b.pid = r.borrow_id)
+		 	WHERE
+				r.pid = #{repayId,jdbcType=VARCHAR}
+	</select>
+	<!-- 通过借款Id得到已还款信息 -->
+	<select id="getRepaidInfoVo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			b.borrow_code,
+			b.borrow_name,
+			b.borrow_money,
+			b.borrow_rate,
+			b.manage_expense_rate,
+			b.bor_deadline,
+			FUNC_GET_DICT_CONT_NAME (
+				'REPAYMENT_TYPE',
+				b.repayment_type
+			) AS repayment_type_name,
+			SUM(IFNULL(r.capital, 0)) AS repaid_capital,
+			SUM(IFNULL(r.interest, 0)) AS repaid_interest,
+		  (select SUM(IFNULL(interest,0)) from t_biz_repayment_plan c where c.receipt_paln_status = 7 and c.borrow_id = r.borrow_id) as advance_repay_interest,
+			SUM(
+				IFNULL(r.management_cost, 0)
+			) AS repaid_management_cost,
+		  (select SUM(IFNULL(management_cost,0)) from t_biz_repayment_plan c where c.receipt_paln_status = 7 and c.borrow_id = r.borrow_id) as advance_repay_management_cost,
+			SUM(IFNULL(r.latefee, 0))+SUM(IFNULL(r.prepayment_fee,0)) AS repaid_penalty,
+			(select SUM(IFNULL(latefee,0)) from t_biz_repayment_plan c where c.borrow_id = r.borrow_id) as latefee,
+			(select SUM(IFNULL(prepayment_fee,0)) from t_biz_repayment_plan c where c.borrow_id = r.borrow_id) as prepayment_fee
+		FROM
+			t_biz_borrow b
+		INNER JOIN t_biz_repayment_plan r ON (r.borrow_id = b.PID)
+		WHERE
+			b.`status` = 1 AND
+			r.`status` = 1 AND
+			b.PID = #{borrowId,jdbcType=VARCHAR}
+	</select>
+	<!-- 通过借款id得到该借款的逾期还款信息 -->
+	<select id="getOverdueRepayBorrow" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			b.borrow_code,
+			b.borrow_name,
+			b.borrow_money,
+			b.borrow_rate,
+			b.manage_expense_rate,
+			b.bor_deadline,
+			FUNC_GET_DICT_CONT_NAME (
+				'REPAYMENT_TYPE',
+				b.repayment_type
+			) AS repayment_type_name,
+			SUM(IFNULL(r.capital, 0)) AS capital,
+			SUM(IFNULL(r.interest, 0)) AS interest,
+			SUM(
+				IFNULL(r.management_cost, 0)
+			) AS management_cost,
+			SUM(IFNULL(r.latefee, 0)) AS latefee
+		FROM
+			t_biz_borrow b
+		INNER JOIN t_biz_repayment_plan r ON (r.borrow_id = b.PID)
+		WHERE
+			b.`status` = 1
+		AND r.`status` = 1
+		AND r.receipt_paln_status in (2,3)
+		AND b.PID = #{borrowId,jdbcType=VARCHAR}
+	</select>
+	<!-- 通过借款id得到逾期还款计划 -->
+	<select id="getOverdueRepayment" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			r.planindex as current_planindex,
+			r.capital,
+			r.interest,
+			r.management_cost,
+			r.latefee,
+			b.bor_deadline AS max_planindex
+		FROM
+			t_biz_repayment_plan r
+		INNER JOIN t_biz_borrow b ON (b.PID = r.borrow_id)
+		WHERE
+			r.`status` = 1
+		AND r.receipt_paln_status in (2,3)
+		AND r.borrow_id = #{borrowId,jdbcType=VARCHAR}
+	</select>
+	<!-- 通过借款id得到该借款最近的还款计划 -->
+	<select id="getRepayInfoByTime" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+			t_biz_repayment_plan r
+		INNER JOIN t_biz_borrow b ON (b.pid = r.borrow_id)
+		WHERE
+			r.borrow_id = #{borrowId,jdbcType=VARCHAR}
+		AND r.`status` = 1
+		AND r.expire_time > NOW()
+		AND r.receipt_paln_status = 1
+		ORDER BY r.expire_time
+		LIMIT 0,
+		 1
+	</select>
+</mapper>

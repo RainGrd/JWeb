@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.user.CaffUserDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.user.CaffUserDetail" >
+    <id column="caffUserDetailId" property="caffuserdetailid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="birthDateLong" property="birthdatelong" jdbcType="BIGINT" />
+    <result column="currentAddress" property="currentaddress" jdbcType="VARCHAR" />
+    <result column="eduBackgroundInt" property="edubackgroundint" jdbcType="INTEGER" />
+    <result column="houseAddress" property="houseaddress" jdbcType="VARCHAR" />
+    <result column="houseConditionInt" property="houseconditionint" jdbcType="INTEGER" />
+    <result column="idNumber" property="idnumber" jdbcType="VARCHAR" />
+    <result column="idTypeInt" property="idtypeint" jdbcType="INTEGER" />
+    <result column="incomeGradeInt" property="incomegradeint" jdbcType="INTEGER" />
+    <result column="kidCount" property="kidcount" jdbcType="INTEGER" />
+    <result column="marriageInt" property="marriageint" jdbcType="INTEGER" />
+    <result column="msn" property="msn" jdbcType="VARCHAR" />
+    <result column="nationalityInt" property="nationalityint" jdbcType="INTEGER" />
+    <result column="nativeCityInt" property="nativecityint" jdbcType="INTEGER" />
+    <result column="nativeProvinceInt" property="nativeprovinceint" jdbcType="INTEGER" />
+    <result column="phoneDistrict" property="phonedistrict" jdbcType="VARCHAR" />
+    <result column="phoneNumber" property="phonenumber" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="realName" property="realname" jdbcType="VARCHAR" />
+    <result column="sexInt" property="sexint" jdbcType="INTEGER" />
+    <result column="socialInssanceCode" property="socialinssancecode" jdbcType="VARCHAR" />
+    <result column="socialRoleInt" property="socialroleint" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="ww" property="ww" jdbcType="VARCHAR" />
+    <result column="zip" property="zip" jdbcType="VARCHAR" />
+    <result column="reference1" property="reference1" jdbcType="BIGINT" />
+    <result column="reference2" property="reference2" jdbcType="BIGINT" />
+    <result column="reference3" property="reference3" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffUserDetailId, createdDateLong, version, birthDateLong, currentAddress, eduBackgroundInt, 
+    houseAddress, houseConditionInt, idNumber, idTypeInt, incomeGradeInt, kidCount, marriageInt, 
+    msn, nationalityInt, nativeCityInt, nativeProvinceInt, phoneDistrict, phoneNumber, 
+    qq, realName, sexInt, socialInssanceCode, socialRoleInt, userId, ww, zip, reference1, 
+    reference2, reference3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffUserDetail
+    where caffUserDetailId = #{caffuserdetailid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffUserDetail
+    where caffUserDetailId = #{caffuserdetailid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.user.CaffUserDetail" >
+    insert into CaffUserDetail (caffUserDetailId, createdDateLong, 
+      version, birthDateLong, currentAddress, 
+      eduBackgroundInt, houseAddress, houseConditionInt, 
+      idNumber, idTypeInt, incomeGradeInt, 
+      kidCount, marriageInt, msn, 
+      nationalityInt, nativeCityInt, nativeProvinceInt, 
+      phoneDistrict, phoneNumber, qq, 
+      realName, sexInt, socialInssanceCode, 
+      socialRoleInt, userId, ww, 
+      zip, reference1, reference2, 
+      reference3)
+    values (#{caffuserdetailid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{birthdatelong,jdbcType=BIGINT}, #{currentaddress,jdbcType=VARCHAR}, 
+      #{edubackgroundint,jdbcType=INTEGER}, #{houseaddress,jdbcType=VARCHAR}, #{houseconditionint,jdbcType=INTEGER}, 
+      #{idnumber,jdbcType=VARCHAR}, #{idtypeint,jdbcType=INTEGER}, #{incomegradeint,jdbcType=INTEGER}, 
+      #{kidcount,jdbcType=INTEGER}, #{marriageint,jdbcType=INTEGER}, #{msn,jdbcType=VARCHAR}, 
+      #{nationalityint,jdbcType=INTEGER}, #{nativecityint,jdbcType=INTEGER}, #{nativeprovinceint,jdbcType=INTEGER}, 
+      #{phonedistrict,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{sexint,jdbcType=INTEGER}, #{socialinssancecode,jdbcType=VARCHAR}, 
+      #{socialroleint,jdbcType=INTEGER}, #{userid,jdbcType=BIGINT}, #{ww,jdbcType=VARCHAR}, 
+      #{zip,jdbcType=VARCHAR}, #{reference1,jdbcType=BIGINT}, #{reference2,jdbcType=BIGINT}, 
+      #{reference3,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.user.CaffUserDetail" >
+    insert into CaffUserDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffuserdetailid != null" >
+        caffUserDetailId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="birthdatelong != null" >
+        birthDateLong,
+      </if>
+      <if test="currentaddress != null" >
+        currentAddress,
+      </if>
+      <if test="edubackgroundint != null" >
+        eduBackgroundInt,
+      </if>
+      <if test="houseaddress != null" >
+        houseAddress,
+      </if>
+      <if test="houseconditionint != null" >
+        houseConditionInt,
+      </if>
+      <if test="idnumber != null" >
+        idNumber,
+      </if>
+      <if test="idtypeint != null" >
+        idTypeInt,
+      </if>
+      <if test="incomegradeint != null" >
+        incomeGradeInt,
+      </if>
+      <if test="kidcount != null" >
+        kidCount,
+      </if>
+      <if test="marriageint != null" >
+        marriageInt,
+      </if>
+      <if test="msn != null" >
+        msn,
+      </if>
+      <if test="nationalityint != null" >
+        nationalityInt,
+      </if>
+      <if test="nativecityint != null" >
+        nativeCityInt,
+      </if>
+      <if test="nativeprovinceint != null" >
+        nativeProvinceInt,
+      </if>
+      <if test="phonedistrict != null" >
+        phoneDistrict,
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="realname != null" >
+        realName,
+      </if>
+      <if test="sexint != null" >
+        sexInt,
+      </if>
+      <if test="socialinssancecode != null" >
+        socialInssanceCode,
+      </if>
+      <if test="socialroleint != null" >
+        socialRoleInt,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="ww != null" >
+        ww,
+      </if>
+      <if test="zip != null" >
+        zip,
+      </if>
+      <if test="reference1 != null" >
+        reference1,
+      </if>
+      <if test="reference2 != null" >
+        reference2,
+      </if>
+      <if test="reference3 != null" >
+        reference3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffuserdetailid != null" >
+        #{caffuserdetailid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="birthdatelong != null" >
+        #{birthdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="currentaddress != null" >
+        #{currentaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="edubackgroundint != null" >
+        #{edubackgroundint,jdbcType=INTEGER},
+      </if>
+      <if test="houseaddress != null" >
+        #{houseaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="houseconditionint != null" >
+        #{houseconditionint,jdbcType=INTEGER},
+      </if>
+      <if test="idnumber != null" >
+        #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idtypeint != null" >
+        #{idtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="incomegradeint != null" >
+        #{incomegradeint,jdbcType=INTEGER},
+      </if>
+      <if test="kidcount != null" >
+        #{kidcount,jdbcType=INTEGER},
+      </if>
+      <if test="marriageint != null" >
+        #{marriageint,jdbcType=INTEGER},
+      </if>
+      <if test="msn != null" >
+        #{msn,jdbcType=VARCHAR},
+      </if>
+      <if test="nationalityint != null" >
+        #{nationalityint,jdbcType=INTEGER},
+      </if>
+      <if test="nativecityint != null" >
+        #{nativecityint,jdbcType=INTEGER},
+      </if>
+      <if test="nativeprovinceint != null" >
+        #{nativeprovinceint,jdbcType=INTEGER},
+      </if>
+      <if test="phonedistrict != null" >
+        #{phonedistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sexint != null" >
+        #{sexint,jdbcType=INTEGER},
+      </if>
+      <if test="socialinssancecode != null" >
+        #{socialinssancecode,jdbcType=VARCHAR},
+      </if>
+      <if test="socialroleint != null" >
+        #{socialroleint,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="ww != null" >
+        #{ww,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null" >
+        #{zip,jdbcType=VARCHAR},
+      </if>
+      <if test="reference1 != null" >
+        #{reference1,jdbcType=BIGINT},
+      </if>
+      <if test="reference2 != null" >
+        #{reference2,jdbcType=BIGINT},
+      </if>
+      <if test="reference3 != null" >
+        #{reference3,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.user.CaffUserDetail" >
+    update CaffUserDetail
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="birthdatelong != null" >
+        birthDateLong = #{birthdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="currentaddress != null" >
+        currentAddress = #{currentaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="edubackgroundint != null" >
+        eduBackgroundInt = #{edubackgroundint,jdbcType=INTEGER},
+      </if>
+      <if test="houseaddress != null" >
+        houseAddress = #{houseaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="houseconditionint != null" >
+        houseConditionInt = #{houseconditionint,jdbcType=INTEGER},
+      </if>
+      <if test="idnumber != null" >
+        idNumber = #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idtypeint != null" >
+        idTypeInt = #{idtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="incomegradeint != null" >
+        incomeGradeInt = #{incomegradeint,jdbcType=INTEGER},
+      </if>
+      <if test="kidcount != null" >
+        kidCount = #{kidcount,jdbcType=INTEGER},
+      </if>
+      <if test="marriageint != null" >
+        marriageInt = #{marriageint,jdbcType=INTEGER},
+      </if>
+      <if test="msn != null" >
+        msn = #{msn,jdbcType=VARCHAR},
+      </if>
+      <if test="nationalityint != null" >
+        nationalityInt = #{nationalityint,jdbcType=INTEGER},
+      </if>
+      <if test="nativecityint != null" >
+        nativeCityInt = #{nativecityint,jdbcType=INTEGER},
+      </if>
+      <if test="nativeprovinceint != null" >
+        nativeProvinceInt = #{nativeprovinceint,jdbcType=INTEGER},
+      </if>
+      <if test="phonedistrict != null" >
+        phoneDistrict = #{phonedistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realName = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sexint != null" >
+        sexInt = #{sexint,jdbcType=INTEGER},
+      </if>
+      <if test="socialinssancecode != null" >
+        socialInssanceCode = #{socialinssancecode,jdbcType=VARCHAR},
+      </if>
+      <if test="socialroleint != null" >
+        socialRoleInt = #{socialroleint,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="ww != null" >
+        ww = #{ww,jdbcType=VARCHAR},
+      </if>
+      <if test="zip != null" >
+        zip = #{zip,jdbcType=VARCHAR},
+      </if>
+      <if test="reference1 != null" >
+        reference1 = #{reference1,jdbcType=BIGINT},
+      </if>
+      <if test="reference2 != null" >
+        reference2 = #{reference2,jdbcType=BIGINT},
+      </if>
+      <if test="reference3 != null" >
+        reference3 = #{reference3,jdbcType=BIGINT},
+      </if>
+    </set>
+    where caffUserDetailId = #{caffuserdetailid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.user.CaffUserDetail" >
+    update CaffUserDetail
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      birthDateLong = #{birthdatelong,jdbcType=BIGINT},
+      currentAddress = #{currentaddress,jdbcType=VARCHAR},
+      eduBackgroundInt = #{edubackgroundint,jdbcType=INTEGER},
+      houseAddress = #{houseaddress,jdbcType=VARCHAR},
+      houseConditionInt = #{houseconditionint,jdbcType=INTEGER},
+      idNumber = #{idnumber,jdbcType=VARCHAR},
+      idTypeInt = #{idtypeint,jdbcType=INTEGER},
+      incomeGradeInt = #{incomegradeint,jdbcType=INTEGER},
+      kidCount = #{kidcount,jdbcType=INTEGER},
+      marriageInt = #{marriageint,jdbcType=INTEGER},
+      msn = #{msn,jdbcType=VARCHAR},
+      nationalityInt = #{nationalityint,jdbcType=INTEGER},
+      nativeCityInt = #{nativecityint,jdbcType=INTEGER},
+      nativeProvinceInt = #{nativeprovinceint,jdbcType=INTEGER},
+      phoneDistrict = #{phonedistrict,jdbcType=VARCHAR},
+      phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      realName = #{realname,jdbcType=VARCHAR},
+      sexInt = #{sexint,jdbcType=INTEGER},
+      socialInssanceCode = #{socialinssancecode,jdbcType=VARCHAR},
+      socialRoleInt = #{socialroleint,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=BIGINT},
+      ww = #{ww,jdbcType=VARCHAR},
+      zip = #{zip,jdbcType=VARCHAR},
+      reference1 = #{reference1,jdbcType=BIGINT},
+      reference2 = #{reference2,jdbcType=BIGINT},
+      reference3 = #{reference3,jdbcType=BIGINT}
+    where caffUserDetailId = #{caffuserdetailid,jdbcType=BIGINT}
+  </update>
+</mapper>

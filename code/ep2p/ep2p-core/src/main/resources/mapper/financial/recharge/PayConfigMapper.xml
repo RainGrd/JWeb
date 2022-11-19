@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.recharge.PayConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.recharge.PayConfig" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="pay_name" property="payName" jdbcType="VARCHAR" />
+    <result column="ex_info_1" property="exInfo1" jdbcType="VARCHAR" />
+    <result column="ex_info_2" property="exInfo2" jdbcType="VARCHAR" />
+    <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+    <result column="sign_kdy" property="signKdy" jdbcType="VARCHAR" />
+    <result column="pay_system_int" property="paySystemInt" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.yscf.core.model.financial.recharge.PayConfig" extends="BaseResultMap" >
+    <result column="ex_info_1" property="exInfo1" jdbcType="LONGVARCHAR" />
+    <result column="ex_info_2" property="exInfo2" jdbcType="LONGVARCHAR" />
+    <result column="merchant_id" property="merchantId" jdbcType="LONGVARCHAR" />
+    <result column="sign_kdy" property="signKdy" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithPays" type="com.yscf.core.model.financial.recharge.PayConfig" extends="BaseResultMap" >
+    <result column="pay_system_int" property="paySystemInt" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid,pay_name, pay_system_int, status, create_time, create_user, last_update_time, last_update_user
+  </sql>
+  <sql id="Blob_Column_List" >
+    ex_info_1, ex_info_2, merchant_id, sign_kdy
+  </sql>
+  <sql id="PayAll_Column_List">
+  	 select pid, pay_name,ex_info_1,ex_info_2,merchant_id,sign_kdy,pay_system_int, status, create_time, create_user, last_update_time, last_update_user from 
+  	 	t_pay_config
+  	 	where status = 1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_pay_config
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="ResultMapWithPays" parameterType="com.yscf.core.model.financial.recharge.PayConfig">
+  	<include refid="PayAll_Column_List" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_pay_config
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.financial.recharge.PayConfig" >
+    insert into t_pay_config (pid, pay_system_int, status, 
+      create_time, create_user, last_update_time, 
+      last_update_user, ex_info_1, ex_info_2, 
+      merchant_id, sign_kdy)
+    values (#{pid,jdbcType=VARCHAR}, #{paySystemInt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{exInfo1,jdbcType=LONGVARCHAR}, #{exInfo2,jdbcType=LONGVARCHAR}, 
+      #{merchantId,jdbcType=LONGVARCHAR}, #{signKdy,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.recharge.PayConfig" >
+    insert into t_pay_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="paySystemInt != null" >
+        pay_system_int,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="exInfo1 != null" >
+        ex_info_1,
+      </if>
+      <if test="exInfo2 != null" >
+        ex_info_2,
+      </if>
+      <if test="merchantId != null" >
+        merchant_id,
+      </if>
+      <if test="signKdy != null" >
+        sign_kdy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="paySystemInt != null" >
+        #{paySystemInt,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="exInfo1 != null" >
+        #{exInfo1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exInfo2 != null" >
+        #{exInfo2,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="merchantId != null" >
+        #{merchantId,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="signKdy != null" >
+        #{signKdy,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.financial.recharge.PayConfig" >
+    update t_pay_config
+    <set >
+      <if test="paySystemInt != null" >
+        pay_system_int = #{paySystemInt,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="exInfo1 != null" >
+        ex_info_1 = #{exInfo1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exInfo2 != null" >
+        ex_info_2 = #{exInfo2,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="merchantId != null" >
+        merchant_id = #{merchantId,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="signKdy != null" >
+        sign_kdy = #{signKdy,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yscf.core.model.financial.recharge.PayConfig" >
+    update t_pay_config
+    set pay_system_int = #{paySystemInt,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      ex_info_1 = #{exInfo1,jdbcType=LONGVARCHAR},
+      ex_info_2 = #{exInfo2,jdbcType=LONGVARCHAR},
+      merchant_id = #{merchantId,jdbcType=LONGVARCHAR},
+      sign_kdy = #{signKdy,jdbcType=LONGVARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.financial.recharge.PayConfig" >
+    update t_pay_config
+    set pay_system_int = #{paySystemInt,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

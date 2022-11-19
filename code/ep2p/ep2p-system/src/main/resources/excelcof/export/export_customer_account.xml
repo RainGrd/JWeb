@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_customer_account"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.ptp.financial.CustomerAccountModel"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="客户名" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="姓名" property="sname" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="手机号码" property="phoneNo" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="注册时间" property="registerTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="充值总额" property="recharge" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="提现总额" property="withdraw" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="总待收金额" property="due" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="可用金额" property="available" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="冻结金额" property="freeze" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="投标总额" property="tender" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="体验金" property="experienceGold" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+</xlsroot>

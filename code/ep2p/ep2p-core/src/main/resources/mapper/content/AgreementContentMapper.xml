@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.content.AgreementContentMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.content.AgreementContent" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="agr_cont_name" property="agrContName" jdbcType="VARCHAR" />
+    <result column="agr_con_tem_id" property="agrConTemId" jdbcType="VARCHAR" />
+    <result column="protocol" property="protocol" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    PID, agr_cont_name, agr_con_tem_id, protocol, status, create_user, create_time, last_update_user, 
+    last_update_time, version
+  </sql>
+  
+  <!-- 通过主键查询协议内容 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cont_agr_content
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 通过属性查询内容 -->
+  <select id="selectByPrimaryObj" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    	<include refid="Base_Column_List" />
+    from t_cont_agr_content
+    where 1 = 1
+      <if test="agccont.pid != null and agccont.pid != ''" >
+        and pid = #{agccont.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="agccont.agrContName != null and agccont.agrContName != ''" >
+        and agr_cont_name like concat('%',#{agccont.agrContName,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="agccont.agrConTemId != null and agccont.agrConTemId != ''" >
+        and agr_con_tem_id = #{agccont.agrConTemId,jdbcType=VARCHAR}
+      </if>
+      <if test="agccont.protocol != null and agccont.protocol != ''" >
+        and protocol like concat('%',#{agccont.protocol,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="agccont.status != null and agccont.status != '' " >
+        and status = #{agccont.status,jdbcType=VARCHAR}
+      </if>
+      <if test="agccont.status == null or agccont.status == ''" >
+        and status != 0 
+      </if>
+      <if test="agccont.createUser != null and agccont.createUser != ''" >
+        and create_user = #{agccont.createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="agccont.createTime != null" >
+        and create_time = #{agccont.createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agccont.lastUpdateUser != null and agccont.lastUpdateUser != ''" >
+        and last_update_user = #{agccont.lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+      <if test="agccont.lastUpdateTime != null" >
+        and last_update_time = #{agccont.lastUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+      	order by create_time desc
+  </select>
+  
+  <!-- 删除协议内容 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cont_agr_content
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 插入协议内容 -->
+  <insert id="insert" parameterType="com.yscf.core.model.content.AgreementContent" >
+    insert into t_cont_agr_content (PID, agr_cont_name, agr_con_tem_id, 
+      protocol, status, create_user, 
+      create_time, last_update_user, last_update_time, 
+      version)
+    values (#{pid,jdbcType=VARCHAR}, #{agrContName,jdbcType=VARCHAR}, #{agrConTemId,jdbcType=VARCHAR}, 
+      #{protocol,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 插入协议内容 -->
+  <insert id="insertSelective" parameterType="com.yscf.core.model.content.AgreementContent" >
+    insert into t_cont_agr_content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="agrContName != null" >
+        agr_cont_name,
+      </if>
+      <if test="agrConTemId != null" >
+        agr_con_tem_id,
+      </if>
+      <if test="protocol != null" >
+        protocol,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="agrContName != null" >
+        #{agrContName,jdbcType=VARCHAR},
+      </if>
+      <if test="agrConTemId != null" >
+        #{agrConTemId,jdbcType=VARCHAR},
+      </if>
+      <if test="protocol != null" >
+        #{protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新协议内容 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.content.AgreementContent" >
+    update t_cont_agr_content
+    <set >
+      <if test="agrContName != null" >
+        agr_cont_name = #{agrContName,jdbcType=VARCHAR},
+      </if>
+      <if test="agrConTemId != null" >
+        agr_con_tem_id = #{agrConTemId,jdbcType=VARCHAR},
+      </if>
+      <if test="protocol != null" >
+        protocol = #{protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+        version = version + 1 
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 更新协议内容 -->
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.content.AgreementContent" >
+    update t_cont_agr_content
+    set agr_cont_name = #{agrContName,jdbcType=VARCHAR},
+      agr_con_tem_id = #{agrConTemId,jdbcType=VARCHAR},
+      protocol = #{protocol,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      version = version + 1 
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 批量修改信息数据 -->
+  <update id="updateBatchObj" parameterType="java.util.List">
+  	<if test="list.size() > 0"> 
+	  	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+	         update t_cont_agr_content 
+	         <set>
+	         	agr_con_tem_id = #{item.agrConTemId,jdbcType=VARCHAR},
+	            status = #{item.status,jdbcType=VARCHAR},
+			    last_update_user = #{item.lastUpdateUser,jdbcType=VARCHAR},
+			    last_update_time = #{item.lastUpdateTime,jdbcType=TIMESTAMP},
+			    version = version + 1 
+	         </set>
+	         where PID = #{item.pid,jdbcType=VARCHAR} and agr_con_tem_id = #{item.agrConTemId,jdbcType=VARCHAR} 
+	    </foreach>
+  	</if>
+  </update>
+  
+  
+</mapper>

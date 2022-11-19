@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.business.CaffP2pRechargeOnlineMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.business.CaffP2pRechargeOnline" >
+    <id column="caffP2pRechargeOnlineId" property="caffp2prechargeonlineid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="payConfigId" property="payconfigid" jdbcType="BIGINT" />
+    <result column="stateInt" property="stateint" jdbcType="INTEGER" />
+    <result column="paySystemTypeInt" property="paysystemtypeint" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pRechargeOnlineId, createdDateLong, version, userId, amount, payConfigId, stateInt, 
+    paySystemTypeInt
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pRechargeOnline
+    where caffP2pRechargeOnlineId = #{caffp2prechargeonlineid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pRechargeOnline
+    where caffP2pRechargeOnlineId = #{caffp2prechargeonlineid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOnline" >
+    insert into CaffP2pRechargeOnline (caffP2pRechargeOnlineId, createdDateLong, 
+      version, userId, amount, 
+      payConfigId, stateInt, paySystemTypeInt
+      )
+    values (#{caffp2prechargeonlineid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{payconfigid,jdbcType=BIGINT}, #{stateint,jdbcType=INTEGER}, #{paysystemtypeint,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOnline" >
+    insert into CaffP2pRechargeOnline
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2prechargeonlineid != null" >
+        caffP2pRechargeOnlineId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="payconfigid != null" >
+        payConfigId,
+      </if>
+      <if test="stateint != null" >
+        stateInt,
+      </if>
+      <if test="paysystemtypeint != null" >
+        paySystemTypeInt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2prechargeonlineid != null" >
+        #{caffp2prechargeonlineid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="payconfigid != null" >
+        #{payconfigid,jdbcType=BIGINT},
+      </if>
+      <if test="stateint != null" >
+        #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="paysystemtypeint != null" >
+        #{paysystemtypeint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOnline" >
+    update CaffP2pRechargeOnline
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="payconfigid != null" >
+        payConfigId = #{payconfigid,jdbcType=BIGINT},
+      </if>
+      <if test="stateint != null" >
+        stateInt = #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="paysystemtypeint != null" >
+        paySystemTypeInt = #{paysystemtypeint,jdbcType=INTEGER},
+      </if>
+    </set>
+    where caffP2pRechargeOnlineId = #{caffp2prechargeonlineid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOnline" >
+    update CaffP2pRechargeOnline
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      payConfigId = #{payconfigid,jdbcType=BIGINT},
+      stateInt = #{stateint,jdbcType=INTEGER},
+      paySystemTypeInt = #{paysystemtypeint,jdbcType=INTEGER}
+    where caffP2pRechargeOnlineId = #{caffp2prechargeonlineid,jdbcType=BIGINT}
+  </update>
+</mapper>

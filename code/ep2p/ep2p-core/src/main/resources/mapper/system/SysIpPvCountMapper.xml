@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysIpPvCountMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysIpPvCount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ip_count" property="ipCount" jdbcType="INTEGER" />
+    <result column="pv_count" property="pvCount" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ip_count, pv_count, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_ip_pv_count
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectNearlySevenData" resultMap="BaseResultMap" parameterType="map" >
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day1,jdbcType=DATE}
+  	union all 
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day2,jdbcType=DATE}
+  	union all 
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day3,jdbcType=DATE}
+  	union all 
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day4,jdbcType=DATE}
+  	union all 
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day5,jdbcType=DATE}
+  	union all 
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day6,jdbcType=DATE}
+  	union all 
+  	select ip_count,pv_count from t_sys_ip_pv_count where create_time =  #{map.day7,jdbcType=DATE}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sys_ip_pv_count
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.system.SysIpPvCount" >
+    insert into t_sys_ip_pv_count (id, ip_count, pv_count, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{ipCount,jdbcType=INTEGER}, #{pvCount,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.system.SysIpPvCount" >
+    insert into t_sys_ip_pv_count
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ipCount != null" >
+        ip_count,
+      </if>
+      <if test="pvCount != null" >
+        pv_count,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ipCount != null" >
+        #{ipCount,jdbcType=INTEGER},
+      </if>
+      <if test="pvCount != null" >
+        #{pvCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysIpPvCount" >
+    update t_sys_ip_pv_count
+    <set >
+      <if test="ipCount != null" >
+        ip_count = #{ipCount,jdbcType=INTEGER},
+      </if>
+      <if test="pvCount != null" >
+        pv_count = #{pvCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysIpPvCount" >
+    update t_sys_ip_pv_count
+    set ip_count = #{ipCount,jdbcType=INTEGER},
+      pv_count = #{pvCount,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="executeIpPvCount" statementType="CALLABLE" parameterType="com.yscf.core.model.system.SysIpPvCount">
+	    { CALL PRO_IP_PV_COUNT(
+			#{macAddress,mode=IN,jdbcType=VARCHAR},
+			#{path,mode=IN,jdbcType=VARCHAR},
+			#{createTime,mode=IN,jdbcType=TIMESTAMP}
+		)} 
+   </select>
+  
+</mapper>

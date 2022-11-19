@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.sms.SmsRecordsCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.sms.SmsRecordsCustomer" >
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="sms_record_id" property="smsRecordId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.sms.SmsRecordsCustomer" >
+    insert into t_sms_records_customer (pid, sms_record_id, customer_id
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{smsRecordId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.sms.SmsRecordsCustomer" >
+    insert into t_sms_records_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="smsRecordId != null" >
+        sms_record_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="smsRecordId != null" >
+        #{smsRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

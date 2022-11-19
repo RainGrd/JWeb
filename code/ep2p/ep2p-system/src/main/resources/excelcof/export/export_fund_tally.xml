@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_fund_tally"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.ptp.financial.BizFundtallyModel"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="日期" property="actorTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="客户名" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="姓名" property="sname" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="手机号码" property="phoneNo" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="收入" property="incomeAmount" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="支出" property="outlayAmount" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="类型" property="detailTypeName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="备注" property="funDesc" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+</xlsroot>

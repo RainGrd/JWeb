@@ -1,0 +1,224 @@
+/*html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden
+}
+body {
+    background: #1E9FFF;
+}
+body:after {
+    content: '';
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.layui-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden
+}
+
+.admin-login-background {
+    width: 360px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    margin-left: -180px;
+    margin-top: -100px;
+}*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    /*background: url(../imgs/Desert.jpg) no-repeat 0px 0px;*/
+    background: url(../../images/html_background/wallhaven-rdz897.jpg) no-repeat 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+}
+
+body {
+    display: flex;
+    /* 垂直布局 */
+    align-items: center;
+    /* 水平布局 */
+    justify-content: center;
+    height: 100%;
+}
+#loginDiv {
+    width: 37%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    background-color: rgba(75, 81, 95, 0.3);
+    box-shadow: 7px 7px 17px rgba(52, 56, 66, 0.5);
+    border-radius: 5px;
+}
+
+.logo-title h1 {
+    color: #1E9FFF;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+/*.login-form {
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 14px 20px;
+    box-shadow: 0 0 8px #eeeeee;
+}
+
+.login-form .layui-form-item {
+    position: relative;
+}
+
+.login-form .layui-form-item label {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 38px;
+    line-height: 36px;
+    text-align: center;
+    color: #d2d2d2;
+}
+
+.login-form .layui-form-item input {
+    padding-left: 36px;
+}*/
+
+#name_trip {
+    margin-left: 50px;
+    color: red;
+}
+
+p {
+    margin-top: 30px;
+    margin-left: 20px;
+    color: azure;
+}
+
+input {
+    margin-left: 15px;
+    border-radius: 5px;
+    border-style: hidden;
+    height: 30px;
+    width: 140px;
+    background-color: rgba(216, 191, 216, 0.5);
+    outline: none;
+    color: #f0edf3;
+    padding-left: 10px;
+}
+
+.button {
+    border-color: cornsilk;
+    background-color: rgba(100, 149, 237, .7);
+    color: aliceblue;
+    border-style: hidden;
+    border-radius: 5px;
+    width: 100px;
+    height: 31px;
+    font-size: 16px;
+}
+
+#subDiv {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#loginMsg {
+    text-align: center;
+    color: aliceblue;
+}
+
+.errorMsg {
+    text-indent: 5em;
+    color: red;
+}
+
+a {
+    text-decoration: none;
+    color: crimson;
+}
+
+/*设置注册按钮样式*/
+/*设置注册按钮样式*/
+#register {
+    float: right;
+}
+#username,
+#password {
+    width: 200px;
+}
+#register b {
+    display: inline-block;
+    width: 20px;
+    height: 30px;
+    line-height: 30px;
+    background: url(../../images/login/arrows_r_2.png) no-repeat 0px 10px;
+    background-size: 20px 20px;
+}
+
+#register a {
+    /*设置居中*/
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 0px 11px 0px;
+}
+#register a:hover{
+    text-decoration: underline;
+}
+/*记住我*/
+.checkbox {
+    width: 100px;
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+}
+
+.checkbox input {
+    vertical-align: middle;
+    outline: none;
+}
+
+input[type="checkbox"] {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.checkbox label {
+    color: #fff;
+    display: inline-block;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}
+
+.checkbox label:before {
+    width: 16px;
+    height: 16px;
+}
+
+.fixed {
+    /*display: inline-block;*/
+    position: relative;
+}

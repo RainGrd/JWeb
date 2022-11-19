@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizHousesMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizHouses" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="homes_name" property="homesName" jdbcType="VARCHAR" />
+    <result column="homes_province" property="homesProvince" jdbcType="VARCHAR" />
+    <result column="homes_city" property="homesCity" jdbcType="VARCHAR" />
+    <result column="homes_area" property="homesArea" jdbcType="VARCHAR" />
+    <result column="homes_type" property="homesType" jdbcType="VARCHAR" />
+    <result column="developer" property="developer" jdbcType="VARCHAR" />
+    <result column="launch_time" property="launchTime" jdbcType="TIMESTAMP" />
+    <result column="property_right" property="propertyRight" jdbcType="VARCHAR" />
+    <result column="building_type" property="buildingType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="hou_desc" property="houDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, homes_name, homes_province, homes_city, homes_area, homes_type, developer, launch_time, 
+    property_right, building_type, status, create_user, create_time, last_update_user, 
+    last_update_time, hou_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_houses
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizHouses" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_houses
+    where  1 = 1
+      <if test="map.pid != null" >
+         and PID = {map.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homesName != null and map.homesName != ''" >
+        and homes_name like concat('%',#{map.homesName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.homesProvince != null and map.homesProvince != ''" >
+        and homes_province like concat('%',#{map.homesProvince,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.homesCity != null and map.homesCity != ''" >
+        and homes_city like concat('%',#{map.homesCity,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.homesArea != null and map.homesArea != ''" >
+        and homes_area like concat('%',#{map.homesArea,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.homesType != null and map.homesType != ''" >
+        and homes_type like concat('%',#{map.homesType,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.developer != null" >
+        and developer = #{map.developer,jdbcType=VARCHAR}
+      </if>
+      <if test="map.launchTime != null" >
+        and launch_time = #{map.launchTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="map.propertyRight != null" >
+        and property_right = #{map.propertyRight,jdbcType=VARCHAR}
+      </if>
+      <if test="map.buildingType != null" >
+        and building_type =  #{map.buildingType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.status != null" >
+        and status = #{map.status,jdbcType=VARCHAR}
+      </if>
+      <if test="map.createUser != null" >
+        and create_user = #{map.createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="map.createTime != null" >
+        and create_time = #{map.createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="map.lastUpdateUser != null" >
+        and last_update_user = #{map.lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+      <if test="map.lastUpdateTime != null" >
+        and last_update_time = #{map.lastUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="map.houDesc != null" >
+        and hou_desc = #{map.houDesc,jdbcType=VARCHAR}
+      </if>
+      order by create_time desc
+  </select>
+  
+  <select id="selectDistinctProvince" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select distinct homes_province from t_biz_houses where status = 1 
+  </select>
+  
+  <select id="selectDistinctCityByProvince" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizHouses" >
+    select distinct homes_city from t_biz_houses where status = 1 and homes_province = #{homesProvince,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectDistinctAreaByCity" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizHouses" >
+    select distinct homes_area from t_biz_houses where status = 1 
+    		and homes_province = #{homesProvince,jdbcType=VARCHAR} 
+    		and homes_city = #{homesCity,jdbcType=VARCHAR}
+  </select>  
+  
+  <select id="selectDistinctHomesNameByAddress" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizHouses" >
+    select distinct homes_name from t_biz_houses where status = 1 
+    		and homes_province = #{homesProvince,jdbcType=VARCHAR} 
+    		and homes_city = #{homesCity,jdbcType=VARCHAR}
+    		and homes_area = #{homesArea,jdbcType=VARCHAR}
+  </select> 
+  
+  <select id="selectDistinctHomesTypeByHomesName" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizHouses" >
+    select pid,homes_type from t_biz_houses where status = 1 
+    		and homes_province = #{homesProvince,jdbcType=VARCHAR} 
+    		and homes_city = #{homesCity,jdbcType=VARCHAR}
+    		and homes_area = #{homesArea,jdbcType=VARCHAR}
+    		and homes_name = #{homesName,jdbcType=VARCHAR}
+  </select> 
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_houses
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.business.BizHouses" >
+    insert into t_biz_houses (PID, homes_name, homes_province, 
+      homes_city, homes_area, homes_type, 
+      developer, launch_time, property_right, 
+      building_type, status, create_user, 
+      create_time, last_update_user, last_update_time, 
+      hou_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{homesName,jdbcType=VARCHAR}, #{homesProvince,jdbcType=VARCHAR}, 
+      #{homesCity,jdbcType=VARCHAR}, #{homesArea,jdbcType=VARCHAR}, #{homesType,jdbcType=VARCHAR}, 
+      #{developer,jdbcType=VARCHAR}, #{launchTime,jdbcType=TIMESTAMP}, #{propertyRight,jdbcType=VARCHAR}, 
+      #{buildingType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{houDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.business.BizHouses" >
+    insert into t_biz_houses
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="homesName != null" >
+        homes_name,
+      </if>
+      <if test="homesProvince != null" >
+        homes_province,
+      </if>
+      <if test="homesCity != null" >
+        homes_city,
+      </if>
+      <if test="homesArea != null" >
+        homes_area,
+      </if>
+      <if test="homesType != null" >
+        homes_type,
+      </if>
+      <if test="developer != null" >
+        developer,
+      </if>
+      <if test="launchTime != null" >
+        launch_time,
+      </if>
+      <if test="propertyRight != null" >
+        property_right,
+      </if>
+      <if test="buildingType != null" >
+        building_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="houDesc != null" >
+        hou_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="homesName != null" >
+        #{homesName,jdbcType=VARCHAR},
+      </if>
+      <if test="homesProvince != null" >
+        #{homesProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="homesCity != null" >
+        #{homesCity,jdbcType=VARCHAR},
+      </if>
+      <if test="homesArea != null" >
+        #{homesArea,jdbcType=VARCHAR},
+      </if>
+      <if test="homesType != null" >
+        #{homesType,jdbcType=VARCHAR},
+      </if>
+      <if test="developer != null" >
+        #{developer,jdbcType=VARCHAR},
+      </if>
+      <if test="launchTime != null" >
+        #{launchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="propertyRight != null" >
+        #{propertyRight,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingType != null" >
+        #{buildingType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="houDesc != null" >
+        #{houDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.business.BizHouses" >
+    update t_biz_houses
+    <set >
+      <if test="homesName != null" >
+        homes_name = #{homesName,jdbcType=VARCHAR},
+      </if>
+      <if test="homesProvince != null" >
+        homes_province = #{homesProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="homesCity != null" >
+        homes_city = #{homesCity,jdbcType=VARCHAR},
+      </if>
+      <if test="homesArea != null" >
+        homes_area = #{homesArea,jdbcType=VARCHAR},
+      </if>
+      <if test="homesType != null" >
+        homes_type = #{homesType,jdbcType=VARCHAR},
+      </if>
+      <if test="developer != null" >
+        developer = #{developer,jdbcType=VARCHAR},
+      </if>
+      <if test="launchTime != null" >
+        launch_time = #{launchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="propertyRight != null" >
+        property_right = #{propertyRight,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingType != null" >
+        building_type = #{buildingType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="houDesc != null" >
+        hou_desc = #{houDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizHouses" >
+    update t_biz_houses
+    set homes_name = #{homesName,jdbcType=VARCHAR},
+      homes_province = #{homesProvince,jdbcType=VARCHAR},
+      homes_city = #{homesCity,jdbcType=VARCHAR},
+      homes_area = #{homesArea,jdbcType=VARCHAR},
+      homes_type = #{homesType,jdbcType=VARCHAR},
+      developer = #{developer,jdbcType=VARCHAR},
+      launch_time = #{launchTime,jdbcType=TIMESTAMP},
+      property_right = #{propertyRight,jdbcType=VARCHAR},
+      building_type = #{buildingType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      hou_desc = #{houDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectHousesByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    h.*
+    FROM t_biz_houses h LEFT JOIN t_biz_borrow b 
+    on b.home_id = h.pid
+    where h.status = 1 
+    and b.pid=#{borrowId,jdbcType=VARCHAR}
+  </select> 
+</mapper>

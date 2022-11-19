@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.platform.CaffP2pWapTokenMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.platform.CaffP2pWapToken" >
+    <id column="caffP2pWapTokenId" property="caffp2pwaptokenid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pWapTokenId, createdDateLong, version, userId, token
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pWapToken
+    where caffP2pWapTokenId = #{caffp2pwaptokenid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pWapToken
+    where caffP2pWapTokenId = #{caffp2pwaptokenid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.platform.CaffP2pWapToken" >
+    insert into CaffP2pWapToken (caffP2pWapTokenId, createdDateLong, 
+      version, userId, token
+      )
+    values (#{caffp2pwaptokenid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{token,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.platform.CaffP2pWapToken" >
+    insert into CaffP2pWapToken
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2pwaptokenid != null" >
+        caffP2pWapTokenId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2pwaptokenid != null" >
+        #{caffp2pwaptokenid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.platform.CaffP2pWapToken" >
+    update CaffP2pWapToken
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where caffP2pWapTokenId = #{caffp2pwaptokenid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.platform.CaffP2pWapToken" >
+    update CaffP2pWapToken
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      token = #{token,jdbcType=VARCHAR}
+    where caffP2pWapTokenId = #{caffp2pwaptokenid,jdbcType=BIGINT}
+  </update>
+</mapper>

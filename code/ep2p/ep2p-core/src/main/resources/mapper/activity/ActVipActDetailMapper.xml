@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.ActVipActDetailMapper" >
+	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.ActVipActDetail" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+	    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
+	    <result column="sms_id" property="smsId" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="eff_time" property="effTime" jdbcType="TIMESTAMP" />
+	    <result column="exp_time" property="expTime" jdbcType="TIMESTAMP" />
+	    <result column="use_status" property="useStatus" jdbcType="VARCHAR" />
+	    <result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <!-- 外表数据 -->
+	    <result column="actCode" property="actCode" jdbcType="VARCHAR" />
+	    <result column="actTag" property="actTag" jdbcType="VARCHAR" />
+	    <result column="actName" property="actName" jdbcType="VARCHAR" />
+	    <result column="actStatus" property="actStatus" jdbcType="VARCHAR" />
+	    <result column="participantsNumber" property="participantsNumber" jdbcType="INTEGER" />
+	    <result column="customerName" property="customerName" jdbcType="VARCHAR" />
+	    <result column="custName" property="custName" jdbcType="VARCHAR" />
+	    <result column="vipLevel" property="vipLevel" jdbcType="VARCHAR" />
+	    <result column="phoneNo" property="phoneNo" jdbcType="VARCHAR" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 查询赠送VIP活动列表所需的字段 -->
+  	<sql id="Base_Column_List" >
+	    aa.PID,aa.act_code actCode,aa.act_name actName,aa.act_tag actTag,aa.status actStatus,
+	    (select count(avad.PID) from t_act_vip_act_detail avad where avad.activity_id = aa.PID) as participantsNumber
+  	</sql>
+  	
+  	<!-- 条件sql -->
+  	<sql id="base_condition">
+  		from t_pub_vipinfo pv
+		LEFT JOIN t_act_activity aa
+		on aa.object_id = pv.PID
+		where aa.activity_type = 1 
+		and pv.status != -1 
+		and aa.status != -1 
+  		<if test="actVipActDetail.actCode != null and actVipActDetail.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{actVipActDetail.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actVipActDetail.actName != null and actVipActDetail.actName != '' " > 
+        	and  aa.act_name like concat('%',#{actVipActDetail.actName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actVipActDetail.actTag != null and actVipActDetail.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{actVipActDetail.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actVipActDetail.actStatus != null and actVipActDetail.actStatus != 0 " > 
+        	and  aa.status = #{actVipActDetail.actStatus,jdbcType=VARCHAR}
+        </if>
+  	</sql>
+  	
+  	<!-- 查询赠送VIP活动列表,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		select 
+  		<include refid="Base_Column_List" />
+		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 查询赠送VIP活动明细列表,带分页 -->
+  	<select id="selectAllPageDetail" resultMap="BaseResultMap" parameterType="map" >
+  		select
+  		avad.pid,cc.customer_name customerName,cc.sname custName,cc.vip_level vipLevel,avad.customer_id,
+		cc.phone_no phoneNo,avad.use_time,aa.act_desc remark
+		from t_act_vip_act_detail avad
+		LEFT JOIN t_act_activity aa
+		on avad.activity_id = aa.pid
+		LEFT JOIN t_cust_customer cc
+		on avad.customer_id = cc.PID
+		where avad.activity_id = #{actVipActDetail.activityId,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 查询参与人数的总计 -->
+  	<select id="selectParticipantsNumberByCondition" resultType="java.lang.Integer" parameterType="map" >
+  		select 
+  		sum( (select count(avad.PID) from t_act_vip_act_detail avad where avad.activity_id = aa.PID) )
+		<include refid="base_condition" />
+  	</select>
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_act_vip_act_detail
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_act_vip_act_detail
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.ActVipActDetail" >
+	    insert into t_act_vip_act_detail (PID, activity_id, vip_id, 
+	      sms_id, customer_id, eff_time, 
+	      exp_time, status, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      version)
+	    values (#{pid,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{vipId,jdbcType=VARCHAR}, 
+	      #{smsId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{effTime,jdbcType=TIMESTAMP}, 
+	      #{expTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{version,jdbcType=VARCHAR})
+  	</insert>
+  
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.ActVipActDetail" >
+	    insert into t_act_vip_act_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="activityId != null" >
+	        activity_id,
+	      </if>
+	      <if test="vipId != null" >
+	        vip_id,
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="effTime != null" >
+	        eff_time,
+	      </if>
+	      <if test="expTime != null" >
+	        exp_time,
+	      </if>
+	      <if test="useStatus != null" >
+	        use_status,
+	      </if>
+	      <if test="useTime != null" >
+	       use_time,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityId != null" >
+	        #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipId != null" >
+	        #{vipId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="effTime != null" >
+	        #{effTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expTime != null" >
+	        #{expTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="useStatus != null" >
+	        #{useStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="useTime != null" >
+	        #{useTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.ActVipActDetail" >
+	    update t_act_vip_act_detail
+	    <set >
+	      <if test="activityId != null" >
+	        activity_id = #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipId != null" >
+	        vip_id = #{vipId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id = #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="effTime != null" >
+	        eff_time = #{effTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expTime != null" >
+	        exp_time = #{expTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.ActVipActDetail" >
+	    update t_act_vip_act_detail
+	    set activity_id = #{activityId,jdbcType=VARCHAR},
+	      vip_id = #{vipId,jdbcType=VARCHAR},
+	      sms_id = #{smsId,jdbcType=VARCHAR},
+	      customer_id = #{customerId,jdbcType=VARCHAR},
+	      eff_time = #{effTime,jdbcType=TIMESTAMP},
+	      exp_time = #{expTime,jdbcType=TIMESTAMP},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量新增 -->
+  	<insert id="insertBatch" parameterType="java.util.List">
+  		insert into t_act_vip_act_detail (pid,activity_id,vip_id,sms_id,customer_id,use_status,use_time,status,create_user,create_time)   
+    	values
+    	<foreach collection="list" item="item" index="index" separator="," >  
+       		(#{item.pid},#{item.activityId},#{item.vipId},#{item.smsId},#{item.customerId},#{item.useStatus},#{item.useTime},#{item.status},#{item.createUser},#{item.createTime})  
+    	</foreach>  
+  	</insert>
+  	
+  	<!-- 导出查询 -->
+  	<select id="selectAllPageDetailExport" resultMap="BaseResultMap" >
+		SELECT 
+		avad.pid,cc.customer_name customerName,cc.sname custName,cc.vip_level vipLevel,avad.customer_id, 
+		cc.phone_no phoneNo,avad.use_time,aa.act_desc remark 
+		from t_act_vip_act_detail avad 
+		LEFT JOIN t_act_activity aa 
+		on avad.activity_id = aa.pid 
+		LEFT JOIN t_cust_customer cc 
+		on avad.customer_id = cc.PID 
+	  	where avad.activity_id = #{actVipActDetail.activityId,jdbcType=VARCHAR} 
+		<include refid="export_query_sql" />
+  	</select>
+  
+  	<!-- 导出查询条件 -->
+  	<sql id="export_query_sql">
+	  	<if test="expm.exportSet != null and expm.exportSet != ''">
+	  	
+	  		<!-- 选择情况一 -->
+	  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+	  			AND avad.pid IN 
+	  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+			        #{item,jdbcType=VARCHAR} 
+			    </foreach>  
+	  		</if>
+	  		
+	  		<!-- 选择情况二 -->
+	  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+	  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+	  		</if>
+	  		
+	  		<!-- 选择情况三 -->
+	  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+				limit #{expm.startCheckrecords,jdbcType=INTEGER}, #{expm.endCheckrecords,jdbcType=INTEGER} 
+	  		</if>
+	  	</if>
+  	</sql>
+  	
+</mapper>

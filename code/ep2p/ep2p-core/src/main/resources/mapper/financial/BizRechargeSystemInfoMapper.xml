@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.BizRechargeSystemInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.BizRechargeSystemInfo" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="shop_no" property="shopNo" jdbcType="VARCHAR" />
+    <result column="rec_sys_keys" property="recSysKeys" jdbcType="VARCHAR" />
+    <result column="rec_sys_name" property="recSysName" jdbcType="VARCHAR" />
+    <result column="rec_sys_order" property="recSysOrder" jdbcType="VARCHAR" />
+    <result column="obligate1" property="obligate1" jdbcType="VARCHAR" />
+    <result column="obligate2" property="obligate2" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="rec_pla_desc" property="recPlaDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, shop_no, rec_sys_keys,rec_sys_name, rec_sys_order, obligate1, obligate2, status, create_user, 
+    create_time, last_update_user, last_update_time, rec_pla_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_recharge_system_info
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    	PID, shop_no, rec_sys_keys,rec_sys_name, rec_sys_order, obligate1, obligate2
+    from t_biz_recharge_system_info
+    where status = 1
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_recharge_system_info
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.financial.BizRechargeSystemInfo" >
+    insert into t_biz_recharge_system_info (PID, shop_no, rec_sys_keys, 
+      rec_sys_order, obligate1, obligate2, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, rec_pla_desc
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{shopNo,jdbcType=VARCHAR}, #{recSysKeys,jdbcType=VARCHAR}, 
+      #{recSysOrder,jdbcType=VARCHAR}, #{obligate1,jdbcType=VARCHAR}, #{obligate2,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{recPlaDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.BizRechargeSystemInfo" >
+    insert into t_biz_recharge_system_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="shopNo != null" >
+        shop_no,
+      </if>
+      <if test="recSysKeys != null" >
+        rec_sys_keys,
+      </if>
+      <if test="recSysOrder != null" >
+        rec_sys_order,
+      </if>
+      <if test="obligate1 != null" >
+        obligate1,
+      </if>
+      <if test="obligate2 != null" >
+        obligate2,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="recPlaDesc != null" >
+        rec_pla_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="shopNo != null" >
+        #{shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="recSysKeys != null" >
+        #{recSysKeys,jdbcType=VARCHAR},
+      </if>
+      <if test="recSysOrder != null" >
+        #{recSysOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="obligate1 != null" >
+        #{obligate1,jdbcType=VARCHAR},
+      </if>
+      <if test="obligate2 != null" >
+        #{obligate2,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recPlaDesc != null" >
+        #{recPlaDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.financial.BizRechargeSystemInfo" >
+    update t_biz_recharge_system_info
+    <set >
+      <if test="shopNo != null" >
+        shop_no = #{shopNo,jdbcType=VARCHAR},
+      </if>
+      <if test="recSysKeys != null" >
+        rec_sys_keys = #{recSysKeys,jdbcType=VARCHAR},
+      </if>
+      <if test="recSysOrder != null" >
+        rec_sys_order = #{recSysOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="obligate1 != null" >
+        obligate1 = #{obligate1,jdbcType=VARCHAR},
+      </if>
+      <if test="obligate2 != null" >
+        obligate2 = #{obligate2,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recPlaDesc != null" >
+        rec_pla_desc = #{recPlaDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.financial.BizRechargeSystemInfo" >
+    update t_biz_recharge_system_info
+    set shop_no = #{shopNo,jdbcType=VARCHAR},
+      rec_sys_keys = #{recSysKeys,jdbcType=VARCHAR},
+      rec_sys_order = #{recSysOrder,jdbcType=VARCHAR},
+      obligate1 = #{obligate1,jdbcType=VARCHAR},
+      obligate2 = #{obligate2,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      rec_pla_desc = #{recPlaDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

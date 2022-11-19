@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd
+						http://www.springframework.org/schema/cache
+						http://www.springframework.org/schema/cache/spring-cache.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+						http://www.springframework.org/schema/mvc 
+						http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- 支持注解 -->
+	<mvc:annotation-driven />
+
+	<!-- 自动扫描controller包下的所有类 -->
+	<context:component-scan
+		base-package="com.achievo.framework.web.*,com.yscf.*">
+		<!-- 这里只扫描Controller，不可重复加载Service -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- 接口请求拦截器 -->  
+	<mvc:interceptors>   
+	
+	  <!-- 用户登录拦截 -->
+	  <mvc:interceptor>   
+	  	<!-- 提前还款 -->
+	    <mvc:mapping path="/myinvest/preRepaymentApi/prepayment.api"/>
+	    <mvc:mapping path="/myinvest/preRepaymentApi/getPrepaymentInfo.api"/>
+	    
+	    <!--  获取用户信息 -->
+	    <mvc:mapping path="/user/customerApi/getCustomer.api"/>
+	    <mvc:mapping path="/user/customerApi/getTaskSchedule.api"/>
+	    
+	    <!-- 连接器实现类 -->
+	   <bean class="com.yscf.api.interceptor.UserLoginInterceptor"></bean>
+	  </mvc:interceptor>
+	
+	  <!-- 交易密码拦截 -->
+	  <mvc:interceptor>   
+	  	<!-- 积分兑换兑换 -->
+	    <mvc:mapping path="/exchange/exchangeApi/exchangeTelephoneFare.api"/>
+	    <mvc:mapping path="/exchange/exchangeApi/exchangeInterestTicket.api"/>
+	    <mvc:mapping path="/exchange/exchangeApi/exchangeVIP.api"/>
+	    <mvc:mapping path="/exchange/exchangeApi/exchangeCash.api"/>
+	    <!-- E计划和散标/体验标 -->
+	    <mvc:mapping path="/eplan/eplanApi/saveBorrow.api"/>
+	    <mvc:mapping path="/experienceBorrowApi/investExperience.api"/>
+	    <!-- 新手标投资/购买债权/债权转让确认 -->
+	    <mvc:mapping path="/newStandardApi/invest.api"/>
+	    <mvc:mapping path="/transferApi/buy.api"/>
+	    <mvc:mapping path="/receiptPlanApi/transferOk.api"/>
+	    <!-- 连接器实现类 -->
+	    <bean class="com.yscf.api.interceptor.TransactionPwdInterceptor"></bean>
+	  </mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 用于页面跳转,根据请求的不同跳转到不同页面，如请求index.do则跳转到/WEB-INF/view/index.jsp -->
+	<bean id="findJsp"
+		class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="index.shtml">findJsp</prop>
+				<prop key="login.shtml">findJsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<!--解析返回JSON -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+				<ref bean="stringHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+				<value>application/json</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 防止@ResponseBody中文乱码 -->
+	<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<bean class="org.springframework.http.MediaType">
+					<constructor-arg index="0" value="text" />
+					<constructor-arg index="1" value="plain" />
+					<constructor-arg index="2" value="UTF-8" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" /><!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+
+	<!-- 
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="60485760" />
+	</bean> 
+	-->
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="i18n/messages" />
+	</bean>
+</beans>

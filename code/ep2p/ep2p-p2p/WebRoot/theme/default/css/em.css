@@ -1,0 +1,32 @@
+.all{
+	width: 700px;
+	margin-top: 65px;
+	background: #2980b9;
+	height: 60px;
+}
+body{
+	background: #ebeff1;
+}
+.all_logo{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+.all_c{
+	padding: 50px 30px;
+	width: 640px;
+}
+.shouhang{
+	text-indent: 2em;
+}
+.xiahuaxian{
+	text-decoration: underline;
+}
+.foot{
+	background: #dee4e7;
+	height: 140px;
+}
+.foot_ima{
+	margin-left: 30px;
+	margin-bottom: 30px;
+}

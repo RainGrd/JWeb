@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.sms.SmsRecordsModelMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.sms.SmsRecordsModel" >
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="sms_code" property="smsCode" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="sms_context" property="smsContext" jdbcType="VARCHAR" />
+    <result column="push_type" property="pushType" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.sms.SmsRecordsModel" >
+    insert into t_sms_records (pid, phone_no,sms_code, sms_context, 
+      push_type,push_model, create_user, create_time
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{smsCode,jdbcType=VARCHAR}, #{smsContext,jdbcType=VARCHAR}, 
+      #{pushType,jdbcType=VARCHAR}, #{pushModel,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.sms.SmsRecordsModel" >
+    insert into t_sms_records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="smsCode != null" >
+        sms_code,
+      </if>
+      <if test="phoneNo != null" >
+        phone_no,
+      </if>
+      <if test="smsContext != null" >
+        sms_context,
+      </if>
+      <if test="pushType != null" >
+        push_type,
+      </if>
+      <if test="pushModel != null" >
+        push_model,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCode != null" >
+        #{smsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null" >
+        #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="smsContext != null" >
+        #{smsContext,jdbcType=VARCHAR},
+      </if>
+      <if test="pushType != null" >
+        #{pushType,jdbcType=VARCHAR},
+      </if>
+      <if test="pushModel != null" >
+        #{pushModel,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <!--查询消息中心数据列表 -->
+	<select id="selectTodayCountByMobiles" resultType="java.lang.Integer" parameterType="com.yscf.core.model.sms.SmsRecordsModel">
+	    select count(pid) from t_sms_records where phone_no =  #{phoneNo,jdbcType=VARCHAR} and date(create_time) = date(#{createTime,jdbcType=VARCHAR})
+	</select>
+	
+</mapper>

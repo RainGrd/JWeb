@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace:名称空间
+resultType:
+-->
+<mapper namespace="com.bdqn.mapper.BrandMapper">
+    <!--
+    id：主键
+    type：映射类型
+
+    -->
+    <resultMap id="brandResult" type="brand">
+        <!--主键-->
+        <!--<id>
+        column：列名
+        property：实体类的属性名
+        </id>-->
+        <!--一般字段的映射-->
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+    </resultMap>
+    <select id="selectAll" resultMap="brandResult">
+        select *
+        from tb_brand;
+
+
+        <!--<select id="selectAll" resultType="brand">
+            select *
+            from tb_brand;
+        </select>-->
+        <!--定义SQL片段-->
+        <!-- <sql id="brand_colum">
+             id,brand_name brandName,company_name companyName,ordered,
+             description,
+             status
+         </sql>
+         <select id="selectAll" resultType="brand">
+             select
+             <include refid="brand_colum"/>
+             &lt;!&ndash;插入SQL片段&ndash;&gt;
+             from tb_brand;
+         </select>-->
+
+
+        <!--
+        SQL注入：一种web安全的漏洞
+        参数占位符
+            1.#{}:会显示为？，为了防止SQL注入
+            2.${}:会直接显示参数，会存在sql注入问题
+            3.使用时机：
+                参数传递时用#{}
+                表名和列名不固定的时候用${}
+        参数类型；parameterType:指定参数类型
+        特殊字符处理
+        1.转义字符
+        2.CDATA区
+
+        -->
+    </select>
+    <select id="SelectById" resultMap="brandResult">
+        <!--sql语句-->
+        select *
+        from tb_brand
+        where id = #{id};
+    </select>
+
+
+    <!--
+    条件查询
+    -->
+    <select id="selectByCondition" resultMap="brandResult">
+        <!--sql语句-->
+        select *
+        from tb_brand
+        where status = #{status}
+          and company_name like #{companyName}
+          and brand_name like #{brandName};
+    </select>
+
+</mapper>

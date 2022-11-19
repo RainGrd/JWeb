@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.PubConditionMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.system.PubCondition" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="cond_code" property="condCode" jdbcType="VARCHAR" />
+	    <result column="cond_tag" property="condTag" jdbcType="VARCHAR" />
+	    <result column="cond_name" property="condName" jdbcType="VARCHAR" />
+	    <result column="cond_value" property="condValue" jdbcType="VARCHAR" />
+	    <result column="cond_desc" property="condDesc" jdbcType="VARCHAR" />
+	    <result column="cond_order" property="condOrder" jdbcType="INTEGER" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 条件信息的列表 -->
+  	<sql id="Base_Column_List" >
+    	PID, cond_name, cond_value, cond_desc, cond_order, status, create_user, create_time, 
+    	cond_code, cond_tag, last_update_user, last_update_time, version
+  	</sql>
+  	
+  	<!-- 查询所有条件信息,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		select 
+  		<include refid="Base_Column_List" />
+  		from t_pub_condition 
+  		where status != -1 
+  		<if test="pubCondition.condCode != null and pubCondition.condCode != '' " > 
+        	and  cond_code like concat('%',#{pubCondition.condCode,jdbcType=VARCHAR},'%' )
+        </if>
+  		<if test="pubCondition.condName != null and pubCondition.condName != '' " > 
+        	and  cond_name like concat('%',#{pubCondition.condName,jdbcType=VARCHAR},'%' )
+        </if>
+  		<if test="pubCondition.status != null and pubCondition.status != 0 " > 
+        	and  status = #{pubCondition.status,jdbcType=VARCHAR}
+        </if>
+        ORDER BY cond_order
+  	</select>
+  	
+  	<!-- 根据活动ID查询条件信息 -->
+  	<select id="selectAllByActivityId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select 
+  		<include refid="Base_Column_List" /> 
+    	from t_pub_condition 
+    	where PID in 
+    	(select apcr.cond_id from t_act_par_con_rel apcr where apcr.activity_id = #{activityId,jdbcType=VARCHAR})
+  	</select>
+  	<!-- 根据活动ID查询条件信息 -->
+  	<select id="findListByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select 
+  		<include refid="Base_Column_List" /> 
+    	from t_pub_condition pc
+    	where pc.PID IN ( select bcr.cond_id from t_biz_borrow_cond_rel bcr WHERE bcr.borrow_id = #{borrowId,jdbcType=VARCHAR})
+  	</select>
+  	
+  	<!-- 查询所有有效的条件信息 -->
+  	<select id="selectPubConditionBySatusEffective" resultMap="BaseResultMap">
+  		select 
+  		<include refid="Base_Column_List" /> 
+  		from t_pub_condition
+  		where status = 1
+  		ORDER BY cond_order
+  	</select>
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_pub_condition
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_pub_condition
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  
+  	<insert id="insert" parameterType="com.yscf.core.model.system.PubCondition" >
+	    insert into t_pub_condition (PID, cond_name, cond_value, 
+	      cond_desc, cond_order, status, 
+	      create_user, create_time, last_update_user, 
+	      last_update_time, version)
+	    values (#{pid,jdbcType=VARCHAR}, #{condName,jdbcType=VARCHAR}, #{condValue,jdbcType=VARCHAR}, 
+	      #{condDesc,jdbcType=VARCHAR}, #{condOrder,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+	      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+	      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.system.PubCondition" >
+	    insert into t_pub_condition
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="condName != null" >
+	        cond_name,
+	      </if>
+	      <if test="condCode != null" >
+	        cond_code,
+	      </if>
+	      <if test="condTag != null" >
+	        cond_tag,
+	      </if>
+	      <if test="condValue != null" >
+	        cond_value,
+	      </if>
+	      <if test="condDesc != null" >
+	        cond_desc,
+	      </if>
+	      <if test="condOrder != null" >
+	        cond_order,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condName != null" >
+	        #{condName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condCode != null" >
+	        #{condCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condTag != null" >
+	        #{condTag,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condValue != null" >
+	        #{condValue,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condDesc != null" >
+	        #{condDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condOrder != null" >
+	        #{condOrder,jdbcType=INTEGER},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.PubCondition" >
+	    update t_pub_condition
+	    <set >
+	      <if test="condName != null" >
+	        cond_name = #{condName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condCode != null" >
+	        cond_code = #{condCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condTag != null" >
+	        cond_tag = #{condTag,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condValue != null" >
+	        cond_value = #{condValue,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condDesc != null" >
+	        cond_desc = #{condDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condOrder != null" >
+	        cond_order = #{condOrder,jdbcType=INTEGER},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.PubCondition" >
+	    update t_pub_condition
+	    set cond_name = #{condName,jdbcType=VARCHAR},
+	      cond_value = #{condValue,jdbcType=VARCHAR},
+	      cond_desc = #{condDesc,jdbcType=VARCHAR},
+	      cond_order = #{condOrder,jdbcType=INTEGER},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量删除条件信息 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_pub_condition SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+</mapper>

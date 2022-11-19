@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BorrowAfterManageMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizBorrowAfter" >
+    <id column="bpid" property="pid" jdbcType="VARCHAR" />
+    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR"/>
+    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR"/>
+  	<result column="cpid" property="cpid" jdbcType="VARCHAR"/>
+  	<result column="customer_name" property="customerName" jdbcType="VARCHAR"/>
+  	<result column="sname" property="sname" jdbcType="VARCHAR"/>
+  	<result column="available_balance" property="availableBalance" jdbcType="DECIMAL"/>
+  	<result column="phone_no" property="phoneNo" jdbcType="VARCHAR"/>
+  	<result column="borrow_money" property="borrowMoney" jdbcType="DECIMAL"/>
+  	<result column="borrow_type" property="borrowType" jdbcType="VARCHAR"/>
+  	<result column="home_total" property="homeTotal" jdbcType="DECIMAL"/>
+  	<result column="periods" property="periods" jdbcType="VARCHAR"/>
+  	<result column="rplanid" property="rplanid" jdbcType="VARCHAR"/>
+  	<result column="repaid_time" property="repaidTime" jdbcType="TIMESTAMP"/>
+  	<result column="repayment_type" property="repaymentType" jdbcType="VARCHAR"/>
+  	<result column="repayment_type_val" property="repaymentTypeVal" jdbcType="VARCHAR"/>
+  	<result column="capital" property="capital" jdbcType="DECIMAL"/>
+  	<result column="receipt_paln_status" property="receiptPalnStatus" jdbcType="VARCHAR"/>
+  	<result column="retpaln_status_val" property="receiptPalnStatusVal" jdbcType="VARCHAR"/>
+  	<result column="is_blacklist" property="isBlackList" jdbcType="VARCHAR"/>
+  	<result column="rep_pla_desc" property="repPlaDesc" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 字段信息 -->
+  <sql id="Base_Column_List" >
+  		tbrp.bpid,
+		tbrp.borrow_name,
+		tbrp.borrow_code,
+		tbrp.cpid,
+		tbrp.customer_name,
+		tbrp.sname,
+		tbrp.available_balance,
+		tbrp.phone_no,
+		tbrp.borrow_money,
+		tbrp.borrow_type,
+		tbrp.home_total,
+		tbrp.planindex,
+		tbrp.periods,
+		tbrp.rplanid,
+		tbrp.repaid_time,
+		tbrp.repayment_type,
+		tbrp.repayment_type_val,
+		tbrp.accrual_type,
+		tbrp.capital,
+		tbrp.receipt_paln_status,
+		tbrp.retpaln_status_val,
+		tbrp.is_blacklist,
+		tbrp.rep_pla_desc
+  </sql>
+  <sql id="vbbm_Column_List" >
+  		vbbm.bpid,
+		vbbm.borrow_name,
+		vbbm.borrow_code,
+		vbbm.cpid,
+		vbbm.customer_name,
+		vbbm.sname,
+		vbbm.available_balance,
+		vbbm.phone_no,
+		vbbm.borrow_money,
+		vbbm.borrow_type,
+		vbbm.home_total,
+		vbbm.planindex,
+		vbbm.periods,
+		vbbm.rplanid,
+		vbbm.repaid_time,
+		vbbm.repayment_type,
+		vbbm.repayment_type_val,
+		vbbm.accrual_type,
+		vbbm.capital,
+		vbbm.receipt_paln_status,
+		vbbm.retpaln_status_val,
+		vbbm.is_blacklist,
+		vbbm.rep_pla_desc
+  </sql>
+  
+  <!-- 查询条件 -->
+  <sql id="query_borrow_after">
+  	<if test="bba.borrowCode != null and bba.borrowCode != ''">
+		 AND tbrp.borrow_code like concat('%',#{bba.borrowCode,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="bba.borrowName != null and bba.borrowName != ''">
+		 AND tbrp.borrow_name like concat('%',#{bba.borrowName,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="bba.customerName != null and bba.customerName != ''">
+		 AND tbrp.customer_name like concat('%',#{bba.customerName,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="bba.sname != null and bba.sname != ''">
+		 AND tbrp.sname like concat('%',#{bba.sname,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="bba.phoneNo != null and bba.phoneNo != ''">
+		 AND tbrp.phone_no like concat('%',#{bba.phoneNo,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="bba.borrowType != null" >
+         AND tbrp.borrow_type = #{bba.borrowType,jdbcType=VARCHAR}
+    </if>
+    
+	<!-- 还款时间 -->
+	<if test="bba.repaidTime != null and bba.repaidTime != ''" >
+       	 AND str_to_date(tbrp.repaid_time,'%Y-%m-%d %H:%i:%s') <![CDATA[>=]]> #{bba.repaidTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="bba.repaidEndTime != null and bba.repaidEndTime != ''" >
+         AND str_to_date(tbrp.repaid_time,'%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> #{bba.repaidEndTime,jdbcType=TIMESTAMP}
+    </if>
+    
+    <!-- 金额范围 -->
+	<if test="bba.borrowMoney != null and bba.borrowMoney != ''" >
+       	 AND tbrp.borrow_money <![CDATA[>=]]> #{bba.borrowMoney,jdbcType=DECIMAL}
+    </if>
+    <if test="bba.borrowEndMoney != null and bba.borrowEndMoney != ''" >
+         AND tbrp.borrow_money <![CDATA[<=]]> #{bba.borrowEndMoney,jdbcType=DECIMAL}
+    </if>
+    
+    <!-- 利率范围(%)-->
+	<if test="bba.borrowApr != null and bba.borrowApr != ''" >
+       	 AND tbrp.borrow_rate <![CDATA[>=]]> #{bba.borrowApr,jdbcType=DECIMAL}
+    </if>
+    <if test="bba.borrowEndApr != null and bba.borrowEndApr != ''" >
+         AND tbrp.borrow_rate <![CDATA[<=]]> #{bba.borrowEndApr,jdbcType=DECIMAL}
+    </if>
+    
+    <!-- 期限范围（月）-->
+	<if test="bba.planIndex != null and bba.planIndex != ''" >
+       	 AND tbrp.planindex <![CDATA[>=]]> #{bba.planIndex,jdbcType=VARCHAR}
+    </if>
+    <if test="bba.planEndIndex != null and bba.planEndIndex != ''" >
+         AND tbrp.planindex <![CDATA[<=]]> #{bba.planEndIndex,jdbcType=VARCHAR}
+    </if>
+
+    <!-- repayment_type -->
+	<if test="bba.repaymentType != null and bba.repaymentType != ''">
+		 AND tbrp.repayment_type = #{bba.repaymentType,jdbcType=VARCHAR} 
+	</if>
+	
+	<if test="bba.accrualType != null and bba.accrualType != ''">
+		 AND tbrp.accrual_type = #{bba.accrualType,jdbcType=VARCHAR} 
+	</if>
+	<!-- 针对是否有天数控制的查询条件 -->
+	<if test="bba.overdueDays != null">
+    	AND str_to_date(tbrp.repaid_time,'%Y-%m-%d %H:%i:%s') <![CDATA[>=]]> str_to_date(date_format(NOW(),'%Y-%m-%d'),'%Y-%m-%d %H:%i:%s')
+    	AND str_to_date(tbrp.repaid_time,'%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> str_to_date(CONCAT(date_format(date_add(NOW(), INTERVAL #{bba.overdueDays,jdbcType=INTEGER} day),'%Y-%m-%d'),'23:59:59'),'%Y-%m-%d %H:%i:%s')
+    	AND tbrp.receipt_paln_status != '4' 
+    </if>
+	<if test="bba.receiptPalnStatus != null and bba.receiptPalnStatus != '' and bba.overdueDays == null">
+		 AND tbrp.receipt_paln_status = #{bba.receiptPalnStatus,jdbcType=VARCHAR} 
+	</if>
+	
+  </sql>
+  
+  <!-- 分页查询 -->
+  <select id="selectBorrowAfterAll" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+		<include refid="Base_Column_List"></include>
+	FROM
+		v_biz_borrowafter_manage tbrp 
+	WHERE 1 = 1 
+		<include refid="query_borrow_after"></include>
+  </select>
+  
+  <!-- 导出查询 -->
+  <select id="selectBorrowAfter" resultMap="BaseResultMap">
+  	SELECT 
+		<include refid="Base_Column_List"></include>
+	FROM
+		(
+		SELECT 
+			(@rown := @rown + 1) rowns,
+			<!-- vbbm.* --> 
+			<include refid="vbbm_Column_List"></include>
+		FROM 
+			v_biz_borrowafter_manage vbbm,
+			(SELECT @rown := 0) b
+		) tbrp 
+	WHERE 
+		 1 = 1 
+		<include refid="query_borrow_after"></include>
+		<include refid="export_query_sql"></include>
+  </select>
+  
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND tbrp.bpid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			AND tbrp.rowns BETWEEN #{expm.startCheckrecords,jdbcType=INTEGER}
+				AND #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+  
+  <!-- 统计数据信息 -->
+  <select id="selectBorrowSumAfter" resultType="java.util.Map" parameterType="java.util.Map" >
+  	SELECT 
+	  	ROUND(COALESCE(SUM(vv.available_balance),0),2) sabalance,
+		ROUND(COALESCE(SUM(vv.borrow_money),0),2) sbormoney,
+		ROUND(COALESCE(SUM(vv.capital),0),2) scapital
+	FROM 
+	 	(
+	 	SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM
+			(
+			SELECT 
+				(@rown := @rown + 1) rowns,
+				<!-- vbbm.* --> 
+				<include refid="vbbm_Column_List"></include>
+			FROM 
+				v_biz_borrowafter_manage vbbm,
+				(SELECT @rown := 0) b
+			) tbrp 
+		WHERE 
+			 1 = 1 
+			<include refid="query_borrow_after"></include>
+			<include refid="export_query_sql"></include>
+	 	) vv
+  </select>
+  
+  <!-- 统计待还款的记录数 -->
+  <select id="selectTotalReplayNumbers" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT
+			COUNT(tbrp.rplanid) totalbf
+		FROM
+			v_biz_borrowafter_manage tbrp
+		WHERE
+			1 = 1
+		AND tbrp.receipt_paln_status != '4'
+		AND DATE_FORMAT(tbrp.repaid_time, '%Y-%m') = #{nextdate,jdbcType=VARCHAR}
+  </select>
+  
+  
+</mapper>

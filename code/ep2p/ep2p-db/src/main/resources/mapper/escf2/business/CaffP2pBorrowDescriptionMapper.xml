@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.business.CaffP2pBorrowDescriptionMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" >
+    <id column="caffP2pBorrowDescriptionId" property="caffp2pborrowdescriptionid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="borrowId" property="borrowid" jdbcType="BIGINT" />
+    <result column="counterGuarantee" property="counterguarantee" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+    <result column="riskNote" property="risknote" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pBorrowDescriptionId, createdDateLong, version, borrowId, counterGuarantee
+  </sql>
+  <sql id="Blob_Column_List" >
+    description, riskNote
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from CaffP2pBorrowDescription
+    where caffP2pBorrowDescriptionId = #{caffp2pborrowdescriptionid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pBorrowDescription
+    where caffP2pBorrowDescriptionId = #{caffp2pborrowdescriptionid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" >
+    insert into CaffP2pBorrowDescription (caffP2pBorrowDescriptionId, createdDateLong, 
+      version, borrowId, counterGuarantee, 
+      description, riskNote)
+    values (#{caffp2pborrowdescriptionid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{borrowid,jdbcType=BIGINT}, #{counterguarantee,jdbcType=VARCHAR}, 
+      #{description,jdbcType=LONGVARCHAR}, #{risknote,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" >
+    insert into CaffP2pBorrowDescription
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2pborrowdescriptionid != null" >
+        caffP2pBorrowDescriptionId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="borrowid != null" >
+        borrowId,
+      </if>
+      <if test="counterguarantee != null" >
+        counterGuarantee,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="risknote != null" >
+        riskNote,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2pborrowdescriptionid != null" >
+        #{caffp2pborrowdescriptionid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="borrowid != null" >
+        #{borrowid,jdbcType=BIGINT},
+      </if>
+      <if test="counterguarantee != null" >
+        #{counterguarantee,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="risknote != null" >
+        #{risknote,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" >
+    update CaffP2pBorrowDescription
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="borrowid != null" >
+        borrowId = #{borrowid,jdbcType=BIGINT},
+      </if>
+      <if test="counterguarantee != null" >
+        counterGuarantee = #{counterguarantee,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="risknote != null" >
+        riskNote = #{risknote,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where caffP2pBorrowDescriptionId = #{caffp2pborrowdescriptionid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" >
+    update CaffP2pBorrowDescription
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      borrowId = #{borrowid,jdbcType=BIGINT},
+      counterGuarantee = #{counterguarantee,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR},
+      riskNote = #{risknote,jdbcType=LONGVARCHAR}
+    where caffP2pBorrowDescriptionId = #{caffp2pborrowdescriptionid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrowDescription" >
+    update CaffP2pBorrowDescription
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      borrowId = #{borrowid,jdbcType=BIGINT},
+      counterGuarantee = #{counterguarantee,jdbcType=VARCHAR}
+    where caffP2pBorrowDescriptionId = #{caffp2pborrowdescriptionid,jdbcType=BIGINT}
+  </update>
+</mapper>

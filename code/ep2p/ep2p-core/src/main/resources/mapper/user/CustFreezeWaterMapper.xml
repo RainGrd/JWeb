@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustFreezeWaterMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustFreezeWater" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="freeze_value" property="freezeValue" jdbcType="DECIMAL" />
+    <result column="freeze_get_type" property="freezeGetType" jdbcType="VARCHAR" />
+    <result column="freeze_type" property="freezeType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="freeze_time" property="freezeTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="fre_wat_desc" property="freWatDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tcfw.PID PID,
+    tcfw.freeze_value freeze_value, 
+    tcfw.freeze_get_type freeze_get_type,
+    CASE freeze_type
+	WHEN 1 THEN
+		'投资冻结'
+	WHEN 2 THEN
+		''
+	END freeze_type,
+    CASE 'status'
+	WHEN 1 THEN
+	'冻结中'
+	WHEN 2 THEN
+	'已解冻'
+	END 'status',
+    tcfw.customer_id customer_id,
+    tcfw.freeze_time freeze_time, 
+    tcfw.create_user create_user, 
+    tcfw.create_time create_time, 
+    tcfw.last_update_user last_update_user,
+    tcfw.last_update_time last_update_time, 
+    tcfw.fre_wat_desc fre_wat_desc
+  </sql>
+  <!--   根据pid查客户冻结金额明细 -->
+<select id="selectFreezeAmountDetailsById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustFreezeWater">
+		select 
+		    <include refid="Base_Column_List"></include>
+		 from t_cust_freeze_water tcfw,t_cust_customer tcc
+		 where tcfw.customer_id=tcc.pid
+		 and  tcfw.customer_id= #{custFreezeWater.customerId,jdbcType=VARCHAR}
+		 
+</select>
+<!-- 客户冻结金额条件查询 -->
+<select id="selectAllPage" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustFreezeWater">
+   select 
+   		<include refid="Base_Column_List"></include>
+   		from t_cust_freeze_water tcfw
+	    where 1=1
+	    <if test="custFreezeWater.happenBeginTime != null and custFreezeWater.happenBeginTime != '' " > 
+        	and  tcfw.freeze_time <![CDATA[ >= ]]> #{custFreezeWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custFreezeWater.happenEndTime != null and custFreezeWater.happenEndTime != '' " > 
+        	and  tcfw.freeze_time <![CDATA[ <= ]]>  date_add(#{custFreezeWater.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+        </if>
+</select>
+<!-- 统计冻结金额 -->
+<select id="selectAllPageSum" resultType="java.util.Map" parameterType="com.yscf.core.model.user.CustFreezeWater">
+   select sum(tcfw.freeze_value) "freezeValue"
+   		from t_cust_freeze_water tcfw
+	    where 1=1
+	    <if test="custFreezeWater.happenBeginTime != null and custFreezeWater.happenBeginTime != '' " > 
+        	and  tcfw.freeze_time <![CDATA[ >= ]]> #{custFreezeWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custFreezeWater.happenEndTime != null and custFreezeWater.happenEndTime != '' " > 
+        	and  tcfw.freeze_time <![CDATA[ <= ]]> date_add(#{custFreezeWater.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+        </if>
+</select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cust_freeze_water
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cust_freeze_water
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.user.CustFreezeWater" >
+    insert into t_cust_freeze_water (PID, freeze_value, freeze_get_type, 
+      freeze_type, status, customer_id, 
+      freeze_time, create_user, create_time, 
+      last_update_user, last_update_time, fre_wat_desc
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{freezeValue,jdbcType=DECIMAL}, #{freezeGetType,jdbcType=VARCHAR}, 
+      #{freezeType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{freezeTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{freWatDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.CustFreezeWater" >
+    insert into t_cust_freeze_water
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="freezeValue != null" >
+        freeze_value,
+      </if>
+      <if test="freezeGetType != null" >
+        freeze_get_type,
+      </if>
+      <if test="freezeType != null" >
+        freeze_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="freezeTime != null" >
+        freeze_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="freWatDesc != null" >
+        fre_wat_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeValue != null" >
+        #{freezeValue,jdbcType=DECIMAL},
+      </if>
+      <if test="freezeGetType != null" >
+        #{freezeGetType,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeType != null" >
+        #{freezeType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeTime != null" >
+        #{freezeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freWatDesc != null" >
+        #{freWatDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustFreezeWater" >
+    update t_cust_freeze_water
+    <set >
+      <if test="freezeValue != null" >
+        freeze_value = #{freezeValue,jdbcType=DECIMAL},
+      </if>
+      <if test="freezeGetType != null" >
+        freeze_get_type = #{freezeGetType,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeType != null" >
+        freeze_type = #{freezeType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="freezeTime != null" >
+        freeze_time = #{freezeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freWatDesc != null" >
+        fre_wat_desc = #{freWatDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustFreezeWater" >
+    update t_cust_freeze_water
+    set freeze_value = #{freezeValue,jdbcType=DECIMAL},
+      freeze_get_type = #{freezeGetType,jdbcType=VARCHAR},
+      freeze_type = #{freezeType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      freeze_time = #{freezeTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      fre_wat_desc = #{freWatDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!--                             Excel 导入责任链                                        -->
+	<!-- 文件属性值校验 -->
+	<bean name="fileImpPropertyChecker" class="com.achievo.framework.excel.check.FileImpPropertyChecker">
+	</bean>
+	<!-- 文件属类型校验 -->
+	<bean name="fileTypeChecker" class="com.achievo.framework.excel.check.FileTypeChecker">
+	</bean>
+	<!-- 文件后缀校验 -->
+	<bean name="fileSuffixChecker" class="com.achievo.framework.excel.check.FileSuffixChecker">
+	    <property name="dontAllowSuffix" value="exe,bin,sh,bat,apk"/>    
+	</bean>
+	<!-- 文件的属性和配置文件相互参数校验 -->
+	<bean name="fileImpXmlChecker" class="com.achievo.framework.excel.check.FileImpXmlChecker">
+	</bean>
+	
+	<!-- 文件校验链 -->
+	<bean id="checkChain" class="com.achievo.framework.excel.check.CheckChain">
+		<property name="checkers">
+		    <list>
+		        <!-- 以下顺序很重要 -->
+		        <ref bean="fileImpPropertyChecker"/>
+		        <ref bean="fileTypeChecker"/>
+		        <ref bean="fileSuffixChecker"/>
+		        <ref bean="fileImpXmlChecker"/>
+		    </list>
+		</property>
+	</bean>
+	
+	<!--                             Excel 导出责任链                                        -->
+	<!-- 导入对象属性校验 -->
+	<bean name="fileOutPropertyChecker" class="com.achievo.framework.excel.check.FileOutPropertyChecker">
+	</bean>
+	<!-- 文件的属性和配置文件相互参数校验 -->
+	<bean name="fileOutXmlChecker" class="com.achievo.framework.excel.check.FileOutXmlChecker">
+	</bean>
+	
+	<!-- 文件校验链 -->
+	<bean id="checkoChain" class="com.achievo.framework.excel.check.CheckOutChain">
+		<property name="outChecker">
+		    <list>
+		        <!-- 以下顺序很重要 -->
+		        <ref bean="fileOutPropertyChecker"/>
+		        <ref bean="fileOutXmlChecker"/>
+		    </list>
+		</property>
+	</bean>
+	
+</beans>

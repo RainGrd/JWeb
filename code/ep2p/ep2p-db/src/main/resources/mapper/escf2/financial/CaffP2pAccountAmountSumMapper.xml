@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.financial.CaffP2pAccountAmountSumMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.financial.CaffP2pAccountAmountSum" >
+    <id column="caffP2pAccountAmountSumId" property="caffp2paccountamountsumid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="availableAmount" property="availableamount" jdbcType="DECIMAL" />
+    <result column="frozenAmount" property="frozenamount" jdbcType="DECIMAL" />
+    <result column="bidReward" property="bidreward" jdbcType="DECIMAL" />
+    <result column="experienceAvailabeAmount" property="experienceavailabeamount" jdbcType="DECIMAL" />
+    <result column="experienceFrozenAmount" property="experiencefrozenamount" jdbcType="DECIMAL" />
+    <result column="hongbaoAmount" property="hongbaoamount" jdbcType="DECIMAL" />
+    <result column="interestDone" property="interestdone" jdbcType="DECIMAL" />
+    <result column="interestFee" property="interestfee" jdbcType="DECIMAL" />
+    <result column="interestPending" property="interestpending" jdbcType="DECIMAL" />
+    <result column="latestReceipt" property="latestreceipt" jdbcType="DECIMAL" />
+    <result column="latestReceiptDateLong" property="latestreceiptdatelong" jdbcType="BIGINT" />
+    <result column="receiptPendingAmount" property="receiptpendingamount" jdbcType="DECIMAL" />
+    <result column="repayPendingAmount" property="repaypendingamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pAccountAmountSumId, createdDateLong, version, userId, availableAmount, frozenAmount, 
+    bidReward, experienceAvailabeAmount, experienceFrozenAmount, hongbaoAmount, interestDone, 
+    interestFee, interestPending, latestReceipt, latestReceiptDateLong, receiptPendingAmount, 
+    repayPendingAmount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pAccountAmountSum
+    where caffP2pAccountAmountSumId = #{caffp2paccountamountsumid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pAccountAmountSum
+    where caffP2pAccountAmountSumId = #{caffp2paccountamountsumid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountAmountSum" >
+    insert into CaffP2pAccountAmountSum (caffP2pAccountAmountSumId, createdDateLong, 
+      version, userId, availableAmount, 
+      frozenAmount, bidReward, experienceAvailabeAmount, 
+      experienceFrozenAmount, hongbaoAmount, 
+      interestDone, interestFee, interestPending, 
+      latestReceipt, latestReceiptDateLong, receiptPendingAmount, 
+      repayPendingAmount)
+    values (#{caffp2paccountamountsumid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{availableamount,jdbcType=DECIMAL}, 
+      #{frozenamount,jdbcType=DECIMAL}, #{bidreward,jdbcType=DECIMAL}, #{experienceavailabeamount,jdbcType=DECIMAL}, 
+      #{experiencefrozenamount,jdbcType=DECIMAL}, #{hongbaoamount,jdbcType=DECIMAL}, 
+      #{interestdone,jdbcType=DECIMAL}, #{interestfee,jdbcType=DECIMAL}, #{interestpending,jdbcType=DECIMAL}, 
+      #{latestreceipt,jdbcType=DECIMAL}, #{latestreceiptdatelong,jdbcType=BIGINT}, #{receiptpendingamount,jdbcType=DECIMAL}, 
+      #{repaypendingamount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountAmountSum" >
+    insert into CaffP2pAccountAmountSum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2paccountamountsumid != null" >
+        caffP2pAccountAmountSumId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="availableamount != null" >
+        availableAmount,
+      </if>
+      <if test="frozenamount != null" >
+        frozenAmount,
+      </if>
+      <if test="bidreward != null" >
+        bidReward,
+      </if>
+      <if test="experienceavailabeamount != null" >
+        experienceAvailabeAmount,
+      </if>
+      <if test="experiencefrozenamount != null" >
+        experienceFrozenAmount,
+      </if>
+      <if test="hongbaoamount != null" >
+        hongbaoAmount,
+      </if>
+      <if test="interestdone != null" >
+        interestDone,
+      </if>
+      <if test="interestfee != null" >
+        interestFee,
+      </if>
+      <if test="interestpending != null" >
+        interestPending,
+      </if>
+      <if test="latestreceipt != null" >
+        latestReceipt,
+      </if>
+      <if test="latestreceiptdatelong != null" >
+        latestReceiptDateLong,
+      </if>
+      <if test="receiptpendingamount != null" >
+        receiptPendingAmount,
+      </if>
+      <if test="repaypendingamount != null" >
+        repayPendingAmount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2paccountamountsumid != null" >
+        #{caffp2paccountamountsumid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="availableamount != null" >
+        #{availableamount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenamount != null" >
+        #{frozenamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidreward != null" >
+        #{bidreward,jdbcType=DECIMAL},
+      </if>
+      <if test="experienceavailabeamount != null" >
+        #{experienceavailabeamount,jdbcType=DECIMAL},
+      </if>
+      <if test="experiencefrozenamount != null" >
+        #{experiencefrozenamount,jdbcType=DECIMAL},
+      </if>
+      <if test="hongbaoamount != null" >
+        #{hongbaoamount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestdone != null" >
+        #{interestdone,jdbcType=DECIMAL},
+      </if>
+      <if test="interestfee != null" >
+        #{interestfee,jdbcType=DECIMAL},
+      </if>
+      <if test="interestpending != null" >
+        #{interestpending,jdbcType=DECIMAL},
+      </if>
+      <if test="latestreceipt != null" >
+        #{latestreceipt,jdbcType=DECIMAL},
+      </if>
+      <if test="latestreceiptdatelong != null" >
+        #{latestreceiptdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="receiptpendingamount != null" >
+        #{receiptpendingamount,jdbcType=DECIMAL},
+      </if>
+      <if test="repaypendingamount != null" >
+        #{repaypendingamount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountAmountSum" >
+    update CaffP2pAccountAmountSum
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="availableamount != null" >
+        availableAmount = #{availableamount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenamount != null" >
+        frozenAmount = #{frozenamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidreward != null" >
+        bidReward = #{bidreward,jdbcType=DECIMAL},
+      </if>
+      <if test="experienceavailabeamount != null" >
+        experienceAvailabeAmount = #{experienceavailabeamount,jdbcType=DECIMAL},
+      </if>
+      <if test="experiencefrozenamount != null" >
+        experienceFrozenAmount = #{experiencefrozenamount,jdbcType=DECIMAL},
+      </if>
+      <if test="hongbaoamount != null" >
+        hongbaoAmount = #{hongbaoamount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestdone != null" >
+        interestDone = #{interestdone,jdbcType=DECIMAL},
+      </if>
+      <if test="interestfee != null" >
+        interestFee = #{interestfee,jdbcType=DECIMAL},
+      </if>
+      <if test="interestpending != null" >
+        interestPending = #{interestpending,jdbcType=DECIMAL},
+      </if>
+      <if test="latestreceipt != null" >
+        latestReceipt = #{latestreceipt,jdbcType=DECIMAL},
+      </if>
+      <if test="latestreceiptdatelong != null" >
+        latestReceiptDateLong = #{latestreceiptdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="receiptpendingamount != null" >
+        receiptPendingAmount = #{receiptpendingamount,jdbcType=DECIMAL},
+      </if>
+      <if test="repaypendingamount != null" >
+        repayPendingAmount = #{repaypendingamount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where caffP2pAccountAmountSumId = #{caffp2paccountamountsumid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountAmountSum" >
+    update CaffP2pAccountAmountSum
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      availableAmount = #{availableamount,jdbcType=DECIMAL},
+      frozenAmount = #{frozenamount,jdbcType=DECIMAL},
+      bidReward = #{bidreward,jdbcType=DECIMAL},
+      experienceAvailabeAmount = #{experienceavailabeamount,jdbcType=DECIMAL},
+      experienceFrozenAmount = #{experiencefrozenamount,jdbcType=DECIMAL},
+      hongbaoAmount = #{hongbaoamount,jdbcType=DECIMAL},
+      interestDone = #{interestdone,jdbcType=DECIMAL},
+      interestFee = #{interestfee,jdbcType=DECIMAL},
+      interestPending = #{interestpending,jdbcType=DECIMAL},
+      latestReceipt = #{latestreceipt,jdbcType=DECIMAL},
+      latestReceiptDateLong = #{latestreceiptdatelong,jdbcType=BIGINT},
+      receiptPendingAmount = #{receiptpendingamount,jdbcType=DECIMAL},
+      repayPendingAmount = #{repaypendingamount,jdbcType=DECIMAL}
+    where caffP2pAccountAmountSumId = #{caffp2paccountamountsumid,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysButtonMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysButton" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="button_name" property="buttonName" jdbcType="VARCHAR" />
+    <result column="button_code" property="buttonCode" jdbcType="VARCHAR" />
+    <result column="button_ico" property="buttonIco" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, button_name, button_code, button_ico, status, create_user, create_time, last_update_user, 
+    last_update_time, version
+  </sql>
+  <select id="getButtonsByMenuId" parameterType="java.util.Map" resultMap="BaseResultMap">
+	SELECT
+		DISTINCT b.pid,
+		b.button_name,
+		b.button_code,
+		b.button_ico
+	FROM
+		t_sys_button b,
+		t_sys_menu_butt_rel mb,
+		t_sys_role_menu_butt_rel rmb
+	WHERE
+		b.PID = mb.button_id
+	AND mb.PID = rmb.menu_button_rel_id
+	AND b.PID IN (
+		SELECT
+			mb.button_id
+		FROM
+			t_sys_menu_butt_rel mb
+		WHERE
+			mb.menu_id = #{menuId,jdbcType=VARCHAR}
+	)
+	AND rmb.role_id IN (
+		SELECT
+			ur.role_id
+		FROM
+			t_sys_user_role_rel ur
+		WHERE
+			ur.user_id = #{userId,jdbcType=VARCHAR}
+	)
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_button
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectSelectivePage" parameterType="map" resultMap="BaseResultMap">
+	   select 
+	    	<include refid="Base_Column_List" />
+	    from t_sys_button
+	    where 1=1
+	    <if test="map.buttonCode != null">
+	    	  and button_name like concat('%',#{map.buttonName,jdbcType=VARCHAR},'%' )
+	    </if>
+  </select>
+  
+  <select id="getMaxButtonCode" resultType="String">
+ 	 select max(CONVERT(b.button_code,SIGNED)) from t_sys_button b
+  </select>
+  
+  <select id="selectChoosableButtonPage" parameterType="map" resultMap="BaseResultMap">
+ 	 select 
+ 	 	<include refid="Base_Column_List" />
+		 from t_sys_button b where b.PID not in
+		(select mb.button_id from t_sys_menu_butt_rel mb where mb.menu_id = #{map.menuId,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="selectSelectedButtonPage" parameterType="map" resultMap="BaseResultMap">
+ 	 select 
+ 	 	<include refid="Base_Column_List" />
+		 from t_sys_button b where b.PID in
+		(select mb.button_id from t_sys_menu_butt_rel mb where mb.menu_id = #{map.menuId,jdbcType=VARCHAR})
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_button
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.system.SysButton" >
+    insert into t_sys_button (PID, button_name, button_code, 
+      button_ico, status, create_user, 
+      create_time, last_update_user, last_update_time, 
+      version)
+    values (#{pid,jdbcType=VARCHAR}, #{buttonName,jdbcType=VARCHAR}, #{buttonCode,jdbcType=VARCHAR}, 
+      #{buttonIco,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.system.SysButton" >
+    insert into t_sys_button
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="buttonName != null" >
+        button_name,
+      </if>
+      <if test="buttonCode != null" >
+        button_code,
+      </if>
+      <if test="buttonIco != null" >
+        button_ico,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonName != null" >
+        #{buttonName,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonCode != null" >
+        #{buttonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonIco != null" >
+        #{buttonIco,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysButton" >
+    update t_sys_button
+    <set >
+      <if test="buttonName != null" >
+        button_name = #{buttonName,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonCode != null" >
+        button_code = #{buttonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonIco != null" >
+        button_ico = #{buttonIco,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysButton" >
+    update t_sys_button
+    set button_name = #{buttonName,jdbcType=VARCHAR},
+      button_code = #{buttonCode,jdbcType=VARCHAR},
+      button_ico = #{buttonIco,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

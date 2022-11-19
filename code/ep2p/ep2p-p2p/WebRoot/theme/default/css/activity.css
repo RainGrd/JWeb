@@ -1,0 +1,135 @@
+/*文章列表s*/
+.ac_r{
+	width: 195px;
+}
+.content_ac{
+		min-height:615px;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+.ac_r_list{
+	border-top: #f2f5f7 solid 2px;
+}
+.ac_r_list .i{
+	left: 0;
+	top: -10px;
+}
+.ac_r_list_i{
+	display: inline-block;
+	background: #2980b9;
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
+	text-align: center;
+	color: #FFFFFF;
+}
+.ac_r_list_img{
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	border: #e8e6e3 solid 1px;
+	margin-left: 5px;
+	margin-right: 10px;
+}
+.ac_l{
+	width: 920px;
+}
+/*个人账户下活动推荐*/
+#uesr_banner{width: 910px; height:180px;}
+#uesr_banner ul{width:9100px;}
+#uesr_banner li,.al_l_list{
+	height: 180px;
+	background: #ecf0f1;
+	margin-bottom: 30px;
+}
+.al_l_list_r{
+	width: 243px;
+	height: 210px;
+}
+.al_l_list_img{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
+#uesr_banner .scrollBoxBtn a{top:60px;width:60px; height:60px; border-radius:50%;font-size:50px; line-height:60px; text-align:center;}		
+.ml12{margin-left:12px;}
+#uesr_banner:hover .scrollBoxBtn a{display:block;}
+
+
+/*文章列表e*/
+
+
+
+/*帮助中心s*/
+.help_l{
+	float: left;
+	width: 160px;
+}
+.help_list_o{
+	cursor: pointer;
+	width: 160px;
+	line-height: 45px;
+	height: 45px;
+	display: inline-block;
+	
+}
+.h_list_s{
+	width: 160px;
+}
+.h_list_a{
+	position: absolute;
+	top: 44px;
+	left: 0;
+	width: 160px;
+	height: 1px;
+	background: #f4be65;
+}
+.h_list_i{
+	position: relative;
+    background: #f2f6f8;
+}
+.jian_help{
+	position: absolute;
+	right: 15px;
+	top: 0;
+
+}
+.help_r{
+	float: right;
+	width: 850px;
+	padding-right: 50px;
+	padding-left: 50px;
+border: #c4d0da solid 1px;
+}
+.list_actie{
+	padding-left: 20px;
+	padding-right: 20px;
+	border-bottom: #c4d0da dashed 1px;
+}
+.list_ace{
+	cursor: pointer;
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	border-radius: 50%;
+	background: #3498db;
+	float: left;
+	margin-top: 30px;
+	color: #FFFFFF;
+	line-height: 15px;
+    text-align: center;
+    margin-right: 10px;
+}
+.xiangqing_help{
+	position: absolute;
+	right: -20px;
+	bottom: -25px;
+}
+.h_list_i{
+	cursor: pointer;
+}
+.wen_z{
+	padding: 20px;
+}
+/*帮助中心e*/

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.press.mapper.UserMapper">
+    <!--起别名-->
+    <resultMap id="userResultMap" type="pressUser">
+        <result column="user_name" property="username"></result>
+        <result column="user_id" property="id"></result>
+        <result column="user_status" property="userStatus"></result>
+        <result column="email" property="email"></result>
+        <result column="phone" property="phone"></result>
+    </resultMap>
+    <!--
+    根据用户名查询此用户是超级管理员还是普通管理员或者是普通用户
+    -->
+    <select id="selectAll" resultMap="userResultMap">
+
+    </select>
+    <update id="updatePassword">
+        update press.t_user set password=#{password} where user_id=#{id};
+    </update>
+</mapper>

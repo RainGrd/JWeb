@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysLogMapper">
+	<resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysLog">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="account_no" property="accountNo" jdbcType="VARCHAR" />
+		<result column="oper_type" property="operType" jdbcType="VARCHAR" />
+		<result column="operand_type" property="operandType" jdbcType="VARCHAR"/>
+		<result column="system_type" property="systemType" jdbcType="VARCHAR"/>
+		<result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="oper_content" property="operContent" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_update_user" property="lastUpdateUser"
+			jdbcType="VARCHAR" />
+		<result column="last_update_time" property="lastUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		PID, 
+		name, 
+		account_no,
+		operand_type,
+		system_type,
+		oper_type, 
+		login_ip, 
+		create_date,
+		oper_content,
+		status, 
+		create_user,
+		create_time, 
+		last_update_user,
+		last_update_time, version
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_log
+		where PID = #{pid,jdbcType=VARCHAR}
+	</select>
+
+
+	<select id="selectAllPage" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_log
+		where 1 = 1
+		and status >= 0
+		<if test="sysLog.name != null">
+			and name like
+			concat('%',#{sysLog.name,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="sysLog.accountNo != null">
+			and account_no like
+			concat('%',#{sysLog.accountNo,jdbcType=VARCHAR},'%'
+			)
+		</if>
+		<if test="sysLog.createTime != null">
+			and DATE_FORMAT(create_time, '%Y-%m-%d')=
+			DATE_FORMAT(#{sysLog.createTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+		</if>
+		order by create_date desc
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap"
+		parameterType="com.yscf.core.model.system.SysLog">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_log
+		where 1 = 1
+		and status >= 0
+		<if test="name != null">
+			and name like concat('%',#{name,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="accountNo != null">
+			and account_no like
+			concat('%',#{accountNo,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="sysLog.createTime != null">
+			and DATE_FORMAT(create_time, '%Y-%m-%d')=
+			DATE_FORMAT(#{sysLog.createTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+		</if>
+		order by create_date desc
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		t_sys_log
+		where PID = #{pid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yscf.core.model.system.SysLog">
+		insert into t_sys_log (PID,
+		name, account_no,
+		operand_type,
+		system_type,
+		oper_type, 
+		login_ip, 
+		create_date,
+		oper_content,
+		status,
+	 	create_user,
+		create_time, 
+		last_update_user, 
+		last_update_time,
+		version)
+		values (#{pid,jdbcType=VARCHAR}, 
+		#{name,jdbcType=VARCHAR},
+		#{accountNo,jdbcType=VARCHAR},
+		#{operandType,jdbcType=VARCHAR},
+		#{systemType,jdbcType=VARCHAR},
+		#{operType,jdbcType=VARCHAR},
+		#{loginIp,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+		#{operContent,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{version,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yscf.core.model.system.SysLog">
+		insert into t_sys_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="accountNo != null">
+				account_no,
+			</if>
+			<if test="operandType != null">
+				operand_type,
+			</if>
+			<if test="systemType != null">
+				system_type,
+			</if>
+			<if test="operType != null">
+				oper_type,
+			</if>
+			<if test="loginIp != null">
+				login_ip,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="operContent != null">
+				oper_content,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="accountNo != null">
+				#{accountNo,jdbcType=VARCHAR},
+			</if>
+			<if test="operandType != null">
+				#{operandType,jdbcType=VARCHAR},
+			</if>
+			<if test="systemType != null">
+				#{systemType,jdbcType=VARCHAR},
+			</if>
+			<if test="operType != null">
+				#{operType,jdbcType=VARCHAR},
+			</if>
+			<if test="loginIp != null">
+				#{loginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operContent != null">
+				#{operContent,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysLog">
+		update t_sys_log
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="accountNo != null">
+				account_no = #{accountNo,jdbcType=VARCHAR},
+			</if>
+			<if test="operType != null">
+				oper_type = #{operType,jdbcType=VARCHAR},
+			</if>
+			<if test="loginIp != null">
+				login_ip = #{loginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operContent != null">
+				oper_content = #{operContent,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysLog">
+		update t_sys_log
+		set name = #{name,jdbcType=VARCHAR},
+		account_no =
+		#{accountNo,jdbcType=VARCHAR},
+		oper_type =
+		#{operType,jdbcType=VARCHAR},
+		login_ip = #{loginIp,jdbcType=VARCHAR},
+		create_date = #{createDate,jdbcType=TIMESTAMP},
+		oper_content =
+		#{operContent,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		create_user = #{createUser,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		last_update_user =
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		last_update_time =
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		version =
+		#{version,jdbcType=VARCHAR}
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 批量删除用户管理列表 -->
+	<delete id="deleteBtach" parameterType="java.util.List">
+		update
+		t_sys_log
+		set
+		status=-1
+		where pid in
+		<foreach item="itemId" collection="list" open="(" separator=","
+			close=")">
+			#{itemId}
+		</foreach>
+	</delete>
+</mapper>

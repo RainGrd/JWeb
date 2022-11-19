@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.content.AgreementContTempMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.content.AgreementContTemp" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="agr_cont_temp_name" property="agrContTempName" jdbcType="VARCHAR" />
+    <result column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="protocol_id" property="protocolId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 基础列字段 -->
+  <sql id="Base_Column_List" >
+    PID, agr_cont_temp_name, file_id, status, create_user, create_time, last_update_user, 
+    last_update_time, version, protocol_id
+  </sql>
+  
+  <!-- 根据组件查询 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    	<include refid="Base_Column_List" />
+    from t_cont_agreement_cont_temp
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据查询条件查找对象的信息 -->
+  <select id="selectByPrimaryObj" resultMap="BaseResultMap" parameterType="map">
+  	select 
+    	<include refid="Base_Column_List" />
+    from t_cont_agreement_cont_temp
+    where 1 = 1 
+      <if test="agctemp.pid != null and agctemp.pid != ''" >
+       and pid = #{agctemp.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="agctemp.agrContTempName != null and agctemp.agrContTempName != ''" >
+       and agr_cont_temp_name like concat('%', #{agctemp.agrContTempName,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="agctemp.fileId != null and agctemp.fileId != ''" >
+       and file_id = #{agctemp.fileId,jdbcType=VARCHAR}
+      </if>
+      <if test="agctemp.status != null and agctemp.status != '' " >
+       and status = #{agctemp.status,jdbcType=VARCHAR}
+      </if>
+      <if test="agctemp.status == null or agctemp.status == ''" >
+       and status != 0 
+      </if>
+      <if test="agctemp.createUser != null and agctemp.createUser != ''" >
+       and create_user like concat('%', #{agctemp.createUser,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="agctemp.createTime != null" >
+       and create_time = #{agctemp.createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agctemp.lastUpdateUser != null and agctemp.lastUpdateUser != ''" >
+       and last_update_user like concat('%',#{agctemp.lastUpdateUser,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="agctemp.lastUpdateTime != null" >
+       and last_update_time = #{agctemp.lastUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agctemp.version != null and agctemp.version != ''" >
+       and version = #{agctemp.version,jdbcType=VARCHAR}
+      </if>
+      <if test="agctemp.protocolId != null and agctemp.protocolId != ''" >
+       and protocol_id = #{agctemp.protocolId,jdbcType=VARCHAR}
+      </if>
+      <!-- 时间判断 -->
+      <if test="agctemp.startCTime != null and agctemp.startCTime != '' and (agctemp.endCtime == null or agctemp.endCtime == '')" >
+       and create_time <![CDATA[>=]]> #{agctemp.startCTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="(agctemp.startCTime == null or agctemp.startCTime == '') and agctemp.endCtime != null and agctemp.endCtime != ''" >
+       and create_time <![CDATA[<=]]> #{agctemp.endCtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agctemp.startCTime != null and agctemp.startCTime != '' and agctemp.endCtime != null and agctemp.endCtime != ''" >
+       and create_time between #{agctemp.startCTime,jdbcType=TIMESTAMP} and #{agctemp.endCtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agctemp.startLupTime != null and agctemp.startLupTime != '' and (agctemp.endLuptime == null or agctemp.endLuptime == '')" >
+       and last_update_time <![CDATA[>=]]> #{agctemp.startLupTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="(agctemp.startLupTime == null or agctemp.startLupTime == '') and agctemp.endLuptime != null and agctemp.endLuptime != ''" >
+       and last_update_time <![CDATA[<=]]> #{agctemp.endLuptime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="agctemp.startLupTime != null and agctemp.startLupTime != '' and agctemp.endLuptime != null and agctemp.endLuptime != ''" >
+       and last_update_time between #{agctemp.startLupTime,jdbcType=TIMESTAMP} and #{agctemp.endLuptime,jdbcType=TIMESTAMP}
+      </if>
+        order by create_time desc
+  </select>
+  
+  <!-- 查询所有的可用的内容模板 -->
+  <select id="selectByAllObj" resultMap="BaseResultMap" parameterType="com.yscf.core.model.content.AgreementContTemp">
+  	select 
+    	<include refid="Base_Column_List" />
+    from t_cont_agreement_cont_temp
+    where 1 = 1 and status = 1 
+  </select>
+  
+  <!-- 根据组主键删除对象 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cont_agreement_cont_temp
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 插入心的对象信息 -->
+  <insert id="insert" parameterType="com.yscf.core.model.content.AgreementContTemp" >
+    insert into t_cont_agreement_cont_temp (PID, agr_cont_temp_name, file_id, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, version, 
+      protocol_id)
+    values (#{pid,jdbcType=VARCHAR}, #{agrContTempName,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}, 
+      #{protocolId,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 插入选中的对象 -->
+  <insert id="insertSelective" parameterType="com.yscf.core.model.content.AgreementContTemp" >
+    insert into t_cont_agreement_cont_temp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="agrContTempName != null" >
+        agr_cont_temp_name,
+      </if>
+      <if test="fileId != null" >
+        file_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="protocolId != null" >
+        protocol_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="agrContTempName != null" >
+        #{agrContTempName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="protocolId != null" >
+        #{protocolId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 根据字段信息修改 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.content.AgreementContTemp" >
+    update t_cont_agreement_cont_temp
+    <set >
+      <if test="agrContTempName != null" >
+        agr_cont_temp_name = #{agrContTempName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="protocolId != null" >
+        protocol_id = #{protocolId,jdbcType=VARCHAR},
+      </if>
+      version =  version + 1 
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据主键修改对象 -->
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.content.AgreementContTemp" >
+    update t_cont_agreement_cont_temp
+    set agr_cont_temp_name = #{agrContTempName,jdbcType=VARCHAR},
+      file_id = #{fileId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      version = version + 1,
+      protocol_id = #{protocolId,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

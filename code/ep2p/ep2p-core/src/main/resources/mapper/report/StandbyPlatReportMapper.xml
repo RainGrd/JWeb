@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.report.StandbyPlatReportMapper" >
+	<!-- 基础列 -->
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.report.PlatFormDateModel" >
+  		<id column="PID" property="pid" jdbcType="VARCHAR"/>
+  		<result column="ayear" property="year" jdbcType="VARCHAR"/>
+  		<result column="amonth" property="month" jdbcType="VARCHAR"/>
+  		<result column="amount" property="amountMoney" jdbcType="DECIMAL"/>
+  	</resultMap>
+  	
+  	<!-- 备用金 -->
+  	<resultMap id="EnsureBaseResultMap" type="com.yscf.core.model.financial.BizEnsureMoney" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="amount" property="amount" jdbcType="VARCHAR" />
+	    <result column="balance" property="balance" jdbcType="DECIMAL" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+  	</resultMap>
+  	
+  	<!-- 基础列 -->
+  	<sql id="Base_colum_sql">
+  		PID,ayear,amonth,amount
+  	</sql>
+  	
+  	<!-- 备用金额信息 -->
+  	<sql id="Ensure_Base_Column_List" >
+    	PID, amount, balance, status, create_user, create_time, last_update_user, 
+    	last_update_time
+  	</sql>
+  	
+  	<!-- 统计累计投资 -->
+  	<select id="selectCumulativeInvest" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+			IFNULL(SUM(trci.amount),0) amount
+		FROM
+			t_report_cumulative_invest trci
+		WHERE 1 = 1 AND trci.status = '1' 
+			<if test="year != null and year != ''">
+				AND trci.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+  	</select>
+  	
+  	<!-- 统计按年累计投资列表 -->
+  	<select id="selectCumulativeInvList" resultMap="BaseResultMap" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+  			trci.amonth,
+			trci.amount
+		FROM
+			t_report_cumulative_invest trci
+		WHERE 1 = 1 AND trci.status = '1' 
+			<if test="year != null and year != ''">
+				AND trci.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+		GROUP BY trci.ayear,trci.amonth ORDER BY trci.amonth ASC
+  	</select>
+  	
+  	<!-- 统计已还本息 -->
+  	<select id="selectAlsoPrincipal" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+			IFNULL(SUM(trap.amount),0) amount
+		FROM
+			t_report_also_principal trap
+		WHERE 1 = 1 AND trap.status = '1' 
+			<if test="year != null and year != ''">
+				AND trap.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+  	</select>
+  	
+  	<!-- 统计已还本息列表 -->
+  	<select id="selectAlsoPrincipalList" resultMap="BaseResultMap" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+  			trap.amonth,
+			trap.amount
+		FROM
+			t_report_also_principal trap
+		WHERE 1 = 1 AND trap.status = '1' 
+			<if test="year != null and year != ''">
+				AND trap.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+		GROUP BY trap.ayear,trap.amonth ORDER BY trap.amonth ASC
+  	</select>
+  	
+  	<!-- 统计累计用户受益 -->
+  	<select id="selectUserBenefit" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+			IFNULL(SUM(trub.amount),0) amount
+		FROM
+			t_report_user_benefit trub
+		WHERE 1 = 1 AND trub.status = '1' 
+			<if test="year != null and year != ''">
+				AND trub.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+  	</select>
+  	
+  	<!-- 统计累计用户受益列表 -->
+  	<select id="selectUserBenefitList" resultMap="BaseResultMap" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+  			trub.amonth,
+			trub.amount
+		FROM
+			t_report_user_benefit trub
+		WHERE 1 = 1 AND trub.status = '1' 
+			<if test="year != null and year != ''">
+				AND trub.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+		GROUP BY trub.ayear,trub.amonth ORDER BY trub.amonth ASC
+  	</select>
+  	
+  	
+  	<!-- 统计已发放收益 -->
+  	<select id="selectGrantProfit" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+			IFNULL(SUM(trgp.amount),0) amount
+		FROM
+			t_report_grant_profit trgp 
+		WHERE 1 = 1 AND trgp.status = '1' 
+			<if test="year != null and year != ''">
+				AND trgp.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+  	</select>
+  	
+  	<!-- 统计已发放收益列表 -->
+  	<select id="selectGrantProfitList" resultMap="BaseResultMap" parameterType="com.yscf.core.model.report.PlatFormDateModel">
+  		SELECT
+  			trgp.amonth,
+			trgp.amount
+		FROM
+			t_report_grant_profit trgp
+		WHERE 1 = 1 AND trgp.status = '1' 
+			<if test="year != null and year != ''">
+				AND trgp.ayear = #{year,jdbcType=VARCHAR} 
+			</if>
+		GROUP BY trgp.ayear,trgp.amonth ORDER BY trgp.amonth ASC
+  	</select>
+  	
+  	<!-- 搜索备用金额 -->
+  	<select id="selectAllEnsureMoney" resultMap="EnsureBaseResultMap">
+  		select 
+			<include refid="Ensure_Base_Column_List" />
+		from t_biz_ensure_money biz
+			where 1 = 1 and status = 1 limit 1
+  	</select>
+  	
+  	<!-- 搜索年月备用金额 -->
+  	<select id="selectGoldDepositReport" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+  		SELECT 
+  			tbemd.balance 
+  		FROM t_biz_ensure_money_detail tbemd 
+		WHERE 1 = 1 
+			AND tbemd.status = '1' 
+			AND date_format(tbemd.cator_time,'%Y-%m') = #{yearmonth,jdbcType=VARCHAR}  
+		ORDER BY tbemd.cator_time DESC LIMIT 1;
+  	</select>
+  	
+  	
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ELEMENT basket (meat+)>
+<!--肉(部位,肉质,售价)-->
+<!ELEMENT meat (part,quality,price,discount)>
+<!ELEMENT part ANY>
+<!ELEMENT quality ANY>
+<!ELEMENT price ANY>
+<!ELEMENT discount ANY>
+<!--标识，品种，产地-->
+<!ATTLIST meat
+        id CDATA #IMPLIED
+        varieties CDATA #IMPLIED
+        Origin CDATA #REQUIRED
+        name CDATA
+        >

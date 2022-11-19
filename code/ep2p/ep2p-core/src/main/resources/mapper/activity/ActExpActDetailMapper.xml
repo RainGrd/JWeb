@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.ActExpActDetailMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.ActExpActDetail" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+	    <result column="exp_id" property="expId" jdbcType="VARCHAR" />
+	    <result column="sms_id" property="smsId" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="get_time" property="getTime" jdbcType="TIMESTAMP" />
+	    <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP" />
+	    <result column="use_status" property="useStatus" jdbcType="VARCHAR" />
+	    <result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <result column="exp_amount" property="expAmount" jdbcType="VARCHAR" />
+	    <result column="expire_time" property="expTime" jdbcType="VARCHAR" />
+	    <!-- 外表数据 -->
+	    <result column="actCode" property="actCode" jdbcType="VARCHAR" />
+	    <result column="actTag" property="actTag" jdbcType="VARCHAR" />
+	    <result column="actName" property="actName" jdbcType="VARCHAR" />
+	    <result column="actStatus" property="actStatus" jdbcType="VARCHAR" />
+	    <result column="participantsNumber" property="participantsNumber" jdbcType="INTEGER" />
+	    <result column="customerName" property="customerName" jdbcType="VARCHAR" />
+	    <result column="custName" property="custName" jdbcType="VARCHAR" />
+	    <result column="phoneNo" property="phoneNo" jdbcType="VARCHAR" />
+	    <result column="remark" property="remark" jdbcType="VARCHAR" />
+	    <result column="getAmount" property="getAmount" jdbcType="DECIMAL" />
+	    <result column="useAmount" property="useAmount" jdbcType="DECIMAL" />
+	    <result column="expNumber" property="expNumber" jdbcType="INTEGER" />
+	    <result column="validity" property="validity" jdbcType="INTEGER" />
+  	</resultMap>
+  	
+  	<!-- 查询所需要用到的列 -->
+  	<sql id="Base_Column_List" >
+  		aa.PID,aa.act_code actCode,aa.act_name actName,aa.act_tag actTag,aa.status actStatus,peg.exp_amount,peg.exp_number expNumber,
+		(select count(aead.PID)*peg.exp_amount from t_act_exp_act_detail aead where aead.activity_id = aa.PID) as getAmount,
+		(select count(aead.PID)*peg.exp_amount from t_act_exp_act_detail aead where aead.activity_id = aa.PID and aead.use_status = '1') as useAmount,
+		(select count(aead.PID) from t_act_exp_act_detail aead where aead.activity_id = aa.PID) as participantsNumber
+  	</sql>
+  	
+  	<!-- 公共的sql条件 -->
+  	<sql id="base_condition">
+  		from t_pub_exp_gold peg 
+		LEFT JOIN t_act_activity aa 
+		on aa.object_id = peg.PID 
+		where aa.activity_type = 3  
+		and peg.status != -1  
+		and aa.status != -1  
+		<if test="actExpActDetail.actCode != null and actExpActDetail.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{actExpActDetail.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actExpActDetail.actName != null and actExpActDetail.actName != '' " > 
+        	and  aa.act_name like concat('%',#{actExpActDetail.actName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actExpActDetail.actTag != null and actExpActDetail.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{actExpActDetail.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actExpActDetail.actStatus != null and actExpActDetail.actStatus != 0 " > 
+        	and  aa.status = #{actExpActDetail.actStatus,jdbcType=VARCHAR}
+        </if>
+  	</sql>
+  	
+  	<!-- 查询赠送VIP明细条件sql -->
+  	<sql id="detail_condition">
+  		FROM t_act_exp_act_detail aead 
+		LEFT JOIN t_act_activity aa 
+		on aa.PID = aead.activity_id  
+		LEFT JOIN t_cust_customer cc 
+		on aead.customer_id = cc.PID 
+		LEFT JOIN t_pub_exp_gold peg 
+		on peg.PID = aead.exp_id 
+		where aead.activity_id = #{actExpActDetail.activityId,jdbcType=VARCHAR} 
+		<if test="actExpActDetail.isExpired == 1 " > 
+			and aead.expire_time <![CDATA[ >= ]]> NOW()
+        </if>
+        <if test="actExpActDetail.isExpired == 2 ">
+        	and NOW() <![CDATA[ > ]]> aead.expire_time
+        </if>
+        <if test="actExpActDetail.useStatus != null and actExpActDetail.useStatus != 0 " > 
+        	and  aead.use_status = #{actExpActDetail.useStatus,jdbcType=VARCHAR}
+        </if>
+  	</sql>
+  	
+  	<!-- 查询赠送体验金活动列表,带分页 -->
+  	<select id="selectAllPageByCondition" resultMap="BaseResultMap" parameterType="map" > 
+  		select 
+  		<include refid="Base_Column_List" />
+  		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 查询赠送体验金活动明细列表,带分页 -->
+  	<select id="selectAllPageDetail" resultMap="BaseResultMap" parameterType="map" >
+  		SELECT 
+		aead.pid,cc.customer_name customerName,cc.sname custName,peg.exp_amount getAmount,
+		aead.use_status,aead.get_time,aead.expire_time,aead.customer_id,aead.use_time,cc.phone_no phoneNo,
+		CASE aead.use_status WHEN 1 THEN peg.exp_amount WHEN 2 THEN '' END useAmount
+  		<include refid="detail_condition" />
+  	</select>
+  	
+  	<!-- 查询获得金额的总计 -->
+  	<select id="selectGetAmountByCondition" resultType="java.math.BigDecimal" parameterType="map" >
+  		SELECT 
+		sum(peg.exp_amount) 
+  		<include refid="detail_condition" />
+  	</select>
+  	
+  	<!-- 查询使用金额的总计 -->
+  	<select id="selectUseAmountByCondition" resultType="java.math.BigDecimal" parameterType="map">
+  		SELECT 
+		sum(peg.exp_amount) 
+  		<include refid="detail_condition" />
+  		and aead.use_status = 1
+  	</select>
+  	
+  	<!-- 查询参与人数的总计 -->
+  	<select id="selectParticipantsNumberByCondition"  resultType="java.lang.Integer" parameterType="map" >
+  		select 
+  		sum( (select count(aead.PID) from t_act_exp_act_detail aead where aead.activity_id = aa.PID) )
+		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 查询体验金的总计 -->
+  	<select id="selectBaseExpAmount" resultType="java.math.BigDecimal" parameterType="map" >
+  		select
+  		sum( peg.exp_amount )
+  		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 查询已获得总额的总计 -->
+  	<select id="selectBaseGetAmount" resultType="java.math.BigDecimal" parameterType="map" >
+  		select
+  		sum( (select count(aead.PID)*peg.exp_amount from t_act_exp_act_detail aead where aead.activity_id = aa.PID) )
+  		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 查询已使用金额的总计 -->
+  	<select id="selectBaseUseAmount" resultType="java.math.BigDecimal" parameterType="map" >
+  		select
+  		sum( (select count(aead.PID)*peg.exp_amount from t_act_exp_act_detail aead where aead.activity_id = aa.PID and aead.use_status = '1') )
+  		<include refid="base_condition" />
+  	</select>
+  	
+	<!-- 根据客户pid查体验金资金明细 -->
+  	<select id="selectTiYanJinDetailsById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.activity.ActExpActDetail">
+		select 
+        tpe.exp_amount exp_amount,
+	  	CASE use_status WHEN 1 THEN '已使用' WHEN 2 THEN '未使用' END use_status,
+	  	tae.get_time get_time, tae.expire_time expire_time, tae.use_time use_time
+        from t_act_exp_act_detail tae,
+        t_pub_exp_gold tpe
+        where tae.exp_id = tpe.PID
+	  	and tae.customer_id= #{actExpActDetail.customerId,jdbcType=VARCHAR}
+		<!-- 	  	 and tae.use_status=2 -->
+	  	<if test="actExpActDetail.happenBeginTime != null and actExpActDetail.happenBeginTime != '' " > 
+        	and  tae.get_time <![CDATA[ >= ]]> #{actExpActDetail.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="actExpActDetail.happenEndTime != null and actExpActDetail.happenEndTime != '' " > 
+        	and  tae.get_time <![CDATA[ <= ]]> date_add(#{actExpActDetail.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+        </if>
+  	</select>
+  	
+  	<!-- 统计体验金 -->
+  	<select id="selectTiYanJinDetailsByIdSum" resultType="java.util.Map" parameterType="com.yscf.core.model.activity.ActExpActDetail">
+		select 
+        sum(tpe.exp_amount) "expAmount"
+        from t_act_exp_act_detail tae,
+        t_pub_exp_gold tpe
+        where tae.exp_id = tpe.PID
+	  	and tae.customer_id= #{actExpActDetail.customerId,jdbcType=VARCHAR}
+		<!-- 	  	and tae.use_status=2 -->
+	  	 <if test="actExpActDetail.happenBeginTime != null and actExpActDetail.happenBeginTime != '' " > 
+        	and  tae.get_time <![CDATA[ >= ]]> #{actExpActDetail.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="actExpActDetail.happenEndTime != null and actExpActDetail.happenEndTime != '' " > 
+        	and  tae.get_time <![CDATA[ <= ]]> date_add(#{actExpActDetail.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+        	
+        </if>
+  	</select>
+  	
+  		<!-- 统计已使用的体验金 -->
+  	<select id="selectUseTiYanJinDetailsByIdSum" resultType="java.util.Map" parameterType="com.yscf.core.model.activity.ActExpActDetail">
+		select 
+        sum(tpe.exp_amount) "useExpAmount"
+        from t_act_exp_act_detail tae,
+        t_pub_exp_gold tpe
+        where tae.exp_id = tpe.PID
+        and   tae.use_status='1'
+	  	and tae.customer_id= #{actExpActDetail.customerId,jdbcType=VARCHAR}
+<!-- 	  	and tae.use_status=2 -->
+	  	 <if test="actExpActDetail.happenBeginTime != null and actExpActDetail.happenBeginTime != '' " > 
+        	and  tae.get_time <![CDATA[ >= ]]> #{actExpActDetail.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="actExpActDetail.happenEndTime != null and actExpActDetail.happenEndTime != '' " > 
+        	and  tae.get_time <![CDATA[ <= ]]> date_add(#{actExpActDetail.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+        	
+        </if>
+  	</select>
+  	<!-- 客户体验金资金流水列表条件查询 -->
+  	<select id="selectAllPage" parameterType="com.yscf.core.model.activity.ActExpActDetail" resultMap="BaseResultMap">
+  		select 
+        tpe.exp_amount exp_amount,
+	  	CASE use_status WHEN 1 THEN '未使用' WHEN 2 THEN '已使用' END use_status,
+	  	tae.get_time get_time,tae.expire_time expire_time,tae.use_time use_time
+        from t_act_exp_act_detail tae,
+        t_pub_exp_gold tpe
+        where tae.exp_id = tpe.PID
+		and tae.use_status=2
+		and tae.customer_id= #{actExpActDetail.customerId,jdbcType=VARCHAR}
+	    <if test="actExpActDetail.happenBeginTime != null and actExpActDetail.happenBeginTime != '' " > 
+        	and  tae.get_time <![CDATA[ >= ]]> #{actExpActDetail.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="actExpActDetail.happenEndTime != null and actExpActDetail.happenEndTime != '' " > 
+        	and  tae.get_time <![CDATA[ <= ]]> date_add(#{actExpActDetail.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+        </if>
+  	</select>
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    PID, activity_id,exp_id,sms_id,customer_id, get_time,expire_time,use_status,use_time,
+	    status, create_user, create_time, last_update_user, last_update_time, version
+	    from t_act_exp_act_detail
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    	delete from t_act_exp_act_detail
+    	where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.ActExpActDetail" >
+	    insert into t_act_exp_act_detail (PID, activity_id, exp_id, 
+	      sms_id, customer_id, get_time, 
+	      expire_time, use_status, use_time, 
+	      status, create_user, create_time, 
+	      last_update_user, last_update_time, version
+	      )
+	    values (#{pid,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{expId,jdbcType=VARCHAR}, 
+	      #{smsId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{getTime,jdbcType=TIMESTAMP}, 
+	      #{expireTime,jdbcType=TIMESTAMP}, #{useStatus,jdbcType=VARCHAR}, #{useTime,jdbcType=TIMESTAMP}, 
+	      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+	      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}
+	      )
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.ActExpActDetail" >
+	    insert into t_act_exp_act_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="activityId != null" >
+	        activity_id,
+	      </if>
+	      <if test="expId != null" >
+	        exp_id,
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="getTime != null" >
+	        get_time,
+	      </if>
+	      <if test="expireTime != null" >
+	        expire_time,
+	      </if>
+	      <if test="useStatus != null" >
+	        use_status,
+	      </if>
+	      <if test="useTime != null" >
+	        use_time,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityId != null" >
+	        #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expId != null" >
+	        #{expId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="getTime != null" >
+	        #{getTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expireTime != null" >
+	        #{expireTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="useStatus != null" >
+	        #{useStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="useTime != null" >
+	        #{useTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.ActExpActDetail" >
+	    update t_act_exp_act_detail
+	    <set >
+	      <if test="activityId != null" >
+	        activity_id = #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expId != null" >
+	        exp_id = #{expId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id = #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="getTime != null" >
+	        get_time = #{getTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expireTime != null" >
+	        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="useStatus != null" >
+	        use_status = #{useStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="useTime != null" >
+	        use_time = #{useTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.ActExpActDetail" >
+	    update t_act_exp_act_detail
+	    set activity_id = #{activityId,jdbcType=VARCHAR},
+	      exp_id = #{expId,jdbcType=VARCHAR},
+	      sms_id = #{smsId,jdbcType=VARCHAR},
+	      customer_id = #{customerId,jdbcType=VARCHAR},
+	      get_time = #{getTime,jdbcType=TIMESTAMP},
+	      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+	      use_status = #{useStatus,jdbcType=VARCHAR},
+	      use_time = #{useTime,jdbcType=TIMESTAMP},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量新增 -->
+  	<insert id="insertBatch" parameterType="java.util.List">
+  		insert into t_act_exp_act_detail (pid,activity_id,exp_id,sms_id,customer_id,get_time,use_status,use_time,status,create_user,create_time)   
+    	values
+    	<foreach collection="list" item="item" index="index" separator="," >  
+       		(#{item.pid},#{item.activityId},#{item.vipId},#{item.smsId},#{item.customerId},#{item.getTime},#{item.useStatus},
+       		#{item.useTime},#{item.status},#{item.createUser},#{item.createTime})  
+    	</foreach>  
+  	</insert>
+  	
+  	<!-- 导出查询 -->
+  	<select id="selectAllPageDetailExport" resultMap="BaseResultMap" >
+		SELECT 
+		aead.pid,cc.customer_name customerName,cc.sname custName,peg.exp_amount getAmount,
+		CASE aead.use_status WHEN 1 THEN '已使用' WHEN 2 THEN '未使用' END use_status,
+		aead.get_time,aead.expire_time,aead.customer_id,aead.use_time,cc.phone_no phoneNo,
+		CASE aead.use_status WHEN 1 THEN peg.exp_amount WHEN 2 THEN '' END useAmount
+		<include refid="detail_condition" />
+		<include refid="export_query_sql" />
+  	</select>
+  
+  	<!-- 导出查询条件 -->
+  	<sql id="export_query_sql">
+	  	<if test="expm.exportSet != null and expm.exportSet != ''">
+	  	
+	  		<!-- 选择情况一 -->
+	  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+	  			AND aead.pid IN 
+	  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+			        #{item,jdbcType=VARCHAR} 
+			    </foreach>  
+	  		</if>
+	  		
+	  		<!-- 选择情况二 -->
+	  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+	  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+	  		</if>
+	  		
+	  		<!-- 选择情况三 -->
+	  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+				limit #{expm.startCheckrecords,jdbcType=INTEGER}, #{expm.endCheckrecords,jdbcType=INTEGER} 
+	  		</if>
+	  	</if>
+  	</sql>
+  	
+  	<!-- 批量修改使用体验金状态为已使用 -->
+  	<update id="batchUpdateExpDetailUseStatus" parameterType="java.lang.String" >
+  		update t_act_exp_act_detail 
+  		set use_status = 1 , 
+  		use_time = now()
+  		where PID in
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 查询客户未使用的体验金列表 -->
+  	<select id="selectCustTomerExperienceGold" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  		select aead.PID, aead.use_status, peg.exp_amount, aead.expire_time 
+  		FROM t_act_exp_act_detail aead,t_pub_exp_gold peg 
+  		where aead.exp_id = peg.pid
+  		and aead.expire_time <![CDATA[ >= ]]> now() 
+  		and aead.use_status = 2 
+  		and aead.customer_id =  #{customerId,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- API>>查询客户未使用的体验金列表 -->
+  	<select id="selectCustTomerExperienceGoldAPI" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  		select aead.PID,  peg.exp_amount ,'仅限使用于体验标' remark, datediff(aead.expire_time,NOW()) validity
+  		FROM t_act_exp_act_detail aead,t_pub_exp_gold peg 
+  		where aead.exp_id = peg.pid
+  		and aead.expire_time <![CDATA[ >= ]]> now() 
+  		and aead.use_status = 2 
+  		and aead.customer_id =  #{customerId,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- 根据PID数组查询体验金对象 -->
+  	<select id="selectExperienceGoldByPidArr" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select aead.PID, peg.exp_amount, aead.expire_time
+  		FROM t_act_exp_act_detail aead,t_pub_exp_gold peg 
+  		where aead.exp_id = peg.pid
+  		and aead.pid in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+  		</foreach>
+  	</select>
+  	
+  	<select id="selectExperienceGoldById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select aead.PID,  peg.exp_amount ,'仅限使用于体验标' remark, datediff(aead.expire_time,NOW()) validity
+  		FROM t_act_exp_act_detail aead,t_pub_exp_gold peg 
+  		where aead.exp_id = peg.pid
+  		and aead.expire_time <![CDATA[ >= ]]> now() 
+  		and aead.PID =  #{expId,jdbcType=VARCHAR} 
+  	</select>
+</mapper>

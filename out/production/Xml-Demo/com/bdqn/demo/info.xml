@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <user>段荣贵</user>
+    <msg>一名学生</msg>
+    <!--COAT写法
+    <![COAT[不解析的内容]]>
+    -->
+
+    <info><![CDATA[1234567uioqwertyuio<wert><23456><123456>]]>
+    </info>
+    
+</root>

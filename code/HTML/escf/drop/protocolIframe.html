@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>债权转让服务协议</title>
+<link rel="stylesheet" type="text/css" href="../css/drop.css" />
+<link rel="stylesheet" type="text/css" href="../css/yscf.css" />
+<script language = "JavaScript" src="../js/plugins/jquery-1.11.2.min.js"/></script> 
+
+</head>
+
+<body>
+<div class="iframeBox">
+	<iframe id="iframer" name="left" frameborder="0" scrolling="auto" src="protocol.html" width="100%" height="2000px"></iframe>
+    <a class="protocolDownload btn" href="《债权转让服务协议》.zip">点击下载</a>
+</div>
+
+</body>
+</html>
+<script>
+$("#iframer").load(function(){
+	var mainheight = $(this).contents().find("body").height()+30;
+	$(this).height(mainheight);
+	//alert(mainheight);
+}); 
+</script>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- 配置数据字段 -->
+		<xlsdicts>
+			<xlsdict id="sex_id" lookup="sex">
+				<xlsparmater excelValue="男"  dbValue="A"  javaType="java.lang.String"></xlsparmater>
+				<xlsparmater excelValue="女"  dbValue="B"  javaType="java.lang.String"></xlsparmater>
+			</xlsdict>
+		</xlsdicts>
+		
+		<!-- POI导入 学生2007 版本excel文件 -->
+		<ixlsproj id="poistudents2007" version="XLSX_VERSION" parseHandle="XLS_HANDLEPOI">
+				<ixlsprojsheet sheetid="demo_sheet01"  name="Sheet1"  entityClass="com.yscf.test.excel.Student"
+		 headerIndex="0"  readRowsStartIndex="1"  readCellStartIndex="0">
+		 				<ixlsprojcol name="姓名" property="name" javaType="java.lang.String" ></ixlsprojcol>
+		 				<ixlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></ixlsprojcol>
+		 				<ixlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+		 					<ixlsprojcol_ref  id="sex_id"></ixlsprojcol_ref>
+		 				</ixlsprojcol>
+		 				<ixlsprojcol name="生日" property="brith" javaType="java.util.Date" ></ixlsprojcol>
+		 				<ixlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 		</ixlsprojsheet>
+		</ixlsproj>
+		
+		<!-- POI导入 学生2003 版本excel文件 -->
+		<ixlsproj id="poistudents2003" version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<ixlsprojsheet sheetid="demo_sheet01"  name="Sheet1"  entityClass="com.yscf.test.excel.Student"
+		 headerIndex="0"  readRowsStartIndex="1"  readCellStartIndex="0">
+		 				<ixlsprojcol name="姓名" property="name" javaType="java.lang.String" ></ixlsprojcol>
+		 				<ixlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></ixlsprojcol>
+		 				<ixlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+		 					<ixlsprojcol_ref  id="sex_id"></ixlsprojcol_ref>
+		 				</ixlsprojcol>
+		 				<ixlsprojcol name="生日" property="brith" javaType="java.util.Date" ></ixlsprojcol>
+		 				<ixlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 		</ixlsprojsheet>
+		</ixlsproj>
+		
+		<!-- JXL导入 学生2003 版本excel文件 -->
+		<ixlsproj id="jxlstudents2003" version="XLS_VERSION" parseHandle="XLS_HANDLEJXL">
+				<ixlsprojsheet sheetid="demo_sheet01"  name="Sheet1"  entityClass="com.yscf.test.excel.Student"
+		 headerIndex="0"  readRowsStartIndex="1"  readCellStartIndex="0">
+		 				<ixlsprojcol name="姓名" property="name" javaType="java.lang.String" ></ixlsprojcol>
+		 				<ixlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></ixlsprojcol>
+		 				<ixlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+		 					<ixlsprojcol_ref  id="sex_id"></ixlsprojcol_ref>
+		 				</ixlsprojcol>
+		 				<ixlsprojcol name="生日" property="brith" javaType="java.util.Date" ></ixlsprojcol>
+		 				<ixlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 				<ixlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></ixlsprojcol>
+		 		</ixlsprojsheet>
+		</ixlsproj>
+		
+		<!-- 导出excel文档对象  -->
+		<!-- POI 2007 导出模板文件 -->
+		<oxlsproj id="poiexceltemp2007"  version="XLSX_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.test.excel.Student"
+				 headerIndex="0"  istemp="true"  iswriteHeader="true">
+						<oxlsprojcol name="姓名" property="name" javaType="java.lang.String" ></oxlsprojcol>
+				 		<oxlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></oxlsprojcol>
+				 		<oxlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+				 			<oxlsprojcol_ref  id="sex_id"></oxlsprojcol_ref>
+				 		</oxlsprojcol>
+				 		<oxlsprojcol name="生日" property="brith" javaType="java.util.Date" ></oxlsprojcol>
+				 		<oxlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+		<!-- POI 2003 导出模板文件 -->
+		<oxlsproj id="poiexceltemp2003"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.test.excel.Student"
+				 headerIndex="0"  istemp="true"  iswriteHeader="true">
+						<oxlsprojcol name="姓名" property="name" javaType="java.lang.String" ></oxlsprojcol>
+				 		<oxlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></oxlsprojcol>
+				 		<oxlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+				 			<oxlsprojcol_ref  id="sex_id"></oxlsprojcol_ref>
+				 		</oxlsprojcol>
+				 		<oxlsprojcol name="生日" property="brith" javaType="java.util.Date" ></oxlsprojcol>
+				 		<oxlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+		<!-- JXL 2003 导出模板文件 -->
+		<oxlsproj id="jxlexceltemp2003"  version="XLS_VERSION" parseHandle="XLS_HANDLEJXL">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.test.excel.Student"
+				 headerIndex="0"  istemp="true"  iswriteHeader="true">
+						<oxlsprojcol name="姓名" property="name" javaType="java.lang.String" ></oxlsprojcol>
+				 		<oxlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></oxlsprojcol>
+				 		<oxlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+				 			<oxlsprojcol_ref  id="sex_id"></oxlsprojcol_ref>
+				 		</oxlsprojcol>
+				 		<oxlsprojcol name="生日" property="brith" javaType="java.util.Date" ></oxlsprojcol>
+				 		<oxlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="poiexcelreslut2007"  version="XLSX_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.test.excel.Student"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="姓名" property="name" javaType="java.lang.String" ></oxlsprojcol>
+				 		<oxlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></oxlsprojcol>
+				 		<oxlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+				 			<oxlsprojcol_ref  id="sex_id"></oxlsprojcol_ref>
+				 		</oxlsprojcol>
+				 		<oxlsprojcol name="生日" property="brith" javaType="java.util.Date" ></oxlsprojcol>
+				 		<oxlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="poiexcelreslut2003"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.test.excel.Student"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="姓名" property="name" javaType="java.lang.String" ></oxlsprojcol>
+				 		<oxlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></oxlsprojcol>
+				 		<oxlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+				 			<oxlsprojcol_ref  id="sex_id"></oxlsprojcol_ref>
+				 		</oxlsprojcol>
+				 		<oxlsprojcol name="生日" property="brith" javaType="java.util.Date" ></oxlsprojcol>
+				 		<oxlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+		<!-- JXL 2003 导出结果文件 -->
+		<oxlsproj id="jxlexcelreslut2003"  version="XLS_VERSION" parseHandle="XLS_HANDLEJXL">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.test.excel.Student"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="姓名" property="name" javaType="java.lang.String" ></oxlsprojcol>
+				 		<oxlsprojcol name="年龄" property="age"  javaType="java.lang.Integer" ></oxlsprojcol>
+				 		<oxlsprojcol name="性别" property="sex"  javaType="java.lang.String"  isLookup="true">
+				 			<oxlsprojcol_ref  id="sex_id"></oxlsprojcol_ref>
+				 		</oxlsprojcol>
+				 		<oxlsprojcol name="生日" property="brith" javaType="java.util.Date" ></oxlsprojcol>
+				 		<oxlsprojcol name="英语" property="english" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="数学" property="math" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="总分" property="tatol" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				 		<oxlsprojcol name="学费" property="doller" javaType="java.math.BigDecimal" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+</xlsroot>

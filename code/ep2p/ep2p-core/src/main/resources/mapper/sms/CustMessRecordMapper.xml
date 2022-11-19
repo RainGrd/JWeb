@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.sms.CustMessRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.sms.CustMessRecord" >
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="send_type" property="sendType" jdbcType="INTEGER" />
+    <result column="send_model" property="sendModel" jdbcType="VARCHAR" />
+    <result column="send_content" property="sendContent" jdbcType="VARCHAR" />
+    <result column="is_read" property="isRead" jdbcType="INTEGER" />
+    <result column="extfield1" property="extfield1" jdbcType="VARCHAR" />
+    <result column="extfield2" property="extfield2" jdbcType="VARCHAR" />
+    <result column="extfield3" property="extfield3" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="msg_title" property="msgTitle" jdbcType="VARCHAR" />
+  </resultMap>
+  
+	<!--查询消息中心数据列表 -->
+	<select id="selectMsgList" resultMap="BaseResultMap" parameterType="map">
+	    SELECT tcmr.pid,
+	    	   tcmr.create_time createTime,
+  			   tcmr.send_content sendContent,
+  			   tcmr.is_read isRead
+		  FROM  t_cust_mess_record tcmr,
+				t_cust_customer tcc
+		  WHERE tcmr.customer_id=tcc.PID
+		  AND   tcmr.`status`='1'
+		  AND   tcmr.customer_id = #{custMessRecord.customerId,jdbcType=VARCHAR}
+		  <if test="custMessRecord.beginTime != null and custMessRecord.beginTime != '' ">
+			    AND DATE_FORMAT(tcmr.create_time,'%Y-%m-%d') <![CDATA[ >= ]]> #{custMessRecord.beginTime,jdbcType=VARCHAR}
+		  </if>
+		  <if test="custMessRecord.endTime != null and custMessRecord.endTime != '' ">
+				AND DATE_FORMAT(tcmr.create_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{custMessRecord.endTime,jdbcType=VARCHAR}
+		  </if>
+		  <if test="custMessRecord.msgConten !=null and custMessRecord.msgConten !='' ">
+				AND tcmr.send_content like concat('%',#{custMessRecord.msgConten,jdbcType=VARCHAR},'%')
+		  </if>
+		  ORDER BY tcmr.is_read ASC, tcmr.create_time DESC
+		  LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!--api:查消息中心列表 -->
+	<select id="selectMsgListApi" parameterType="java.lang.String" resultMap="BaseResultMap">
+		 SELECT tcmr.pid,
+		 		CASE tcmr.msg_type
+						WHEN 1 THEN
+							'系统消息'
+						WHEN 2 THEN
+							'体验金消息'
+			      		WHEN 3 THEN
+							'投资消息'
+						WHEN 4 THEN
+							'投标流标'
+						WHEN 5 THEN
+							'投资撤销'
+						WHEN 6 THEN
+							'债权消息'
+						WHEN 7 THEN
+							'劵类消息'
+						WHEN 8 THEN
+							'还款消息'
+						WHEN 9 THEN
+							'逾期消息'
+						WHEN 10 THEN
+							'回款消息'
+						WHEN 11 THEN
+							'申请借款通过消息'
+						WHEN 12 THEN
+							'申请借款拒绝消息'
+						END msg_title,
+	    	   tcmr.create_time createTime,
+  			   tcmr.send_content sendContent,
+  			   tcmr.is_read isRead
+		  FROM  t_cust_mess_record tcmr,
+				t_cust_customer tcc
+		  WHERE tcmr.customer_id=tcc.PID
+		  AND   tcmr.`status`='1'
+		  AND   tcmr.customer_id = #{custMessRecord.customerId,jdbcType=VARCHAR}
+		  LIMIT #{custMessRecord.pageNum,jdbcType=INTEGER} ,#{custMessRecord.pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!--api:查询未读消息总数 -->
+	<select id="selectUnreadNumber" parameterType="java.lang.String" resultType="java.lang.Integer" >
+		 select count(*) from t_cust_mess_record tcmr
+		 		 where tcmr.is_read='0' 
+				 and   tcmr.customer_id= #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<!--统计查询消息中心数据 -->
+	<select id="selectTotalMsgList" resultType="java.lang.Integer" parameterType="map">
+	    select 
+	    COUNT(basetemp.pid) totals from (
+	         SELECT tcmr.pid,
+		    	    tcmr.create_time createTime,
+	  			    tcmr.send_content sendContent,
+	  			    tcmr.is_read isRead
+		  FROM  t_cust_mess_record tcmr,
+				t_cust_customer tcc
+		  WHERE tcmr.customer_id=tcc.PID
+		  AND   tcmr.`status`='1'
+		  AND   tcmr.customer_id = #{custMessRecord.customerId,jdbcType=VARCHAR}
+		  <if test="custMessRecord.beginTime != null and custMessRecord.beginTime != '' ">
+			    AND DATE_FORMAT(tcmr.create_time,'%Y-%m-%d') <![CDATA[ >= ]]> #{custMessRecord.beginTime,jdbcType=VARCHAR}
+		  </if>
+		  <if test="custMessRecord.endTime != null and custMessRecord.endTime != '' ">
+				AND DATE_FORMAT(tcmr.create_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{custMessRecord.endTime,jdbcType=VARCHAR}
+		  </if> 
+		  <if test="custMessRecord.msgConten !=null and custMessRecord.msgConten !='' ">
+				AND tcmr.send_content like concat('%',#{custMessRecord.msgConten,jdbcType=VARCHAR},'%')
+		  </if>
+	    )basetemp
+	</select>
+	
+	<!--根据id批量更新为已读状态 -->
+	<update id="batchUpdateMarkReadByPid" parameterType="java.util.HashMap">
+	   update 
+	  		t_cust_mess_record tcmr
+  		set 
+  			tcmr.is_read ='1'
+		where tcmr.pid in 
+		<foreach item="itemId" collection="map.idItem" open="(" separator="," close=")">
+		          #{itemId}
+		</foreach>
+	</update>
+	
+  <insert id="insert" parameterType="com.yscf.core.model.sms.CustMessRecord" >
+    insert into t_cust_mess_record (pid, customer_id, send_type, 
+      send_model, send_content, is_read, 
+      extfield1, extfield2, extfield3, 
+      create_user, create_time, last_update_user, 
+      last_update_time, status, version
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, 
+      #{sendModel,jdbcType=VARCHAR}, #{sendContent,jdbcType=VARCHAR}, #{isRead,jdbcType=INTEGER}, 
+      #{extfield1,jdbcType=VARCHAR}, #{extfield2,jdbcType=VARCHAR}, #{extfield3,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.sms.CustMessRecord" >
+    insert into t_cust_mess_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="sendType != null" >
+        send_type,
+      </if>
+      <if test="sendModel != null" >
+        send_model,
+      </if>
+      <if test="sendContent != null" >
+        send_content,
+      </if>
+      <if test="isRead != null" >
+        is_read,
+      </if>
+      <if test="extfield1 != null" >
+        extfield1,
+      </if>
+      <if test="extfield2 != null" >
+        extfield2,
+      </if>
+      <if test="extfield3 != null" >
+        extfield3,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="sendType != null" >
+        #{sendType,jdbcType=INTEGER},
+      </if>
+      <if test="sendModel != null" >
+        #{sendModel,jdbcType=VARCHAR},
+      </if>
+      <if test="sendContent != null" >
+        #{sendContent,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null" >
+        #{isRead,jdbcType=INTEGER},
+      </if>
+      <if test="extfield1 != null" >
+        #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+	<!--api：标记选中消息为已读状态 -->
+  <update id="signMessageRead" parameterType="map">
+      		update  t_cust_mess_record cmr
+              set   cmr.is_read = '1' 
+              where  cmr.customer_id= #{map.userId,jdbcType=VARCHAR}
+              and  cmr.pid in 
+              <foreach item="itemId" collection="map.idItem" open="(" separator="," close=")">
+		          #{itemId}
+			 </foreach> 
+  </update>
+  
+	<!--api:标记消息全部已读 -->
+	<update id="signMessageAllRead">
+	    update t_cust_mess_record cmr 
+	            set cmr.is_read = '1'
+	     where cmr.customer_id =  #{userId,jdbcType=VARCHAR}     
+	</update>
+</mapper>

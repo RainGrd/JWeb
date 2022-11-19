@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<meta name="keywords" content="e生财富,力泰金融" />
+<meta name="description" content="e生财富" />
+<link rel="stylesheet" type="text/css" href="style/layout.css">
+<script src="javascripts/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="javascripts/getclass.js"></script>
+<script src="javascripts/index.js" type="text/javascript"></script>
+<title>首页</title>
+</head>
+<body>
+<section id="web_wrap">
+	<div class="downloadBox">
+    	<a href="javascript:;" class="downloadBtn">下载e生财富客户端</a><a href="javascript:;" class="downloadClose"></a>
+    </div>
+    <header><a class="none" href="javascript:;">我的账户</a><a href="javascript:;">登录</a><a href="javascript:;">注册</a></header>
+    <!--首页广告-->
+    <section class="scroll_wrap" id="iScrollBox">
+        <ul class="scroll">
+            <li><a href="#">
+                <img src="images/scrollPic01.jpg" /></a></li>
+            <li><a href="#">
+                <img src="images/scrollPic01.jpg" /></a></li>
+        </ul>
+        <ul class="scroll_bar">
+           <li class="active"></li>
+           <li></li>
+        </ul>
+    </section>
+    <!--首页广告end-->
+    <!--首页按钮-->
+    <section class="index_nav">
+        <a href="#">
+        	<img src="images/navList_06.png" />
+            <p>3亿投资</p>
+        </a>
+        <a href="#">
+        	<img src="images/navList_08.png" />
+            <p>多重保障</p>
+        </a>
+        <a href="#">
+        	<img src="images/navList_07.png" />
+            <p>安全交易</p>
+        </a>
+        <a href="#">
+        	<img src="images/navList_11.png" />
+            <p>光大护航</p>
+        </a>
+    </section>
+    <!--首页按钮End-->
+    <!--首页列表入口-->
+    <section>
+    	<ul class="navList">
+        	<li>
+            	<a href="#">
+                	<h4>e计划<br /><span>简单投资 坐等高收益</span></h4>
+                    <p class="navListP">可投资<span>&gt;</span></p>
+                </a>
+            </li>
+            <li>
+            	<a href="#">
+                	<h4>散标投资<br /><span>多重风控 安全保障</span></h4>
+                    <p class="navListP">可投资<span>&gt;</span></p>
+                </a>
+            </li>
+            <li>
+            	<a href="#">
+                	<h4>转让专区<br /><span>自主投资 灵活期限</span></h4>
+                    <p class="navListP">可投资<span>&gt;</span></p>
+                </a>
+            </li>
+            <li>
+            	<a href="#">
+                	<h4>新手标<br /><span>仅限新注册用户首次投资</span></h4>
+                    <p class="navListP">可投资<span>&gt;</span></p>
+                </a>
+            </li>
+            <li>
+            	<a href="#">
+                	<h4>体验标<br /><span>0元体验投资收益</span></h4>
+                    <p class="navListP">可投资<span>&gt;</span></p>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!--首页列表入口End-->
+    <!--底部-->
+    <footer>
+    	<h4><a href="#">触屏版</a><a href="#">电脑版</a><a href="#" >APP</a></h4>
+        <p>Copyright © 2015 e生财富. All Rights Reserved<br />
+            粤ICP备13050568号<br />
+            客服电话：<span>4009-998-992</span></p>
+    </footer>
+    <!--底部End-->
+
+</section>
+
+
+
+</body>
+</html>
+<script>
+//window.onload=function(){
+//	 // 页面缩放
+//    function fnViewScale(){
+//        var web_wrap = $("#web_wrap")[0];
+//        var sreenWidth = document.body.clientWidth;
+//        var iScale = sreenWidth/375;
+//        web_wrap.style.transform = "scale("+iScale+")";
+//        web_wrap.style.webkitTransform = "scale("+iScale+")";  
+//    }
+//    fnViewScale();
+//    
+//    window.onresize = function(){
+//        fnViewScale();
+//    };
+//};
+ 
+</script>

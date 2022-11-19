@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="keywords" content="e生财富,力泰金融" />
+<meta name="description" content="e生财富" />
+<link rel="stylesheet" type="text/css" href="../style/layout.css">
+<script src="../javascripts/jquery-1.11.2.min.js" type="text/javascript"></script>
+<!--<script src="../javascripts/common.js" type="text/javascript"></script>-->
+<script src="../javascripts/eplan.js" type="text/javascript"></script>
+<title>无标题文档</title>
+<style>
+input { 
+display: inline-block; 
+border: 0px; 
+width: 36px; 
+height: 36px; 
+outline:none; 
+font-family:"微软雅黑"; 
+font-size: 14px; 
+font-weight:normal; 
+text-align: center; 
+line-height: 36px; 
+color: #ccc; 
+background:#fff; 
+}
+</style>
+</head>
+
+<body>
+<div class="input"> 
+<input type="tel" placeholder="-" maxlength="1"><!- 
+-><input type="tel" placeholder="-" maxlength="1"><!- 
+-><input type="tel" placeholder="-" maxlength="1"><!- 
+-><input type="tel" placeholder="-" maxlength="1"><!- 
+-><input type="tel" placeholder="-" maxlength="1"><!- 
+-><input type="tel" placeholder="-" maxlength="1"> 
+</div>
+</body>
+</html>
+<script>
+/** 
+* 模拟支付宝的密码输入形式 
+*/
+(function (window, document) { 
+var active = 0, 
+inputBtn = document.querySelectorAll('input'); 
+for (var i = 0; i < inputBtn.length; i++) { 
+inputBtn[i].addEventListener('click', function () { 
+inputBtn[active].focus(); 
+}, false); 
+inputBtn[i].addEventListener('focus', function () { 
+this.addEventListener('keyup', listenKeyUp, false); 
+}, false); 
+inputBtn[i].addEventListener('blur', function () { 
+this.removeEventListener('keyup', listenKeyUp, false); 
+}, false); 
+} 
+/** 
+* 监听键盘的敲击事件 
+*/
+function listenKeyUp() { 
+var beginBtn = document.querySelector('#beginBtn'); 
+if (!isNaN(this.value) && this.value.length !=0 ) { 
+if (active <5 ) { 
+active += 1; 
+} 
+inputBtn[active].focus(); 
+} else if (this.value.length ==0 ) { 
+if (active > 0) { 
+active -= 1; 
+} 
+inputBtn[active].focus(); 
+} 
+if (active >= 0) { 
+var _value = inputBtn[active].value; 
+if (beginBtn.className == 'begin-no' && !isNaN(_value) && _value.length != 0) { 
+beginBtn.className = 'begin'; 
+beginBtn.addEventListener('click', function () { 
+calculate.begin(); 
+}, false); 
+} 
+} else { 
+if (beginBtn.className == 'begin') { 
+beginBtn.className = 'begin-no'; 
+} 
+} 
+} 
+})(window, document);
+</script>

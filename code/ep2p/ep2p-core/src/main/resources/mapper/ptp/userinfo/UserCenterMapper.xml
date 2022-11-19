@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yscf.core.dao.ptp.userinfo.UserCenterMapper">
+
+	
+	<!-- 待收中信息 -->
+	<resultMap id="BaseDueinBorrowMap" type="com.yscf.core.model.ptp.investment.InvestDueInModel" >
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+	    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+	    <result column="transfer_id" property="transfId" jdbcType="VARCHAR"/>
+	    <result column="transfer_status" property="transfStatus" jdbcType="INTEGER"/>
+	    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+	    <result column="capital" property="investmentAmount" jdbcType="DECIMAL"/>
+	    <result column="forgot_nper" property="forgotNper" jdbcType="INTEGER"/>
+	    <result column="bor_deadline" property="borDeadline" jdbcType="VARCHAR"/>
+	    <result column="borrow_rate" property="borrowApr" jdbcType="DECIMAL"/>
+	    <result column="receivable_hike" property="hike" jdbcType="DECIMAL"/>
+	    <result column="award_amount" property="investmentReward" jdbcType="DECIMAL"/>
+	    <result column="net_interest" property="interest" jdbcType="DECIMAL"/>
+	    <result column="interest_received" property="interestReceived" jdbcType="DECIMAL"/>
+	    <result column="collect_received" property="collectInterest" jdbcType="DECIMAL"/>
+	    <result column="bidding_status" property="tenderStatus" jdbcType="VARCHAR"/>
+	    <result column="bor_agr_id" property="protocolId" jdbcType="VARCHAR" />
+	    <result column="investment_time" property="investmentTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<!-- 招标中信息数据 -->
+	<resultMap id="BaseInviteTendersMap" type="com.yscf.core.model.ptp.investment.InviteTendersModel">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+	    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+	    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+	    <result column="investment_amount" property="investmentAmount" jdbcType="DECIMAL"/>
+	    <result column="investment_payoffs" property="interest" jdbcType="DECIMAL"/>
+	    <result column="award_amount" property="investmentReward" jdbcType="DECIMAL"/>
+	    <result column="interestrate_hike" property="hike" jdbcType="DECIMAL"/>
+	    <result column="bidding_status" property="tenderStatus" jdbcType="VARCHAR"/>
+	    <result column="bor_agr_id" property="protocolId" jdbcType="VARCHAR" />
+	    <result column="investment_time" property="investmentTime" jdbcType="TIMESTAMP" />
+	    <!-- 移动端扩展 -->
+	    <result column="borrow_rate" property="borrowRate" jdbcType="DECIMAL"/>
+	    <result column="bor_deadline" property="borDeadline" jdbcType="VARCHAR" />
+	    <result column="borrow_money" property="borrowMoney" jdbcType="DECIMAL"/>
+	    <result column="allinvset_money" property="allinvsetMoney" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<!-- 转让中数据模型 -->
+	<resultMap id="BaseTrandersInfoMap" type="com.yscf.core.model.ptp.investment.TransferTendersMode" >
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="create_user" property="customerId" jdbcType="VARCHAR" />
+	    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+	    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+	    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+	    <result column="transfer_code" property="tranderCode" jdbcType="VARCHAR"/>
+	    <result column="time_remaining" property="timeRemaining" jdbcType="INTEGER"/>
+	    <result column="project_value" property="projectValue" jdbcType="DECIMAL"/>
+	    <result column="success_amount" property="successAmount" jdbcType="DECIMAL"/>
+	    <result column="receipt_status" property="trandStatus" jdbcType="VARCHAR"/>
+	    <result column="bor_agr_id" property="protocolId" jdbcType="VARCHAR" />
+	    <result column="success_time" property="investmentTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<!-- 已结清 -->
+	<resultMap id="BaseInvestMentMap" type="com.yscf.core.model.ptp.investment.InvestmentInfoModel" >
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+	    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+	    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+	     <result column="investment_time" property="investmentTime" jdbcType="TIMESTAMP" />
+	    <result column="investment_amount" property="investmentAmount" jdbcType="DECIMAL"/>
+	    <result column="time_limit" property="borDeadline" jdbcType="VARCHAR"/>
+	    <result column="borrow_rate" property="borrowApr" jdbcType="DECIMAL"/>
+	    <result column="receivable_hike" property="hike" jdbcType="DECIMAL"/>
+	    <result column="award_amount" property="investmentReward" jdbcType="DECIMAL"/>
+	    <result column="receivable_interest" property="interest" jdbcType="DECIMAL"/>
+	    <result column="borrow_status" property="tenderStatus" jdbcType="VARCHAR"/>
+	    <result column="bor_agr_id" property="protocolId" jdbcType="VARCHAR" />
+	    <result column="transfer_id" property="transferId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 待收明细 -->
+	<resultMap id="BaseDueInDetailMap" type="com.yscf.core.model.ptp.investment.DueInDetailModel" >
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+	    <result column="borrow_codeOs" property="borrowOtherCode" jdbcType="VARCHAR" />
+	    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+	    <result column="borrow_money" property="borrowMoney" jdbcType="DECIMAL" />
+	    <result column="borrow_rate" property="borrowRate" jdbcType="DECIMAL" />
+	    <result column="bor_deadline" property="borDeadline" jdbcType="VARCHAR" />
+	    <result column="repayment_type" property="repaymentType" jdbcType="VARCHAR" />
+	    <result column="repayment_type_name" property="repaymentTypeName" jdbcType="VARCHAR" />
+	    <result column="transfer_id" property="transferId" jdbcType="VARCHAR" />
+	    <result column="intement_money" property="intementMoney" jdbcType="DECIMAL" />
+	    <result column="receivable_interest" property="receivableInterest" jdbcType="DECIMAL" />
+	    <result column="award_amount" property="awardAmount" jdbcType="DECIMAL" />
+	    <result column="receivable_hike" property="receivableHike" jdbcType="DECIMAL" />
+	    <result column="investment_time" property="investmentTime" jdbcType="TIMESTAMP" />
+	    <result column="received_money" property="receivedMoney" jdbcType="DECIMAL" />
+	    <result column="duein_money" property="dueinMoney" jdbcType="DECIMAL" />
+	    <result column="received_wek" property="receivedWek" jdbcType="INTEGER" />
+	    <result column="tranfer_status" property="tranferStatus" jdbcType="INTEGER" />
+	    <result column="bor_agr_id" property="borAgrId" jdbcType="VARCHAR" />
+	</resultMap>
+ 
+ 	<!-- 获取用户的待收金额信息 -->
+ 	<select id="getUserDueInMoney" resultType="java.util.Map" parameterType="java.lang.String">
+ 		SELECT
+			(SUM(brp.capital) - SUM(brp.repaid_capital)) tatolcapital,
+			(SUM(brp.net_hike) + SUM(brp.net_interest) + SUM(brp.late_fee) - SUM(brp.repaid_interest)) tatolinterest
+		FROM
+			t_biz_receipt_plan brp
+		WHERE
+			brp.status = '1'
+		AND brp.customer_id = #{userId,jdbcType=VARCHAR} 
+		AND brp.receipt_status IN ('1', '2', '3','5')
+ 	</select>
+ 	
+ 	<!-- 获取用户投资利息 -->
+ 	<select id="getUserInvestInterest" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+ 		SELECT
+			SUM(
+			CASE WHEN brp.is_vip = '1' THEN 
+					CASE WHEN brp.receipt_status = '5' THEN 
+						IFNULL(brp.repaid_interest,0)
+					ELSE 
+						IFNULL(brp.net_interest,0)
+					END 
+			ELSE
+					CASE WHEN brp.receipt_status = '5' THEN
+						0
+					ELSE
+						IFNULL(brp.net_interest,0)
+					END
+			END
+		 	) receivableinterest 
+		FROM
+			t_biz_receipt_plan brp
+		WHERE
+			1 = 1
+		AND brp.receipt_status IN ('5','6') 
+		AND brp.status = '1'
+		AND brp.customer_id = #{userId,jdbcType=VARCHAR} 
+ 	</select>
+ 	
+ 	<!-- 加息利息 -->
+ 	<select id="getUserRateInterest" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+ 		SELECT
+			IFNULL(SUM(brp.receivable_hike),0.00) receivablehike
+		FROM
+			t_biz_receipt_plan brp
+		WHERE
+			brp.status = '1'
+		AND brp.receipt_status in ('5','6') 
+		AND brp.customer_id = #{userId,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	<!-- 投资奖励 -->
+ 	<select id="getUserInIncentive" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+		SELECT
+			IFNULL(SUM(brp.award_amount),0.00) investmentincentive
+		FROM
+			t_biz_borrow_detail brp
+			LEFT JOIN t_biz_borrow bba ON brp.borrow_id = bba.PID 
+		WHERE 1 = 1
+		 	AND bba.bor_status IN ('4','5','6','7','8') 
+			AND brp.status = '1' 
+			AND bba.status = '1'
+			AND brp.customer_id = #{userId,jdbcType=VARCHAR} 
+ 	</select>
+ 	
+ 	<!-- 红包收益 -->
+ 	<select id="getUserRedEnvelope" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+		SELECT
+			IFNULL(SUM(tcfw.fund_value),0.00) getamount
+		FROM
+			t_cust_fund_water tcfw
+		WHERE
+			1 = 1
+		AND tcfw.business_type = '415'
+		AND tcfw.fund_type = '1'
+		AND tcfw.status = '1'
+		AND tcfw.customer_id = #{userId,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	<!-- 推荐奖励 -->
+ 	<select id="getUserRecommendedAwards" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+		SELECT
+			IFNULL(SUM(tcfw.fund_value),0.00) wealthcoopvalue
+		FROM
+			t_cust_fund_water tcfw
+		WHERE
+			1 = 1
+		AND tcfw.business_type = '415'
+		AND tcfw.fund_type = '1'
+		AND tcfw.status = '1'
+		AND tcfw.customer_id = #{userId,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	<!-- 获取用户的投资总额 -->
+ 	<select id="getUserInvestMoney" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+		SELECT 
+			SUM(tbbd.investment_amount) investmoney
+		FROM t_biz_borrow_detail tbbd
+		WHERE 1 = 1 
+		AND tbbd.status = '1'
+		AND tbbd.customer_id = #{userId,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	<!-- 获取待收金额 -->
+ 	<select id="getUserIDueinMoney" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+		SELECT 
+			(SUM(brp.capital) - SUM(brp.repaid_capital)) + 
+			(SUM(brp.net_hike) + SUM(brp.net_interest) + SUM(brp.late_fee) - SUM(brp.repaid_interest)) receivedmoney
+		FROM t_biz_receipt_plan brp
+		WHERE 1 = 1 
+		AND brp.receipt_status IN ('1','2','3','5')
+		AND brp.status = '1'
+		AND brp.customer_id = #{userId,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	<!-- 净利息 -->
+ 	<select id="getUserNetmargin" resultType="java.math.BigDecimal" parameterType="java.lang.String">
+		SELECT 
+			SUM(
+				CASE WHEN brp.receipt_status = '5' THEN 
+					IFNULL(brp.repaid_interest,0)
+				ELSE
+					IFNULL(brp.interest,0)
+				END
+			) netmargin
+		FROM t_biz_receipt_plan brp
+		WHERE 1 = 1 
+		AND brp.receipt_status IN ('5','6')
+		AND brp.status = '1'
+		AND brp.customer_id = #{userId,jdbcType=VARCHAR}
+ 	</select>
+ 	
+ 	<!-- 我的投资-待收中 -->
+ 	<select id="selectDueinBorrow" resultMap="BaseDueinBorrowMap" parameterType="map">
+ 		SELECT 
+			dueint.PID,
+			dueint.customer_id,
+			dueint.borrow_type,
+			dueint.borrow_code,
+			dueint.transfer_id,
+			FUNC_GET_TRANSFERSTATUS(dueint.PID,dueint.customer_id) transfer_status,
+			dueint.borrow_name,
+			SUM(dueint.capital) capital,
+			SUM(dueint.forgot_nper) forgot_nper,
+			dueint.bor_deadline,
+			dueint.borrow_rate,
+			SUM(dueint.net_hike) receivable_hike,
+			dueint.award_amount,
+			SUM(dueint.net_interest) net_interest,
+			SUM(dueint.interest_received) interest_received,
+			SUM(dueint.collect_received) collect_received,
+			dueint.bidding_status,
+			dueint.bor_agr_id,
+			dueint.investment_time
+		FROM (
+				SELECT 
+					tbjl.PID,
+					tbsk.customer_id,
+					tbjl.borrow_type,
+					CASE WHEN tbsk.play_type = '1' THEN 
+						tbjl.borrow_code
+					ELSE
+						(
+							SELECT
+								MAX(tbrtf.transfer_code) transfer_code
+							FROM
+								t_biz_receipt_transfer tbrtf
+							WHERE
+								tbrtf.STATUS = '1'
+							AND tbrtf.PID = tbsk.transfer_id
+							AND tbrtf.customer_id = tbsk.customer_id
+						)
+					END borrow_code,
+					tbsk.transfer_id,
+					tbjl.borrow_name,
+					tbsk.capital,
+					CASE WHEN tbsk.receipt_status = '6' THEN 
+						1
+					ELSE
+						0
+					END forgot_nper,
+					tbjl.bor_deadline,
+					tbjl.borrow_rate,
+					tbsk.net_hike,
+					(
+					SELECT
+						SUM(tbbd.award_amount) award_amount
+					FROM
+						t_biz_borrow_detail tbbd
+					WHERE
+						tbbd.STATUS = '1'
+					AND tbbd.borrow_id = tbjl.PID
+					AND tbbd.customer_id = tbsk.customer_id
+					) award_amount,
+					tbsk.net_interest,
+					CASE WHEN tbsk.receipt_status = '5' OR tbsk.receipt_status = '6' THEN 
+						CASE WHEN tbsk.receipt_status = '5' AND tbsk.is_vip = '0' THEN 
+							IFNULL(tbsk.capital,0) 
+							+ (
+								 CASE WHEN tbsk.net_hike_status = '1' THEN 
+									IFNULL(tbsk.net_hike,0) 
+								 ELSE
+									0
+								 END
+								)
+						ELSE
+								IFNULL(tbsk.net_interest,0) + IFNULL(tbsk.capital,0) + IFNULL(tbsk.late_fee,0) 
+								+ (
+									 CASE WHEN tbsk.net_hike_status = '1' THEN 
+										IFNULL(tbsk.net_hike,0) 
+									 ELSE
+										0
+									 END
+									)
+							END 	
+					ELSE
+						0
+					END interest_received,
+					CASE WHEN tbsk.receipt_status = '1' OR tbsk.receipt_status = '2' OR tbsk.receipt_status = '3' OR tbsk.receipt_status = '5' THEN 
+						CASE WHEN tbsk.receipt_status = '5' AND tbsk.is_vip = '0' THEN 
+								IFNULL(tbsk.net_interest,0) + IFNULL(tbsk.late_fee,0) 
+								+ (
+										 CASE WHEN tbsk.net_hike_status = '0' THEN 
+											IFNULL(tbsk.net_hike,0) 
+										 ELSE
+											0
+										 END
+									)
+						ELSE
+							IFNULL(tbsk.net_interest,0) + IFNULL(tbsk.capital,0) + IFNULL(tbsk.late_fee,0) 
+							+ (
+									 CASE WHEN tbsk.net_hike_status = '0' THEN 
+										IFNULL(tbsk.net_hike,0) 
+									 ELSE
+										0
+									 END
+								)
+						END 	
+					ELSE
+						0
+					END collect_received,
+					'1' bidding_status,
+					tbjl.bor_agr_id,
+					(
+					SELECT
+						MAX(tbbd.investment_time) investment_time
+					FROM
+						t_biz_borrow_detail tbbd
+					WHERE
+						tbbd.STATUS = '1'
+					AND tbbd.borrow_id = tbjl.PID
+					AND tbbd.customer_id = tbsk.customer_id 
+					<if test="qmap.startInvestmentTime != null and qmap.startInvestmentTime != '' ">
+						AND DATE_FORMAT(tbbd.investment_time,'%Y-%m-%d') <![CDATA[ >= ]]> #{qmap.startInvestmentTime,jdbcType=VARCHAR}
+					</if>
+					<if test="qmap.endInvestmentTime != null and qmap.endInvestmentTime != '' ">
+						AND DATE_FORMAT(tbbd.investment_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{qmap.endInvestmentTime,jdbcType=VARCHAR}
+					</if>
+					) investment_time
+				FROM t_biz_borrow tbjl 
+				LEFT JOIN t_biz_receipt_plan tbsk ON tbjl.PID = tbsk.borrow_id 
+				WHERE 1 = 1 
+					AND tbsk.receipt_status != '4' 
+					AND tbjl.bor_status IN ('4','5','6','7') 
+					<if test="qmap.customerId != null and qmap.customerId != ''">
+						AND tbsk.customer_id = #{qmap.customerId,jdbcType=VARCHAR} 
+					</if>
+		) dueint
+		WHERE 1 = 1 
+			<if test="qmap.transfStatus != null and qmap.transfStatus != '' and qmap.transfStatus == '0'"> 
+				AND FUNC_GET_TRANSFERSTATUS(dueint.PID,dueint.customer_id) = 0
+			</if>
+			<if test="qmap.transfStatus != null and qmap.transfStatus != '' and qmap.transfStatus == '-1'"> 
+				AND FUNC_GET_TRANSFERSTATUS(dueint.PID,dueint.customer_id) <![CDATA[ < ]]> 0
+			</if>
+			<if test="qmap.transfStatus != null and qmap.transfStatus != '' and qmap.transfStatus == '1'"> 
+				AND FUNC_GET_TRANSFERSTATUS(dueint.PID,dueint.customer_id) > 0
+			</if>
+		GROUP BY 
+			dueint.PID
+ 	</select>
+ 	
+ 	<!-- 我的投资-招标中 -->
+ 	<select id="selectInviteTendersInfo" resultMap="BaseInviteTendersMap" parameterType="map">
+	 	SELECT 
+			borz.PID,
+			bord.customer_id,
+			borz.borrow_type,
+			borz.borrow_code,
+			borz.borrow_name,
+			SUM(bord.investment_amount) investment_amount,
+			SUM(bord.investment_payoffs) investment_payoffs,
+			SUM(bord.award_amount) award_amount,
+			SUM(
+				CASE WHEN bord.invest_award_id IS NOT NULL THEN
+					IFNULL(bord.investment_amount,0) * IFNULL(cit.scale,0) 
+				ELSE 
+					0
+				END
+			) interestrate_hike,
+			MAX(bord.investment_time) investment_time,
+			borz.bor_agr_id,
+			'1' bidding_status,
+			borz.borrow_rate,
+			borz.bor_deadline,
+			borz.borrow_money,
+			(SELECT SUM(dtil.investment_amount) allinvset_money  FROM t_biz_borrow_detail dtil where dtil.borrow_id = borz.PID and dtil.status = '1')
+			allinvset_money
+		FROM 
+			t_biz_borrow borz 
+		LEFT JOIN t_biz_borrow_detail bord ON borz.PID = bord.borrow_id 
+		LEFT JOIN t_cust_interest_ticket cit ON bord.invest_award_id = cit.PID 
+		WHERE 1 = 1 
+		AND borz.bor_status = '2' 
+		<if test="qmap.customerId != null and qmap.customerId != ''">
+			AND bord.customer_id = #{qmap.customerId,jdbcType=VARCHAR} 
+		</if>
+		<if test="qmap.startInvestmentTime != null and qmap.startInvestmentTime != '' ">
+			AND DATE_FORMAT(bord.investment_time,'%Y-%m-%d') <![CDATA[ >= ]]> #{qmap.startInvestmentTime,jdbcType=VARCHAR}
+		</if>
+		<if test="qmap.endInvestmentTime != null and qmap.endInvestmentTime != '' ">
+			AND DATE_FORMAT(bord.investment_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{qmap.endInvestmentTime,jdbcType=VARCHAR}
+		</if>
+		GROUP BY 
+			borz.PID,
+			bord.customer_id,
+			borz.borrow_code,
+			borz.borrow_name,
+			borz.bor_agr_id 
+ 	</select>
+ 	
+ 	<!-- 我的投资-转让 -->
+	<select id="selectTransferInfo" resultMap="BaseTrandersInfoMap" parameterType="map">
+		SELECT 
+			tbtra.PID,
+			tbtra.create_user,
+			bbas.borrow_type,
+			bbas.borrow_code,
+			bbas.borrow_name, 
+			tbtra.transfer_code,
+			tbtra.time_remaining,
+			tbtra.project_value,
+			tbtra.success_amount,
+			brpl.receipt_status,
+			bbas.bor_agr_id,
+			tbtra.success_time
+		FROM  t_biz_receipt_transfer tbtra 
+		LEFT JOIN t_biz_borrow bbas ON tbtra.borrow_id = bbas.PID 
+		LEFT JOIN t_biz_receipt_plan brpl ON tbtra.PID  = brpl.transfer_id 
+		WHERE 1 = 1 
+			AND brpl.receipt_status IN ('3','4') 
+			<if test="qmap.customerId != null and qmap.customerId != ''">
+				AND tbtra.create_user = #{qmap.customerId,jdbcType=VARCHAR} 
+			</if>
+			<if test="qmap.startInvestmentTime != null and qmap.startInvestmentTime != '' ">
+				AND DATE_FORMAT(tbtra.success_time,'%Y-%m-%d') <![CDATA[ >= ]]> #{qmap.startInvestmentTime,jdbcType=VARCHAR}
+			</if>
+			<if test="qmap.endInvestmentTime != null and qmap.endInvestmentTime != '' ">
+				AND DATE_FORMAT(tbtra.success_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{qmap.endInvestmentTime,jdbcType=VARCHAR}
+			</if>
+		GROUP BY 
+			tbtra.PID,
+			tbtra.create_user,
+			bbas.borrow_code,
+			bbas.borrow_name, 
+			tbtra.transfer_code,
+			tbtra.time_remaining,
+			tbtra.project_value,
+			tbtra.success_amount,
+			brpl.receipt_status,
+			bbas.bor_agr_id,
+			tbtra.success_time
+		ORDER BY brpl.receipt_status 
+	</select>
+	
+ 	<!-- 我的投资-已结清 -->
+ 	<select id="selectInvestmentInfo" resultMap="BaseInvestMentMap" parameterType="map">
+ 		SELECT 
+			btemp.PID,
+			btemp.customer_id,
+			btemp.borrow_type,
+			btemp.borrow_code,
+			btemp.borrow_name,
+			btemp.investment_amount,
+			btemp.time_limit,
+			btemp.borrow_rate,
+			btemp.receivable_interest,
+			btemp.award_amount,
+			btemp.receivable_hike,
+			'3' borrow_status,
+			btemp.bor_agr_id,
+			btemp.investment_time,
+			btemp.transfer_id
+		FROM (
+			SELECT
+				bbse.PID,
+				tbrp.customer_id,
+				bbse.borrow_type,
+				CASE WHEN tbrp.play_type = '1' THEN
+					bbse.borrow_code
+				ELSE
+					brtra.transfer_code 
+				END borrow_code,
+				bbse.borrow_name,
+				CASE WHEN tbrp.play_type = '1' THEN
+					bbse.bor_deadline 
+				ELSE
+					brtra.time_remaining 
+				END time_limit,
+				bbse.borrow_rate,
+				SUM(tbrp.receivable_interest) receivable_interest,
+				SUM(tbrp.receivable_hike) receivable_hike,
+				bbse.bor_agr_id,
+				<!--  投资金额 -->
+				(
+					SELECT
+						SUM(bbdtl.investment_amount) investment_amount
+					FROM
+						t_biz_borrow_detail bbdtl
+					WHERE
+						bbdtl.borrow_id = bbse.PID
+					AND bbdtl.customer_id = bbse.customer_id
+				) investment_amount,
+				<!-- 投资奖励 -->
+				(
+					SELECT
+						SUM(bbdtl.award_amount) award_amount
+					FROM
+						t_biz_borrow_detail bbdtl
+					WHERE
+						bbdtl.borrow_id = bbse.PID
+					AND bbdtl.customer_id = bbse.customer_id
+				) award_amount,
+				<!-- 投资时间 -->
+				(
+					SELECT
+						MAX(bbdtl.investment_time) investment_time
+					FROM
+						t_biz_borrow_detail bbdtl
+					WHERE
+						bbdtl.borrow_id = bbse.PID
+					AND bbdtl.customer_id = bbse.customer_id
+				) investment_time,
+				tbrp.transfer_id
+			FROM t_biz_receipt_plan tbrp
+			LEFT JOIN t_biz_borrow bbse ON tbrp.borrow_id = bbse.PID 
+			LEFT JOIN t_biz_receipt_transfer brtra ON tbrp.transfer_id = brtra.PID 
+			WHERE 1 = 1 
+				AND tbrp.receipt_status IN ('4','5','6') 
+				AND bbse.bor_status IN ('5','6','7','8') 
+			GROUP BY 
+				bbse.PID,
+				tbrp.customer_id,
+				bbse.borrow_rate
+		) btemp
+		where 1 = 1 
+			<if test="qmap.customerId != null and qmap.customerId != ''">
+				AND btemp.customer_id = #{qmap.customerId,jdbcType=VARCHAR} 
+			</if>
+			<if test="qmap.startInvestmentTime != null and qmap.startInvestmentTime != '' ">
+				AND DATE_FORMAT(btemp.investment_time,'%Y-%m-%d') <![CDATA[ >= ]]> #{qmap.startInvestmentTime,jdbcType=VARCHAR}
+			</if>
+			<if test="qmap.endInvestmentTime != null and qmap.endInvestmentTime != '' ">
+				AND DATE_FORMAT(btemp.investment_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{qmap.endInvestmentTime,jdbcType=VARCHAR}
+			</if>
+ 	</select>
+ 	
+ 	<!-- 我的投资-投资排名 -->
+ 	<select id="selectInvestmentRanking" resultType="java.util.Map" parameterType="java.lang.String">
+ 		SELECT 
+			CONVERT(base.position,SIGNED) position,
+			base.tender_amount tenderamount,
+			base.customer_id customerid
+		FROM
+		(
+			SELECT 
+				CASE
+					WHEN @position = bca.tender_amount THEN @previous 
+					WHEN @position := bca.tender_amount THEN @previous := @previous + 1
+					WHEN bca.tender_amount is null THEN @nullpost := @previous +1   
+				END as position,
+				bca.customer_id,
+				bca.tender_amount
+			FROM 
+			 t_biz_customer_account bca,
+			 (SELECT @previous := 0, @position := 0, @nullpost := 0) AS s
+			ORDER BY
+				bca.tender_amount DESC
+		) base WHERE base.customer_id = #{userId,jdbcType=VARCHAR} 
+ 	</select>
+ 	
+ 	
+ 		<!-- 我的投资-已结清-明细 -->
+ 	<select id="selectInvestmentInfoByBorrowId" resultMap="BaseInvestMentMap" parameterType="java.lang.String">
+ 		SELECT 
+			btemp.PID,
+			btemp.customer_id,
+			btemp.borrow_code,
+			btemp.borrow_name,
+			btemp.investment_amount,
+			btemp.time_limit,
+			btemp.borrow_rate,
+			btemp.receivable_interest,
+			btemp.award_amount,
+			btemp.receivable_hike,
+			'3' borrow_status,
+			btemp.bor_agr_id,
+			btemp.investment_time,
+			btemp.transfer_id
+		FROM (
+			SELECT
+				bbse.PID,
+				tbrp.customer_id,
+				CASE WHEN tbrp.play_type = '1' THEN
+					bbse.borrow_code
+				ELSE
+					brtra.transfer_code 
+				END borrow_code,
+				bbse.borrow_name,
+				CASE WHEN tbrp.play_type = '1' THEN
+					bbse.bor_deadline 
+				ELSE
+					brtra.time_remaining 
+				END time_limit,
+				bbse.borrow_rate,
+				SUM(tbrp.receivable_interest) receivable_interest,
+				SUM(tbrp.receivable_hike) receivable_hike,
+				bbse.bor_agr_id,
+				<!--  投资金额 -->
+				(
+					SELECT
+						SUM(bbdtl.investment_amount) investment_amount
+					FROM
+						t_biz_borrow_detail bbdtl
+					WHERE
+						bbdtl.borrow_id = bbse.PID
+					AND bbdtl.customer_id = bbse.customer_id
+				) investment_amount,
+				<!-- 投资奖励 -->
+				(
+					SELECT
+						SUM(bbdtl.award_amount) award_amount
+					FROM
+						t_biz_borrow_detail bbdtl
+					WHERE
+						bbdtl.borrow_id = bbse.PID
+					AND bbdtl.customer_id = bbse.customer_id
+				) award_amount,
+				<!-- 投资时间 -->
+				(
+					SELECT
+						MAX(bbdtl.investment_time) investment_time
+					FROM
+						t_biz_borrow_detail bbdtl
+					WHERE
+						bbdtl.borrow_id = bbse.PID
+					AND bbdtl.customer_id = bbse.customer_id
+				) investment_time,
+				tbrp.transfer_id
+			FROM t_biz_receipt_plan tbrp
+			LEFT JOIN t_biz_borrow bbse ON tbrp.borrow_id = bbse.PID 
+			LEFT JOIN t_biz_receipt_transfer brtra ON tbrp.transfer_id = brtra.PID 
+			WHERE 1 = 1 
+				AND tbrp.receipt_status IN ('4','5','6') 
+				AND bbse.bor_status IN ('5','6','7','8') 
+			GROUP BY 
+				bbse.PID,
+				tbrp.customer_id,
+				bbse.borrow_rate
+		) btemp
+		where 1 = 1 
+			<if test="userId != null and userId != ''">
+				AND btemp.customer_id = #{userId,jdbcType=VARCHAR} 
+			</if>
+			<if test="borrowId != null and borrowId != ''">
+				AND btemp.PID = #{borrowId,jdbcType=VARCHAR} 
+			</if>
+			
+ 	</select>
+ 	
+ 	<!-- 查询待收项目明细 -->
+ 	<select id="selectDueInDetailList" resultMap="BaseDueInDetailMap" parameterType="map" >
+		SELECT
+			bor.PID,
+			bor.customer_id,
+			bor.borrow_code,
+			CASE WHEN brp.play_type = '1' THEN 
+				bor.borrow_code 
+			ELSE
+				brt.transfer_code
+			END borrow_codeOs,
+			bor.borrow_name,
+			bor.borrow_money,
+			bor.borrow_rate,
+			bor.bor_deadline,
+			bor.repayment_type,
+			FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',bor.repayment_type) repayment_type_name,
+			<!-- 回款信息 -->
+			brp.transfer_id,
+			sum(brp.capital) intement_money,
+			sum(brp.receivable_interest) receivable_interest,
+			<!-- 投资奖励 -->
+			(SELECT sum(bds.award_amount) award_amount FROM t_biz_borrow_detail bds where bds.borrow_id = bor.PID AND bds.customer_id = brp.customer_id AND bds.status = '1') 
+			award_amount, 
+			SUM(brp.receivable_hike) receivable_hike,
+			(SELECT MAX(bdsa.investment_time) investment_time FROM t_biz_borrow_detail bdsa where bdsa.borrow_id = bor.PID AND bdsa.customer_id = brp.customer_id AND bdsa.status = '1') 
+			investment_time,
+			SUM(
+				case when brp.receipt_status = '5' or brp.receipt_status = '6' THEN
+					brp.receivable_hike + brp.capital
+				ELSE
+					0
+				END 
+			) received_money,
+			SUM(
+				case when brp.receipt_status = '1' or brp.receipt_status = '2' THEN
+					brp.receivable_hike + brp.capital 
+				ELSE	
+					0
+				END 
+			) duein_money,
+			SUM(
+				case when brp.receipt_status = '5' or brp.receipt_status = '6' THEN
+					1
+				ELSE	
+					0
+				END 
+			) received_wek,
+			FUNC_GET_TRANSFERSTATUS(bor.PID,brp.customer_id) tranfer_status,
+			bor.bor_agr_id 
+		FROM
+			t_biz_receipt_plan brp
+		LEFT JOIN t_biz_borrow bor ON bor.PID = brp.borrow_id 
+		LEFT JOIN t_biz_receipt_transfer brt ON brp.transfer_id = brt.PID 
+		WHERE bor.status = '1' 
+			AND brp.status = '1'
+			<if test="qmap.userId != null and qmap.userId != ''">
+				AND brp.customer_id = #{qmap.userId,jdbcType=VARCHAR} 
+			</if>
+			<if test="qmap.borrowId != null and qmap.borrowId != ''">
+				AND brp.borrow_id = #{qmap.borrowId,jdbcType=VARCHAR} 
+			</if>
+		GROUP BY bor.PID limit 1 
+ 	</select>
+ 
+</mapper>

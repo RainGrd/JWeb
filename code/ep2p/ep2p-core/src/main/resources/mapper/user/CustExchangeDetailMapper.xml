@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustExchangeDetailMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustExchangeDetail" >
+	    <id column="pid" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="exchange_type" property="exchangeType" jdbcType="VARCHAR" />
+	    <result column="exchange_point" property="exchangePoint" jdbcType="INTEGER" />
+	    <result column="exchange_time" property="exchangeTime" jdbcType="TIMESTAMP" />
+	    <result column="exchange_status" property="exchangeStatus" jdbcType="VARCHAR" />
+	    <result column="exchange_remark" property="exchangeRemark" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <!-- 积分兑换统计用到字段 -->
+	    <result column="pensNumber" property="pensNumber" jdbcType="INTEGER" />
+	    <!-- 外表字段 -->
+	    <result column="customerName" property="customerName" jdbcType="VARCHAR" />
+	    <result column="sname" property="sname" jdbcType="VARCHAR" />
+	    <result column="phoneNo" property="phoneNo" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 查询所需列 -->
+  	<sql id="Base_Column_List" >
+	    pid, customer_id, exchange_type, exchange_point, exchange_time, exchange_status, exchange_remark, 
+	    status, create_user, create_time, last_update_user, last_update_time
+	</sql>
+	
+	<!-- 后台管理查询所需的列 -->
+  	<sql id="Base_Column_system_List" >
+	    ced.pid , ced.customer_id , ced.exchange_time , cc.customer_name customerName, cc.sname sname, cc.phone_no phoneNo,
+		ced.exchange_type , ced.exchange_point , ced.exchange_remark , ced.exchange_status
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="base_condition">
+		from t_cust_exchange_detail ced,t_cust_customer cc 
+		where ced.customer_id = cc.pid 
+		<if test="custExchangeDetail.customerName != null and custExchangeDetail.customerName != '' ">
+			and cc.customer_name like concat('%',#{custExchangeDetail.customerName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.sname != null and custExchangeDetail.sname != '' ">
+			and cc.sname like concat('%',#{custExchangeDetail.sname,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.phoneNo != null and custExchangeDetail.phoneNo != '' ">
+			and cc.phone_no like concat('%', #{custExchangeDetail.phoneNo,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.exchangeRemark != null and custExchangeDetail.exchangeRemark != '' ">
+			and ced.exchange_remark like concat('%', #{custExchangeDetail.exchangeRemark,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.exchangeType != null and custExchangeDetail.exchangeType != -1 ">
+			and ced.exchange_type = #{custExchangeDetail.exchangeType,jdbcType=VARCHAR}
+		</if>
+		<if test="custExchangeDetail.exchangeStatus != null and custExchangeDetail.exchangeStatus != -1 ">
+			and ced.exchange_status = #{custExchangeDetail.exchangeStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="custExchangeDetail.exchangeBeginTime != null and custExchangeDetail.exchangeBeginTime != '' " > 
+        	and ced.exchange_time <![CDATA[ >= ]]> #{custExchangeDetail.exchangeBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="custExchangeDetail.exchangeEndTime != null and custExchangeDetail.exchangeEndTime != '' " > 
+        	and ced.exchange_time <![CDATA[ <= ]]> #{custExchangeDetail.exchangeEndTime,jdbcType=TIMESTAMP}
+        </if>
+	</sql>
+	
+	<!-- 查询所有兑换明细 -->
+	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+		select 
+		<include refid="Base_Column_system_List" /> 
+		<include refid="base_condition" /> 
+		ORDER BY ced.exchange_time desc 
+	</select>
+	
+	<!-- 导出查询 -->
+  	<select id="selectAllPageExport" resultMap="BaseResultMap" >
+		SELECT 
+		ced.pid , ced.exchange_time , cc.customer_name customerName, cc.sname sname, cc.phone_no phoneNo,
+		CASE ced.exchange_type WHEN 1 THEN '兑换话费' WHEN 2 THEN '兑换加息劵' 
+		WHEN 3 THEN '兑换VIP' WHEN 4 THEN '兑换现金'  END exchange_type,
+		ced.exchange_point , ced.exchange_remark , 
+		CASE ced.exchange_status WHEN 1 THEN '成功' WHEN 2 THEN '失败' END exchange_status
+		<include refid="base_condition" /> 
+		<include refid="export_query_sql" />
+  	</select>
+  
+  	<!-- 导出查询条件 -->
+  	<sql id="export_query_sql">
+	  	<if test="expm.exportSet != null and expm.exportSet != ''">
+	  	
+	  		<!-- 选择情况一 -->
+	  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+	  			AND ced.pid IN 
+	  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+			        #{item,jdbcType=VARCHAR} 
+			    </foreach>  
+	  		</if>
+	  		
+	  		<!-- 选择情况二 -->
+	  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+				ORDER BY ced.exchange_time desc 
+	  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+	  		</if>
+	  		
+	  		<!-- 选择情况三 -->
+	  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+				ORDER BY ced.exchange_time desc 
+				limit #{expm.startCheckrecords,jdbcType=INTEGER}, #{expm.endCheckrecords,jdbcType=INTEGER} 
+	  		</if>
+	  	</if>
+  	</sql>
+	
+	<!-- 统计查询 -->
+	<select id="selectAllStatistics" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustExchangeDetail" >
+		select  ced.exchange_point , ced.exchange_type , count(1) as pensNumber
+		from t_cust_exchange_detail ced,t_cust_customer cc 
+		where ced.customer_id = cc.pid 
+		and ced.exchange_status = 1
+		<if test="customerName != null and customerName != '' ">
+			and cc.customer_name like concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="sname != null and sname != '' ">
+			and cc.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="phoneNo != null and phoneNo != '' ">
+			and cc.phone_no = #{phoneNo,jdbcType=VARCHAR}
+		</if>
+		<if test="exchangeBeginTime != null and exchangeBeginTime != '' " > 
+        	and ced.exchange_time <![CDATA[ >= ]]> #{exchangeBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="exchangeEndTime != null and exchangeEndTime != '' " > 
+        	and ced.exchange_time <![CDATA[ <= ]]> #{exchangeEndTime,jdbcType=TIMESTAMP}
+        </if>
+		GROUP BY ced.exchange_type,ced.exchange_point
+	</select>
+	
+	<!-- 导出统计 -->
+  	<select id="selectAllStatisticsExport" resultMap="BaseResultMap" >
+		SELECT ced.exchange_point , ced.exchange_type , count(1) as pensNumber
+		from t_cust_exchange_detail ced,t_cust_customer cc 
+		where ced.customer_id = cc.pid 
+		and ced.exchange_status = 1
+		<if test="custExchangeDetail.customerName != null and custExchangeDetail.customerName != '' ">
+			and cc.customer_name like concat('%',#{custExchangeDetail.customerName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.sname != null and custExchangeDetail.sname != '' ">
+			and cc.sname like concat('%',#{custExchangeDetail.sname,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.phoneNo != null and custExchangeDetail.phoneNo != '' ">
+			and cc.phone_no like concat('%', #{custExchangeDetail.phoneNo,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="custExchangeDetail.exchangeBeginTime != null and custExchangeDetail.exchangeBeginTime != '' " > 
+        	and ced.exchange_time <![CDATA[ >= ]]> #{custExchangeDetail.exchangeBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="custExchangeDetail.exchangeEndTime != null and custExchangeDetail.exchangeEndTime != '' " > 
+        	and ced.exchange_time <![CDATA[ <= ]]> #{custExchangeDetail.exchangeEndTime,jdbcType=TIMESTAMP}
+        </if>
+		GROUP BY ced.exchange_type,ced.exchange_point
+  	</select>
+  	
+	<!-- 查询统计总数 -->
+	<select id="selectAllStatisticsCount" resultType="java.lang.Integer" parameterType="com.yscf.core.model.user.CustExchangeDetail" >
+		select  count(1) 
+		from t_cust_exchange_detail ced,t_cust_customer cc 
+		where ced.customer_id = cc.pid 
+		and ced.exchange_status = 1
+		<if test="customerName != null and customerName != '' ">
+			and cc.customer_name like concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="sname != null and sname != '' ">
+			and cc.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="phoneNo != null and phoneNo != '' ">
+			and cc.phone_no like concat('%', #{phoneNo,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="exchangeRemark != null and exchangeRemark != '' ">
+			and ced.exchange_remark like concat('%', #{exchangeRemark,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="exchangeType != null and exchangeType != -1 ">
+			and ced.exchange_type = #{exchangeType,jdbcType=VARCHAR}
+		</if>
+		<if test="exchangeStatus != null and exchangeStatus != -1 ">
+			and ced.exchange_status = #{exchangeStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="exchangeBeginTime != null and exchangeBeginTime != '' " > 
+        	and ced.exchange_time <![CDATA[ >= ]]> #{exchangeBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="exchangeEndTime != null and exchangeEndTime != '' " > 
+        	and ced.exchange_time <![CDATA[ <= ]]> #{exchangeEndTime,jdbcType=TIMESTAMP}
+        </if>
+	</select>
+	
+	<!-- 根据主键查询对象 -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	select 
+	    <include refid="Base_Column_List" />
+	    from t_cust_exchange_detail
+	    where pid = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_exchange_detail
+	    where pid = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<!-- 新增 -->
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CustExchangeDetail" >
+	    insert into t_cust_exchange_detail (pid, customer_id, exchange_type, exchange_point, 
+	      exchange_time, exchange_status, exchange_remark, 
+	      status, create_user, create_time, 
+	      last_update_user, last_update_time)
+	    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{exchangeType,jdbcType=VARCHAR}, 
+	      #{exchangePoint,jdbcType=INTEGER}, #{exchangeTime,jdbcType=TIMESTAMP}, #{exchangeStatus,jdbcType=VARCHAR}, 
+	      #{exchangeRemark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP})
+  	</insert>
+  	
+  	<!-- 新增(非空判断) -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CustExchangeDetail" >
+	    insert into t_cust_exchange_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+      		<if test="pid != null" >
+        		pid,
+      		</if>
+      		<if test="customerId != null" >
+        		customer_id,
+      		</if>
+      		<if test="exchangeType != null" >
+        		exchange_type,
+      		</if>
+      		<if test="exchangePoint != null" >
+        		exchange_point,
+      		</if>
+      		<if test="exchangeTime != null" >
+        		exchange_time,
+      		</if>
+      		<if test="exchangeStatus != null" >
+        		exchange_status,
+      		</if>
+      		<if test="exchangeRemark != null" >
+        		exchange_remark,
+      		</if>
+      		<if test="status != null" >
+        		status,
+      		</if>
+      		<if test="createUser != null" >
+        		create_user,
+      		</if>
+      		<if test="createTime != null" >
+        		create_time,
+      		</if>
+      		<if test="lastUpdateUser != null" >
+        		last_update_user,
+      		</if>
+      		<if test="lastUpdateTime != null" >
+        		last_update_time,
+      		</if>
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides="," >
+      		<if test="pid != null" >
+        		#{pid,jdbcType=VARCHAR},
+      		</if>
+      		<if test="customerId != null" >
+        		#{customerId,jdbcType=VARCHAR},
+      		</if>
+      		<if test="exchangeType != null" >
+        		#{exchangeType,jdbcType=VARCHAR},
+      		</if>
+      		<if test="exchangePoint != null" >
+        		#{exchangePoint,jdbcType=INTEGER},
+      		</if>
+      		<if test="exchangeTime != null" >
+        		#{exchangeTime,jdbcType=TIMESTAMP},
+      		</if>
+      		<if test="exchangeStatus != null" >
+        		#{exchangeStatus,jdbcType=VARCHAR},
+      		</if>
+      		<if test="exchangeRemark != null" >
+        		#{exchangeRemark,jdbcType=VARCHAR},
+      		</if>
+      		<if test="status != null" >
+        		#{status,jdbcType=VARCHAR},
+      		</if>
+      		<if test="createUser != null" >
+        		#{createUser,jdbcType=VARCHAR},
+      		</if>
+      		<if test="createTime != null" >
+        		#{createTime,jdbcType=TIMESTAMP},
+      		</if>
+      		<if test="lastUpdateUser != null" >
+        		#{lastUpdateUser,jdbcType=VARCHAR},
+      		</if>
+      		<if test="lastUpdateTime != null" >
+        		#{lastUpdateTime,jdbcType=TIMESTAMP},
+      		</if>
+    	</trim>
+  </insert>
+  
+  	<!-- 修改(非空判断) -->
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustExchangeDetail" >
+    	update t_cust_exchange_detail
+    	<set >
+      		<if test="customerId != null" >
+        		customer_id = #{customerId,jdbcType=VARCHAR},
+      		</if>
+      		<if test="exchangeType != null" >
+        		exchange_type = #{exchangeType,jdbcType=VARCHAR},
+      		</if>
+      		<if test="exchangePoint != null" >
+        		exchange_point = #{exchangePoint,jdbcType=INTEGER},
+      		</if>
+      		<if test="exchangeTime != null" >
+        		exchange_time = #{exchangeTime,jdbcType=TIMESTAMP},
+      		</if>
+      		<if test="exchangeStatus != null" >
+        		exchange_status = #{exchangeStatus,jdbcType=VARCHAR},
+      		</if>
+      		<if test="exchangeRemark != null" >
+        		exchange_remark = #{exchangeRemark,jdbcType=VARCHAR},
+      		</if>
+      		<if test="status != null" >
+        		status = #{status,jdbcType=VARCHAR},
+      		</if>
+      		<if test="createUser != null" >
+        		create_user = #{createUser,jdbcType=VARCHAR},
+      		</if>
+      		<if test="createTime != null" >
+        		create_time = #{createTime,jdbcType=TIMESTAMP},
+      			</if>
+      		<if test="lastUpdateUser != null" >
+        		last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      		</if>
+      		<if test="lastUpdateTime != null" >
+        		last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      		</if>
+    	</set>
+    	where pid = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 修改所有的数据 -->
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustExchangeDetail" >
+	    update t_cust_exchange_detail
+	    set customer_id = #{customerId,jdbcType=VARCHAR},
+	      exchange_type = #{exchangeType,jdbcType=VARCHAR},
+	      exchange_point = #{exchangePoint,jdbcType=INTEGER},
+	      exchange_time = #{exchangeTime,jdbcType=TIMESTAMP},
+	      exchange_status = #{exchangeStatus,jdbcType=VARCHAR},
+	      exchange_remark = #{exchangeRemark,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+	    where pid = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+</mapper>

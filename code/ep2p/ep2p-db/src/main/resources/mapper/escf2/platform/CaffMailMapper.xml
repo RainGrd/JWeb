@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.platform.CaffMailMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.platform.CaffMail" >
+    <id column="caffMailId" property="caffmailid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="fromEmail" property="fromemail" jdbcType="VARCHAR" />
+    <result column="host" property="host" jdbcType="VARCHAR" />
+    <result column="pass" property="pass" jdbcType="VARCHAR" />
+    <result column="templateFolder" property="templatefolder" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffMailId, createdDateLong, version, bitState, description, fromEmail, host, pass, 
+    templateFolder, username
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffMail
+    where caffMailId = #{caffmailid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffMail
+    where caffMailId = #{caffmailid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.platform.CaffMail" >
+    insert into CaffMail (caffMailId, createdDateLong, version, 
+      bitState, description, fromEmail, 
+      host, pass, templateFolder, 
+      username)
+    values (#{caffmailid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, 
+      #{bitstate,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{fromemail,jdbcType=VARCHAR}, 
+      #{host,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR}, #{templatefolder,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.platform.CaffMail" >
+    insert into CaffMail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffmailid != null" >
+        caffMailId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="fromemail != null" >
+        fromEmail,
+      </if>
+      <if test="host != null" >
+        host,
+      </if>
+      <if test="pass != null" >
+        pass,
+      </if>
+      <if test="templatefolder != null" >
+        templateFolder,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffmailid != null" >
+        #{caffmailid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="fromemail != null" >
+        #{fromemail,jdbcType=VARCHAR},
+      </if>
+      <if test="host != null" >
+        #{host,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null" >
+        #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="templatefolder != null" >
+        #{templatefolder,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.platform.CaffMail" >
+    update CaffMail
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="fromemail != null" >
+        fromEmail = #{fromemail,jdbcType=VARCHAR},
+      </if>
+      <if test="host != null" >
+        host = #{host,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null" >
+        pass = #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="templatefolder != null" >
+        templateFolder = #{templatefolder,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where caffMailId = #{caffmailid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.platform.CaffMail" >
+    update CaffMail
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      bitState = #{bitstate,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      fromEmail = #{fromemail,jdbcType=VARCHAR},
+      host = #{host,jdbcType=VARCHAR},
+      pass = #{pass,jdbcType=VARCHAR},
+      templateFolder = #{templatefolder,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR}
+    where caffMailId = #{caffmailid,jdbcType=BIGINT}
+  </update>
+</mapper>

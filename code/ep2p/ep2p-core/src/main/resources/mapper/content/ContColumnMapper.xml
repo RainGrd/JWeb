@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.content.ContColumnMapper">
+	<resultMap id="BaseResultMap" type="com.yscf.core.model.content.ContColumn">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="colu_name" property="coluName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="web_tag" property="webTag" jdbcType="VARCHAR" />
+		<result column="clo_desc" property="cloDesc" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_update_user" property="lastUpdateUser"
+			jdbcType="VARCHAR" />
+		<result column="last_update_time" property="lastUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		PID, colu_name, web_tag,status, create_user, create_time, 
+		last_update_user,
+		last_update_time,clo_desc,
+		version
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_cont_column
+		where PID = #{pid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		t_cont_column
+		where PID = #{pid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yscf.core.model.content.ContColumn">
+		insert into t_cont_column
+		(PID, colu_name, status,web_tag,clo_desc,
+		create_user, create_time, last_update_user,
+		last_update_time, version)
+		values (#{pid,jdbcType=VARCHAR},
+		#{coluName,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{webTag,jdbcType=VARCHAR},
+		#{cloDesc,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		#{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yscf.core.model.content.ContColumn">
+		insert into t_cont_column
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="coluName != null">
+				colu_name,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="webTag != null">
+				web_tag,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="coluName != null">
+				#{coluName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="webTag != null">
+				#{webTag,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.content.ContColumn">
+		update t_cont_column
+		<set>
+			<if test="coluName != null">
+				colu_name = #{coluName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="webTag != null">
+				web_tag = #{webTag,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="cloDesc != null">
+				clo_desc = #{cloDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.content.ContColumn">
+		update t_cont_column
+		<set>
+			<if test="coluName != null and coluName != '' ">
+				colu_name = #{coluName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != '' ">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateUser != null and lastUpdateUser != '' ">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null and lastUpdateTime != '' ">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if> 
+			<if test="webTag != null  and webTag != '' ">
+				web_tag = #{webTag,jdbcType=VARCHAR},
+			</if>
+			<if test="cloDesc != null  and cloDesc != '' ">
+				clo_desc = #{cloDesc,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<select id="selectContentByParameter" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from t_cont_column
+		where 1 = 1
+		<if test="map.coluName != null and map.coluName != '' ">
+			and colu_name like
+			concat('%',#{map.coluName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.status != null and map.status != ''">
+			and status =#{map.status,jdbcType=VARCHAR}
+		</if>
+		<if test="map.createUser != null and map.createUser != ''">
+			and create_user like
+			concat('%',#{map.createUser,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.createTime != null and map.createTime != ''">
+			and create_time = #{map.createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="map.lastUpdateUser != null and map.lastUpdateUser != '' ">
+			and last_update_user like
+			concat('%',#{map.lastUpdateUser,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.lastUpdateTime != null and map.lastUpdateTime != ''">
+			and last_update_time like
+			#{map.lastUpdateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="map.version != null and map.version != ''">
+			and version = #{map.version,jdbcType=VARCHAR}
+		</if>
+		<if test="map.pid != null and map.pid != ''">
+			and pid like = #{map.pid,jdbcType=VARCHAR}
+		</if>
+		<if
+			test="map.lastBeginUpdateTime != null and map.lastBeginUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(last_update_time ,'%Y-%m-%d') >= #{map.lastBeginUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.lastEndUpdateTime != null and map.lastEndUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(last_update_time ,'%Y-%m-%d') <= #{map.lastEndUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createBeginTime != null and map.createBeginTime != '' ">
+			and <![CDATA[DATE_FORMAT(create_time ,'%Y-%m-%d') >= #{map.createBeginTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createEndTime != null and map.createEndTime != '' ">
+			and <![CDATA[DATE_FORMAT(create_time ,'%Y-%m-%d') <= #{map.createEndTime,jdbcType=VARCHAR}]]>
+		</if>
+		order by create_time desc 
+	</select>
+	<update id="batchUpdateByPids" parameterType="java.util.HashMap">
+		update t_cont_column
+		set status = #{map.status,jdbcType=VARCHAR}
+		where
+		PID in
+		<foreach item="pid" collection="map.pid" open="(" separator=","
+			close=")">
+			#{pid}
+		</foreach>
+	</update>
+</mapper>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustExperienceWaterMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustExperienceWater" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="exp_value" property="expValue" jdbcType="INTEGER" />
+	    <result column="exp_get_type" property="expGetType" jdbcType="VARCHAR" />
+	    <result column="exp_type" property="expType" jdbcType="VARCHAR" />
+	    <result column="available_exp" property="availableExp" jdbcType="INTEGER" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="happen_time" property="happenTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="exp_wat_desc" property="expWatDesc" jdbcType="VARCHAR" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<sql id="Base_Column_List" >
+	    tcew.PID PID,
+	    tcew.exp_value exp_value, 
+	    tcew.exp_get_type exp_get_type, 
+	    tcew.exp_type exp_type, 
+	    tcew.available_exp available_exp, 
+	    tcew.customer_id customer_id, 
+	    tcew.happen_time happen_time, 
+	    tcew.status status,
+	    tcew.create_user create_user,
+	    tcew.create_time create_time,
+	    tcew.last_update_user last_update_user,
+	    tcew.last_update_time last_update_time, 
+	    tcew.exp_wat_desc exp_wat_desc
+  	</sql>
+  	
+	<!--   根据pid查客户经验明细 -->
+	<select id="selectExperienceDetailsById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustExperienceWater">
+		select 
+	    <include refid="Base_Column_List"></include>
+		from t_cust_experience_water tcew,t_cust_customer tcc
+		where tcew.customer_id=tcc.pid
+		and  tcew.customer_id= #{custExperienceWater.customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 客户经验条件查询 -->
+	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustExperienceWater">
+   		select 
+   		<include refid="Base_Column_List"></include>
+   		from t_cust_experience_water tcew
+	    where 1=1
+	    <if test="custExperienceWater.happenBeginTime != null and custExperienceWater.happenBeginTime != '' " > 
+        	and  tcew.happen_time <![CDATA[ >= ]]> #{custExperienceWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custExperienceWater.happenEndTime != null and custExperienceWater.happenEndTime != '' " > 
+        	and  tcew.happen_time <![CDATA[ <= ]]> #{custExperienceWater.happenEndTime,jdbcType=DATE}
+        </if>
+	    <if test="custExperienceWater.expGetType != null and custExperienceWater.expGetType !=0" >
+	        and  tcew.exp_get_type =  #{custExperienceWater.expGetType,jdbcType=VARCHAR}
+	     </if>
+	</select>
+	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	select 
+    	<include refid="Base_Column_List" />
+    	from t_cust_experience_water
+    	where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_experience_water
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CustExperienceWater" >
+	    insert into t_cust_experience_water (PID, exp_value, exp_get_type, 
+	      exp_type, available_exp, customer_id, 
+	      happen_time, status, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      exp_wat_desc)
+	    values (#{pid,jdbcType=VARCHAR}, #{expValue,jdbcType=INTEGER}, #{expGetType,jdbcType=VARCHAR}, 
+	      #{expType,jdbcType=VARCHAR}, #{availableExp,jdbcType=INTEGER}, #{customerId,jdbcType=VARCHAR}, 
+	      #{happenTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{expWatDesc,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CustExperienceWater" >
+	    insert into t_cust_experience_water
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="expValue != null" >
+	        exp_value,
+	      </if>
+	      <if test="expGetType != null" >
+	        exp_get_type,
+	      </if>
+	      <if test="expType != null" >
+	        exp_type,
+	      </if>
+	      <if test="availableExp != null" >
+	        available_exp,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="happenTime != null" >
+	        happen_time,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="expWatDesc != null" >
+	        exp_wat_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expValue != null" >
+	        #{expValue,jdbcType=INTEGER},
+	      </if>
+	      <if test="expGetType != null" >
+	        #{expGetType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expType != null" >
+	        #{expType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="availableExp != null" >
+	        #{availableExp,jdbcType=INTEGER},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="happenTime != null" >
+	        #{happenTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expWatDesc != null" >
+	        #{expWatDesc,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustExperienceWater" >
+	    update t_cust_experience_water
+	    <set >
+	      <if test="expValue != null" >
+	        exp_value = #{expValue,jdbcType=INTEGER},
+	      </if>
+	      <if test="expGetType != null" >
+	        exp_get_type = #{expGetType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expType != null" >
+	        exp_type = #{expType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="availableExp != null" >
+	        available_exp = #{availableExp,jdbcType=INTEGER},
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="happenTime != null" >
+	        happen_time = #{happenTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expWatDesc != null" >
+	        exp_wat_desc = #{expWatDesc,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustExperienceWater" >
+	    update t_cust_experience_water
+	    set exp_value = #{expValue,jdbcType=INTEGER},
+	      exp_get_type = #{expGetType,jdbcType=VARCHAR},
+	      exp_type = #{expType,jdbcType=VARCHAR},
+	      available_exp = #{availableExp,jdbcType=INTEGER},
+	      customer_id = #{customerId,jdbcType=VARCHAR},
+	      happen_time = #{happenTime,jdbcType=TIMESTAMP},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      exp_wat_desc = #{expWatDesc,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+	
+	<!-- 批量新增 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into t_cust_experience_water (PID, exp_value, exp_get_type,  available_exp, customer_id, 
+      		happen_time, status, create_user, create_time,exp_wat_desc,version)   
+    	values
+    	<foreach collection="list" item="item" index="index" separator="," >  
+       		(#{item.pid,jdbcType=VARCHAR}, #{item.expValue,jdbcType=INTEGER}, #{item.expGetType,jdbcType=VARCHAR}, 
+	      	#{item.availableExp,jdbcType=INTEGER}, #{item.customerId,jdbcType=VARCHAR},#{item.happenTime,jdbcType=TIMESTAMP}, 
+	      	#{item.status,jdbcType=VARCHAR}, #{item.createUser,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP}, 
+	      	#{item.expWatDesc,jdbcType=VARCHAR},1)  
+    	</foreach> 
+	</insert>
+	
+	<!--批量新增客户经验流水表 -->
+	<insert id="batchUpdateCustExperienceWater" parameterType="java.util.List">
+		insert into t_cust_experience_water (PID, exp_value, exp_get_type,  available_exp, customer_id, 
+	      		 status,  create_time,exp_wat_desc)   
+	     values
+		<foreach collection="list" item="item" index="index" separator="," >  
+       		(#{item.pid,jdbcType=VARCHAR}, #{item.expValue,jdbcType=INTEGER}, #{item.expGetType,jdbcType=VARCHAR}, 
+	      	#{item.availableExp,jdbcType=INTEGER}, #{item.customerId,jdbcType=VARCHAR},#{item.status,jdbcType=VARCHAR},
+	      	#{item.createTime,jdbcType=TIMESTAMP}, #{item.expWatDesc,jdbcType=VARCHAR})  
+    	</foreach> 
+	</insert>
+</mapper>

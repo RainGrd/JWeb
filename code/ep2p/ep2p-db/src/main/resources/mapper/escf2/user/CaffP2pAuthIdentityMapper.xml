@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.user.CaffP2pAuthIdentityMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.user.CaffP2pAuthIdentity" >
+    <id column="caffP2pAuthIdentityId" property="caffp2pauthidentityid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="auditStateInt" property="auditstateint" jdbcType="INTEGER" />
+    <result column="originalRealName" property="originalrealname" jdbcType="VARCHAR" />
+    <result column="newRealName" property="newrealname" jdbcType="VARCHAR" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pAuthIdentityId, createdDateLong, version, auditStateInt, originalRealName, 
+    newRealName, userId, note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pAuthIdentity
+    where caffP2pAuthIdentityId = #{caffp2pauthidentityid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pAuthIdentity
+    where caffP2pAuthIdentityId = #{caffp2pauthidentityid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.user.CaffP2pAuthIdentity" >
+    insert into CaffP2pAuthIdentity (caffP2pAuthIdentityId, createdDateLong, 
+      version, auditStateInt, originalRealName, 
+      newRealName, userId, note
+      )
+    values (#{caffp2pauthidentityid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{auditstateint,jdbcType=INTEGER}, #{originalrealname,jdbcType=VARCHAR}, 
+      #{newrealname,jdbcType=VARCHAR}, #{userid,jdbcType=BIGINT}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pAuthIdentity" >
+    insert into CaffP2pAuthIdentity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2pauthidentityid != null" >
+        caffP2pAuthIdentityId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="auditstateint != null" >
+        auditStateInt,
+      </if>
+      <if test="originalrealname != null" >
+        originalRealName,
+      </if>
+      <if test="newrealname != null" >
+        newRealName,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2pauthidentityid != null" >
+        #{caffp2pauthidentityid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="auditstateint != null" >
+        #{auditstateint,jdbcType=INTEGER},
+      </if>
+      <if test="originalrealname != null" >
+        #{originalrealname,jdbcType=VARCHAR},
+      </if>
+      <if test="newrealname != null" >
+        #{newrealname,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pAuthIdentity" >
+    update CaffP2pAuthIdentity
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="auditstateint != null" >
+        auditStateInt = #{auditstateint,jdbcType=INTEGER},
+      </if>
+      <if test="originalrealname != null" >
+        originalRealName = #{originalrealname,jdbcType=VARCHAR},
+      </if>
+      <if test="newrealname != null" >
+        newRealName = #{newrealname,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where caffP2pAuthIdentityId = #{caffp2pauthidentityid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.user.CaffP2pAuthIdentity" >
+    update CaffP2pAuthIdentity
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      auditStateInt = #{auditstateint,jdbcType=INTEGER},
+      originalRealName = #{originalrealname,jdbcType=VARCHAR},
+      newRealName = #{newrealname,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=BIGINT},
+      note = #{note,jdbcType=VARCHAR}
+    where caffP2pAuthIdentityId = #{caffp2pauthidentityid,jdbcType=BIGINT}
+  </update>
+</mapper>

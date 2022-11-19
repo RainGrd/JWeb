@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    var xhttp;
+    if(window.XMLHttpRequest){
+        xhttp = new XMLHttpRequest();
+    }else{
+        xhttp=new ActiveXObject("Microsoft.XMLHTTP")
+    }
+    /*发送请求*/
+    /*请求方式 资源路径 true(异步)/false(同步)*/
+    xhttp.open("GET","http://localhost:5050/ajax-demo/ajaxServlet01");
+    xhttp.send();
+    /*获取响应*/
+    xhttp.onreadystatechange=function (){
+        if(this.readyState === 4 && this.status === 200){
+            console.log(this.responseText);
+            alert(this.responseText);
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,26 @@
+.am-text-center{text-align:center;}
+.errorTip{
+	font-size:32px;
+	height:60px;
+	line-height:60px;
+	font-weight: 600;
+}
+.errorbody{
+	border: 5px #f4f4f4 solid;
+    margin: 20px auto;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    width: 95%;
+    height: 100%;
+    display: block;
+    padding: 15px;
+    background-image:none;
+}
+.errorTitle{
+	background:url(images/errorTip.png) no-repeat 0 center;
+	padding-left: 32px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 60px;
+    line-height: 60px;
+}

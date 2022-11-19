@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.user.CaffP2pUserIntegralDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.user.CaffP2pUserIntegralDetail" >
+    <id column="caffP2pUserIntegralDetailId" property="caffp2puserintegraldetailid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="fkey" property="fkey" jdbcType="BIGINT" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="point" property="point" jdbcType="INTEGER" />
+    <result column="userIntegralTypeInt" property="userintegraltypeint" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pUserIntegralDetailId, createdDateLong, version, userId, fkey, note, point, 
+    userIntegralTypeInt
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pUserIntegralDetail
+    where caffP2pUserIntegralDetailId = #{caffp2puserintegraldetailid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pUserIntegralDetail
+    where caffP2pUserIntegralDetailId = #{caffp2puserintegraldetailid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserIntegralDetail" >
+    insert into CaffP2pUserIntegralDetail (caffP2pUserIntegralDetailId, createdDateLong, 
+      version, userId, fkey, 
+      note, point, userIntegralTypeInt
+      )
+    values (#{caffp2puserintegraldetailid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{fkey,jdbcType=BIGINT}, 
+      #{note,jdbcType=VARCHAR}, #{point,jdbcType=INTEGER}, #{userintegraltypeint,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserIntegralDetail" >
+    insert into CaffP2pUserIntegralDetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2puserintegraldetailid != null" >
+        caffP2pUserIntegralDetailId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="fkey != null" >
+        fkey,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="point != null" >
+        point,
+      </if>
+      <if test="userintegraltypeint != null" >
+        userIntegralTypeInt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2puserintegraldetailid != null" >
+        #{caffp2puserintegraldetailid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="fkey != null" >
+        #{fkey,jdbcType=BIGINT},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null" >
+        #{point,jdbcType=INTEGER},
+      </if>
+      <if test="userintegraltypeint != null" >
+        #{userintegraltypeint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserIntegralDetail" >
+    update CaffP2pUserIntegralDetail
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="fkey != null" >
+        fkey = #{fkey,jdbcType=BIGINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null" >
+        point = #{point,jdbcType=INTEGER},
+      </if>
+      <if test="userintegraltypeint != null" >
+        userIntegralTypeInt = #{userintegraltypeint,jdbcType=INTEGER},
+      </if>
+    </set>
+    where caffP2pUserIntegralDetailId = #{caffp2puserintegraldetailid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserIntegralDetail" >
+    update CaffP2pUserIntegralDetail
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      fkey = #{fkey,jdbcType=BIGINT},
+      note = #{note,jdbcType=VARCHAR},
+      point = #{point,jdbcType=INTEGER},
+      userIntegralTypeInt = #{userintegraltypeint,jdbcType=INTEGER}
+    where caffP2pUserIntegralDetailId = #{caffp2puserintegraldetailid,jdbcType=BIGINT}
+  </update>
+</mapper>

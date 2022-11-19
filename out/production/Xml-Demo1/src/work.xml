@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE web-app SYSTEM "D:\学习资料\JWeb\Xml-Demo1\src\web-app.dtd">
+<web-app>
+    <servlet>
+        <servlet-name></servlet-name>
+        <servlet-class></servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name></servlet-name>
+        <url-patten></url-patten>
+    </servlet-mapping>
+</web-app>

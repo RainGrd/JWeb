@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.CustRechargeWithdrawMapper" >
+  <resultMap id="BaseRechargeResultMap" type="com.yscf.core.model.financial.CustRechargeWithdraw" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="pay_name" property="payName" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="rec_status" property="recStatus" jdbcType="VARCHAR" />
+    <result column="rec_time" property="recTime" jdbcType="TIMESTAMP" />
+    <result column="rec_order_no" property="recOrderNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseWithdrawResultMap" type="com.yscf.core.model.financial.CustRechargeWithdraw" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="VARCHAR" />
+    <result column="bankcard_no" property="bankcardNo" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="audit_status" property="auditStatus" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="rec_order_no" property="recOrderNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="cust_wit_desc" property="witDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <!-- 根据客户统计提现总额 -->
+  <select id="getAmountSumByCustId" parameterType="String" resultType="java.util.Map">
+  	SELECT
+		t.commonAmount,
+		t.rechargeAmount,
+		(
+			t.commonAmount + t.rechargeAmount
+		) availableAmount
+	FROM
+		(
+			SELECT
+				(
+					SELECT
+						ifnull(sum(bac.available_amount),0)
+					FROM
+						t_biz_account_common bac
+					WHERE
+						bac.customer_id = #{pid,jdbcType=VARCHAR}
+				) commonAmount,
+				(
+					SELECT
+						ifnull(sum(bar.available_amount),0)
+					FROM
+						t_biz_account_recharge bar
+					WHERE
+						bar.customer_id = #{pid,jdbcType=VARCHAR}
+				) rechargeAmount
+			FROM
+				DUAL
+		) t
+  </select>
+  
+ <!-- 个人中心  充值 列表查询  分页   可扩展 -->
+  <select id="selectRechargePage" resultMap="BaseRechargeResultMap">
+  select * from (
+  	(
+	SELECT
+		rf.PID,
+		rf.customer_id,
+		'线下充值' pay_name,
+		rf.amount,
+		CASE rec_status
+		WHEN 1 THEN
+			'待审核'
+		WHEN 2 THEN
+			'成功'
+		WHEN 3 THEN
+			'失败'
+		END rec_status,
+		rf.rec_time,
+		CONCAT('F',DATE_FORMAT(rf.rec_time,'%Y%m%d'),rf.rec_order_no) rec_order_no,
+		rf.status
+	FROM
+		t_biz_recharge_offline rf
+	INNER JOIN t_cust_fund_water cfw ON cfw.fkey = rf.PID
+	WHERE
+		cfw.business_type = '101'
+		and cfw.customer_id = #{map.customerId,jdbcType=VARCHAR}
+	   <if test="map.happenBeginTime != null and map.happenBeginTime != '' " > 
+       	and cfw.happen_time <![CDATA[ >= ]]> #{map.happenBeginTime,jdbcType=DATE}
+       </if>
+       <if test="map.happenEndTime != null and map.happenEndTime != '' " > 
+       	and cfw.happen_time <![CDATA[ <= ]]> date_add(#{map.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+       </if>
+	)
+	UNION ALL
+		(
+		SELECT
+			rn.PID,
+			rn.customer_id,
+			(
+				SELECT
+					pc.pay_name
+				FROM
+					t_pay_config pc
+				WHERE
+					pc.pid = rn.pay_config_id
+			) pay_name,
+			rn.amount,
+			CASE rec_status
+			WHEN 1 THEN
+				'待付款'
+			WHEN 2 THEN
+				'付款失败'
+			WHEN 3 THEN
+				'充值成功'
+			WHEN 4 THEN
+				'待充值'
+			WHEN 5 THEN
+				'系统充值'
+			WHEN 6 THEN
+				'手动补单'
+			WHEN 7 THEN
+				'错误修正'
+			END rec_status,
+			rn.rec_time,
+			CONCAT('N',DATE_FORMAT(rn.rec_time,'%Y%m%d'),rn.rec_order_no) rec_order_no,
+			rn.STATUS
+		FROM
+			t_biz_recharge_online rn
+		INNER JOIN t_cust_fund_water cfw ON cfw.fkey = rn.PID
+		WHERE
+			cfw.business_type = '103'
+		    and cfw.customer_id = #{map.customerId,jdbcType=VARCHAR}
+		   <if test="map.happenBeginTime != null and map.happenBeginTime != '' " > 
+	       	and cfw.happen_time <![CDATA[ >= ]]> #{map.happenBeginTime,jdbcType=DATE}
+	       </if>
+	       <if test="map.happenEndTime != null and map.happenEndTime != '' " > 
+	       	and cfw.happen_time <![CDATA[ <= ]]> date_add(#{map.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+	       </if>
+		)
+		) biz_recharge
+		ORDER BY biz_recharge.rec_time DESC
+       LIMIT #{pageIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+  </select>
+  
+   <!-- 个人中心  充值 列表查询  统计总数   可扩展 -->
+  <select id="selectRechargeTotal" resultType="Integer">
+  	select 
+  		count(1)
+  	from t_cust_fund_water cfw 
+  	where 
+ 	   cfw.business_type in ('103','101')
+ 	   and cfw.customer_id = #{map.customerId,jdbcType=VARCHAR}
+ 	   <if test="map.happenBeginTime != null and map.happenBeginTime != '' " > 
+       	and  cfw.happen_time <![CDATA[ >= ]]> #{map.happenBeginTime,jdbcType=DATE}
+       </if>
+       <if test="map.happenEndTime != null and map.happenEndTime != '' " > 
+       	and  cfw.happen_time <![CDATA[ <= ]]> date_add(#{map.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+       </if>
+  </select>
+  
+   <!-- 个人中心  提现 列表查询  分页   可扩展 -->
+  <select id="selectWithdrawPage" resultMap="BaseWithdrawResultMap">
+  	SELECT
+		bw.apply_time,
+		CONCAT('W',DATE_FORMAT(bw.apply_time,'%Y%m%d'),bw.rec_order_no) rec_order_no,
+		bw.amount,
+		bw.fee,
+		bw.bank_id,
+		(
+			SELECT
+				cb.bankcard_no
+			FROM
+				t_cust_bank cb
+			WHERE
+				cb.PID = bw.bank_id
+		) bankcard_no,
+		CASE audit_status
+			WHEN 1 THEN
+			'审核中'
+			WHEN 2 THEN
+			'审核中'
+			WHEN 4 THEN
+			'提现成功'
+			WHEN 3 THEN
+			'提现失败'
+			WHEN 5 THEN
+			'提现失败'
+		END audit_status,
+		bw.cust_wit_desc
+	FROM
+		t_biz_withdraw bw
+	WHERE
+	    bw.customer_id =  #{map.customerId,jdbcType=VARCHAR}
+	   <if test="map.happenBeginTime != null and map.happenBeginTime != '' " > 
+       	and bw.apply_time <![CDATA[ >= ]]> #{map.happenBeginTime,jdbcType=DATE}
+       </if>
+       <if test="map.happenEndTime != null and map.happenEndTime != '' " > 
+       	and bw.apply_time <![CDATA[ <= ]]> date_add(#{map.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+       </if>
+       ORDER BY bw.apply_time DESC
+    LIMIT #{pageIndex,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+  </select>
+  
+   <!-- 个人中心  提现 列表查询  统计总数   可扩展 -->
+  <select id="selectWithdrawTotal" resultType="Integer">
+  	select 
+  		count(1)
+  	from t_cust_fund_water cfw 
+  	where 
+ 	   cfw.business_type = '202'
+ 	   and cfw.customer_id = #{map.customerId,jdbcType=VARCHAR}
+ 	   <if test="map.happenBeginTime != null and map.happenBeginTime != '' " > 
+       	and  cfw.happen_time <![CDATA[ >= ]]> #{map.happenBeginTime,jdbcType=DATE}
+       </if>
+       <if test="map.happenEndTime != null and map.happenEndTime != '' " > 
+       	and  cfw.happen_time <![CDATA[ <= ]]> date_add(#{map.happenEndTime,jdbcType=DATE}, INTERVAL 1 day)
+       </if>
+  </select>
+  
+</mapper>

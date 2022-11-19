@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.statistics.CusInvestStatisticsMapper" >
+
+	<!-- 投资人区域分布统计	按省份统计 -->
+	<select id="selectInvCusStatisticsGroupProvince" parameterType="java.util.Map" resultType="com.yscf.core.model.statistics.CusInvestStatistics">
+		SELECT
+			SUM(bd.investment_amount) borrowMoneySum,
+			bd.province,
+			COUNT(DISTINCT bd.customer_id) customerCount
+		FROM
+			(
+				(
+					SELECT
+						b.investment_amount,
+						c.province,
+						b.customer_id
+					FROM
+						t_biz_borrow_detail b
+					LEFT JOIN t_cust_customer c ON b.customer_id = c.PID
+					LEFT JOIN t_biz_borrow bb ON b.borrow_id = bb.PID
+					WHERE
+						b. STATUS = 1
+					AND bb.borrow_type IN (1, 2)
+					AND bb.bor_status <![CDATA[>=]]> 4
+				)
+				UNION
+				(
+					SELECT
+						b.investment_amount,
+						c.province,
+						b.customer_id
+					FROM
+						t_biz_borrow_detail b
+					LEFT JOIN t_cust_customer c ON b.customer_id = c.PID
+					LEFT JOIN t_biz_borrow bb ON b.borrow_id = bb.PID
+					WHERE
+						b.STATUS = 1
+					AND bb.borrow_type IN (3, 4)
+				)
+			) bd
+		GROUP BY
+			bd.province
+		ORDER BY
+			<if test="orderByType != null and orderByType == 1">
+				borrowMoneySum DESC
+			</if>
+			<if test="orderByType != null and orderByType == 2">
+				customerCount DESC
+			</if>
+	</select>
+	
+	<!-- 投资人区域分布统计	按市统计 -->
+	<select id="selectInvCusStatisticsGroupCity" parameterType="java.util.Map" resultType="com.yscf.core.model.statistics.CusInvestStatistics">
+		SELECT
+			SUM(bd.investment_amount) borrowMoneySum,
+			bd.city,
+			COUNT(DISTINCT bd.customer_id) customerCount
+		FROM
+		(
+			(
+				SELECT
+					b.investment_amount,
+					c.city,
+					b.customer_id
+				FROM
+					t_biz_borrow_detail b
+				LEFT JOIN t_cust_customer c ON b.customer_id = c.PID
+				LEFT JOIN t_biz_borrow bb ON b.borrow_id = bb.PID
+				WHERE
+					b.STATUS = 1
+				AND bb.borrow_type IN (1, 2)
+				AND bb.bor_status <![CDATA[>=]]> 4
+				AND c.province = #{province,jdbcType=VARCHAR}
+			)
+			UNION
+			(
+				SELECT
+					b.investment_amount,
+					c.city,
+					b.customer_id
+				FROM
+					t_biz_borrow_detail b
+				LEFT JOIN t_cust_customer c ON b.customer_id = c.PID
+				LEFT JOIN t_biz_borrow bb ON b.borrow_id = bb.PID
+				WHERE
+					b.STATUS = 1
+				AND bb.borrow_type IN (3, 4)
+				AND c.province = #{province,jdbcType=VARCHAR}
+			)
+		) bd
+		GROUP BY
+			bd.city
+		ORDER BY
+		<if test="orderByType != null and orderByType == 1">
+			borrowMoneySum DESC
+		</if>
+		<if test="orderByType != null and orderByType == 2">
+			customerCount DESC
+		</if>
+	</select>
+	<!-- 
+		SELECT
+			sum(b.investment_amount) borrowMoneySum,
+			c.city,
+			COUNT(DISTINCT b.customer_id) customerCount
+		FROM
+			t_biz_borrow_detail b
+		LEFT JOIN t_cust_customer c ON b.customer_id = c.PID
+		LEFT JOIN t_biz_borrow bb ON b.borrow_id = bb.PID
+		WHERE b.status = 1
+			AND bb.borrow_type <![CDATA[<>]]> 5
+			AND c.province = #{province,jdbcType=VARCHAR}
+		GROUP BY
+			c.city
+		ORDER BY
+			<if test="orderByType != null and orderByType == 1">
+				borrowMoneySum DESC
+			</if>
+			<if test="orderByType != null and orderByType == 2">
+				customerCount DESC
+			</if> -->
+	
+	<!-- 投资人按年龄分布 -->
+	<select id="selectInvestmentStatisticsByAge" resultType="com.yscf.core.model.statistics.CusInvestStatisticsAge" >
+		SELECT
+		sum(case when c.age <![CDATA[ >= ]]> 18 and c.age <![CDATA[ <= ]]> 24 then 1 ELSE 0 end )as ageValue1,
+		sum(case when c.age <![CDATA[ >= ]]> 25 and c.age <![CDATA[ <= ]]> 30 then 1 ELSE 0 end )as ageValue2,
+		sum(case when c.age <![CDATA[ >= ]]> 31 and c.age <![CDATA[ <= ]]> 35 then 1 ELSE 0 end )as ageValue3,
+		sum(case when c.age <![CDATA[ >= ]]> 36 and c.age <![CDATA[ <= ]]> 40 then 1 ELSE 0 end )as ageValue4,
+		sum(case when c.age <![CDATA[ >= ]]> 41 and c.age <![CDATA[ <= ]]> 45 then 1 ELSE 0 end )as ageValue5,
+		sum(case when c.age <![CDATA[ >= ]]> 46 and c.age <![CDATA[ <= ]]> 50 then 1 ELSE 0 end )as ageValue6,
+		sum(case when c.age <![CDATA[ >= ]]> 51 and c.age <![CDATA[ <= ]]> 60 then 1 ELSE 0 end )as ageValue7,
+		sum(case when c.age <![CDATA[ >= ]]> 61 then 1 ELSE 0 end )as ageValue8,
+		sum(case when c.age is null or c.age <![CDATA[ < ]]> 18 then 1 ELSE 0 end)as ageValue9
+		FROM (select DISTINCT customer_id from t_biz_borrow_detail) bb,t_cust_customer c
+		where bb.customer_id = c.pid 
+	</select>
+	
+	<!-- 投资人按性别分布 -->
+	<select id="selectInvestmentStatisticsBySex" resultType="com.yscf.core.model.statistics.CusInvestStatisticsDto" >
+		SELECT 
+		case c.sex when 1 then '男' when 2 then '女' else '其他' end as name, count(1) as y
+		FROM (select DISTINCT customer_id from t_biz_borrow_detail) bb,t_cust_customer c
+		where bb.customer_id = c.pid
+		GROUP BY c.sex
+	</select>
+	
+	<!-- 使用终端统计 -->
+	<select id="selectSysIpPvHisStatistics" parameterType="com.yscf.core.model.system.SysIpPvHis" resultType="com.yscf.core.model.statistics.CusInvestStatisticsDto">
+		select count(1) y,
+		case c.type when 1 then 'iPhone' when 2 then 'android'
+		when 3 then 'wap' when 4 then 'PC' end as name
+		from t_sys_ip_pv_his c
+		where 1 = 1 
+		<if test="type != null and type == 1">
+			and (DATE_FORMAT(c.create_time ,'%Y' ) = #{year,jdbcType=INTEGER})
+		</if>
+		<if test="type != null and type == 2">
+			and (DATE_FORMAT(c.create_time ,'%Y') = #{year,jdbcType=INTEGER} and DATE_FORMAT(c.create_time ,'%m') = #{month,jdbcType=INTEGER})
+		</if>
+		GROUP BY c.type
+	</select>
+	
+</mapper>

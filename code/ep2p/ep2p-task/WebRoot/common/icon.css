@@ -1,0 +1,201 @@
+.icon-user{
+	background:url('images/icons/user/user.png') no-repeat center center;
+}
+.icon-user-list{
+	background:url('images/icons/group/group.png') no-repeat center center;
+}
+.icon-user-recycle,.icon-recycle{
+	background:url('images/icons/bin_empty.png') no-repeat center center;
+}
+.icon-user-user{
+	background:url('images/icons/user/user_orange.png') no-repeat center center;
+}
+.icon-blacklist{
+	background:url('images/icons/user/user_gray.png') no-repeat center center;
+}
+.icon-forummanager{
+	background:url('images/icons/user/user_forummanager.png') no-repeat center center;
+}
+
+.icon-security{
+	background:url('images/icons/application/application_key.png') no-repeat center center;
+}
+.icon-security-dictionary{
+	background:url('images/icons/book.png') no-repeat center center;
+}
+.icon-security-note{
+	background:url('images/icons/notes/note.png') no-repeat center center;
+}
+.icon-security-sysuser{
+	background:url('images/icons/status_online.png') no-repeat center center;
+}
+.icon-security-role{
+	background:url('images/icons/folder/folder_user.png') no-repeat center center;
+}
+.icon-security-module{
+	background:url('images/icons/plugin.png') no-repeat center center;
+}
+.icon-security-druid{
+	background:url('images/icons/page/page_world.png') no-repeat center center;
+}
+.icon-security-organization{
+	background:url('images/icons/bricks.png') no-repeat center center;
+}
+.icon-keywords{
+	background:url('images/icons/keywords.png') no-repeat center center;
+}
+
+.icon-manage{
+	background:url('images/icons/comment_edit.png') no-repeat center center;
+}
+.icon-manage-medal{
+	background:url('images/icons/shield.png') no-repeat center center;
+}
+.icon-manage-explain{
+	background:url('images/icons/text_align_center.png') no-repeat center center;
+}
+.icon-manage-star{
+	background:url('images/icons/star.png') no-repeat center center;
+}
+.icon-manage-keyword{
+	background:url('images/icons/text_smallcaps.png') no-repeat center center;
+}
+.icon-manage-feedbacklist{
+	background:url('images/icons/text_indent_remove.png') no-repeat center center;
+}
+.icon-manage-illegal{
+	background:url('images/icons/error.png') no-repeat center center;
+}
+.icon-manage-carcomment{
+	background:url('images/icons/text_signature.png') no-repeat center center;
+}
+.icon-manage-creditcar{
+	background:url('images/icons/vcard/vcard.png') no-repeat center center;
+}
+.icon-manage-notice{
+	background:url('images/icons/feed/feed.png') no-repeat center center;
+}
+.icon-manage-yhq{
+	background:url('images/icons/money.png') no-repeat center center;
+}
+.icon-manage-messages{
+	background:url('images/icons/comments.png') no-repeat center center;
+}
+.icon-manage-message{
+	background:url('images/icons/comment.png') no-repeat center center;
+}
+.icon-manage-aboutme{
+	background:url('images/icons/user/user_go.png') no-repeat center center;
+}
+.icon-manage-instruction{
+	background:url('images/icons/text_padding_left.png') no-repeat center center;
+}
+
+.icon-table{
+	background:url('images/icons/table/table_multiple.png') no-repeat center center;
+}
+.icon-table-report{
+	background:url('images/icons/chart/chart_pie.png') no-repeat center center;
+}
+.icon-table-new_caruser{
+	background:url('images/icons/chart/chart_curve_add.png') no-repeat center center;
+}
+.icon-table-new_cartenant{
+	background:url('images/icons/chart/chart_line_add.png') no-repeat center center;
+}
+.icon-table-cashout{
+	background:url('images/icons/table/table_refresh.png') no-repeat center center;
+}
+.icon-table-income{
+	background:url('images/icons/money_add.png') no-repeat center center;
+}
+.icon-table-order{
+	background:url('images/icons/table/table_relationship.png') no-repeat center center;
+}
+.icon-table-revenue{
+	background:url('images/icons/coins_add.png') no-repeat center center;
+}
+.icon-table-newcar{
+	background:url('images/icons/table/table.png') no-repeat center center;
+}
+.icon-table-carfault{
+	background:url('images/icons/table/table_gear.png') no-repeat center center;
+}
+.icon-table-caraccident{
+	background:url('images/icons/table/table_error.png') no-repeat center center;
+}
+.icon-table-performance{
+	background:url('images/icons/rosette.png') no-repeat center center;
+}
+
+.icon-exercise{
+	background:url('images/icons/page/report.png') no-repeat center center;
+}
+.icon-exercise-list{
+	background:url('images/icons/page/page_white_stack.png') no-repeat center center;
+}
+.icon-order-rzcheck{
+	background:url('images/icons/book_key.png') no-repeat center center;
+}
+
+.icon-courseware-manage{
+	background:url('images/icons/book_open.png') no-repeat center center;
+}
+.icon-courseware-list{
+	background:url('images/icons/text_horizontalrule.png') no-repeat center center;
+}
+.icon-courseware-recycle{
+	background:url('images/icons/bin.png') no-repeat center center;
+}
+
+.icon-train-manage{
+	background:url('images/icons/style_edit.png') no-repeat center center;
+}
+.icon-train-list{
+	background:url('images/icons/text_signature.png') no-repeat center center;
+}
+
+.icon-train-company{
+	background:url('images/icons/application/application_view_list.png') no-repeat center center;
+}
+.icon-train-teacher-list{
+	background:url('images/icons/group/group_link.png') no-repeat center center;
+}
+.icon-train-teacher{
+	background:url('images/icons/group/group_edit.png') no-repeat center center;
+}
+
+.icon-question-manage{
+	background:url('images/icons/database_edit.png') no-repeat center center;
+}
+.icon-question-list{
+	background:url('images/icons/text_indent.png') no-repeat center center;
+}
+
+.icon-exam-manage{
+	background:url('images/icons/page/page_white_paintbrush.png') no-repeat center center;
+}
+.icon-exam-list{
+	background:url('images/icons/text_list_numbers.png') no-repeat center center;
+}
+.icon-exam-info{
+	background:url('images/icons/text_linespacing.png') no-repeat center center;
+}
+.icon-exam-company{
+	background:url('images/icons/text_list_bullets.png') no-repeat center center;
+}
+
+.icon-exam-company-error{
+	background:url('images/icons/application/application_error.png') no-repeat center center;
+}
+.icon-help-center{
+	background:url('images/icons/heart.png') no-repeat center center;
+}
+
+
+.icon-PK-manage{
+	background:url('images/icons/thumb_up.png') no-repeat center center;
+}
+.icon-PK-list{
+	background:url('images/icons/text_dropcaps.png') no-repeat center center;
+}

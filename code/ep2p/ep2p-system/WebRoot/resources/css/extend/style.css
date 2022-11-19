@@ -1,0 +1,326 @@
+@charset "utf-8";
+.activity_condition{width: 40px;float: left;text-align: center;margin-top: 90px;margin-left: 10px;margin-right: 10px;}
+.activity_condition a{width: 40px;margin-bottom: 10px;}
+.vertical_align_top{vertical-align: top;}
+.blueLink{
+	color: blue;
+	text-decoration: underline;
+}
+.form_table_one{
+	width:75%;
+	margin:0;
+	padding:10px 0 0 0;
+}
+table,table tr,table td{
+	border-collapse: collapse;	
+}
+#menu_button_div{
+	width:60%;
+	padding:15px 0 0 0;
+}
+.topBorder{
+	border-bottom:none;
+	border-left:none;
+	border-right:none;
+}
+.noPadding{padding:0;}
+.left{float:left;}
+.right{float:right;}
+.p10{padding:10px;}
+.pt10{padding-top:10px;}
+.p5{padding:5px;}
+.pt5{padding-top:5px;}
+.form_table_one .easyui-validatebox,.form_table_one textarea {
+	width:60%;
+	min-width:200px;
+}
+.menuEditBtnDiv{
+	width:35%;
+	text-align:right;
+	padding-top:15px;
+}
+#menu-index-tree .tree-node-selected{
+	color:#444;
+}
+.cus_red,.red{color:red;}
+.percent90{
+	width:90%;
+}
+.percent68{
+	width:68%;
+}
+.percent70{
+	width:70%;
+}
+.percent100{
+	width:100%;
+}
+.formWrap td{
+	padding:4px 0;
+}
+.formWrap textarea{
+	width:300px;
+	height:120px;
+}
+.formTable td{
+	padding:5px;
+}
+.check_box{line-height: 20px;}
+.check_box label{ display: inline-block; padding-right: 26px;}
+.check_box input{ position: relative; top: 2px;}
+.fontNormal{font-weight:normal;}
+input:disabled{
+	border:none;
+	background-color:transparent;
+}
+.operateUl li{
+	width:50%;
+	float:left;
+	padding:4px 0;
+}
+.borrowtype{
+	width:145px;
+	height:145px;
+	line-height:145px;
+	color:#fff;
+	display:block;
+	background:#00ccff;
+	border-radius:50% 50%;
+	font-size:16px;
+	font-weight:bold;
+}
+.borrowtype:hover,.borrowtype:focus,.borrowtype:active{
+	background:#2980b9;
+	color:#fff;
+}
+.borrowBar{
+	height:20px;
+	line-height:20px;
+	color:#fff;
+	width:100%;
+	background:#00ccff;
+	text-align:center;
+}
+.borrowState,.borrowState:hover{
+	width:90px;
+	height:90px;
+	display:block;
+	color:#fff;
+	text-align:center;
+	line-height:90px;
+	border-radius:50% 50%;
+	font-weight:bold;
+}
+.overState{
+	background:#00ccff;
+}
+.greyState{
+	background:#ccc;
+}
+.greyBar{
+	height:20px;
+	background:#ccc;
+	width:90px;
+	position:relative;
+}
+.overBar{
+	background:#00ccff;
+}
+.greyBarLast{
+	width:84px;
+	margin-right:10px;
+}
+.greyBarLast:after {
+  border: 10px solid transparent;
+  border-left: 10px solid #ccc;
+  width: 0;
+  height: 0;
+  right:-20px;
+  position: absolute;
+  content: ' '
+}
+.overBarLast:after {
+  border-left: 10px solid #00ccff;
+}
+.addFileBtn{
+	width:100px;
+	height:100px;
+	display:block;
+	text-indent:-9999px;
+	background:#ccc url(../../images/add.png) no-repeat center center;
+}
+h4{
+	width:100%;
+	font-size:12px;
+	padding:5px 0;
+	font-weight:bold;
+	border-bottom:1px solid #ddd;
+}
+.scrollNavDiv{
+	position:relative;
+	width: 750px;
+    overflow: hidden;
+    height: 50px;
+}
+.scrollNavDiv ul{
+	position:absolute;
+
+}
+#role_permission_tree .tree-node-selected{
+	color:#00438a;
+	font-weight:bold;
+}
+#menu-index-tree .tree-node-selected{
+	color:#00438a;
+	font-weight:bold;
+}
+
+.filePreview{
+	margin:0;
+}
+.filePreview li{
+	float:left;
+	width:auto;
+	padding-right:10px;
+	padding-bottom:10px;
+	position:relative;
+}
+.filePreview li .deleteImgBtn{
+	position:absolute;
+	right:5px;
+	top:-5px;
+	width:25px;
+	height:25px;
+	display:block;
+	text-indent:-99999px;
+	border-radius:50% 50%;
+	background:#ccc url(../../images/imgclose.png) no-repeat center center;
+}
+.filePreview li .deleteImgBtn:hover,.filePreview li .downloadImg:hover{
+	background-color:#00ccff;
+}
+.filePreview li .downloadImg{
+	position:absolute;
+	right:35px;
+	top:-5px;
+	width:25px;
+	height:25px;
+	display:block;
+	text-indent:-99999px;
+	border-radius:50% 50%;
+	background:#ccc url(../../images/download.png) no-repeat center center;
+}
+.borrowDetailPage .panel-tool a,.borrowDetailPage .panel-tool a:hover{
+	width:auto;
+	background-color:transparent;
+}
+.pdfImg{
+	width:150px;
+	height:150px;
+	background:url(../../images/pdf.png)no-repeat center center;
+	background-size:100% 100%;
+}
+.borderCss{
+	border:1px solid #c4d0da;
+}
+.taskItem{
+	width:25%;
+	float:left;
+	height:198px;
+}
+.taskpan{
+	width:97%;
+	height:198px;
+}
+.taskTitle{
+	height:40px;
+	line-height:40px;
+	font-size:14px;
+	font-weight:bold;
+	padding-left:32px;
+	position:relative;
+}
+.taskTitle .taskCount{
+	font-weight:normal;
+	font-size:12px;
+	background:#2c3e50;
+	color:#fff;
+	border-radius:50% 50%;
+	width:25px;
+	height:25px;
+	line-height:25px;
+	display:block;
+	position:absolute;
+	right:15px;
+	top:8px;
+	text-align:center;
+}
+.taskList ul{
+	padding:0 15px 0 27px;
+	margin:0;
+}
+.taskList ul li{
+	position:relative;
+}
+.taskList ul li,.taskList ul li a{
+	height:30px;
+	line-height:30px;
+	display:block;
+}
+.enableItem a,.enableItem span{	
+	color:#f39c12;
+}
+.disableItem a,.disableItem span{color:#95a5a6;}
+
+.taskList ul li .badge{
+	width: 85%;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 30px;
+}
+.taskiCount{
+	position:absolute;
+	right:10px;
+	top:5px;
+}
+.disableTitle{
+	color:#95a5a6;
+}
+.disableTitle .taskCount{
+	background-color:#95a5a6;
+}
+#activity_check_task_div .taskTitle{
+	background:url(../../images/activ-enable.png) no-repeat 12px center
+}
+#business_check_task_div .taskTitle{
+	background:url(../../images/busin-enable.png) no-repeat 12px center
+}
+#finance_check_task_div .taskTitle{
+	background:url(../../images/dollar-enable.png) no-repeat 12px center
+}
+#client_check_task_div .taskTitle{
+	background:url(../../images/homeuser-enable.png) no-repeat 12px center
+}
+
+#activity_check_task_div .disableTitle{
+	background:url(../../images/activ-disable.png) no-repeat 12px center
+}
+#business_check_task_div .disableTitle{
+	background:url(../../images/busin-disable.png) no-repeat 12px center
+}
+#finance_check_task_div .disableTitle{
+	background:url(../../images/dollar-disable.png) no-repeat 12px center
+}
+#client_check_task_div .disableTitle{
+	background:url(../../images/homeuser-disable.png) no-repeat 12px center
+}
+.exportSelectUl{
+	margin:0;
+}
+.lineHeight25{
+	line-height:25px;
+}
+.lineHeight22{
+	line-height:22px;
+}

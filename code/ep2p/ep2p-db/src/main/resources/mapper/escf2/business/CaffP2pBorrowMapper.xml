@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.business.CaffP2pBorrowMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.business.CaffP2pBorrow" >
+    <id column="caffP2pBorrowId" property="caffp2pborrowid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="successAmount" property="successamount" jdbcType="DECIMAL" />
+    <result column="bidCount" property="bidcount" jdbcType="INTEGER" />
+    <result column="bidDays" property="biddays" jdbcType="INTEGER" />
+    <result column="borrowCount" property="borrowcount" jdbcType="INTEGER" />
+    <result column="bidExpireDateLong" property="bidexpiredatelong" jdbcType="BIGINT" />
+    <result column="bidTimeLong" property="bidtimelong" jdbcType="BIGINT" />
+    <result column="successDateLong" property="successdatelong" jdbcType="BIGINT" />
+    <result column="bondingCompanyId" property="bondingcompanyid" jdbcType="BIGINT" />
+    <result column="borrowStateInt" property="borrowstateint" jdbcType="INTEGER" />
+    <result column="borrowTypeInt" property="borrowtypeint" jdbcType="INTEGER" />
+    <result column="repayGuaranteeTypeInt" property="repayguaranteetypeint" jdbcType="INTEGER" />
+    <result column="interestCalculationTypeInt" property="interestcalculationtypeint" jdbcType="INTEGER" />
+    <result column="maxBidAmount" property="maxbidamount" jdbcType="DECIMAL" />
+    <result column="minBidAmount" property="minbidamount" jdbcType="DECIMAL" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="purposeTypeInt" property="purposetypeint" jdbcType="INTEGER" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="rewardRate" property="rewardrate" jdbcType="DECIMAL" />
+    <result column="rootBorrowId" property="rootborrowid" jdbcType="BIGINT" />
+    <result column="createUserId" property="createuserid" jdbcType="BIGINT" />
+    <result column="timeCount" property="timecount" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="reference1" property="reference1" jdbcType="BIGINT" />
+    <result column="reference2" property="reference2" jdbcType="BIGINT" />
+    <result column="reference3" property="reference3" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="cdregistertime" property="cdregistertime" jdbcType="VARCHAR" />
+    <result column="cdregistertimeend" property="cdregistertimeend" jdbcType="VARCHAR" />
+    <result column="cdbidamount" property="cdbidamount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pBorrowId, createdDateLong, version, userId, amount, successAmount, bidCount, 
+    bidDays, borrowCount, bidExpireDateLong, bidTimeLong, successDateLong, bondingCompanyId, 
+    borrowStateInt, borrowTypeInt, repayGuaranteeTypeInt, interestCalculationTypeInt, 
+    maxBidAmount, minBidAmount, password, purposeTypeInt, rate, rewardRate, rootBorrowId, 
+    createUserId, timeCount, title, reference1, reference2, reference3, bitState, cdregistertime, 
+    cdregistertimeend, cdbidamount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pBorrow
+    where caffP2pBorrowId = #{caffp2pborrowid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pBorrow
+    where caffP2pBorrowId = #{caffp2pborrowid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrow" >
+    insert into CaffP2pBorrow (caffP2pBorrowId, createdDateLong, version, 
+      userId, amount, successAmount, 
+      bidCount, bidDays, borrowCount, 
+      bidExpireDateLong, bidTimeLong, successDateLong, 
+      bondingCompanyId, borrowStateInt, borrowTypeInt, 
+      repayGuaranteeTypeInt, interestCalculationTypeInt, 
+      maxBidAmount, minBidAmount, password, 
+      purposeTypeInt, rate, rewardRate, 
+      rootBorrowId, createUserId, timeCount, 
+      title, reference1, reference2, 
+      reference3, bitState, cdregistertime, 
+      cdregistertimeend, cdbidamount)
+    values (#{caffp2pborrowid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, 
+      #{userid,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{successamount,jdbcType=DECIMAL}, 
+      #{bidcount,jdbcType=INTEGER}, #{biddays,jdbcType=INTEGER}, #{borrowcount,jdbcType=INTEGER}, 
+      #{bidexpiredatelong,jdbcType=BIGINT}, #{bidtimelong,jdbcType=BIGINT}, #{successdatelong,jdbcType=BIGINT}, 
+      #{bondingcompanyid,jdbcType=BIGINT}, #{borrowstateint,jdbcType=INTEGER}, #{borrowtypeint,jdbcType=INTEGER}, 
+      #{repayguaranteetypeint,jdbcType=INTEGER}, #{interestcalculationtypeint,jdbcType=INTEGER}, 
+      #{maxbidamount,jdbcType=DECIMAL}, #{minbidamount,jdbcType=DECIMAL}, #{password,jdbcType=VARCHAR}, 
+      #{purposetypeint,jdbcType=INTEGER}, #{rate,jdbcType=DECIMAL}, #{rewardrate,jdbcType=DECIMAL}, 
+      #{rootborrowid,jdbcType=BIGINT}, #{createuserid,jdbcType=BIGINT}, #{timecount,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{reference1,jdbcType=BIGINT}, #{reference2,jdbcType=BIGINT}, 
+      #{reference3,jdbcType=BIGINT}, #{bitstate,jdbcType=BIGINT}, #{cdregistertime,jdbcType=VARCHAR}, 
+      #{cdregistertimeend,jdbcType=VARCHAR}, #{cdbidamount,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrow" >
+    insert into CaffP2pBorrow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2pborrowid != null" >
+        caffP2pBorrowId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="successamount != null" >
+        successAmount,
+      </if>
+      <if test="bidcount != null" >
+        bidCount,
+      </if>
+      <if test="biddays != null" >
+        bidDays,
+      </if>
+      <if test="borrowcount != null" >
+        borrowCount,
+      </if>
+      <if test="bidexpiredatelong != null" >
+        bidExpireDateLong,
+      </if>
+      <if test="bidtimelong != null" >
+        bidTimeLong,
+      </if>
+      <if test="successdatelong != null" >
+        successDateLong,
+      </if>
+      <if test="bondingcompanyid != null" >
+        bondingCompanyId,
+      </if>
+      <if test="borrowstateint != null" >
+        borrowStateInt,
+      </if>
+      <if test="borrowtypeint != null" >
+        borrowTypeInt,
+      </if>
+      <if test="repayguaranteetypeint != null" >
+        repayGuaranteeTypeInt,
+      </if>
+      <if test="interestcalculationtypeint != null" >
+        interestCalculationTypeInt,
+      </if>
+      <if test="maxbidamount != null" >
+        maxBidAmount,
+      </if>
+      <if test="minbidamount != null" >
+        minBidAmount,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="purposetypeint != null" >
+        purposeTypeInt,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="rewardrate != null" >
+        rewardRate,
+      </if>
+      <if test="rootborrowid != null" >
+        rootBorrowId,
+      </if>
+      <if test="createuserid != null" >
+        createUserId,
+      </if>
+      <if test="timecount != null" >
+        timeCount,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="reference1 != null" >
+        reference1,
+      </if>
+      <if test="reference2 != null" >
+        reference2,
+      </if>
+      <if test="reference3 != null" >
+        reference3,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="cdregistertime != null" >
+        cdregistertime,
+      </if>
+      <if test="cdregistertimeend != null" >
+        cdregistertimeend,
+      </if>
+      <if test="cdbidamount != null" >
+        cdbidamount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2pborrowid != null" >
+        #{caffp2pborrowid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="successamount != null" >
+        #{successamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidcount != null" >
+        #{bidcount,jdbcType=INTEGER},
+      </if>
+      <if test="biddays != null" >
+        #{biddays,jdbcType=INTEGER},
+      </if>
+      <if test="borrowcount != null" >
+        #{borrowcount,jdbcType=INTEGER},
+      </if>
+      <if test="bidexpiredatelong != null" >
+        #{bidexpiredatelong,jdbcType=BIGINT},
+      </if>
+      <if test="bidtimelong != null" >
+        #{bidtimelong,jdbcType=BIGINT},
+      </if>
+      <if test="successdatelong != null" >
+        #{successdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="bondingcompanyid != null" >
+        #{bondingcompanyid,jdbcType=BIGINT},
+      </if>
+      <if test="borrowstateint != null" >
+        #{borrowstateint,jdbcType=INTEGER},
+      </if>
+      <if test="borrowtypeint != null" >
+        #{borrowtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="repayguaranteetypeint != null" >
+        #{repayguaranteetypeint,jdbcType=INTEGER},
+      </if>
+      <if test="interestcalculationtypeint != null" >
+        #{interestcalculationtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="maxbidamount != null" >
+        #{maxbidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="minbidamount != null" >
+        #{minbidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="purposetypeint != null" >
+        #{purposetypeint,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardrate != null" >
+        #{rewardrate,jdbcType=DECIMAL},
+      </if>
+      <if test="rootborrowid != null" >
+        #{rootborrowid,jdbcType=BIGINT},
+      </if>
+      <if test="createuserid != null" >
+        #{createuserid,jdbcType=BIGINT},
+      </if>
+      <if test="timecount != null" >
+        #{timecount,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="reference1 != null" >
+        #{reference1,jdbcType=BIGINT},
+      </if>
+      <if test="reference2 != null" >
+        #{reference2,jdbcType=BIGINT},
+      </if>
+      <if test="reference3 != null" >
+        #{reference3,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="cdregistertime != null" >
+        #{cdregistertime,jdbcType=VARCHAR},
+      </if>
+      <if test="cdregistertimeend != null" >
+        #{cdregistertimeend,jdbcType=VARCHAR},
+      </if>
+      <if test="cdbidamount != null" >
+        #{cdbidamount,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrow" >
+    update CaffP2pBorrow
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="successamount != null" >
+        successAmount = #{successamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidcount != null" >
+        bidCount = #{bidcount,jdbcType=INTEGER},
+      </if>
+      <if test="biddays != null" >
+        bidDays = #{biddays,jdbcType=INTEGER},
+      </if>
+      <if test="borrowcount != null" >
+        borrowCount = #{borrowcount,jdbcType=INTEGER},
+      </if>
+      <if test="bidexpiredatelong != null" >
+        bidExpireDateLong = #{bidexpiredatelong,jdbcType=BIGINT},
+      </if>
+      <if test="bidtimelong != null" >
+        bidTimeLong = #{bidtimelong,jdbcType=BIGINT},
+      </if>
+      <if test="successdatelong != null" >
+        successDateLong = #{successdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="bondingcompanyid != null" >
+        bondingCompanyId = #{bondingcompanyid,jdbcType=BIGINT},
+      </if>
+      <if test="borrowstateint != null" >
+        borrowStateInt = #{borrowstateint,jdbcType=INTEGER},
+      </if>
+      <if test="borrowtypeint != null" >
+        borrowTypeInt = #{borrowtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="repayguaranteetypeint != null" >
+        repayGuaranteeTypeInt = #{repayguaranteetypeint,jdbcType=INTEGER},
+      </if>
+      <if test="interestcalculationtypeint != null" >
+        interestCalculationTypeInt = #{interestcalculationtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="maxbidamount != null" >
+        maxBidAmount = #{maxbidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="minbidamount != null" >
+        minBidAmount = #{minbidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="purposetypeint != null" >
+        purposeTypeInt = #{purposetypeint,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardrate != null" >
+        rewardRate = #{rewardrate,jdbcType=DECIMAL},
+      </if>
+      <if test="rootborrowid != null" >
+        rootBorrowId = #{rootborrowid,jdbcType=BIGINT},
+      </if>
+      <if test="createuserid != null" >
+        createUserId = #{createuserid,jdbcType=BIGINT},
+      </if>
+      <if test="timecount != null" >
+        timeCount = #{timecount,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="reference1 != null" >
+        reference1 = #{reference1,jdbcType=BIGINT},
+      </if>
+      <if test="reference2 != null" >
+        reference2 = #{reference2,jdbcType=BIGINT},
+      </if>
+      <if test="reference3 != null" >
+        reference3 = #{reference3,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="cdregistertime != null" >
+        cdregistertime = #{cdregistertime,jdbcType=VARCHAR},
+      </if>
+      <if test="cdregistertimeend != null" >
+        cdregistertimeend = #{cdregistertimeend,jdbcType=VARCHAR},
+      </if>
+      <if test="cdbidamount != null" >
+        cdbidamount = #{cdbidamount,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where caffP2pBorrowId = #{caffp2pborrowid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.business.CaffP2pBorrow" >
+    update CaffP2pBorrow
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      successAmount = #{successamount,jdbcType=DECIMAL},
+      bidCount = #{bidcount,jdbcType=INTEGER},
+      bidDays = #{biddays,jdbcType=INTEGER},
+      borrowCount = #{borrowcount,jdbcType=INTEGER},
+      bidExpireDateLong = #{bidexpiredatelong,jdbcType=BIGINT},
+      bidTimeLong = #{bidtimelong,jdbcType=BIGINT},
+      successDateLong = #{successdatelong,jdbcType=BIGINT},
+      bondingCompanyId = #{bondingcompanyid,jdbcType=BIGINT},
+      borrowStateInt = #{borrowstateint,jdbcType=INTEGER},
+      borrowTypeInt = #{borrowtypeint,jdbcType=INTEGER},
+      repayGuaranteeTypeInt = #{repayguaranteetypeint,jdbcType=INTEGER},
+      interestCalculationTypeInt = #{interestcalculationtypeint,jdbcType=INTEGER},
+      maxBidAmount = #{maxbidamount,jdbcType=DECIMAL},
+      minBidAmount = #{minbidamount,jdbcType=DECIMAL},
+      password = #{password,jdbcType=VARCHAR},
+      purposeTypeInt = #{purposetypeint,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=DECIMAL},
+      rewardRate = #{rewardrate,jdbcType=DECIMAL},
+      rootBorrowId = #{rootborrowid,jdbcType=BIGINT},
+      createUserId = #{createuserid,jdbcType=BIGINT},
+      timeCount = #{timecount,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      reference1 = #{reference1,jdbcType=BIGINT},
+      reference2 = #{reference2,jdbcType=BIGINT},
+      reference3 = #{reference3,jdbcType=BIGINT},
+      bitState = #{bitstate,jdbcType=BIGINT},
+      cdregistertime = #{cdregistertime,jdbcType=VARCHAR},
+      cdregistertimeend = #{cdregistertimeend,jdbcType=VARCHAR},
+      cdbidamount = #{cdbidamount,jdbcType=VARCHAR}
+    where caffP2pBorrowId = #{caffp2pborrowid,jdbcType=BIGINT}
+  </update>
+</mapper>

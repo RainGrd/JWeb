@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.task.ScheduleJobLogMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.task.ScheduleJobLog" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="jobId" property="jobid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="exec_status" property="execStatus" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid, jobId, content, exec_status, create_user, create_time
+  </sql>
+  
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="com.yscf.core.model.task.ScheduleJobLog" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_task_schedule_job_log where 1 = 1
+   	  <if test="map.pid != null" >
+        and pid = #{map.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="map.jobid != null" >
+        and jobId = #{map.jobid,jdbcType=VARCHAR}
+      </if>
+      <if test="map.content != null" >
+        and content = #{map.content,jdbcType=VARCHAR}
+      </if>
+      <if test="map.execStatus != null" >
+        and exec_status = #{map.execStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="map.createUser != null" >
+        and create_user = #{map.createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="map.createTime != null" >
+        and create_time = #{map.createTime,jdbcType=TIMESTAMP}
+      </if>
+      order by create_time desc 
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_task_schedule_job_log
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_task_schedule_job_log
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.task.ScheduleJobLog" >
+    insert into t_task_schedule_job_log (pid, jobId, content, 
+      exec_status, create_user, create_time
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{jobid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{execStatus,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.task.ScheduleJobLog" >
+    insert into t_task_schedule_job_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="jobid != null" >
+        jobId,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="execStatus != null" >
+        exec_status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="jobid != null" >
+        #{jobid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="execStatus != null" >
+        #{execStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.task.ScheduleJobLog" >
+    update t_task_schedule_job_log
+    <set >
+      <if test="jobid != null" >
+        jobId = #{jobid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="execStatus != null" >
+        exec_status = #{execStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.task.ScheduleJobLog" >
+    update t_task_schedule_job_log
+    set jobId = #{jobid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      exec_status = #{execStatus,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

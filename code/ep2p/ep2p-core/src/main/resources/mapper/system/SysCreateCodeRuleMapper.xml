@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysCreateCodeRuleMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysCreateCodeRule" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="rule_prefix" property="rulePrefix" jdbcType="VARCHAR" />
+	    <result column="rule_year" property="ruleYear" jdbcType="VARCHAR" />
+	    <result column="rule_month" property="ruleMonth" jdbcType="VARCHAR" />
+	    <result column="rule_day" property="ruleDay" jdbcType="VARCHAR" />
+	    <result column="rule_type" property="ruleType" jdbcType="VARCHAR" />
+	    <result column="rule_order" property="ruleOrder" jdbcType="INTEGER" />
+	    <result column="rule_desc" property="ruleDesc" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+	    <result column="last_create_user" property="lastCreateUser" jdbcType="VARCHAR" />
+	    <result column="last_create_time" property="lastCreateTime" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+  	</resultMap>
+  
+  	<sql id="Base_Column_List" >
+	    c.PID, c.rule_prefix, c.rule_year, c.rule_month, c.rule_day, c.rule_type, c.rule_order, c.rule_desc, c.status, 
+	    (select u.`name` from t_sys_user u where u.pid  = c.create_user) create_user, 
+	    c.create_time, c.last_create_user, c.last_create_time, c.version
+  	</sql>
+  
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	select 
+   	 	<include refid="Base_Column_List" />
+	    from t_sys_create_code_rule c
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_sys_create_code_rule
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  
+   	<!-- 新增编号规则对象 -->
+  	<insert id="insert" parameterType="com.yscf.core.model.system.SysCreateCodeRule" >
+	    insert into t_sys_create_code_rule (PID, rule_prefix, rule_year, 
+	      rule_month, rule_day, rule_type, 
+	      rule_order, rule_desc, status, 
+	      create_user, create_time, last_create_user, 
+	      last_create_time, version)
+	    values (#{pid,jdbcType=VARCHAR}, #{rulePrefix,jdbcType=VARCHAR}, #{ruleYear,jdbcType=VARCHAR}, 
+	      #{ruleMonth,jdbcType=VARCHAR}, #{ruleDay,jdbcType=VARCHAR}, #{ruleType,jdbcType=VARCHAR}, 
+	      #{ruleOrder,jdbcType=INTEGER}, #{ruleDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+	      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastCreateUser,jdbcType=VARCHAR}, 
+	      #{lastCreateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  	</insert>
+  
+  	<!-- 新增编号规则对象 >> 判断是否为空  -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.system.SysCreateCodeRule" >
+	    insert into t_sys_create_code_rule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="rulePrefix != null" >
+	        rule_prefix,
+	      </if>
+	      <if test="ruleYear != null" >
+	        rule_year,
+	      </if>
+	      <if test="ruleMonth != null" >
+	        rule_month,
+	      </if>
+	      <if test="ruleDay != null" >
+	        rule_day,
+	      </if>
+	      <if test="ruleType != null" >
+	        rule_type,
+	      </if>
+	      <if test="ruleOrder != null" >
+	        rule_order,
+	      </if>
+	      <if test="ruleDesc != null" >
+	        rule_desc,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user,
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="rulePrefix != null" >
+	        #{rulePrefix,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ruleYear != null" >
+	        #{ruleYear,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ruleMonth != null" >
+	        #{ruleMonth,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ruleDay != null" >
+	        #{ruleDay,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ruleType != null" >
+	        #{ruleType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ruleOrder != null" >
+	        #{ruleOrder,jdbcType=INTEGER},
+	      </if>
+	      <if test="ruleDesc != null" >
+	        #{ruleDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  
+  	<!-- 修改数据 -->
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysCreateCodeRule" >
+    	update t_sys_create_code_rule
+	    <set >
+	      <if test="ruleOrder != null" >
+	        rule_order = #{ruleOrder,jdbcType=INTEGER},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    WHERE rule_prefix = #{rulePrefix,jdbcType=VARCHAR}
+		AND rule_type =  #{ruleType,jdbcType=VARCHAR}
+		<if test="ruleYear != null and ruleYear != '' " >
+			AND rule_year = #{ruleYear,jdbcType=VARCHAR}
+		</if>	    
+		<if test="ruleMonth != null and ruleMonth != '' " >
+			AND rule_month = #{ruleMonth,jdbcType=VARCHAR}
+		</if>	    
+		<if test="ruleDay != null and ruleDay != '' " >
+			AND rule_day = #{ruleDay,jdbcType=VARCHAR}
+		</if>	    
+  	</update>
+  
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysCreateCodeRule" >
+	    update t_sys_create_code_rule
+	    set rule_prefix = #{rulePrefix,jdbcType=VARCHAR},
+	    rule_year = #{ruleYear,jdbcType=VARCHAR},
+	    rule_month = #{ruleMonth,jdbcType=VARCHAR},
+	    rule_day = #{ruleDay,jdbcType=VARCHAR},
+	    rule_type = #{ruleType,jdbcType=VARCHAR},
+	    rule_order = #{ruleOrder,jdbcType=INTEGER},
+	    rule_desc = #{ruleDesc,jdbcType=VARCHAR},
+	    status = #{status,jdbcType=VARCHAR},
+	    create_user = #{createUser,jdbcType=VARCHAR},
+	    create_time = #{createTime,jdbcType=TIMESTAMP},
+	    last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	    last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	    version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  
+  	<!-- 查询编号生成规则信息,带分页 -->
+	<select id="selectAllPage"  resultMap="BaseResultMap" parameterType="map" >
+  		SELECT 
+		<include refid="Base_Column_List"/> 
+  		FROM t_sys_create_code_rule  c 
+  		WHERE 1 = 1  
+		<if test="sysCreateCodeRule.rulePrefix != null" > 
+        	and c.rule_prefix like concat('%',#{sysCreateCodeRule.rulePrefix,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="sysCreateCodeRule.ruleType != null and sysCreateCodeRule.ruleType != -1 " >
+	        and c.rule_type = #{sysCreateCodeRule.ruleType,jdbcType=VARCHAR}
+      	</if>
+  	</select>
+  	
+  	<!-- 查询序号带年月日 -->
+  	<select id="selectOrderByPrefixAnDateTime" resultType="java.lang.String" parameterType="com.yscf.core.model.system.SysCreateCodeRule">
+  		SELECT IFNULL(max(rule_order)+1,1) 
+		FROM t_sys_create_code_rule 
+		WHERE rule_prefix = #{rulePrefix,jdbcType=VARCHAR}
+		AND rule_year = #{ruleYear,jdbcType=VARCHAR}
+		AND rule_month = #{ruleMonth,jdbcType=VARCHAR}
+		AND rule_day = #{ruleDay,jdbcType=VARCHAR}
+		AND rule_type =  #{ruleType,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 查询序号不带年月日 -->
+  	<select id="selectOrderByPrefix" resultType="java.lang.String" parameterType="com.yscf.core.model.system.SysCreateCodeRule">
+  		SELECT IFNULL(max(rule_order)+1,1) 
+		FROM t_sys_create_code_rule 
+		WHERE rule_prefix = #{rulePrefix,jdbcType=VARCHAR}
+		AND rule_type =  #{ruleType,jdbcType=VARCHAR}
+  	</select>
+  	
+</mapper>

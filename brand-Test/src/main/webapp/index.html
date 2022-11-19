@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="js/jquery.js"></script>
+<style>
+    #context {
+        width: 1000px;
+        margin: 0 auto;
+    }
+</style>
+<body>
+
+<div id="context">
+    <form id="form">
+        <div>
+            品牌名称<input type="text" id="brandName" name="brandName">
+            公司名称<input type="text" id="companyName" name="companyName">
+            状态： <select id="status">
+            <option value=""></option>
+            <option value="1">启用</option>
+            <option value="0">禁用</option>
+        </select>
+            <input type="submit" value="查询">
+        </div>
+    </form>
+    <table border="1">
+        <tr align="center">
+            <th>编号</th>
+            <th>品牌名称</th>
+            <th>公司名称</th>
+            <th>排序</th>
+            <th>描述</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </table>
+    <!--分页工具栏-->
+    <span class="home">首页</span>
+    <span class="up">上一页</span>
+    <span class="down">下一页</span>
+    <span class="last">最后一页</span>
+    现在是第<span class="index">1</span>页 一共有<span class="page"></span>页 一共有<span class="count"></span>条记录
+    按
+    <select class="totalCount">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+    </select>
+    条显示
+</div>
+
+</body>
+<script src="js/index.js"></script>
+</html>

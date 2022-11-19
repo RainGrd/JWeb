@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--移入内部DTD-->
+<!DOCTYPE bookcase[
+        <!ELEMENT bookcase (book+)>
+        <!ELEMENT book (bookname,author,price)>
+        <!ELEMENT bookname (#PCDATA)>
+        <!ELEMENT author (#PCDATA)>
+        <!ELEMENT price (#PCDATA)>
+        ]>
+<bookcase>
+    <book>
+        <bookname>三国演义</bookname>
+        <author>罗贯中</author>
+        <price>58.00</price>
+    </book>
+    <book>
+        <bookname>Java就业培训</bookname>
+        <author>张孝祥</author>
+        <price>68.00</price>
+    </book>
+</bookcase>

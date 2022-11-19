@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustPoinWaterMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustPoinWater" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="point_value" property="pointValue" jdbcType="INTEGER" />
+	    <result column="point_get_type" property="pointGetType" jdbcType="VARCHAR" />
+	    <result column="point_type" property="pointType" jdbcType="VARCHAR" />
+	    <result column="available_point" property="availablePoint" jdbcType="INTEGER" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="happen_time" property="happenTime" jdbcType="TIMESTAMP" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="pot_wat_desc" property="potWatDesc" jdbcType="VARCHAR" />
+  	</resultMap>
+  
+  	<sql id="Base_Column_List" >
+    	tcp.pid pid,
+		tcp.point_value point_value,
+		tcp.point_get_type point_get_type,
+		tcp.point_type point_type,
+		tcp.available_point available_point,
+		tcp.customer_id customer_id,
+		tcp.STATUS STATUS,
+		tcp.happen_time happen_time,
+		tcp.create_user create_user,
+		tcp.create_time create_time,
+		tcp.last_update_user last_update_user,
+		tcp.last_update_time last_update_time,
+		tcp.pot_wat_desc pot_wat_desc
+  	</sql>
+  
+	<!-- 根据pid查客户积分明细 -->
+	<select id="selectAvailablePointDetailsById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustPoinWater">
+	 	select 
+	 	<include refid="Base_Column_List"></include>
+	 	from t_cust_point_water tcp,t_cust_customer tcc
+	 	where tcp.customer_id=tcc.pid
+		and tcp.customer_id = #{custPoinWater.customerId,jdbcType=VARCHAR}	 	
+	</select>
+	
+	<!-- 客户积分明细条件查询 -->
+	<select id="selectAllPage" parameterType="com.yscf.core.model.user.CustPoinWater" resultMap="BaseResultMap">
+   		select 
+   		<include refid="Base_Column_List" />
+   		from t_cust_point_water tcp
+	    where 1=1
+	    <if test="custPoinWater.happenBeginTime != null and custPoinWater.happenBeginTime != '' " > 
+        	and  tcp.happen_time <![CDATA[ >= ]]> #{custPoinWater.happenBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="custPoinWater.happenEndTime != null and custPoinWater.happenEndTime != '' " > 
+        	and  tcp.happen_time <![CDATA[ <= ]]> #{custPoinWater.happenEndTime,jdbcType=TIMESTAMP}
+        </if>
+	    <if test="custPoinWater.pointType != null and custPoinWater.pointType !=0" >
+	        and  tcp.point_get_type =  #{custPoinWater.pointType,jdbcType=VARCHAR}
+	     </if>
+	</select>
+	
+	<!-- 前台_查询个人积分明细 -->
+	<select id="selectUserPointDetail" resultMap="BaseResultMap" parameterType="map" >
+		select
+   		tcp.pid ,tcp.point_value ,tcp.point_get_type ,tcp.point_type ,tcp.available_point ,tcp.customer_id ,
+   		tcp.happen_time ,tcp.status ,tcp.pot_wat_desc
+   		from t_cust_point_water tcp
+   		where tcp.status = 1
+   		and tcp.customer_id = #{custPoinWater.customerId,jdbcType=VARCHAR} 
+	    <if test="custPoinWater.pointType != null and custPoinWater.pointType != 0 " > 
+        	and  tcp.point_type = #{custPoinWater.pointType,jdbcType=VARCHAR}
+        </if>
+	    <if test="custPoinWater.happenBeginTime != null and custPoinWater.happenBeginTime != '' " > 
+        	and  tcp.happen_time <![CDATA[ >= ]]> #{custPoinWater.happenBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="custPoinWater.happenEndTime != null and custPoinWater.happenEndTime != '' " > 
+        	and  tcp.happen_time <![CDATA[ <= ]]> #{custPoinWater.happenEndTime,jdbcType=TIMESTAMP}
+        </if>
+        order by happen_time desc
+        LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 前台_查询个人积分的总记录数 -->
+	<select id="selectUserPointDetailCount" resultType="java.lang.Integer" parameterType="map" >
+		select count(tcp.pid)
+		from t_cust_point_water tcp
+   		where tcp.status = 1
+   		and tcp.customer_id = #{custPoinWater.customerId,jdbcType=VARCHAR} 
+	    <if test="custPoinWater.happenBeginTime != null and custPoinWater.happenBeginTime != '' " > 
+        	and  tcp.happen_time <![CDATA[ >= ]]> #{custPoinWater.happenBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="custPoinWater.happenEndTime != null and custPoinWater.happenEndTime != '' " > 
+        	and  tcp.happen_time <![CDATA[ <= ]]> #{custPoinWater.happenEndTime,jdbcType=TIMESTAMP}
+        </if>
+	</select>
+	
+	<!-- 查询个人的可用积分and累计积分 -->
+	<select id="selectUserPoint" resultType="com.yscf.core.model.user.CustPoinWater" parameterType="java.lang.String">
+		select c.available_point  availablePoint,
+		(select sum(point_value) from t_cust_point_water cp where cp.customer_id = #{customerId,jdbcType=VARCHAR} and cp.point_type != '2') as pointValue
+		from t_cust_customer c
+		where c.pid = #{customerId,jdbcType=VARCHAR} 
+	</select>
+	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_cust_point_water
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_point_water
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CustPoinWater" >
+	    insert into t_cust_point_water (PID, point_value, point_get_type, 
+	      point_type, available_point, customer_id, 
+	      status, happen_time, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      pot_wat_desc)
+	    values (#{pid,jdbcType=VARCHAR}, #{pointValue,jdbcType=INTEGER}, #{pointGetType,jdbcType=VARCHAR}, 
+	      #{pointType,jdbcType=VARCHAR}, #{availablePoint,jdbcType=INTEGER}, #{customerId,jdbcType=VARCHAR}, 
+	      #{status,jdbcType=VARCHAR}, #{happenTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{potWatDesc,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CustPoinWater" >
+	    insert into t_cust_point_water
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="pointValue != null" >
+	        point_value,
+	      </if>
+	      <if test="pointGetType != null" >
+	        point_get_type,
+	      </if>
+	      <if test="pointType != null" >
+	        point_type,
+	      </if>
+	      <if test="availablePoint != null" >
+	        available_point,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="happenTime != null" >
+	        happen_time,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="potWatDesc != null" >
+	        pot_wat_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pointValue != null" >
+	        #{pointValue,jdbcType=INTEGER},
+	      </if>
+	      <if test="pointGetType != null" >
+	        #{pointGetType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pointType != null" >
+	        #{pointType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="availablePoint != null" >
+	        #{availablePoint,jdbcType=INTEGER},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="happenTime != null" >
+	        #{happenTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="potWatDesc != null" >
+	        #{potWatDesc,jdbcType=VARCHAR},
+	      </if>
+    	</trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustPoinWater" >
+	    update t_cust_point_water
+	    <set >
+	      <if test="pointValue != null" >
+	        point_value = #{pointValue,jdbcType=INTEGER},
+	      </if>
+	      <if test="pointGetType != null" >
+	        point_get_type = #{pointGetType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pointType != null" >
+	        point_type = #{pointType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="availablePoint != null" >
+	        available_point = #{availablePoint,jdbcType=INTEGER},
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="happenTime != null" >
+	        happen_time = #{happenTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="potWatDesc != null" >
+	        pot_wat_desc = #{potWatDesc,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustPoinWater" >
+	    update t_cust_point_water
+	    set point_value = #{pointValue,jdbcType=INTEGER},
+	      point_get_type = #{pointGetType,jdbcType=VARCHAR},
+	      point_type = #{pointType,jdbcType=VARCHAR},
+	      available_point = #{availablePoint,jdbcType=INTEGER},
+	      customer_id = #{customerId,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      happen_time = #{happenTime,jdbcType=TIMESTAMP},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      pot_wat_desc = #{potWatDesc,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量新增 -->
+  	<insert id="insertBatch" parameterType="java.util.List">
+  		insert into t_cust_point_water (PID, customer_id, point_value, point_get_type, point_type, available_point, 
+	    	status, happen_time, create_user, create_time, pot_wat_desc,version)   
+    	values
+    	<foreach collection="list" item="item" index="index" separator="," >  
+       		(#{item.pid,jdbcType=VARCHAR},#{item.customerId,jdbcType=VARCHAR},  #{item.pointValue,jdbcType=INTEGER}, 
+       		#{item.pointGetType,jdbcType=VARCHAR},#{item.pointType,jdbcType=VARCHAR}, #{item.availablePoint,jdbcType=INTEGER}, 
+	      	#{item.status,jdbcType=VARCHAR}, #{item.happenTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=VARCHAR}, 
+	      	#{item.createTime,jdbcType=TIMESTAMP}, #{item.potWatDesc,jdbcType=VARCHAR},1)  
+    	</foreach>  
+  	</insert>
+  	
+  	<!-- API_查询个人积分明细 -->
+	<select id="selectUserPointDetailAPI" resultMap="BaseResultMap" parameterType="map" >
+		select
+   		tcp.pid ,tcp.point_value ,tcp.happen_time ,tcp.point_type point_get_type ,
+   		(SELECT content.dict_cont_name from t_sys_dictionary dict,t_sys_dictionary_content content
+		where dict.pid = content.dict_id and content.status = 1 
+		and dict.status = 1 AND dict.dict_code = 'POINT_TYPE' 
+		and content.dict_cont_code = tcp.point_type)   point_type
+   		from t_cust_point_water tcp
+   		where tcp.status = 1
+   		and tcp.customer_id = #{userId,jdbcType=VARCHAR} 
+        order by happen_time desc
+        LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+<!-- 	插入积分流水记录 -->
+    <insert id="insertCustPointWater" parameterType="com.yscf.core.model.user.CustPoinWater">
+          insert into t_cust_point_water
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="pointValue != null" >
+	        point_value,
+	      </if>
+	      <if test="pointGetType != null" >
+	        point_get_type,
+	      </if>
+	      <if test="pointType != null" >
+	        point_type,
+	      </if>
+	      <if test="availablePoint != null" >
+	        available_point,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="happenTime != null" >
+	        happen_time,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="potWatDesc != null" >
+	        pot_wat_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pointValue != null" >
+	        #{pointValue,jdbcType=INTEGER},
+	      </if>
+	      <if test="pointGetType != null" >
+	        #{pointGetType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pointType != null" >
+	        #{pointType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="availablePoint != null" >
+	        #{availablePoint,jdbcType=INTEGER},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="happenTime != null" >
+	        #{happenTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="potWatDesc != null" >
+	        #{potWatDesc,jdbcType=VARCHAR},
+	      </if>
+    	</trim>
+    </insert>
+	
+</mapper>

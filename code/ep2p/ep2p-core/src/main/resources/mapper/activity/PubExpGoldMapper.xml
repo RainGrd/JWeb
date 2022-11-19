@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.PubExpGoldMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.PubExpGold" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="exp_name" property="expName" jdbcType="VARCHAR" />
+	    <result column="exp_amount" property="expAmount" jdbcType="DECIMAL" />
+	    <result column="exp_number" property="expNumber" jdbcType="INTEGER" />
+	    <result column="is_bir_privilege" property="isBirPrivilege" jdbcType="VARCHAR" />
+	    <result column="exp_gol_desc" property="expGolDesc" jdbcType="VARCHAR" />
+	    <result column="eff_time" property="effTime" jdbcType="TIMESTAMP" />
+	    <result column="exp_time" property="expTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+	    <result column="last_create_user" property="lastCreateUser" jdbcType="VARCHAR" />
+	    <result column="last_create_time" property="lastCreateTime" jdbcType="TIMESTAMP"/>
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+    	<!-- 外表数据字段 -->
+    	<result column="actCode" property="actCode" jdbcType="VARCHAR" />
+    	<result column="actTag" property="actTag" jdbcType="VARCHAR" />
+    	<result column="activityType" property="activityType" jdbcType="VARCHAR" />
+    	<result column="smsId" property="smsId" jdbcType="VARCHAR" />
+    	<result column="isSmsWarn" property="isSmsWarn" jdbcType="VARCHAR" />
+    	<result column="actDesc" property="actDesc" jdbcType="VARCHAR" />
+    	<result column="tempCode" property="tempCode" jdbcType="VARCHAR" />
+    	<result column="smsContent" property="smsContent" jdbcType="VARCHAR" />
+	   	<result column="createUserName" property="createUserName" jdbcType="VARCHAR" />
+	    <result column="actStatus" property="actStatus" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 查询所需字段 -->
+  	<sql id="link_column_list">
+  		peg.PID, peg.exp_name, peg.exp_amount, peg.exp_number, peg.is_bir_privilege, peg.exp_gol_desc, peg.eff_time, 
+	    peg.exp_time, peg.status, peg.create_user, peg.create_time, peg.last_create_user, peg.last_create_time, peg.version,
+	    (select name from t_sys_user user where user.PID = peg.create_user) as createUserName,aa.status actStatus,
+	    aa.act_code as actCode, aa.act_tag as actTag, aa.activity_type as activityType, aa.sms_id as smsId, 
+	    aa.is_sms_warn as isSmsWarn, aa.act_desc as actDesc,sst.temp_code as tempCode,sst.sms_content as smsContent
+  	</sql>
+  	
+  	<!-- 查询体验金信息列表,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		SELECT 
+  		<include refid="link_column_list" />
+  		FROM t_pub_exp_gold peg 
+		LEFT JOIN t_act_activity aa 
+		on peg.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 3 
+  		AND peg.status != -1 
+  		<if test="pubExpGold.actCode != null and pubExpGold.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{pubExpGold.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubExpGold.expName != null and pubExpGold.expName != '' " > 
+        	and  peg.exp_name like concat('%',#{pubExpGold.expName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubExpGold.actTag != null and pubExpGold.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{pubExpGold.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubExpGold.beginApplyStartData != null and pubExpGold.beginApplyStartData != '' " > 
+        	and  peg.eff_time <![CDATA[ >= ]]> #{pubExpGold.beginApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubExpGold.endApplyStartData != null and pubExpGold.endApplyStartData != '' " > 
+        	and  peg.eff_time <![CDATA[ <= ]]> #{pubExpGold.endApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubExpGold.beginApplyFinishData != null and pubExpGold.beginApplyFinishData != '' " > 
+        	and  peg.exp_time <![CDATA[ >= ]]> #{pubExpGold.beginApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubExpGold.endApplyFinishData != null and pubExpGold.endApplyFinishData != '' " > 
+        	and  peg.exp_time <![CDATA[ <= ]]> #{pubExpGold.endApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubExpGold.status != null and pubExpGold.status != 0 " > 
+        	and  peg.status = #{pubExpGold.status,jdbcType=VARCHAR}
+        </if>
+        ORDER BY peg.create_time desc 
+  	</select>
+  	
+  	<!-- 根据PID查询体验金信息  -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    SELECT 
+	    <include refid="link_column_list" /> 
+  		FROM t_pub_exp_gold peg 
+		LEFT JOIN t_act_activity aa 
+		on peg.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 3 
+  		AND peg.status != -1 
+	    AND peg.PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 删除体验金信息根据PID -->
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_pub_exp_gold
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+ 
+ 	<!-- 新增体验金信息 -->
+   	<insert id="insert" parameterType="com.yscf.core.model.activity.PubExpGold" >
+	    insert into t_pub_exp_gold (PID, exp_name, exp_amount, 
+	      exp_number, is_bir_privilege, exp_gol_desc, 
+	      eff_time, exp_time, status, 
+	      create_user, create_time, last_create_user, 
+	      last_create_time, version)
+	    values (#{pid,jdbcType=VARCHAR}, #{expName,jdbcType=VARCHAR}, #{expAmount,jdbcType=DECIMAL}, 
+	      #{expNumber,jdbcType=INTEGER}, #{isBirPrivilege,jdbcType=VARCHAR}, #{expGolDesc,jdbcType=VARCHAR}, 
+	      #{effTime,jdbcType=TIMESTAMP}, #{expTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+	      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastCreateUser,jdbcType=VARCHAR}, 
+	      #{lastCreateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  	</insert>
+  
+  	<!-- 新增体验金信息(判断字段是否为空) -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.PubExpGold" >
+	    insert into t_pub_exp_gold
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="expName != null" >
+	        exp_name,
+	      </if>
+	      <if test="expAmount != null" >
+	        exp_amount,
+	      </if>
+	      <if test="expNumber != null" >
+	        exp_number,
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege,
+	      </if>
+	      <if test="expGolDesc != null" >
+	        exp_gol_desc,
+	      </if>
+	      <if test="effTime != null" >
+	        eff_time,
+	      </if>
+	      <if test="expTime != null" >
+	        exp_time,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user,
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expName != null" >
+	        #{expName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expAmount != null" >
+	        #{expAmount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="expNumber != null" >
+	        #{expNumber,jdbcType=INTEGER},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expGolDesc != null" >
+	        #{expGolDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="effTime != null" >
+	        #{effTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expTime != null" >
+	        #{expTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  
+  	<!-- 修改体验金信息(判断是否为空) -->
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.PubExpGold" >
+	    update t_pub_exp_gold
+	    <set >
+	      <if test="expName != null" >
+	        exp_name = #{expName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expAmount != null" >
+	        exp_amount = #{expAmount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="expNumber != null" >
+	        exp_number = #{expNumber,jdbcType=INTEGER},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expGolDesc != null" >
+	        exp_gol_desc = #{expGolDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="effTime != null" >
+	        eff_time = #{effTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expTime != null" >
+	        exp_time = #{expTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 修改体验金信息 -->
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.PubExpGold" >
+	    update t_pub_exp_gold
+	    set exp_name = #{expName,jdbcType=VARCHAR},
+	      exp_amount = #{expAmount,jdbcType=DECIMAL},
+	      exp_number = #{expNumber,jdbcType=INTEGER},
+	      is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      exp_gol_desc = #{expGolDesc,jdbcType=VARCHAR},
+	      eff_time = #{effTime,jdbcType=TIMESTAMP},
+	      exp_time = #{expTime,jdbcType=TIMESTAMP},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量删除体验金活动 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_pub_exp_gold SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 根据活动PID查询体验金信息  -->
+  	<select id="selectByActivityId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	   SELECT  g.* FROM t_pub_exp_gold g 
+		where g.pid = #{activityId,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 修改活动的状态 -->
+  	<update id="updateActiivtyStatus" parameterType="java.lang.String">
+  		UPDATE t_pub_exp_gold SET
+  		status = #{status,jdbcType=VARCHAR}
+  		where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+</mapper>

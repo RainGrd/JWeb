@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustLargessVipWaterMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustLargessVipWater" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="largess_value" property="largessValue" jdbcType="DECIMAL" />
+	    <result column="get_type" property="getType" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="vipinfo_id" property="vipinfoId" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="distribution_time" property="distributionTime" jdbcType="DATE" javaType="String" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="DATE" javaType="String"/>
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="lar_vip_wat_desc" property="larVipWatDesc" jdbcType="VARCHAR" />
+	    <result column="vip_name" property="vipName" jdbcType="VARCHAR" />
+	    <result column="tpv_id" property="tpvId" jdbcType="VARCHAR" />
+  	</resultMap>
+  
+  	<sql id="Base_Column_List" >
+	    tclvw.PID,
+		tclvw.largess_value,
+		tclvw.get_type,
+		tclvw.customer_id,
+		tpv.vip_name vipName,
+		tpv.PID tpvId,
+		CASE tclvw.`status`
+		WHEN 1 THEN
+		'启用'
+		WHEN 0 THEN
+		'禁用'
+		END STATUS,
+		tclvw.distribution_time,
+	 	tclvw.create_user,
+	 	tclvw.create_time,
+	 	tclvw.last_update_user,
+	 	tclvw.last_update_time,
+	 	tclvw.lar_vip_wat_desc
+	</sql>
+  
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_cust_largess_vip_water
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_largess_vip_water
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CustLargessVipWater" >
+	     insert into t_cust_largess_vip_water
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="largessValue != null" >
+	        largess_value,
+	      </if>
+	      <if test="getType != null" >
+	        get_type,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="distributionTime != null" >
+	        distribution_time,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="larVipWatDesc != null" >
+	        lar_vip_wat_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="largessValue != null" >
+	        #{largessValue,jdbcType=DECIMAL},
+	      </if>
+	      <if test="getType != null" >
+	        #{getType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="distributionTime != null" >
+	        #{distributionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="larVipWatDesc != null" >
+	        #{larVipWatDesc,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  
+  	<!-- 新增客户VIP流水记录表 -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CustLargessVipWater" >
+	    insert into t_cust_largess_vip_water
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="largessValue != null" >
+	        largess_value,
+	      </if>
+	      <if test="getType != null" >
+	        get_type,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	       <if test="vipNo != null" >
+	        vipinfo_id,
+	      </if>
+	      <if test="distributionTime != null" >
+	        distribution_time,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="larVipWatDesc != null" >
+	        lar_vip_wat_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="largessValue != null" >
+	        #{largessValue,jdbcType=DECIMAL},
+	      </if>
+	      <if test="getType != null" >
+	        #{getType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipNo != null" >
+	        #{vipNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="distributionTime != null" >
+	        #{distributionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="larVipWatDesc != null" >
+	        #{larVipWatDesc,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustLargessVipWater" >
+	    update t_cust_largess_vip_water
+	    <set >
+	      <if test="largessValue != null" >
+	        largess_value = #{largessValue,jdbcType=DECIMAL},
+	      </if>
+	      <if test="getType != null" >
+	        get_type = #{getType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="distributionTime != null" >
+	        distribution_time = #{distributionTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="larVipWatDesc != null" >
+	        lar_vip_wat_desc = #{larVipWatDesc,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustLargessVipWater" >
+	    update t_cust_largess_vip_water
+	    set largess_value = #{largessValue,jdbcType=DECIMAL},
+	      get_type = #{getType,jdbcType=VARCHAR},
+	      customer_id = #{customerId,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      distribution_time = #{distributionTime,jdbcType=TIMESTAMP},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      lar_vip_wat_desc = #{larVipWatDesc,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  
+	<!--  根据客户id查赠送vip 历史 -->
+	<select id="getVipHistoryDetailedById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustLargessVipWater" >
+	    select 
+   		<include refid="Base_Column_List"></include>
+	    FROM
+		t_cust_largess_vip_water tclvw,
+		t_pub_vipinfo tpv
+		WHERE
+		tclvw.`status`='1'
+		AND tclvw.vipinfo_id = tpv.PID
+		AND tclvw.customer_id= #{custLargessVipWater.customerId,jdbcType=VARCHAR}
+	    ORDER BY tclvw.distribution_time DESC
+	</select>
+	
+	<!-- 批量新增 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into t_cust_experience_water (PID, customer_id, vipinfo_id, largess_value, get_type, status, 
+      		distribution_time, create_user, create_time, lar_vip_wat_desc,version)   
+    	values
+    	<foreach collection="list" item="item" index="index" separator="," >  
+       		(#{item.pid,jdbcType=VARCHAR}, #{item.customerId,jdbcType=VARCHAR}, #{item.vipinfoId,jdbcType=VARCHAR}, 
+	      	#{item.largessValue,jdbcType=VARCHAR}, #{item.getType,jdbcType=INTEGER}, #{item.status,jdbcType=VARCHAR}, 
+	      	#{item.distributionTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+	      	#{item.larVipWatDesc,jdbcType=VARCHAR},1)  
+    	</foreach> 
+	</insert>
+	
+	<!--查VIP流水表 -->
+	<select id="selectVipInfo" resultMap="BaseResultMap">
+		SELECT  clvw.customer_id
+		from    t_cust_largess_vip_water clvw 
+		LEFT JOIN t_cust_customer tcc  on clvw.customer_id=tcc.PID 
+		where (tcc.vip_time = 0 || tcc.vip_time is null) 
+		and tcc.is_vip = '1'
+		and date_format(clvw.distribution_time,'%H:%i:%s') <![CDATA[ < ]]> right(NOW(),8)
+		GROUP BY clvw.customer_id
+	</select>
+</mapper>

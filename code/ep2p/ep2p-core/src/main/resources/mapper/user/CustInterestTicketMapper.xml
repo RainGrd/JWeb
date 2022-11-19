@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustInterestTicketMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustInterestTicket" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="act_inv_awa_act_detail_id" property="actInvAwaActDetailId" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="scale" property="scale" jdbcType="DOUBLE" />
+	    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+	    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	    <result column="validity" property="validity" jdbcType="INTEGER" />
+	    <result column="get_type" property="getType" jdbcType="VARCHAR" />
+	    <result column="use_status" property="useStatus" jdbcType="VARCHAR" />
+	    <result column="interest_desc" property="interestDesc" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_create_user" property="lastCreateUser" jdbcType="VARCHAR" />
+	    <result column="last_create_time" property="lastCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <!-- API-我的卡劵字段 -->
+	    <result column="cardType" property="cardType" jdbcType="INTEGER" />
+	    <result column="cardQuota" property="cardQuota" jdbcType="DECIMAL" />
+	    <result column="cardValidity" property="cardValidity" jdbcType="INTEGER" />
+	    <result column="cardDesc" property="cardDesc" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 本表所有字段 -->
+  	<sql id="Base_Column_List" >
+	    PID, customer_id, name, scale, start_time, end_time, validity, get_type, use_status, 
+	    interest_desc, status, create_user, create_time, last_create_user, last_create_time, version
+  	</sql>
+  	
+  	<!-- 根据主键查询对象详细信息 -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" /> 
+	    from t_cust_interest_ticket 
+	    where PID = #{pid,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- 根据客户ID查询客户未使用的加息卷 -->
+  	<select id="selectTomerNotUsedInterest" resultMap="BaseResultMap" parameterType="java.lang.String">
+	  	select 
+	    <include refid="Base_Column_List" /> 
+	    from t_cust_interest_ticket 
+	    where use_status = 2 
+	    and status = 1 
+	    and customer_id = #{customerId,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 根据客户ID查询客户已使用的加息卷 -->
+  	<select id="selectTomerAlreadyUsedInterest" resultMap="BaseResultMap" parameterType="java.lang.String">
+	  	select 
+	    <include refid="Base_Column_List" /> 
+	    from t_cust_interest_ticket
+	    where use_status = 1 
+	    and status = 1  
+	    and customer_id = #{customerId,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- 修改加息劵使用状态 -->
+  	<update id="updateInterestStatus" parameterType="java.lang.String">
+  		update t_cust_interest_ticket
+	    set use_status = #{useStatus,jdbcType=VARCHAR} 
+	    where pid = #{pid,jdbcType=VARCHAR}  
+  	</update>
+  	
+  	<!-- 批量删除 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		update t_cust_interest_ticket
+  		set status = -1 
+  		where pid in
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 批量修改加息卷状态 -->
+  	<update id="updateStatusBatch" parameterType="map" >
+  		update t_cust_interest_ticket
+  		<set >
+			<if test="status != null" >
+	        	status = #{status,jdbcType=VARCHAR},
+	      	</if>
+		</set>
+		where pid in
+  		<foreach item="idItem" collection="pidArr" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 根据主键删除 -->
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_interest_ticket
+	    where PID = #{pid,jdbcType=VARCHAR} 
+  	</delete>
+  	
+  	<!-- 新增 -->
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CustInterestTicket" >
+	    insert into t_cust_interest_ticket (PID, customer_id, name, 
+	      scale, start_time, end_time, 
+	      validity, get_type, use_status, 
+	      interest_desc, status, create_user, 
+	      create_time, last_create_user, last_create_time, 
+	      version)
+	    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+	      #{scale,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+	      #{validity,jdbcType=INTEGER}, #{getType,jdbcType=VARCHAR}, #{useStatus,jdbcType=VARCHAR}, 
+	      #{interestDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastCreateUser,jdbcType=VARCHAR}, #{lastCreateTime,jdbcType=TIMESTAMP}, 
+	      #{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<!-- 新增：判断字段是否为空 -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CustInterestTicket" >
+	    insert into t_cust_interest_ticket
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="actInvAwaActDetailId != null" >
+	        act_inv_awa_act_detail_id,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="scale != null" >
+	        scale,
+	      </if>
+	      <if test="startTime != null" >
+	        start_time,
+	      </if>
+	      <if test="endTime != null" >
+	        end_time,
+	      </if>
+	      <if test="validity != null" >
+	        validity,
+	      </if>
+	      <if test="getType != null" >
+	        get_type,
+	      </if>
+	      <if test="useStatus != null" >
+	        use_status,
+	      </if>
+	      <if test="interestDesc != null" >
+	        interest_desc,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actInvAwaActDetailId != null" >
+	        #{actInvAwaActDetailId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null" >
+	        #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="scale != null" >
+	        #{scale,jdbcType=DOUBLE},
+	      </if>
+	      <if test="startTime != null" >
+	        #{startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endTime != null" >
+	        #{endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="validity != null" >
+	        #{validity,jdbcType=INTEGER},
+	      </if>
+	      <if test="getType != null" >
+	        #{getType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="useStatus != null" >
+	        #{useStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="interestDesc != null" >
+	        #{interestDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<!-- 修改：判断是否为空 -->
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustInterestTicket" >
+	    update t_cust_interest_ticket
+	    <set >
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null" >
+	        name = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="scale != null" >
+	        scale = #{scale,jdbcType=DOUBLE},
+	      </if>
+	      <if test="startTime != null" >
+	        start_time = #{startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endTime != null" >
+	        end_time = #{endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="validity != null" >
+	        validity = #{validity,jdbcType=INTEGER},
+	      </if>
+	      <if test="getType != null" >
+	        get_type = #{getType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="useStatus != null" >
+	        use_status = #{useStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="interestDesc != null" >
+	        interest_desc = #{interestDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 修改所有的字段 -->
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustInterestTicket" >
+	    update t_cust_interest_ticket
+	    set customer_id = #{customerId,jdbcType=VARCHAR},
+	      name = #{name,jdbcType=VARCHAR},
+	      scale = #{scale,jdbcType=DOUBLE},
+	      start_time = #{startTime,jdbcType=TIMESTAMP},
+	      end_time = #{endTime,jdbcType=TIMESTAMP},
+	      validity = #{validity,jdbcType=INTEGER},
+	      get_type = #{getType,jdbcType=VARCHAR},
+	      use_status = #{useStatus,jdbcType=VARCHAR},
+	      interest_desc = #{interestDesc,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- API-我的卡劵》未使用 -->
+  	<select id="selectUserCardVolume" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  		SELECT cit.pid pid, cit.scale cardQuota,'仅限使用于允许使用加息券的投资项目' cardDesc,datediff(cit.end_time,NOW()) cardValidity, 1 cardType 
+		FROM t_cust_interest_ticket cit 
+		where cit.customer_id = #{customerId,jdbcType=VARCHAR} 
+		and datediff(cit.end_time,NOW()) > 0 
+		and cit.use_status = 2 
+		
+		UNION ALL 
+		
+		select peg.PID , peg.exp_amount cardQuota,'仅限使用于体验标' cardDesc,datediff(aead.expire_time,NOW()) cardValidity, 2 cardType 
+		FROM t_act_exp_act_detail aead,t_pub_exp_gold peg 
+		WHERE aead.exp_id = peg.PID  
+		and aead.customer_id = #{customerId,jdbcType=VARCHAR} 
+		and aead.use_status = 2  
+		and datediff(aead.expire_time,NOW()) > 0 
+		
+		ORDER BY cardValidity ASC 
+		
+  	</select>
+  	
+  	<!-- API-我的卡劵》已使用or已失效 -->
+  	<select id="selectUserCardVolumeHasExpired" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  		SELECT cit.pid pid, cit.scale cardQuota,'仅限使用于允许使用加息券的投资项目' cardDesc, 1 cardType ,cit.use_status
+		FROM t_cust_interest_ticket cit 
+		where cit.customer_id = #{customerId,jdbcType=VARCHAR} 
+		and cit.use_status != 2 
+		
+		UNION ALL
+		
+		select peg.PID , peg.exp_amount cardQuota,'仅限使用于体验标' cardDesc, 2 cardType, aead.use_status
+		FROM t_act_exp_act_detail aead,t_pub_exp_gold peg 
+		WHERE aead.exp_id = peg.PID  
+		and aead.customer_id = #{customerId,jdbcType=VARCHAR} 
+		and aead.use_status != 2 
+  	</select>
+  	
+  	<!-- API>>客户的加息劵 -->
+  	<select id="selectUserInterestTicketAPI" resultMap="BaseResultMap" parameterType="map" >
+  		SELECT cit.pid pid, cit.scale cardQuota, datediff(cit.end_time,NOW()) cardValidity
+		FROM t_cust_interest_ticket cit 
+		where cit.customer_id = #{customerId,jdbcType=VARCHAR} 
+		and datediff(cit.end_time,NOW()) > 0 
+		and cit.use_status = 2 
+		ORDER BY cardQuota DESC ,datediff(cit.end_time,NOW()) asc 
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}  
+  	</select>
+  	
+  	<!-- 批量修改加息卷使用状态 -->
+  	<update id="updateUseStatusBatch" parameterType="map" >
+  		update t_cust_interest_ticket
+  		<set >
+			<if test="useStatus != null" >
+	        	use_status = #{useStatus,jdbcType=VARCHAR} 
+	      	</if>
+		</set>
+		where pid in
+  		<foreach item="idItem" collection="pidArr" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+</mapper>

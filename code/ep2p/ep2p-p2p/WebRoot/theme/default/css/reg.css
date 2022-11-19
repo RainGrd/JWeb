@@ -1,0 +1,60 @@
+/*注册s*/
+.reg_bg{
+	width: 1140px;
+	height: 650px;
+}
+.reg_bg .regBanner{width:1140px; height:630px; position:absolute; top:20px; left:0px;}
+.reg_all{
+	
+	width: 400px;
+    border: #d6d8d9 solid 1px;
+    border-radius: 5px;
+    right: 110px;
+    top:30px;
+}
+.reg_in{
+	width: 290px;
+}
+.reg_r{
+	border-radius: 5px;
+}
+.reg_r_y{
+	height: 21px;
+	
+}
+.reg_r_x{
+	width: 100px;
+	border: none!important;
+}
+.reg_a_in{
+	height: 45px!important;
+	font-size: 16px;
+}
+.reg_an_a{
+	color: #96bc7f;
+	display: inline-block;
+	height: 35px;
+	padding-left: 25px;
+	padding-right: 10px;
+	background: url(../images/r_2.png) no-repeat;
+	background-position: 5px 10px;
+}
+.reg_an_b{
+	color: #cacaca;
+	display: inline-block;
+	height: 35px;
+	padding-left: 25px;
+	padding-right: 10px;
+	background: url(../images/r_3.png) no-repeat;
+	background-position: 5px 10px;
+}
+.login_mobile {
+    display: inline-block;
+    width: 115px;
+    border: 2px solid #d5d5d5;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    height: 45px;
+}
+/*注册e*/

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.business.CaffP2pRechargeOfflineMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.business.CaffP2pRechargeOffline" >
+    <id column="caffP2pRechargeOfflineId" property="caffp2prechargeofflineid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="bankId" property="bankid" jdbcType="BIGINT" />
+    <result column="stateInt" property="stateint" jdbcType="INTEGER" />
+    <result column="tradeCode" property="tradecode" jdbcType="VARCHAR" />
+    <result column="tradeDateLong" property="tradedatelong" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pRechargeOfflineId, createdDateLong, version, userId, amount, bankId, stateInt, 
+    tradeCode, tradeDateLong, bitState
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pRechargeOffline
+    where caffP2pRechargeOfflineId = #{caffp2prechargeofflineid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pRechargeOffline
+    where caffP2pRechargeOfflineId = #{caffp2prechargeofflineid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOffline" >
+    insert into CaffP2pRechargeOffline (caffP2pRechargeOfflineId, createdDateLong, 
+      version, userId, amount, 
+      bankId, stateInt, tradeCode, 
+      tradeDateLong, bitState)
+    values (#{caffp2prechargeofflineid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{bankid,jdbcType=BIGINT}, #{stateint,jdbcType=INTEGER}, #{tradecode,jdbcType=VARCHAR}, 
+      #{tradedatelong,jdbcType=BIGINT}, #{bitstate,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOffline" >
+    insert into CaffP2pRechargeOffline
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2prechargeofflineid != null" >
+        caffP2pRechargeOfflineId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="bankid != null" >
+        bankId,
+      </if>
+      <if test="stateint != null" >
+        stateInt,
+      </if>
+      <if test="tradecode != null" >
+        tradeCode,
+      </if>
+      <if test="tradedatelong != null" >
+        tradeDateLong,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2prechargeofflineid != null" >
+        #{caffp2prechargeofflineid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bankid != null" >
+        #{bankid,jdbcType=BIGINT},
+      </if>
+      <if test="stateint != null" >
+        #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="tradecode != null" >
+        #{tradecode,jdbcType=VARCHAR},
+      </if>
+      <if test="tradedatelong != null" >
+        #{tradedatelong,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOffline" >
+    update CaffP2pRechargeOffline
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bankid != null" >
+        bankId = #{bankid,jdbcType=BIGINT},
+      </if>
+      <if test="stateint != null" >
+        stateInt = #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="tradecode != null" >
+        tradeCode = #{tradecode,jdbcType=VARCHAR},
+      </if>
+      <if test="tradedatelong != null" >
+        tradeDateLong = #{tradedatelong,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+    </set>
+    where caffP2pRechargeOfflineId = #{caffp2prechargeofflineid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.business.CaffP2pRechargeOffline" >
+    update CaffP2pRechargeOffline
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      bankId = #{bankid,jdbcType=BIGINT},
+      stateInt = #{stateint,jdbcType=INTEGER},
+      tradeCode = #{tradecode,jdbcType=VARCHAR},
+      tradeDateLong = #{tradedatelong,jdbcType=BIGINT},
+      bitState = #{bitstate,jdbcType=BIGINT}
+    where caffP2pRechargeOfflineId = #{caffp2prechargeofflineid,jdbcType=BIGINT}
+  </update>
+</mapper>

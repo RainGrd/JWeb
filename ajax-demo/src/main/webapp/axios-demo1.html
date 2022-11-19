@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--添加axiosJS文件-->
+    <script src="js/axios.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    axios({
+        method : "GET",
+        url : "http://localhost:5050/ajax-demo/axiosServlet?username=zhangsan"
+    }).then(function (resp){
+        var data = resp.data;
+        console.log(data);
+    });
+</script>
+</html>

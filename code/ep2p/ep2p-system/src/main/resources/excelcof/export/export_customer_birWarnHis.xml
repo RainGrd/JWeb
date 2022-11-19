@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_customer_manage"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.user.CusBirWarnHis"
+				 	headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="用户名" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="姓名" property="sname" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="手机号码" property="phoneNo" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="生日" property="birthday" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="VIP级别" property="vipLevel" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="VIP生日信息" property="vipMessage" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="是否已提醒" property="isWran" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="提醒时间" property="operTime" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+</xlsroot>

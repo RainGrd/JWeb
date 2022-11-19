@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.ActActivityMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.ActActivity" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="act_code" property="actCode" jdbcType="VARCHAR" />
+	    <result column="act_tag" property="actTag" jdbcType="VARCHAR" />
+	    <result column="act_name" property="actName" jdbcType="VARCHAR" />
+	    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+	    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+	    <result column="object_id" property="objectId" jdbcType="VARCHAR" />
+	    <result column="activity_type" property="activityType" jdbcType="VARCHAR" />
+	    <result column="sms_id" property="smsId" jdbcType="VARCHAR" />
+	    <result column="is_sms_warn" property="isSmsWarn" jdbcType="VARCHAR" />
+	    <result column="is_bir_privilege" property="isBirPrivilege" jdbcType="VARCHAR" />
+	    <result column="act_desc" property="actDesc" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <!-- 外表字段 -->
+	    <result column="participantsNumber" property="participantsNumber" jdbcType="INTEGER" />
+	    <result column="expNumber" property="expNumber" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<sql id="Base_Column_List" >
+	    PID, act_code, act_tag, act_name, start_date, end_date, object_id, activity_type, 
+	    sms_id, is_sms_warn, is_bir_privilege, act_desc, status, create_user, create_time, 
+	    last_update_user, last_update_time, version
+  	</sql>
+  	
+  	<!-- 系统活动所需的列 -->
+  	<sql id="base_activity_list">
+  		aa.pid,aa.act_code,aa.act_name,aa.act_tag,aa.act_desc,aa.start_date,aa.end_date,aa.`status`,
+		case aa.activity_type when '2'  then 
+		(select case pr.redpacket_type when '2' then '抢红包' else '送红包' end  from t_pub_redpacket pr where aa.object_id = pr.pid ) 
+		when '1' then '赠送VIP' 
+		when '3' then '体验金' 
+		when '4' then '投资奖励' 
+		when '7' then 'VIP生日特权' 
+		when '8' then '财富合伙人奖励' 
+		else aa.activity_type end as activity_type,
+		case aa.activity_type 
+		when '1' then (select count(avad.PID) from t_act_vip_act_detail avad where avad.activity_id = aa.pid)
+		when '2' then (select count(avad.PID) from t_act_redp_act_detail avad where avad.activity_id = aa.pid) 
+		when '3' then (select count(avad.PID) from t_act_exp_act_detail avad where avad.activity_id = aa.pid) 
+		when '4' then (select count(avad.PID) from t_act_inv_awa_act_detail avad where avad.activity_id = aa.pid)
+		when '8' then (select count(avad.PID) from t_act_inv_wealth_coop_detail avad where avad.activity_id = aa.pid)  
+		else 0  end as participantsNumber,
+		case aa.activity_type when '3' then 
+		(select peg.exp_number from t_pub_exp_gold peg where aa.object_id = peg.pid ) 
+		else 0 end as expNumber 
+  	</sql>
+  	
+  	<!-- 条件and链接sql -->
+  	<sql id="base_condition">
+  		from t_act_activity aa 
+  		where aa.status != -1  
+  		<if test="actActivity.actCode != null and actActivity.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{actActivity.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actActivity.actName != null and actActivity.actName != '' " > 
+        	and  aa.act_name like concat('%',#{actActivity.actName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="actActivity.actTag != null and actActivity.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{actActivity.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+  		<if test="actActivity.beginApplyStartData != null and actActivity.beginApplyStartData != '' " > 
+        	and  aa.start_date <![CDATA[ >= ]]> #{actActivity.beginApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="actActivity.endApplyStartData != null and actActivity.endApplyStartData != '' " > 
+        	and  aa.start_date <![CDATA[ <= ]]> #{actActivity.endApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="actActivity.beginApplyFinishData != null and actActivity.beginApplyFinishData != '' " > 
+        	and  aa.end_date <![CDATA[ >= ]]> #{actActivity.beginApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="actActivity.endApplyFinishData != null and actActivity.endApplyFinishData != '' " > 
+        	and  aa.end_date <![CDATA[ <= ]]> #{actActivity.endApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="actActivity.status != null and actActivity.status != 0 " > 
+        	and  aa.status = #{actActivity.status,jdbcType=VARCHAR}
+        </if>
+        <if test="actActivity.activityType != null and actActivity.activityType == 101 ">
+        	and aa.object_id in (select pr.PID  from t_pub_redpacket pr where aa.object_id = pr.pid and pr.redpacket_type = '1') 
+			and aa.activity_type = '2'
+        </if>
+        <if test="actActivity.activityType != null and actActivity.activityType == 102 ">
+        	and aa.object_id in (select pr.PID  from t_pub_redpacket pr where aa.object_id = pr.pid and pr.redpacket_type = '2') 
+			and aa.activity_type = '2'
+        </if>
+        <if test="actActivity.activityType != null and actActivity.activityType != 101 and actActivity.activityType != 102 and actActivity.activityType != 0 ">
+        	and aa.activity_type = #{actActivity.activityType,jdbcType=VARCHAR}
+        </if>
+  	</sql>
+  	
+  	<!-- 查询系统活动,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		select 
+  		<include refid="base_activity_list" />
+  		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 查询所有正在进行中的活动 -->
+  	<select id="selectAllUnderwayActivity" resultMap="BaseResultMap">
+  		select 
+  		<include refid="Base_Column_List" />
+  		from t_act_activity  
+  		where status = 2 
+  		and activity_type in(1,2,3,4,8) 
+  	</select>
+  	
+  	<!-- 定时任务,查询当前时间前还没有开始的应该开始的活动 -->
+  	<select id="selectActivityBeginTask" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select 
+  		<include refid="Base_Column_List" />
+  		from t_act_activity  
+  		where status = 1  
+  		and start_date <![CDATA[ <= ]]> #{startDate,jdbcType=TIMESTAMP}
+  	</select>
+  	
+  	<!-- 定时任务,查询当前时间前还没有结束的应该结束的活动任务 -->
+  	<select id="selectActivityEndTask" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select 
+  		<include refid="Base_Column_List" />
+  		from t_act_activity  
+  		where status = 2   
+  		and end_date <![CDATA[ <= ]]> #{endDate,jdbcType=TIMESTAMP}
+  	</select>
+  	
+  	<select id="selectByObjectIdAndActivityType" resultType="java.lang.String" parameterType="java.lang.String" >
+  		select PID
+  		from t_act_activity 
+		where object_id = #{objectId,jdbcType=VARCHAR} 
+	    and activity_type = #{activityType,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<select id="selectActActivityByParam" resultMap="BaseResultMap" parameterType="com.yscf.core.model.activity.ActActivity" >
+  		select 
+		a.PID, a.act_code, a.act_tag, a.act_name, a.start_date, a.end_date, a.object_id, a.activity_type, 
+	    a.sms_id, is_sms_warn, a.is_bir_privilege, a.act_desc, a.status, a.create_user, a.create_time, 
+	    a.last_update_user, a.last_update_time, a.version,
+		sst.temp_code as smsCode,sst.sms_content as smsContent 
+  		from t_act_activity a
+  		LEFT JOIN t_sys_sms_templates sst
+		on a.sms_id = sst.PID
+		where 1 = 1
+		<if test="map.actCode != null and map.actCode != '' ">
+			and a.act_code like
+			concat('%',#{map.actCode,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.actTag != null and map.actTag != ''">
+			and a.act_tag like concat('%',#{map.actTag,jdbcType=VARCHAR},'%' )  
+		</if>
+		<if test="map.actName != null and map.actName != ''">
+			and a.act_name like
+			concat('%',#{map.actName,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.objectId != null and map.objectId != ''">
+			and a.object_id = #{map.objectId,jdbcType=TIMESTAMP}
+		</if>
+		<if test="map.activityType != null and map.activityType != '' ">
+			and a.activity_type like
+			concat('%',#{map.activityType,jdbcType=VARCHAR},'%' )  
+		</if>
+		<if test="map.smsId != null and map.smsId != ''">
+			and a.sms_id = #{map.smsId,jdbcType=TIMESTAMP}
+		</if>
+		<if test="map.isSmsWarn != null and map.isSmsWarn != ''">
+			and a.is_sms_warn = #{map.isSmsWarn,jdbcType=VARCHAR}
+		</if>
+		<if test="map.startDate != null and map.startDate != ''">
+			and <![CDATA[DATE_FORMAT(a.start_date ,'%Y-%m-%d') >= #{map.startDate,jdbcType=VARCHAR}]]> 
+		</if>
+		<if test="map.endDate != null and map.endDate != ''">
+			and <![CDATA[DATE_FORMAT(a.endDate ,'%Y-%m-%d') >= #{map.endDate,jdbcType=VARCHAR}]]>  
+		</if>
+		
+		<if test="map.isBirPrivilege != null and map.isBirPrivilege != ''">
+			and a.is_bir_privilege like concat('%',#{map.isBirPrivilege,jdbcType=VARCHAR},'%' )   
+		</if>
+		<if test="map.actDesc != null and map.actDesc != ''">
+			and a.act_desc like  concat('%',#{map.actDesc,jdbcType=VARCHAR},'%' )   
+		</if>
+		<if test="map.createUser != null and map.createUser != ''">
+			and a.create_user like  concat('%',#{map.createUser,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.lastUpdateUser != null and map.lastUpdateUser != ''">
+			and a.last_update_user like concat('%',#{map.lastUpdateUser,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.status != null and map.status != ''">
+			and a.status like concat('%',#{map.status,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if
+			test="map.lastBeginUpdateTime != null and map.lastBeginUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(a.last_update_time ,'%Y-%m-%d')  >= #{map.lastBeginUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.lastEndUpdateTime != null and map.lastEndUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(a.last_update_time ,'%Y-%m-%d') <= #{map.lastEndUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createBeginTime != null and map.createBeginTime != '' ">
+			and <![CDATA[DATE_FORMAT(a.create_time ,'%Y-%m-%d') >= #{map.createBeginTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createEndTime != null and map.createEndTime != '' ">
+			and <![CDATA[DATE_FORMAT(a.create_time ,'%Y-%m-%d') <= #{map.createEndTime,jdbcType=VARCHAR}]]>
+		</if>
+		and a.activity_type = '7'
+		and a.status != -1
+		order by a.create_time desc
+  	</select>
+  	
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	   select 
+		a.PID, a.act_code, a.act_tag, a.act_name, a.start_date, a.end_date, a.object_id, a.activity_type, 
+	    a.sms_id, is_sms_warn, a.is_bir_privilege, a.act_desc, a.status, a.create_user, a.create_time, 
+	    a.last_update_user, a.last_update_time, a.version, 
+		sst.temp_code as smsCode,sst.sms_content as smsContent 
+  		from t_act_activity a 
+  		LEFT JOIN t_sys_sms_templates sst
+		on a.sms_id = sst.PID
+		where 1 = 1
+	    and a.PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_act_activity
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.ActActivity" >
+	    insert into t_act_activity (PID, act_code, act_tag, 
+	      act_name, start_date, end_date, 
+	      object_id, activity_type, sms_id, 
+	      is_sms_warn, is_bir_privilege, act_desc, 
+	      status, create_user, create_time, 
+	      last_update_user, last_update_time, version
+	      )
+	    values (#{pid,jdbcType=VARCHAR}, #{actCode,jdbcType=VARCHAR}, #{actTag,jdbcType=VARCHAR}, 
+	      #{actName,jdbcType=VARCHAR}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+	      #{objectId,jdbcType=VARCHAR}, #{activityType,jdbcType=VARCHAR}, #{smsId,jdbcType=VARCHAR}, 
+	      #{isSmsWarn,jdbcType=VARCHAR}, #{isBirPrivilege,jdbcType=VARCHAR}, #{actDesc,jdbcType=VARCHAR}, 
+	      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+	      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}
+	      )
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.ActActivity" >
+	    insert into t_act_activity
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="actCode != null" >
+	        act_code,
+	      </if>
+	      <if test="actTag != null" >
+	        act_tag,
+	      </if>
+	      <if test="actName != null" >
+	        act_name,
+	      </if>
+	      <if test="startDate != null" >
+	        start_date,
+	      </if>
+	      <if test="endDate != null" >
+	        end_date,
+	      </if>
+	      <if test="objectId != null" >
+	        object_id,
+	      </if>
+	      <if test="activityType != null" >
+	        activity_type,
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id,
+	      </if>
+	      <if test="isSmsWarn != null" >
+	        is_sms_warn,
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege,
+	      </if>
+	      <if test="actDesc != null" >
+	        act_desc,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actCode != null" >
+	        #{actCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actTag != null" >
+	        #{actTag,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actName != null" >
+	        #{actName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startDate != null" >
+	        #{startDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endDate != null" >
+	        #{endDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="objectId != null" >
+	        #{objectId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityType != null" >
+	        #{activityType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isSmsWarn != null" >
+	        #{isSmsWarn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actDesc != null" >
+	        #{actDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.ActActivity" >
+	    update t_act_activity
+	    <set >
+	      <if test="actCode != null" >
+	        act_code = #{actCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actTag != null" >
+	        act_tag = #{actTag,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actName != null" >
+	        act_name = #{actName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startDate != null" >
+	        start_date = #{startDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endDate != null" >
+	        end_date = #{endDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="objectId != null" >
+	        object_id = #{objectId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityType != null" >
+	        activity_type = #{activityType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id = #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isSmsWarn != null" >
+	        is_sms_warn = #{isSmsWarn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actDesc != null" >
+	        act_desc = #{actDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.ActActivity" >
+	    update t_act_activity
+	    set act_code = #{actCode,jdbcType=VARCHAR},
+	      act_tag = #{actTag,jdbcType=VARCHAR},
+	      act_name = #{actName,jdbcType=VARCHAR},
+	      start_date = #{startDate,jdbcType=TIMESTAMP},
+	      end_date = #{endDate,jdbcType=TIMESTAMP},
+	      object_id = #{objectId,jdbcType=VARCHAR},
+	      activity_type = #{activityType,jdbcType=VARCHAR},
+	      sms_id = #{smsId,jdbcType=VARCHAR},
+	      is_sms_warn = #{isSmsWarn,jdbcType=VARCHAR},
+	      is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      act_desc = #{actDesc,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 根据活动类型和活动类型ID修改活动信息 -->
+  	<update id="updateByObjectIdAndActivityType" parameterType="com.yscf.core.model.activity.ActActivity" >
+  		update t_act_activity
+  		<set >
+	      <if test="actTag != null" >
+	        act_tag = #{actTag,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actName != null" >
+	        act_name = #{actName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startDate != null" >
+	        start_date = #{startDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endDate != null" >
+	        end_date = #{endDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityType != null" >
+	        activity_type = #{activityType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id = #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isSmsWarn != null" >
+	        is_sms_warn = #{isSmsWarn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actDesc != null" >
+	        act_desc = #{actDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where object_id = #{objectId,jdbcType=VARCHAR}
+	    and activity_type = #{activityType,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 根据活动类型和活动类型ID修改活动信息 -->
+  	<update id="updateByPidAndActivityType" parameterType="com.yscf.core.model.activity.ActActivity" >
+  		update t_act_activity
+  		<set >
+	      <if test="actTag != null" >
+	        act_tag = #{actTag,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actName != null" >
+	        act_name = #{actName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startDate != null" >
+	        start_date = #{startDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endDate != null" >
+	        end_date = #{endDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityType != null" >
+	        activity_type = #{activityType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsId != null" >
+	        sms_id = #{smsId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isSmsWarn != null" >
+	        is_sms_warn = #{isSmsWarn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="actDesc != null" >
+	        act_desc = #{actDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where pid = #{pid,jdbcType=VARCHAR}
+	    and activity_type = #{activityType,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量删除vip生日特权活动 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_act_activity SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 批量修改活动状态 -->
+  	<update id="updateStatusBatch" parameterType="map"  >
+  		UPDATE t_act_activity 
+		<set >
+			<if test="status != null" >
+	        	status = #{status,jdbcType=VARCHAR},
+	      	</if>
+		</set>
+		where activity_type = #{activityType,jdbcType=VARCHAR}
+		and object_id in 
+  		<foreach item="idItem" collection="pidArr" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 根据状态查询当前活动的进行数 -->
+  	<select id="selectCountByStatus" resultType="java.lang.Integer" parameterType="java.lang.String" >
+  		select count(1) 
+  		from t_act_activity aa 
+  		where aa.status = #{status,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- 根据活动类型and活动类型ID查询活动ID -->
+  	<select id="selectActivityId" resultType="java.lang.String" parameterType="java.lang.String">
+  		select aa.pid 
+  		from t_act_activity aa 
+  		where aa.activity_type = #{activityType,jdbcType=VARCHAR}
+  		and aa.object_id = #{objectId,jdbcType=VARCHAR}
+  	</select>
+  	<!-- 根据ObjectId 查询活动-->
+  	<select id="selectActivityByObjectId" resultType="com.yscf.core.model.activity.ActActivity" parameterType="java.lang.String">
+  		select 
+			a.PID, a.act_code, a.act_tag, a.act_name, a.start_date, a.end_date, a.object_id, a.activity_type, 
+	    a.sms_id, is_sms_warn, a.is_bir_privilege, a.act_desc, a.status, a.create_user, a.create_time, 
+	    a.last_update_user, a.last_update_time, a.version, 
+		sst.temp_code as smsCode,sst.sms_content as smsContent 
+  		from t_act_activity a 
+  		LEFT JOIN t_sys_sms_templates sst
+		on a.sms_id = sst.PID
+  		where  
+  		a.object_id = #{objectId,jdbcType=VARCHAR}
+  	</select>
+  	<!-- 根据activityType 查询有效的活动-->
+  	<select id="selectValidActByActType" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select aa.* 
+  		from t_act_activity aa 
+  		where  1=1
+  		and aa.start_date <![CDATA[ <= ]]> NOW() 
+		and aa.end_date <![CDATA[ >= ]]> NOW()
+		<if test="activityType != null and activityType != '' " >
+			and aa.activity_type = #{activityType,jdbcType=VARCHAR}
+	    </if>
+  	</select>
+</mapper>

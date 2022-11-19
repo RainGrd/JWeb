@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustMessageFeedbackMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustMessageFeedback" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="submit_time" property="submitTime" jdbcType="TIMESTAMP" />
+    <result column="submit_content" property="submitContent" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="dispose_time" property="disposeTime" jdbcType="TIMESTAMP" />
+    <result column="dispose_desc" property="disposeDesc" jdbcType="VARCHAR" />
+    <result column="extfield1" property="extfield1" jdbcType="VARCHAR" />
+    <result column="extfield2" property="extfield2" jdbcType="VARCHAR" />
+    <result column="extfield3" property="extfield3" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid, customer_id, submit_time, submit_content, user_id, dispose_time, dispose_desc, 
+    extfield1, extfield2, extfield3, status, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cust_message_feedback
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cust_message_feedback
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.user.CustMessageFeedback" >
+    insert into t_cust_message_feedback (pid, customer_id, submit_time, 
+      submit_content, user_id, dispose_time, 
+      dispose_desc, extfield1, extfield2, 
+      extfield3, status, version
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{submitTime,jdbcType=TIMESTAMP}, 
+      #{submitContent,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{disposeTime,jdbcType=TIMESTAMP}, 
+      #{disposeDesc,jdbcType=VARCHAR}, #{extfield1,jdbcType=VARCHAR}, #{extfield2,jdbcType=VARCHAR}, 
+      #{extfield3,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.CustMessageFeedback" >
+    insert into t_cust_message_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="submitTime != null" >
+        submit_time,
+      </if>
+      <if test="submitContent != null" >
+        submit_content,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="disposeTime != null" >
+        dispose_time,
+      </if>
+      <if test="disposeDesc != null" >
+        dispose_desc,
+      </if>
+      <if test="extfield1 != null" >
+        extfield1,
+      </if>
+      <if test="extfield2 != null" >
+        extfield2,
+      </if>
+      <if test="extfield3 != null" >
+        extfield3,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null" >
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitContent != null" >
+        #{submitContent,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeTime != null" >
+        #{disposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="disposeDesc != null" >
+        #{disposeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield1 != null" >
+        #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustMessageFeedback" >
+    update t_cust_message_feedback
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null" >
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitContent != null" >
+        submit_content = #{submitContent,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeTime != null" >
+        dispose_time = #{disposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="disposeDesc != null" >
+        dispose_desc = #{disposeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield1 != null" >
+        extfield1 = #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        extfield2 = #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        extfield3 = #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustMessageFeedback" >
+    update t_cust_message_feedback
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      submit_content = #{submitContent,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      dispose_time = #{disposeTime,jdbcType=TIMESTAMP},
+      dispose_desc = #{disposeDesc,jdbcType=VARCHAR},
+      extfield1 = #{extfield1,jdbcType=VARCHAR},
+      extfield2 = #{extfield2,jdbcType=VARCHAR},
+      extfield3 = #{extfield3,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

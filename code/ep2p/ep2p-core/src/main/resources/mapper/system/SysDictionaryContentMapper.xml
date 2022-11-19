@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysDictionaryContentMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysDictionaryContent" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="dict_cont_code" property="dictContCode" jdbcType="VARCHAR" />
+    <result column="dict_cont_name" property="dictContName" jdbcType="VARCHAR" />
+    <result column="dict_cont_desc" property="dictContDesc" jdbcType="VARCHAR" />
+    <result column="dict_cont_order" property="dictContOrder" jdbcType="VARCHAR" />
+    <result column="dict_id" property="dictId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, dict_cont_code, dict_cont_name, dict_cont_desc, dict_cont_order, dict_id, status, 
+    create_user, create_time, last_update_user, last_update_time, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary_content
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 分页查询  -->
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary_content
+    where  1 = 1 
+      <if test="map.dictContCodeLike != null" >
+        and  dict_cont_code like  concat('%',#{map.dictContCodeLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.dictContNameLike != null" >
+        and  dict_cont_name like   concat('%',#{map.dictContNameLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.dictContCode != null" >
+        and  dict_cont_code = #{map.dictContCode,jdbcType=VARCHAR} 
+      </if>
+      <if test="map.dictContName != null" >
+        and  dict_cont_name = #{map.dictContName,jdbcType=VARCHAR}
+      </if>
+      <if test="map.dictContDesc != null" >
+        and dict_cont_desc =  concat('%',#{map.dictContDesc,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.dictContOrder != null" >
+        and dict_cont_order like  concat('%',#{map.dictContOrder,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="map.dictId != null" >
+        and dict_id = #{map.dictId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.status != null" >
+        and status = #{map.status,jdbcType=VARCHAR}
+      </if>
+      <if test="map.createUser != null" >
+        and create_user like  concat('%',#{map.create_user,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.lastUpdateUser != null" >
+        and last_update_user like   concat('%',#{map.lastUpdateUser,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="map.version != null" >
+        and version = #{map.version,jdbcType=VARCHAR}
+      </if>
+      order by dict_cont_order
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.yscf.core.model.system.SysDictionaryContent" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary_content
+    where  1 = 1 
+      <if test="dictContCodeLike != null" >
+        and  dict_cont_code like  concat('%',#{dictContCodeLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="dictContNameLike != null" >
+        and  dict_cont_name like   concat('%',#{dictContNameLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="dictContCode != null" >
+        and  dict_cont_code = #{dictContCode,jdbcType=VARCHAR} 
+      </if>
+      <if test="dictContName != null" >
+        and  dict_cont_name = #{dictContName,jdbcType=VARCHAR}
+      </if>
+      <if test="dictContDesc != null" >
+        and dict_cont_desc =  concat('%',#{dictContDesc,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="dictContOrder != null" >
+        and dict_cont_order like  concat('%',#{dictContOrder,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="dictId != null" >
+        and dict_id = #{dictId,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="createUser != null" >
+        and create_user like  concat('%',#{create_user,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="lastUpdateUser != null" >
+        and last_update_user like   concat('%',#{lastUpdateUser,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="version != null" >
+        and version = #{version,jdbcType=VARCHAR}
+      </if>
+      <if test="pid != null" >
+        and pid = #{pid,jdbcType=VARCHAR}
+      </if>
+      order by dict_cont_order
+  </select>
+  
+  <select id="validateCode" resultMap="BaseResultMap" parameterType="com.yscf.core.model.system.SysDictionaryContent" >
+  	 select 
+    <include refid="Base_Column_List" />
+	    from t_sys_dictionary_content
+	    where  1 = 1 
+        and  dict_cont_code = #{dictContCode,jdbcType=VARCHAR} 
+        and  dict_id = #{dictId,jdbcType=VARCHAR}
+        <if test="pid != null" >
+        	and pid != #{pid,jdbcType=VARCHAR}
+      	</if>
+  </select>
+  
+  
+ <select id="selectByDisctCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	 select  content.pid,content.dict_cont_code, content.dict_cont_name, content.dict_cont_desc,content.dict_id 
+	    from t_sys_dictionary dict left join t_sys_dictionary_content content
+	    on dict.pid = content.dict_id 
+	    where  1 = 1 and content.status = 1 and dict.status = 1 
+        and  dict.dict_code = #{dictCode,jdbcType=VARCHAR} 
+        order by content.dict_cont_order asc 
+  </select>
+  
+	<!-- 根据数据字典code和数据字典内容code查询数据字典内容名称 -->
+	<select id="selectDictionaryContentName" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT content.dict_cont_name
+		from t_sys_dictionary dict,t_sys_dictionary_content content
+		where dict.pid = content.dict_id
+		and content.status = 1 and dict.status = 1 
+		and dict.dict_code = #{dictCode,jdbcType=VARCHAR}
+		and content.dict_cont_code = #{dictContCode,jdbcType=VARCHAR}
+	</select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_dictionary_content
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.system.SysDictionaryContent" >
+    insert into t_sys_dictionary_content (PID, dict_cont_code, dict_cont_name, 
+      dict_cont_desc, dict_cont_order, dict_id, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, version
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{dictContCode,jdbcType=VARCHAR}, #{dictContName,jdbcType=VARCHAR}, 
+      #{dictContDesc,jdbcType=VARCHAR}, #{dictContOrder,jdbcType=INTEGER}, #{dictId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.system.SysDictionaryContent" >
+    insert into t_sys_dictionary_content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="dictContCode != null" >
+        dict_cont_code,
+      </if>
+      <if test="dictContName != null" >
+        dict_cont_name,
+      </if>
+      <if test="dictContDesc != null" >
+        dict_cont_desc,
+      </if>
+      <if test="dictContOrder != null" >
+        dict_cont_order,
+      </if>
+      <if test="dictId != null" >
+        dict_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContCode != null" >
+        #{dictContCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContName != null" >
+        #{dictContName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContDesc != null" >
+        #{dictContDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContOrder != null" >
+        #{dictContOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="dictId != null" >
+        #{dictId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysDictionaryContent" >
+    update t_sys_dictionary_content
+    <set >
+      <if test="dictContCode != null" >
+        dict_cont_code = #{dictContCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContName != null" >
+        dict_cont_name = #{dictContName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContDesc != null" >
+        dict_cont_desc = #{dictContDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="dictContOrder != null" >
+        dict_cont_order = #{dictContOrder,jdbcType=INTEGER},
+      </if>
+      <if test="dictId != null" >
+        dict_id = #{dictId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysDictionaryContent" >
+    update t_sys_dictionary_content
+    set dict_cont_code = #{dictContCode,jdbcType=VARCHAR},
+      dict_cont_name = #{dictContName,jdbcType=VARCHAR},
+      dict_cont_desc = #{dictContDesc,jdbcType=VARCHAR},
+      dict_cont_order = #{dictContOrder,jdbcType=INTEGER},
+      dict_id = #{dictId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+   <update id="updateStatusBatch" parameterType="java.util.HashMap" >
+  
+    update t_sys_dictionary_content set status = #{map.status,jdbcType=VARCHAR}
+    
+    where PID in 
+    <foreach item="idItem" collection="map.idItem" open="(" separator="," close=")">
+		#{idItem}
+	</foreach>
+  </update>
+</mapper>

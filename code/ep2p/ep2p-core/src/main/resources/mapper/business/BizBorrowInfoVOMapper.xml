@@ -1,0 +1,1780 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizBorrowInfoVOMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizBorrowInfoVO" >
+  	<!-- 借款表信息 -->
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="borrow_his_id" property="borrowHisId" jdbcType="VARCHAR" />
+    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+    <result column="home_id" property="homeId" jdbcType="VARCHAR" />
+    <result column="home_desc" property="homeDesc" jdbcType="VARCHAR" />
+    <result column="home_total" property="homeTotal" jdbcType="DECIMAL" />
+    <result column="borrow_money" property="borrowMoney" jdbcType="DECIMAL" />
+    <result column="borrow_time" property="borrowTime" jdbcType="TIMESTAMP" />
+    <result column="borrow_use" property="borrowUse" jdbcType="VARCHAR" />
+    <result column="payment" property="payment" jdbcType="VARCHAR" />
+    <result column="repayment_type" property="repaymentType" jdbcType="VARCHAR" />
+    <result column="repayment_type_name" property="repaymentTypeName" jdbcType="VARCHAR" />
+    <result column="accrual_type" property="accrualType" jdbcType="VARCHAR" />
+    <result column="accrual_type_name" property="accrualTypeName" jdbcType="VARCHAR" />
+    <result column="other" property="other" jdbcType="VARCHAR" />
+    <result column="borrow_type_name" property="borrowTypeName" jdbcType="VARCHAR" />
+    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+    <result column="start_money" property="startMoney" jdbcType="DECIMAL" />
+    <result column="end_money" property="endMoney" jdbcType="DECIMAL" />
+    <result column="is_times_invest" property="isTimesInvest" jdbcType="VARCHAR" />
+    <result column="is_jiaxi_ticket" property="isJiaxiTicket" jdbcType="VARCHAR" />
+    <result column="invest_reward_scale" property="investRewardScale" jdbcType="DECIMAL" />
+    <result column="is_equitable_assignment" property="isEquitableAssignment" jdbcType="VARCHAR" />
+    <result column="already_money" property="alreadyMoney" jdbcType="DECIMAL" />
+    <result column="borrow_progress" property="borrowProgress" jdbcType="DECIMAL" />
+    <result column="gua_org_id" property="guaOrgId" jdbcType="VARCHAR" />
+    <result column="oper_time" property="operTime" jdbcType="TIMESTAMP" />
+    <result column="is_split" property="isSplit" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+    <result column="surplus_money" property="surplusMoney" jdbcType="DECIMAL" />
+    <result column="borrow_password" property="borrowPassword" jdbcType="VARCHAR" />
+    <result column="bor_agr_id" property="borAgrId" jdbcType="VARCHAR" />
+    <result column="borrow_status" property="borrowStatus" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="borrow_desc" property="borrowDesc" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="VARCHAR" />
+    <result column="bor_deadline" property="borDeadline" jdbcType="VARCHAR" />
+    <result column="borrow_rate" property="borrowRate" jdbcType="DECIMAL" />
+    <result column="hostage_info" property="hostageInfo" jdbcType="VARCHAR" />
+    <result column="hostage_valuable" property="hostageValuable" jdbcType="VARCHAR" />
+    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+    <result column="borrow_tag" property="borrowTag" jdbcType="VARCHAR" />
+    <result column="house_info" property="houseInfo" jdbcType="VARCHAR" />
+    <result column="gua_acc" property="guaAcc" jdbcType="VARCHAR" />
+    <result column="risk_desc" property="riskDesc" jdbcType="VARCHAR" />
+    <result column="bor_full_time" property="borFullTime" jdbcType="VARCHAR" />
+    <result column="manage_expense_rate" property="manageExpenseRate" jdbcType="DECIMAL" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="investmentAmountTotal" property="investmentAmountTotal" jdbcType="DECIMAL"/> 
+    <!-- 客户表信息 -->
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="customer_status" property="customerStatus" jdbcType="VARCHAR" />
+    
+    <!-- 审批记录表信息 -->
+    <result column="approve_id" property="approveId" jdbcType="VARCHAR" />
+    <result column="approve_status" property="approveStatus" jdbcType="VARCHAR" />
+    <result column="approve_status_name" property="approveStatusName" jdbcType="VARCHAR" />
+    <result column="approve_user" property="approveUser" jdbcType="VARCHAR" />
+    <result column="approve_user_name" property="approveUserName" jdbcType="VARCHAR" />
+    <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP" />
+    <result column="vouch_opinion" property="vouchOpinion" jdbcType="VARCHAR" />
+    <result column="lend_opinion" property="lendOpinion" jdbcType="VARCHAR" />
+    <result column="bor_cond_desc" property="borCondDesc" jdbcType="VARCHAR" />
+    <result column="bor_order" property="borOrder" jdbcType="VARCHAR"/>
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+	<result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+	<result column="split_bor_count" property="splitBorCount" jdbcType="VARCHAR" />
+    <result column="tender_count" property="tenderCount" jdbcType="VARCHAR" />
+    <result column="bor_status" property="borStatus" jdbcType="VARCHAR" />
+    <result column="bor_status_name" property="borStatusName" jdbcType="VARCHAR" />
+    <result column="rest_reason" property="restReason" jdbcType="VARCHAR" /> 
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+ 	<sql id="Base_Column_List" >
+      select * from (
+			SELECT
+				borrow.PID,
+				borrow.borrow_rate,
+				borrow.hostage_info,
+				borrow.borrow_tag,
+				borrow.hostage_valuable,
+				borrow.house_info,
+				borrow.gua_acc,
+				borrow.risk_desc,
+				borrow.borrow_name,
+				borrow.borrow_code,
+				borrow.customer_id,
+				borrow.home_id,
+				cus.sname,
+				cus.customer_name,
+				cus.phone_no,
+				cus.STATUS AS customer_status,
+				borrow.home_desc,
+				borrow.home_total,
+				borrow.borrow_money,
+				borrow.borrow_time borrow_time,
+				borrow.borrow_use,
+				borrow.bor_full_time,
+				borrow.payment,
+				borrow.repayment_type,
+				FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',borrow.repayment_type) AS repayment_type_name,
+				borrow.accrual_type,
+				FUNC_GET_DICT_CONT_NAME('ACCRUAL_TYPE',borrow.accrual_type) AS accrual_type_name,
+				borrow.other,
+				borrow.borrow_type,
+				FUNC_GET_DICT_CONT_NAME('BORROW_TYPE',borrow.borrow_type) AS borrow_type_name,
+				borrow.start_money,
+				borrow.end_money,
+				borrow.is_times_invest,
+				borrow.is_jiaxi_ticket,
+				borrow.invest_reward_scale,
+				borrow.is_equitable_assignment,
+				borrow.already_money,
+				borrow.borrow_progress,
+				borrow.gua_org_id,
+				borrow.oper_time,
+				borrow.is_split,
+				borrow.deadline,
+				borrow.surplus_money,
+				borrow.borrow_password,
+				borrow.bor_agr_id,
+				borrow.STATUS AS borrow_status,
+				borrow.create_user,
+				borrow.create_time,
+				borrow.last_update_user,
+				borrow.last_update_time,
+				borrow.borrow_desc,
+				DATE_FORMAT(borrow.apply_time,'%Y-%m-%d %T') AS apply_time,
+				borrow.bor_deadline,
+				borrow.bor_order,
+				borrow.parent_id,
+				borrow.publish_time,
+				borrow.split_bor_count,
+				borrow.tender_count,
+				borrow.bor_status,
+				borrow.manage_expense_rate,
+				borrow.province,
+				borrow.city,
+				FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',borrow.bor_status) AS bor_status_name,
+				borrow.rest_reason,
+				approve.pid AS approve_id,
+				approve.approve_node,
+				approve.approve_status,
+				FUNC_GET_DICT_CONT_NAME('BORROW_CHECK_STATUTS',approve.approve_status) AS approve_status_name,
+				approve.approve_user,
+				FUNC_GET_USER_NAME(approve.approve_user) as approve_user_name,
+				date_format(approve.approve_time,'%Y-%m-%d %H:%I:%S') as approve_time,
+				approve.vouch_opinion,
+				approve.lend_opinion,
+				approve.bor_cond_desc
+			FROM
+				t_biz_borrow borrow
+			LEFT JOIN t_cust_customer cus ON borrow.customer_id = cus.PID
+			LEFT JOIN t_biz_borrow_approve approve ON borrow.PID = approve.bor_id
+		where cus.status = 1 and borrow.status = 1 order by apply_time desc 
+	) t where 1 = 1
+  </sql>
+  
+  <sql id="Base_Column_Search_List" >
+      select * from (
+			SELECT
+				borrow.PID,
+				borrow.borrow_rate,
+				borrow.hostage_info,
+				borrow.borrow_tag,
+				borrow.hostage_valuable,
+				borrow.house_info,
+				borrow.gua_acc,
+				borrow.risk_desc,
+				borrow.borrow_name,
+				borrow.borrow_code,
+				borrow.customer_id,
+				borrow.home_id,
+				cus.sname,
+				cus.customer_name,
+				cus.phone_no,
+				cus.STATUS AS customer_status,
+				borrow.home_desc,
+				borrow.home_total,
+				borrow.borrow_money,
+				borrow.borrow_time,
+				borrow.borrow_use,
+				borrow.payment,
+				borrow.bor_full_time,
+				borrow.repayment_type,
+				FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',borrow.repayment_type) AS repayment_type_name,
+				borrow.accrual_type,
+				FUNC_GET_DICT_CONT_NAME('ACCRUAL_TYPE',borrow.accrual_type) AS accrual_type_name,
+				borrow.other,
+				borrow.borrow_type, 
+				borrow.manage_expense_rate,
+				FUNC_GET_DICT_CONT_NAME('BORROW_TYPE',borrow.borrow_type) AS borrow_type_name,
+				borrow.start_money,
+				borrow.end_money,
+				borrow.is_times_invest,
+				borrow.is_jiaxi_ticket,
+				borrow.invest_reward_scale,
+				borrow.is_equitable_assignment,
+				borrow.already_money,
+				borrow.borrow_progress,
+				borrow.gua_org_id,
+				borrow.oper_time,
+				borrow.is_split,
+				borrow.deadline,
+				borrow.surplus_money,
+				borrow.borrow_password,
+				borrow.bor_agr_id,
+				borrow.STATUS AS borrow_status,
+				borrow.create_user,
+				borrow.create_time,
+				borrow.last_update_user,
+				borrow.last_update_time,
+				borrow.borrow_desc,
+				DATE_FORMAT(borrow.apply_time,'%Y-%m-%d %T') AS apply_time,
+				borrow.bor_deadline,
+				borrow.bor_order,
+				borrow.parent_id,
+				borrow.publish_time,
+				borrow.split_bor_count,
+				borrow.tender_count,
+				borrow.bor_status,
+				borrow.province,
+				borrow.city,
+				FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',borrow.bor_status) AS bor_status_name,
+				borrow.rest_reason,
+				approve.pid AS approve_id,
+				approve.approve_node,
+				approve.approve_status,
+				FUNC_GET_DICT_CONT_NAME('BORROW_CHECK_STATUTS',approve.approve_status) AS approve_status_name,
+				approve.approve_user,
+				FUNC_GET_USER_NAME(approve.approve_user) as approve_user_name,
+				date_format(approve.approve_time,'%Y-%m-%d %H:%I:%S') as approve_time,
+				approve.vouch_opinion,
+				approve.lend_opinion,
+				approve.bor_cond_desc
+			FROM
+				t_biz_borrow borrow
+			LEFT JOIN t_cust_customer cus ON borrow.customer_id = cus.PID
+			LEFT JOIN t_biz_borrow_approve approve ON borrow.PID = approve.bor_id
+		where 1 = 1 and cus.status = 1 and borrow.status = 1 order by borrow.create_time desc 
+	) t where 1 = 1
+  </sql>
+<!--   e计划  e首房 sql -->
+  <sql id="Base_Column_Special_List">
+		  select * from (
+					SELECT
+						borrow.PID,
+						borrow.borrow_rate,
+						borrow.hostage_info,
+						borrow.borrow_tag,
+						borrow.hostage_valuable,
+						borrow.house_info,
+						borrow.gua_acc,
+						borrow.risk_desc,
+						borrow.borrow_name,
+						borrow.borrow_code,
+						borrow.customer_id,
+						borrow.home_id,
+						cus.sname,
+						cus.customer_name,
+						cus.phone_no,
+						cus.STATUS AS customer_status,
+						borrow.home_desc,
+						borrow.home_total,
+						borrow.borrow_money,
+						borrow.borrow_time borrow_time,
+						borrow.borrow_use,
+						borrow.payment,
+						borrow.repayment_type,
+						FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',borrow.repayment_type) AS repayment_type_name,
+						borrow.accrual_type,
+						FUNC_GET_DICT_CONT_NAME('ACCRUAL_TYPE',borrow.accrual_type) AS accrual_type_name,
+						borrow.other,
+						borrow.borrow_type, 
+						borrow.manage_expense_rate,
+						FUNC_GET_DICT_CONT_NAME('BORROW_TYPE',borrow.borrow_type) AS borrow_type_name,
+						borrow.start_money,
+						borrow.end_money,
+						borrow.is_times_invest,
+						borrow.is_jiaxi_ticket,
+						borrow.invest_reward_scale,
+						borrow.is_equitable_assignment,
+						borrow.borrow_progress,
+						borrow.gua_org_id,
+						borrow.oper_time,
+						borrow.is_split,
+						borrow.deadline,
+						borrow.surplus_money,
+						borrow.borrow_password,
+						borrow.bor_agr_id,
+						borrow.STATUS AS borrow_status,
+						borrow.create_user,
+						borrow.create_time,
+						borrow.last_update_user,
+						borrow.last_update_time,
+						borrow.borrow_desc,
+						borrow.apply_time,
+						borrow.bor_deadline,
+						borrow.bor_order,
+						borrow.parent_id,
+						borrow.publish_time,
+						borrow.split_bor_count,
+						borrow.tender_count,
+						borrow.bor_status,
+						borrow.province,
+						borrow.city,
+						FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',borrow.bor_status) AS bor_status_name,
+						borrow.rest_reason,
+						approve.pid AS approve_id,
+						approve.approve_node,
+						approve.approve_status,
+						FUNC_GET_DICT_CONT_NAME('BORROW_APPROVE_STATUS',approve.approve_status) AS approve_status_name,
+						approve.approve_user,
+						FUNC_GET_USER_NAME(approve.approve_user) as approve_user_name,
+						approve.approve_time,
+						approve.vouch_opinion,
+						approve.lend_opinion,
+						approve.bor_cond_desc,
+						(select SUM(investment_amount) from t_biz_borrow_detail d where borrow.pid = d.borrow_id) as already_money
+					FROM
+						t_biz_borrow borrow
+					LEFT JOIN t_cust_customer cus ON borrow.customer_id = cus.PID
+					LEFT JOIN t_biz_borrow_approve approve ON borrow.PID = approve.bor_id 
+				where 1 = 1 and cus.status = 1 and borrow.status = 1  
+			) t where 1 = 1							
+  </sql>
+<!--   计算总数 -->
+  <sql id="Base_Column_Count_List">
+  			select count(*) from (
+					SELECT
+						borrow.PID,
+						borrow.borrow_rate,
+						borrow.hostage_info,
+						borrow.borrow_tag,
+						borrow.hostage_valuable,
+						borrow.house_info,
+						borrow.gua_acc,
+						borrow.risk_desc,
+						borrow.borrow_name,
+						borrow.borrow_code,
+						borrow.customer_id,
+						borrow.home_id,
+						cus.sname,
+						cus.customer_name,
+						cus.phone_no,
+						cus.STATUS AS customer_status,
+						borrow.home_desc,
+						borrow.home_total,
+						borrow.borrow_money,
+						borrow.borrow_time borrow_time,
+						borrow.borrow_use,
+						borrow.payment,
+						borrow.repayment_type,
+						FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',borrow.repayment_type) AS repayment_type_name,
+						borrow.accrual_type,
+						FUNC_GET_DICT_CONT_NAME('ACCRUAL_TYPE',borrow.accrual_type) AS accrual_type_name,
+						borrow.other,
+						borrow.borrow_type, 
+						borrow.manage_expense_rate,
+						FUNC_GET_DICT_CONT_NAME('BORROW_TYPE',borrow.borrow_type) AS borrow_type_name,
+						borrow.start_money,
+						borrow.end_money,
+						borrow.is_times_invest,
+						borrow.is_jiaxi_ticket,
+						borrow.invest_reward_scale,
+						borrow.is_equitable_assignment,
+						borrow.borrow_progress,
+						borrow.gua_org_id,
+						borrow.oper_time,
+						borrow.is_split,
+						borrow.deadline,
+						borrow.surplus_money,
+						borrow.borrow_password,
+						borrow.bor_agr_id,
+						borrow.STATUS AS borrow_status,
+						borrow.create_user,
+						borrow.create_time,
+						borrow.last_update_user,
+						borrow.last_update_time,
+						borrow.borrow_desc,
+						borrow.apply_time,
+						borrow.bor_deadline,
+						borrow.bor_order,
+						borrow.parent_id,
+						borrow.publish_time,
+						borrow.split_bor_count,
+						borrow.tender_count,
+						borrow.bor_status,
+						borrow.province,
+						borrow.city,
+						FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',borrow.bor_status) AS bor_status_name,
+						borrow.rest_reason,
+						approve.pid AS approve_id,
+						approve.approve_node,
+						approve.approve_status,
+						FUNC_GET_DICT_CONT_NAME('BORROW_APPROVE_STATUS',approve.approve_status) AS approve_status_name,
+						approve.approve_user,
+						FUNC_GET_USER_NAME(approve.approve_user) as approve_user_name,
+						approve.approve_time,
+						approve.vouch_opinion,
+						approve.lend_opinion,
+						approve.bor_cond_desc,
+						(select SUM(investment_amount) from t_biz_borrow_detail d where borrow.pid = d.borrow_id) as already_money
+					FROM
+						t_biz_borrow borrow
+					LEFT JOIN t_cust_customer cus ON borrow.customer_id = cus.PID
+					LEFT JOIN t_biz_borrow_approve approve ON borrow.PID = approve.bor_id 
+				where 1 = 1 and cus.status = 1 and borrow.status = 1  
+			) t where 1 = 1
+  </sql>
+  <select id="getSumborrowMoneyByWhere" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+	  	select sum(borrow_money) as borrow_money from (
+		<include refid="Base_Column_List" />
+		) t 
+			where 1 = 1
+	  <if test="borrowReleaseStatu != null and borrowReleaseStatu  == 'borrowReleaseManage'" >
+	        and t.bor_status > 0 and t.bor_status &lt; 3
+	  </if>
+	  <if test="approveStatus != null and approveStatus != ''" >
+        and t.approve_status = #{approveStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowCode != null and borrowCode != ''" >
+        and t.borrow_code = #{borrowCode,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowName != null and borrowName != ''" >
+        and t.borrow_name like concat('%',#{borrowName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="customerName != null and customerName !=''" >
+        and t.customer_name like concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="sname != null  and sname !=''" >
+        and t.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="phoneNo != null and phoneNo !=''" >
+        and t.phone_no like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="startPublishTime != null and startPublishTime !=''" >
+        and DATE_FORMAT(t.publish_time, '%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{startPublishTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <if test="endPublishTime != null and endPublishTime !=''" >
+        and DATE_FORMAT(t.publish_time, '%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{endPublishTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <if test="borrowMoneyMin != null and borrowMoneyMin != ''">
+      	and borrow_money &gt;= #{borrowMoneyMin,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowMoneyMax != null and borrowMoneyMax != ''">
+      	and borrow_money &lt;= #{borrowMoneyMax,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowRateMin != null and borrowRateMin != ''">
+      	and borrow_rate &gt;= #{borrowRateMin,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowRateMax != null and borrowRateMax != ''">
+      	and borrow_rate &lt;= #{borrowRateMax,jdbcType=VARCHAR}
+      </if>
+      <if test="borDeadlineMin != null and borDeadlineMin != ''">
+      	and convert(bor_deadline,unsigned) &gt;= #{borDeadlineMin,jdbcType=VARCHAR}
+      </if>
+      <if test="borDeadlineMax != null and borDeadlineMax != ''">
+      	and convert(bor_deadline,unsigned) &lt;= #{borDeadlineMax,jdbcType=VARCHAR}
+      </if>
+      <if test="repaymentType != null and repaymentType != ''" >
+        and t.repayment_type = #{repaymentType,jdbcType=VARCHAR}
+      </if>
+      <if test="accrualType != null and accrualType != ''" >
+        and t.accrual_type = #{accrualType,jdbcType=VARCHAR}
+      </if>
+      <if test="approveStatus != null and approveStatus != '' " >
+        and t.approve_status = #{approveStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowType != null and borrowType != ''" >
+        and t.borrow_type = #{borrowType,jdbcType=VARCHAR}
+      </if>
+      <if test="borStatus != null and borStatus != ''" >
+        and t.bor_status = #{borStatus,jdbcType=VARCHAR}
+      </if>
+        <if test="newStandardStatus != null and newStandardStatus!=''" >
+        and t.bor_status  &lt;&gt; #{newStandardStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="newStandardType != null and newStandardType != '' and  newStandardTypeArray!=null" >
+        and t.borrow_type in 
+   		 <foreach item="item" index="index" collection="newStandardTypeArray" 
+                    open="(" separator="," close=")">  
+                   #{item}
+           </foreach>
+      </if>
+       <if test="borrowTag != null" >
+        and t.borrow_tag like concat('%',#{borrowTag,jdbcType=VARCHAR},'%' )
+      </if>
+      <!-- 判断是否为发布列表或已发布管理列表 -->
+      <if test="borrowReleaseStatu != null and borrowReleaseStatu  == 'borrowRelease'" >
+        and t.bor_status is null
+      </if>
+      <if test="borrowReleaseStatu != null and borrowReleaseStatu  == 'borrowReleaseManage'" >
+        and t.bor_status > 0 and t.bor_status &lt; 3 and t.borrow_type>0 and t.borrow_type &lt; 3  ORDER BY t.create_time desc, t.bor_order ASC
+      </if>
+  </select>
+  
+   <select id="getSumborrowMoneyByApparoveNode" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+	   select sum(borrow_money) as borrow_money from (
+			<include refid="Base_Column_List" />
+		) t
+		where 1 = 1
+      <!-- 担保初审 只查询审批状态为 担保初审，担保拒绝，借前拒绝数据  -->
+      <if test="approveNode == 1" >
+        and ( t.approve_status = 2 or t.approve_status = 3 or t.approve_status = 5 )
+        and ( t.borrow_type = 1 or t.borrow_type = 2 )
+      </if>
+      
+      <!-- 借前审核 只查询审批状态为 借前审核，借前拒绝数据  -->
+      <if test="approveNode == 2" >
+        and ( t.approve_status = 4 or t.approve_status = 5 )
+        and ( t.borrow_type = 1 or t.borrow_type = 2 )
+      </if>
+      
+      <if test="pid != null" >
+        and t.PID = #{pid,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowCode != null" >
+        and t.borrow_code = #{borrowCode,jdbcType=VARCHAR}
+      </if>
+      <if test="borDeadline != null" >
+        and t.bor_deadline = #{borDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="customerId != null" >
+        and t.customer_id = #{customerId,jdbcType=VARCHAR}
+      </if>
+      <if test="homeId != null" >
+        and t.home_id = #{homeId,jdbcType=VARCHAR}
+      </if>
+      <if test="homeDesc != null" >
+        and t.home_desc = #{homeDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="homeTotal != null" >
+        and t.home_total = #{homeTotal,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowMoney != null" >
+        and t.borrow_money = #{borrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowTime != null" >
+        and t.borrow_time = #{borrowTime,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowUse != null" >
+        and t.borrow_use = #{borrowUse,jdbcType=VARCHAR}
+      </if>
+      <if test="payment != null" >
+        and t.payment = #{payment,jdbcType=VARCHAR}
+      </if>
+      <if test="repaymentType != null" >
+        and t.repayment_type = #{repaymentType,jdbcType=VARCHAR}
+      </if>
+      <if test="accrualType != null" >
+        and t.accrual_type = #{accrualType,jdbcType=VARCHAR}
+      </if>
+      <if test="other != null" >
+        and t.other = #{other,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowType != null" >
+        and t.borrow_type = #{borrowType,jdbcType=VARCHAR}
+      </if>
+      <if test="startMoney != null" >
+        and t.start_money = #{startMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="endMoney != null" >
+        and t.end_money #{endMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="isTimesInvest != null" >
+        and t.is_times_invest #{isTimesInvest,jdbcType=VARCHAR}
+      </if>
+      <if test="isJiaxiTicket != null" >
+        and t.is_jiaxi_ticket = #{isJiaxiTicket,jdbcType=VARCHAR}
+      </if>
+      <if test="investRewardScale != null" >
+        and t.invest_reward_scale = #{investRewardScale,jdbcType=VARCHAR}
+      </if>
+      <if test="isEquitableAssignment != null" >
+        and t.is_equitable_assignment = #{isEquitableAssignment,jdbcType=VARCHAR}
+      </if>
+      <if test="alreadyMoney != null" >
+        and t.already_money = #{endValue,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowProgress != null" >
+        and t.borrow_progress = #{borrowProgress,jdbcType=VARCHAR}
+      </if>
+      <if test="guaOrgId != null" >
+        and t.gua_org_id = #{guaOrgId,jdbcType=VARCHAR}
+      </if>
+      <if test="operTime != null" >
+        and t.oper_time = #{operTime,jdbcType=VARCHAR}
+      </if>
+      <if test="isSplit != null" >
+        and t.is_split = #{isSplit,jdbcType=VARCHAR}
+      </if>
+      <if test="deadline != null" >
+        and t.deadline = #{deadline,jdbcType=VARCHAR}
+      </if>
+      <if test="surplusMoney != null" >
+        and t.surplus_money = #{surplusMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowPassword != null" >
+        and t.borrow_password = #{borrowPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="borAgrId != null" >
+        and t.bor_agr_id = #{borAgrId,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowDesc != null" >
+        and t.borrow_desc = #{borrowDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="customerName != null and customerName !=''" >
+        and t.customer_name like concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="sname != null  and sname !=''" >
+        and t.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="phoneNo != null and phoneNo !=''" >
+        and t.phone_no like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="startApproveTime != null and startApproveTime !=''" >
+        and t.apply_time <![CDATA[>=]]> #{startApproveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="endApproveTime != null and endApproveTime !=''" >
+        and t.apply_time <![CDATA[<=]]> #{endApproveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="approveStatus != null" >
+        and t.approve_status = #{approveStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="approveUser != null" >
+        and t.approve_user = #{approveUser,jdbcType=VARCHAR}
+      </if>
+      <if test="approveTime != null" >
+        and t.approve_time = #{approveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="vouchOpinion != null" >
+        and t. vouch_opinion = #{vouchOpinion,jdbcType=VARCHAR}
+      </if>
+      
+   </select>
+    
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+	<include refid="Base_Column_List" />
+      <if test="map.pid != null" >
+        and t.PID = #{map.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadline != null" >
+        and t.bor_deadline = #{map.borDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.status != null and map.status != '' ">
+      	 and t.borrow_status = #{map.status,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowName != null and map.borrowName != ''" >
+        and t.borrow_name like concat('%',#{map.borrowName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.borrowCode != null and map.borrowCode != ''" >
+        and t.borrow_code like concat('%',#{map.borrowCode,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.customerId != null" >
+        and t.customer_id = #{map.customerId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homeId != null" >
+        and t.home_id = #{map.homeId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homeDesc != null" >
+        and t.home_desc = #{map.homeDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homeTotal != null" >
+        and t.home_total = #{map.homeTotal,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowMoney != null" >
+        and t.borrow_money = #{map.borrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowTime != null" >
+        and t.borrow_time = #{map.borrowTime,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowUse != null" >
+        and t.borrow_use = #{map.borrowUse,jdbcType=VARCHAR}
+      </if>
+      <if test="map.payment != null" >
+        and t.payment = #{map.payment,jdbcType=VARCHAR}
+      </if>
+      <if test="map.repaymentType != null and map.repaymentType != ''" >
+        and t.repayment_type = #{map.repaymentType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.accrualType != null and map.accrualType != ''" >
+        and t.accrual_type = #{map.accrualType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.other != null" >
+        and t.other = #{map.other,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowType != null and map.borrowType != ''" >
+        and t.borrow_type = #{map.borrowType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startMoney != null" >
+        and t.start_money = #{map.startMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endMoney != null" >
+        and t.end_money #{map.endMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isTimesInvest != null" >
+        and t.is_times_invest #{map.isTimesInvest,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isJiaxiTicket != null" >
+        and t.is_jiaxi_ticket = #{map.isJiaxiTicket,jdbcType=VARCHAR}
+      </if>
+      <if test="map.investRewardScale != null" >
+        and t.invest_reward_scale = #{map.investRewardScale,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isEquitableAssignment != null" >
+        and t.is_equitable_assignment = #{map.isEquitableAssignment,jdbcType=VARCHAR}
+      </if>
+      <if test="map.alreadyMoney != null" >
+        and t.already_money = #{map.endValue,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowProgress != null" >
+        and t.borrow_progress = #{map.borrowProgress,jdbcType=VARCHAR}
+      </if>
+      <if test="map.guaOrgId != null" >
+        and t.gua_org_id = #{map.guaOrgId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.operTime != null" >
+        and t.oper_time = #{map.operTime,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isSplit != null" >
+        and t.is_split = #{map.isSplit,jdbcType=VARCHAR}
+      </if>
+      <if test="map.deadline != null" >
+        and t.deadline = #{map.deadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.surplusMoney != null" >
+        and t.surplus_money = #{map.surplusMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowPassword != null" >
+        and t.borrow_password = #{map.borrowPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borAgrId != null" >
+        and t.bor_agr_id = #{map.borAgrId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowDesc != null" >
+        and t.borrow_desc = #{map.borrowDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="map.customerName != null and map.customerName !=''" >
+        and t.customer_name like concat('%',#{map.customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.sname != null  and map.sname !=''" >
+        and t.sname like concat('%',#{map.sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.phoneNo != null and map.phoneNo !=''" >
+        and t.phone_no like  concat('%',#{map.phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.startApproveTime != null and map.startApproveTime !=''" >
+        and DATE_FORMAT(t.apply_time, '%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{map.startApproveTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <if test="map.endApproveTime != null and map.endApproveTime !=''" >
+        and DATE_FORMAT(t.apply_time, '%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{map.endApproveTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      
+      <!-- 担保初审 只查询审批状态为 担保初审，担保拒绝，借前拒绝数据  -->
+      <if test="map.approveNode == 1" >
+        and ( t.approve_status = 2 or t.approve_status = 3 or t.approve_status = 5 )
+        and ( t.borrow_type = 1 or t.borrow_type = 2 )
+      </if>
+      
+      <!-- 借前审核 只查询审批状态为 借前审核，借前拒绝数据  -->
+      <if test="map.approveNode == 2" >
+        and ( t.approve_status = 4 or t.approve_status = 5 )
+        and ( t.borrow_type = 1 or t.borrow_type = 2 )
+      </if>
+      
+      <if test="map.approveStatus != null and map.approveStatus != ''" >
+        and t.approve_status = #{map.approveStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="map.approveUser != null" >
+        and t.approve_user = #{map.approveUser,jdbcType=VARCHAR}
+      </if>
+      <if test="map.approveTime != null" >
+        and t.approve_time = #{map.approveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="map.vouchOpinion != null" >
+        and t.vouch_opinion = #{map.vouchOpinion,jdbcType=VARCHAR}
+      </if>
+      <if test="map.lendOpinion != null" >
+        and t.lend_opinion = #{map.lendOpinion,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startBorrowRate != null and map.startBorrowRate !=0" >
+        and t.borrow_rate <![CDATA[>=]]> #{map.startBorrowRate,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endBorrowRate  != null and map.endBorrowRate  !=0" >
+        and t.borrow_rate <![CDATA[<=]]> #{map.endBorrowRate ,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startBorrowMoney != null and map.startBorrowMoney !=0" >
+        and t.borrow_money <![CDATA[>=]]> #{map.startBorrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endBorrowMoney != null and map.endBorrowMoney !=0" >
+        and t.borrow_money <![CDATA[<=]]> #{map.endBorrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startBorDeadline != null and map.startBorDeadline !=0" >
+        and t.bor_deadline <![CDATA[>=]]> #{map.startBorDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endBorDeadline != null and map.endBorDeadline !=0" >
+        and t.bor_deadline <![CDATA[<=]]> #{map.endBorDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowMoneyMin != null and map.borrowMoneyMin != ''">
+      	and borrow_money &gt;= #{map.borrowMoneyMin,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowMoneyMax != null and map.borrowMoneyMax != ''">
+      	and borrow_money &lt;= #{map.borrowMoneyMax,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowRateMin != null and map.borrowRateMin != ''">
+      	and borrow_rate &gt;= #{map.borrowRateMin,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowRateMax != null and map.borrowRateMax != ''">
+      	and borrow_rate &lt;= #{map.borrowRateMax,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadlineMin != null and map.borDeadlineMin != ''">
+      	and convert(bor_deadline,unsigned) &gt;= #{map.borDeadlineMin,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadlineMax != null and map.borDeadlineMax != ''">
+      	and convert(bor_deadline,unsigned) &lt;= #{map.borDeadlineMax,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borStatus != null and map.borStatus != ''" >
+        and t.bor_status = #{map.borStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startPublishTime != null and map.startPublishTime !=''" >
+        and DATE_FORMAT(t.publish_time, '%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{map.startPublishTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <if test="map.endPublishTime != null and map.endPublishTime !=''" >
+        and DATE_FORMAT(t.publish_time, '%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{map.endPublishTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <!-- 判断是否为发布列表或已发布管理列表 -->
+      <if test="map.borrowReleaseStatu != null and map.borrowReleaseStatu  == 'borrowRelease'" >
+        and t.bor_status is null
+      </if>
+      <if test="map.borrowReleaseStatu != null and map.borrowReleaseStatu  == 'borrowReleaseManage'" >
+        and t.bor_status > 0 and t.bor_status &lt; 3
+      </if>
+     
+  </select>
+  
+  <select id="searchAllPage" resultMap="BaseResultMap" parameterType="map" >
+	<include refid="Base_Column_Search_List" />
+      <if test="map.pid != null" >
+        and t.PID = #{map.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadline != null" >
+        and t.bor_deadline = #{map.borDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowName != null and map.borrowName != ''" >
+        and t.borrow_name like concat('%',#{map.borrowName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.borrowCode != null and map.borrowCode != ''" >
+        and t.borrow_code = #{map.borrowCode,jdbcType=VARCHAR}
+      </if>
+      <if test="map.customerId != null" >
+        and t.customer_id = #{map.customerId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homeId != null" >
+        and t.home_id = #{map.homeId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homeDesc != null" >
+        and t.home_desc = #{map.homeDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="map.homeTotal != null" >
+        and t.home_total = #{map.homeTotal,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowMoney != null" >
+        and t.borrow_money = #{map.borrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowTime != null" >
+        and t.borrow_time = #{map.borrowTime,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowUse != null" >
+        and t.borrow_use = #{map.borrowUse,jdbcType=VARCHAR}
+      </if>
+      <if test="map.payment != null" >
+        and t.payment = #{map.payment,jdbcType=VARCHAR}
+      </if>
+      <if test="map.repaymentType != null and map.repaymentType != ''" >
+        and t.repayment_type = #{map.repaymentType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.accrualType != null and map.accrualType != ''" >
+        and t.accrual_type = #{map.accrualType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.other != null" >
+        and t.other = #{map.other,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowType != null and map.borrowType != ''" >
+        and t.borrow_type = #{map.borrowType,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startMoney != null" >
+        and t.start_money = #{map.startMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endMoney != null" >
+        and t.end_money #{map.endMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isTimesInvest != null" >
+        and t.is_times_invest #{map.isTimesInvest,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isJiaxiTicket != null" >
+        and t.is_jiaxi_ticket = #{map.isJiaxiTicket,jdbcType=VARCHAR}
+      </if>
+      <if test="map.investRewardScale != null" >
+        and t.invest_reward_scale = #{map.investRewardScale,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isEquitableAssignment != null" >
+        and t.is_equitable_assignment = #{map.isEquitableAssignment,jdbcType=VARCHAR}
+      </if>
+      <if test="map.alreadyMoney != null" >
+        and t.already_money = #{map.endValue,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowProgress != null" >
+        and t.borrow_progress = #{map.borrowProgress,jdbcType=VARCHAR}
+      </if>
+      <if test="map.guaOrgId != null" >
+        and t.gua_org_id = #{map.guaOrgId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.operTime != null" >
+        and t.oper_time = #{map.operTime,jdbcType=VARCHAR}
+      </if>
+      <if test="map.isSplit != null" >
+        and t.is_split = #{map.isSplit,jdbcType=VARCHAR}
+      </if>
+      <if test="map.deadline != null" >
+        and t.deadline = #{map.deadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.surplusMoney != null" >
+        and t.surplus_money = #{map.surplusMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowPassword != null" >
+        and t.borrow_password = #{map.borrowPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borAgrId != null" >
+        and t.bor_agr_id = #{map.borAgrId,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowDesc != null" >
+        and t.borrow_desc = #{map.borrowDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="map.customerName != null and map.customerName !=''" >
+        and t.customer_name like concat('%',#{map.customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.sname != null  and map.sname !=''" >
+        and t.sname like concat('%',#{map.sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.phoneNo != null and map.phoneNo !=''" >
+        and t.phone_no like  concat('%',#{map.phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.startApproveTime != null and map.startApproveTime !=''" >
+        and DATE_FORMAT(t.apply_time, '%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{map.startApproveTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <if test="map.endApproveTime != null and map.endApproveTime !=''" >
+        and DATE_FORMAT(t.apply_time, '%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{map.endApproveTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <!-- 担保初审 只查询审批状态为 担保初审，担保拒绝，借前拒绝数据  -->
+      <if test="map.approveNode == 1" >
+        and ( t.approve_status = 2 or t.approve_status = 3 or t.approve_status = 5 )
+         and ( t.borrow_type = 1 or t.borrow_type = 2 )
+      </if>
+      
+      <!-- 借前审核 只查询审批状态为 借前审核，借前拒绝数据  -->
+      <if test="map.approveNode == 2" >
+        and ( t.approve_status = 4 or t.approve_status = 5 )
+         and ( t.borrow_type = 1 or t.borrow_type = 2 )
+      </if>
+      <if test="map.approveStatus != null and map.approveStatus != '' " >
+        and t.approve_status = #{map.approveStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="map.approveUser != null" >
+        and t.approve_user = #{map.approveUser,jdbcType=VARCHAR}
+      </if>
+      <if test="map.approveTime != null" >
+        and t.approve_time = #{map.approveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="map.vouchOpinion != null" >
+        and t.vouch_opinion = #{map.vouchOpinion,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startBorrowRate != null and map.startBorrowRate !=0" >
+        and t.borrow_rate <![CDATA[>=]]> #{map.startBorrowRate,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endBorrowRate  != null and map.endBorrowRate  !=0" >
+        and t.borrow_rate <![CDATA[<=]]> #{map.endBorrowRate ,jdbcType=VARCHAR}
+      </if>
+      
+      <if test="map.startBorrowMoney != null and map.startBorrowMoney !=0" >
+        and t.borrow_money <![CDATA[>=]]> #{map.startBorrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endBorrowMoney != null and map.endBorrowMoney !=0" >
+        and t.borrow_money <![CDATA[<=]]> #{map.endBorrowMoney,jdbcType=VARCHAR}
+      </if>
+      
+      <if test="map.startBorDeadline != null and map.startBorDeadline !=0" >
+        and t.bor_deadline <![CDATA[>=]]> #{map.startBorDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.endBorDeadline != null and map.endBorDeadline !=0" >
+        and t.bor_deadline <![CDATA[<=]]> #{map.endBorDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowMoneyMin != null and map.borrowMoneyMin != ''">
+      	and borrow_money &gt;= #{map.borrowMoneyMin,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowMoneyMax != null and map.borrowMoneyMax != ''">
+      	and borrow_money &lt;= #{map.borrowMoneyMax,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowRateMin != null and map.borrowRateMin != ''">
+      	and borrow_rate &gt;= #{map.borrowRateMin,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borrowRateMax != null and map.borrowRateMax != ''">
+      	and borrow_rate &lt;= #{map.borrowRateMax,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadlineMin != null and map.borDeadlineMin != ''">
+      	and convert(bor_deadline,unsigned) &gt;= #{map.borDeadlineMin,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadlineMax != null and map.borDeadlineMax != ''">
+      	and convert(bor_deadline,unsigned) &lt;= #{map.borDeadlineMax,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borStatus != null and map.borStatus != ''" >
+        and t.bor_status = #{map.borStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="map.startPublishTime != null and map.startPublishTime !=''" >
+        and DATE_FORMAT(t.publish_time, '%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(#{map.startPublishTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <if test="map.endPublishTime != null and map.endPublishTime !=''" >
+        and DATE_FORMAT(t.publish_time, '%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(#{map.endPublishTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+      </if>
+      <!-- 判断是否为发布列表或已发布管理列表 -->
+      <if test="map.borrowReleaseStatu != null and map.borrowReleaseStatu  == 'borrowRelease'" >
+        and t.bor_status is null
+      </if>
+      <if test="map.borrowReleaseStatu != null and map.borrowReleaseStatu  == 'borrowReleaseManage'" >
+        and t.bor_status > 0 and t.bor_status &lt; 3 and t.borrow_type>0 and t.borrow_type &lt; 3 
+      </if>
+      <if test="map.newStandardStatus != null" >
+        and t.bor_status  &lt;&gt; #{map.newStandardStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="map.newStandardType != null and map.newStandardTypeArray!=null" >
+        and t.borrow_type in 
+        		 <foreach item="item" index="index" collection="map.newStandardTypeArray" 
+                         open="(" separator="," close=")">  
+                        #{item}
+                </foreach>
+      </if>
+       <if test="map.borrowTag != null" >
+        and t.borrow_tag like concat('%',#{map.borrowTag,jdbcType=VARCHAR},'%' )
+      </if>
+        ORDER BY t.create_time desc
+       <if test="map.borrowReleaseStatu != null and map.borrowReleaseStatu  == 'borrowSearch'" >
+       		,  t.bor_order ASC
+       </if>
+       <if test="map.borrowReleaseStatu != null and map.borrowReleaseStatu  == 'borrowReleaseManage'" >
+       		,  t.bor_order ASC
+       </if>
+      
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+	<include refid="Base_Column_List" />
+      <if test="pid != null" >
+        and t.PID = #{pid,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowCode != null" >
+        and t.borrow_code = #{borrowCode,jdbcType=VARCHAR}
+      </if>
+      <if test="borDeadline != null" >
+        and t.bor_deadline = #{borDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="customerId != null" >
+        and t.customer_id = #{customerId,jdbcType=VARCHAR}
+      </if>
+      <if test="homeId != null" >
+        and t.home_id = #{homeId,jdbcType=VARCHAR}
+      </if>
+      <if test="homeDesc != null" >
+        and t.home_desc = #{homeDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="homeTotal != null" >
+        and t.home_total = #{homeTotal,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowMoney != null" >
+        and t.borrow_money = #{borrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowTime != null" >
+        and t.borrow_time = #{borrowTime,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowUse != null" >
+        and t.borrow_use = #{borrowUse,jdbcType=VARCHAR}
+      </if>
+      <if test="payment != null" >
+        and t.payment = #{payment,jdbcType=VARCHAR}
+      </if>
+      <if test="repaymentType != null" >
+        and t.repayment_type = #{repaymentType,jdbcType=VARCHAR}
+      </if>
+      <if test="accrualType != null" >
+        and t.accrual_type = #{accrualType,jdbcType=VARCHAR}
+      </if>
+      <if test="other != null" >
+        and t.other = #{other,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowType != null" >
+        and t.borrow_type = #{borrowType,jdbcType=VARCHAR}
+      </if>
+      <if test="startMoney != null" >
+        and t.start_money = #{startMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="endMoney != null" >
+        and t.end_money #{endMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="isTimesInvest != null" >
+        and t.is_times_invest #{isTimesInvest,jdbcType=VARCHAR}
+      </if>
+      <if test="isJiaxiTicket != null" >
+        and t.is_jiaxi_ticket = #{isJiaxiTicket,jdbcType=VARCHAR}
+      </if>
+      <if test="investRewardScale != null" >
+        and t.invest_reward_scale = #{investRewardScale,jdbcType=VARCHAR}
+      </if>
+      <if test="isEquitableAssignment != null" >
+        and t.is_equitable_assignment = #{isEquitableAssignment,jdbcType=VARCHAR}
+      </if>
+      <if test="endValue != null" >
+        and t.end_value = #{endValue,jdbcType=VARCHAR}
+      </if>
+      <if test="alreadyMoney != null" >
+        and t.already_money = #{endValue,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowProgress != null" >
+        and t.borrow_progress = #{borrowProgress,jdbcType=VARCHAR}
+      </if>
+      <if test="guaOrgId != null" >
+        and t.gua_org_id = #{guaOrgId,jdbcType=VARCHAR}
+      </if>
+      <if test="operTime != null" >
+        and t.oper_time = #{operTime,jdbcType=VARCHAR}
+      </if>
+      <if test="isSplit != null" >
+        and t.is_split = #{isSplit,jdbcType=VARCHAR}
+      </if>
+      <if test="deadline != null" >
+        and t.deadline = #{deadline,jdbcType=VARCHAR}
+      </if>
+      <if test="surplusMoney != null" >
+        and t.surplus_money = #{surplusMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowPassword != null" >
+        and t.borrow_password = #{borrowPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="borAgrId != null" >
+        and t.bor_agr_id = #{borAgrId,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowDesc != null" >
+        and t.borrow_desc = #{borrowDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="customerName != null and customerName !=''" >
+        and t.customer_name like concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="sname != null  and sname !=''" >
+        and t.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="phoneNo != null and phoneNo !=''" >
+        and t.phone_no like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="startApproveTime != null and startApproveTime !=''" >
+        and t.apply_time <![CDATA[>=]]> #{startApproveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="endApproveTime != null and endApproveTime !=''" >
+        and t.apply_time <![CDATA[<=]]> #{endApproveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="approveStatus != null" >
+        and t.approve_status = #{approveStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="approveUser != null" >
+        and t.approve_user = #{approveUser,jdbcType=VARCHAR}
+      </if>
+      <if test="approveTime != null" >
+        and t.approve_time = #{approveTime,jdbcType=VARCHAR}
+      </if>
+      <if test="vouchOpinion != null" >
+        and t.vouch_opinion = #{vouchOpinion,jdbcType=VARCHAR}
+      </if>
+  </select>
+    
+  <select id="getBorrowApplyTimeIsNull" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+  <include refid="Base_Column_List" />
+    and t.apply_time is null and t.customer_id = #{customerId,jdbcType=VARCHAR} and t.borrow_type = #{borrowType,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <include refid="Base_Column_Search_List" />
+    and t.PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 获取待审核数据条数 -->
+  <select id="getApproverCount" resultType="java.lang.Integer" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+	   SELECT count(1) FROM t_biz_borrow borrow  
+	   	LEFT JOIN t_biz_borrow_approve approve 
+	   		ON borrow.PID = approve.bor_id
+		where borrow.status = 1  and approve.status = 1 
+   
+      <!-- 担保初审 只查询审批状态为 担保初审，借前拒绝数据  -->
+      <if test="approveNode == 1" >
+        and ( approve.approve_status = 2 or approve.approve_status = 5 )
+         and ( borrow.borrow_type = 1 or borrow.borrow_type = 2 )
+      </if>
+      <!-- 借前审核 只查询审批状态为 借前审核数据  -->
+      <if test="approveNode == 2" >
+        and ( approve.approve_status = 4 or approve.approve_status = 5 )
+         and ( borrow.borrow_type = 1 or borrow.borrow_type = 2 )
+      </if>
+  </select> 
+  
+   <!-- 获取借款发布数据条数 -->
+   <select id="getReleaseCount" resultType="java.lang.Integer" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+	  SELECT count(1) FROM t_biz_borrow borrow  
+	   	LEFT JOIN t_biz_borrow_approve approve 
+	   		ON borrow.PID = approve.bor_id
+		where borrow.status = 1  and approve.status = 1 
+   
+      <!-- 借款发布 只查询审批状态为借款审核同意  -->
+      <if test="approveNode == 6" >
+        and ( approve.approve_status = 6 )
+      </if>
+      <if test="borrowReleaseStatu != null and borrowReleaseStatu  == 'borrowRelease'" >
+        and (borrow.bor_status is null )
+      </if>
+  </select>
+  
+  <insert id="savePrimaryKeySelective" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+    insert into t_biz_borrow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="borrowCode != null" >
+        borrow_code,
+      </if>
+      <if test="borrowTag != null" >
+        borrow_tag, 
+      </if>
+      <if test="borrowName != null" >
+        borrow_name,
+      </if>
+      <if test="borrowMoney != null" >
+        borrow_money,
+      </if>
+      <if test="borrowRate != null" >
+        borrow_rate,
+      </if>
+      <if test="borDeadline != null" >
+        bor_deadline,
+      </if>
+      <if test="startMoney != null" >
+        start_money,
+      </if>
+      <if test="isTimesInvest != null" >
+        is_times_invest,
+      </if>
+      <if test="endMoney != null" >
+        end_money,
+      </if>
+      <if test="accrualType != null" >
+        accrual_type,
+      </if>
+      <if test="isJiaxiTicket != null" >
+        is_jiaxi_ticket,
+      </if>
+      <if test="investRewardScale != null" >
+        invest_reward_scale,
+      </if>
+       <if test="isEquitableAssignment != null" >
+        is_equitable_assignment,
+      </if> 
+      <if test="borrowDesc != null" >
+        borrow_desc,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="applyTime != null" >
+        apply_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="borrowType != null" >
+        borrow_type,
+      </if> 
+      <if test="customerId != null" >
+        customer_id,
+      </if> 
+      <if test="status != null" >
+        status,
+      </if> 
+      <if test="repaymentType != null" >
+        repayment_type,
+      </if>
+       <if test="borStatus != null" >
+        bor_status,
+      </if>
+       <if test="manageExpenseRate != null" >
+        manage_expense_rate,
+      </if>
+       <if test="surplusMoney != null" >
+        surplus_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowCode != null" >
+        #{borrowCode,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTag != null" >
+        #{borrowTag,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowName != null" >
+        #{borrowName,jdbcType=VARCHAR},
+      </if> 
+      <if test="borrowMoney != null" >
+        #{borrowMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowRate != null" >
+        (#{borrowRate,jdbcType=DECIMAL})/100,
+      </if>
+      <if test="borDeadline != null" >
+        #{borDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="startMoney != null" >
+        #{startMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isTimesInvest != null" >
+        #{isTimesInvest,jdbcType=VARCHAR},
+      </if>
+      <if test="endMoney != null" >
+        #{endMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="accrualType != null" >
+        #{accrualType,jdbcType=VARCHAR},
+      </if>
+      <if test="isJiaxiTicket != null" >
+        #{isJiaxiTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="investRewardScale != null" >
+        (#{investRewardScale,jdbcType=DECIMAL})/100,
+      </if>
+      <if test="isEquitableAssignment != null" > 
+        #{isEquitableAssignment,jdbcType=VARCHAR},
+      </if> 
+      <if test="borrowDesc != null" >
+        #{borrowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" > 
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if> 
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowType != null" >
+        #{borrowType,jdbcType=VARCHAR},
+      </if> 
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if> 
+      <if test="status != null" >
+         #{status,jdbcType=VARCHAR},
+      </if> 
+       <if test="repaymentType != null" > 
+          #{repaymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="borStatus != null" > 
+          #{borStatus,jdbcType=VARCHAR},
+      </if> 
+      <if test="manageExpenseRate != null" >
+      	  (#{manageExpenseRate,jdbcType=VARCHAR})/100, 
+      </if>
+       <if test="surplusMoney != null" >
+         #{surplusMoney,jdbcType=DECIMAL}, 
+      </if>
+    </trim>
+  </insert>
+  <update id="deleteBorrowManageByPid" parameterType="java.lang.String" >
+    update t_biz_borrow
+    <set > 
+        status = -1
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  
+    <!-- 根据借款类型获取借款申请条数 -->
+   <select id="getApproverCountByBorrowType" resultType="java.lang.Integer" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+		   SELECT
+				count(1)  
+			FROM
+				t_biz_borrow borrow
+			LEFT JOIN t_biz_borrow_approve approve ON borrow.PID = approve.bor_id
+			WHERE
+				1 = 1
+			AND borrow. STATUS = 1
+	    	AND approve.approve_status >= 2 
+			<if test="borrowType != null and borrowType!=''" >
+		        and borrow.borrow_type = #{borrowType,jdbcType=VARCHAR}
+		    </if>
+		    <if test="startApproveTime != null and startApproveTime !=''" >
+		        and borrow.apply_time <![CDATA[>=]]> #{startApproveTime,jdbcType=VARCHAR}
+		    </if>
+		    <if test="endApproveTime != null and endApproveTime !=''" >
+		        and borrow.apply_time <![CDATA[<=]]> #{endApproveTime,jdbcType=VARCHAR}
+		    </if>
+   </select>
+   
+   <!-- 根据借款类型获取借款申请通过条数 -->
+   <select id="getApproverViaCountByBorrowType" resultType="java.lang.Integer" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+			SELECT
+				count(1)
+			FROM
+				t_biz_borrow borrow
+			LEFT JOIN t_biz_borrow_approve approve ON borrow.PID = approve.bor_id
+			WHERE 1 = 1
+			AND borrow. STATUS = 1
+		    AND approve.approve_status >= 6 	
+			<if test="borrowType != null and borrowType!=''" >
+		        and borrow.borrow_type = #{borrowType,jdbcType=VARCHAR}
+		    </if>
+		    <if test="startApproveTime != null and startApproveTime !=''" >
+		        and borrow.apply_time <![CDATA[>=]]> #{startApproveTime,jdbcType=VARCHAR}
+		    </if>
+		    <if test="endApproveTime != null and endApproveTime !=''" >
+		        and borrow.apply_time <![CDATA[<=]]> #{endApproveTime,jdbcType=VARCHAR}
+		    </if>
+   </select>
+	
+	<!-- 前台_我的借款_招标中 -->
+	<select id="selectReceptionTender" resultMap="BaseResultMap" parameterType="map" >
+		select bb.pid,DATE_FORMAT(bb.publish_time,'%Y-%m-%d %T') publishTime,bb.borrow_code,bb.borrow_name,
+		bb.borrow_money,bb.bor_deadline,bb.manage_expense_rate,
+		bb.borrow_rate,bb.repayment_type,bb.bor_status,bb.borrow_progress,
+		FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',bb.repayment_type) AS repayment_type_name,
+		FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',bb.bor_status) AS bor_status_name
+		FROM t_biz_borrow bb 
+		where bb.`status` = 1 
+		and bb.bor_status in (0,1,2,3) 
+		and bb.publish_time is not null 
+		and bb.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY publishTime desc
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 前台_我的借款_招标中的总数 -->
+	<select id="selectReceptionTenderCount" resultType="java.lang.Integer" parameterType="map" >
+		select count(1) 
+		FROM t_biz_borrow bb 
+		where bb.`status` = 1 
+		and bb.bor_status in (0,1,2,3) 
+		and bb.publish_time is not null 
+		and bb.customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 前台_我的借款_申请进度 -->
+	<select id="selectReceptionApplication" resultMap="BaseResultMap" parameterType="map" >
+		SELECT borrow.PID, borrow.borrow_name, borrow.borrow_code, borrow.customer_id, 
+			borrow.borrow_money, borrow.deadline,approve.approve_status, approve.bor_cond_desc,
+			DATE_FORMAT(borrow.apply_time,'%Y-%m-%d %T') AS apply_time,
+			FUNC_GET_DICT_CONT_NAME('BORROW_CHECK_STATUTS',approve.approve_status) AS approve_status_name
+		FROM t_biz_borrow borrow,t_biz_borrow_approve approve 
+		WHERE borrow.PID = approve.bor_id 
+		AND borrow.customer_id =  #{customerId,jdbcType=VARCHAR}
+		ORDER BY borrow.borrow_code desc
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 前台_我的借款_申请进度的总数 -->
+	<select id="selectReceptionApplicationCount" resultType="java.lang.Integer" parameterType="map" >
+		select count(1)  
+		FROM t_biz_borrow borrow,t_biz_borrow_approve approve 
+		WHERE borrow.PID = approve.bor_id 
+		and borrow.customer_id = #{customerId,jdbcType=VARCHAR} 
+	</select>
+	
+   <!-- 前台理财页面查询 -->
+    <select id="selectPublishedFinData" resultMap="BaseResultMap" parameterType="map" >
+	 <include refid="Base_Column_Special_List" />
+	<!-- 		借款类型为理财产品   借款状态为已发布或者是预发布 -->
+	  		and t.bor_status <![CDATA[<>]]> 0
+	  		and t.bor_status <![CDATA[<>]]> 3
+	  <if test="map.borStatus == '' or map.borStatus == null" >
+			and (t.bor_status >=2 or (t.bor_status = 1 and t.publish_time is not  NULL))
+	  </if>
+	   <if test="map.borStatus != '' and map.borStatus != null" >
+			<!--进行中 -->
+	   		<if test="map.borStatus == '2'.toString() " >
+				and (t.bor_status =2 or (t.bor_status = 1 and t.publish_time is not  NULL))
+			</if>
+			<!--已结束 -->
+			<if test="map.borStatus == '4'.toString() " >
+				and t.bor_status in (4,5,6,7) 
+			</if>
+			<!--已结清 -->
+			<if test="map.borStatus == '8'.toString() " >
+				and t.bor_status = 8
+			</if>
+	  </if>
+<!-- 	  e首房 e抵押 一起显示 -->
+	  <if test="map.borrowType == '-1'.toString() " >
+       and (t.borrow_type= 1 or  t.borrow_type= 2)
+      </if> 
+	  <if test="map.borrowType != null and map.borrowType != '' and  map.borrowType != '-1'.toString() " >
+       and t.borrow_type= #{map.borrowType,jdbcType=VARCHAR}
+      </if>  
+      <if test="map.pid != null" >
+        and t.PID = #{map.pid,jdbcType=VARCHAR}
+      </if> 
+      <if test="map.borrowName != null and map.borrowName != ''" >
+        and t.borrow_name like concat('%',#{map.borrowName,jdbcType=VARCHAR},'%' )
+      </if> 
+      <if test="map.status != null and map.status != '' " >
+        and t.status = #{map.status,jdbcType=VARCHAR}
+      </if>
+      <if test="map.borDeadlineMin != null and map.borDeadlineMin != '' " >
+        and CONVERT(t.bor_Deadline,SIGNED) <![CDATA[>=]]> #{map.borDeadlineMin,jdbcType=INTEGER}
+      </if>
+       <if test="map.borDeadlineMax != null and map.borDeadlineMax != '' " >
+        and CONVERT(t.bor_Deadline,SIGNED) <![CDATA[<]]> #{map.borDeadlineMax,jdbcType=INTEGER}
+      </if>
+      <if test="map.borrowRateMin != null and map.borrowRateMin != '' " >
+        and t.borrow_rate <![CDATA[>]]> #{map.borrowRateMin,jdbcType=INTEGER}
+      </if>
+       <if test="map.borrowRateMax != null and map.borrowRateMax != '' " >
+        and t.borrow_rate <![CDATA[<=]]> #{map.borrowRateMax,jdbcType=INTEGER}
+      </if> 
+      
+      
+<!--     pc前端  排序 -->
+      <if test="sortType == null or sortType == '' or sortModel == null or sortModel == '' ">
+			<!--e计划 -->
+	       <if test="map.borrowType == '3'.toString()" >
+	       ORDER BY  locate(t.bor_status,'2,1,4,5,6,7,8'), t.borrow_rate DESC
+	      </if> 
+	      <if test="map.borrowType == '1'.toString() or map.borrowType == '2'.toString() or map.borrowType == '-1'.toString()" >
+	        ORDER BY locate(t.bor_status,'2,1,4,5,6,7,8'), t.publish_time DESC
+	      </if> 
+      </if> 
+       <if test="sortType != null and sortType != '' and sortModel != null and sortModel != '' " >
+	        <choose>     
+<!-- app 综合排序  先按年化率降序排序显示，招标中的排前面，过期放后面 -->
+	            <when test="sortType == '1'.toString() ">     
+	                   ORDER BY locate(t.bor_status,'2,1,3,4,5,6'), borrow_rate DESC 
+	            </when>     
+				<!--     按年化利率 排序  -->
+	            <when test="sortType == '2'.toString() ">     
+	                    <choose>     
+							<!--  降序 -->
+		                     <when test="sortModel == '1'.toString() ">
+		                     	ORDER BY  t.borrow_rate DESC 
+		                     </when>
+		                     <when test="sortModel == '2'.toString() ">
+		                    	 ORDER BY  t.borrow_rate  
+		                     </when>
+	                     </choose>  
+	            </when>     
+				<!--   按借款期限 排序 -->
+	            <when test="sortType == '3'.toString()">     
+	                <choose>     
+	                <!--  降序 -->
+	                     <when test="sortModel == '1'.toString() ">
+	                      	ORDER BY  t.bor_deadline DESC 
+	                     </when>
+	                      <!--  升序 -->
+	                     <when test="sortModel == '2'.toString() ">
+	                      	ORDER BY  t.bor_deadline
+	                     </when>
+	                     </choose>
+	            </when>     
+	            <otherwise>     
+	                      
+	            </otherwise>     
+	      </choose>    
+      </if>  
+      <if test="pageIndex != null and pageSize != null  and pageSize != '' " >
+       	limit #{pageIndex},#{pageSize}
+      </if>
+  </select>
+  <!-- 前台理财页面查询 -->
+    <select id="selectFinProdCountPage" resultType="java.lang.Integer" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+	 <include refid="Base_Column_Count_List" />
+	 <!-- 		借款类型为理财产品   借款状态为已发布或者是预发布 -->
+	  <if test="borStatus == '' or borStatus == null" >
+			and (t.bor_status >=2 or (t.bor_status = 1 and t.publish_time is not  NULL))
+	  </if>
+	   <if test="borStatus != '' and borStatus != null" >
+			and t.bor_status =#{borStatus,jdbcType=VARCHAR} 
+	  </if>
+	  <if test="borrowType == '3'.toString()" >
+       and t.borrow_type=3 
+      </if> 
+      <if test="borrowType == '1'.toString() or borrowType == '2'.toString()" >
+       and (t.borrow_type=1 or t.borrow_type=2)
+      </if>   
+      <if test="pid != null" >
+        and t.PID = #{pid,jdbcType=VARCHAR}
+      </if> 
+      <if test="borrowName != null and borrowName != ''" >
+        and t.borrow_name like concat('%',#{borrowName,jdbcType=VARCHAR},'%' )
+      </if> 
+      <if test="status != null and status != '' " >
+        and t.status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="borDeadlineMin != null and borDeadlineMin != '' " >
+        and t.bor_Deadline <![CDATA[>=]]> #{borDeadlineMin,jdbcType=VARCHAR}
+      </if>
+       <if test="borDeadlineMax != null and borDeadlineMax != '' " >
+        and t.bor_Deadline <![CDATA[<=]]> #{borDeadlineMax,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowRateMin != null and borrowRateMin != '' " >
+        and t.borrow_rate <![CDATA[>=]]> #{borrowRateMin,jdbcType=VARCHAR}
+      </if>
+       <if test="borrowRateMax != null and borrowRateMax != '' " >
+        and t.borrow_rate <![CDATA[<=]]> #{borrowRateMax,jdbcType=VARCHAR}
+      </if> 
+       <if test="borrowType == '3'.toString()" >
+       ORDER BY t.bor_status , t.borrow_rate DESC
+      </if> 
+      <if test="borrowType == '1'.toString() or borrowType == '2'.toString()" >
+        ORDER BY t.publish_time DESC
+      </if>    
+  </select>
+   <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizBorrowInfoVO" >
+    update t_biz_borrow
+     <set >
+      <if test="borStatus != null" >
+         bor_status = #{borStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+         publish_time = #{publishTime,jdbcType=DECIMAL},
+      </if>
+      <if test="deadline != null" >
+         deadline = #{deadline,jdbcType=VARCHAR},
+      </if>  
+      <if test="borrowCode != null" >
+         borrow_code = #{borrowCode,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTag != null" >
+         borrow_tag = #{borrowTag,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowName != null" >
+         borrow_name =  #{borrowName,jdbcType=VARCHAR},
+      </if> 
+      <if test="borrowMoney != null" >
+         borrow_money =  #{borrowMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowRate != null" >
+         borrow_rate = (#{borrowRate,jdbcType=DECIMAL})/100,
+      </if>
+      <if test="borDeadline != null" >
+         bor_deadline = #{borDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="startMoney != null" >
+         start_money = #{startMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isTimesInvest != null" >
+         is_times_invest = #{isTimesInvest,jdbcType=VARCHAR},
+      </if>
+      <if test="endMoney != null" >
+         end_money = #{endMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="accrualType != null" >
+         accrual_type = #{accrualType,jdbcType=VARCHAR},
+      </if>
+      <if test="isJiaxiTicket != null" >
+         is_jiaxi_ticket = #{isJiaxiTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="investRewardScale != null" >
+         invest_reward_scale = (#{investRewardScale,jdbcType=DECIMAL})/100,
+      </if>
+      <if test="isEquitableAssignment != null" > 
+         is_equitable_assignment = #{isEquitableAssignment,jdbcType=VARCHAR},
+      </if>
+      <if test="endValue != null" >
+         end_value = (#{endValue,jdbcType=DECIMAL})/100,
+      </if>
+      <if test="borrowDesc != null" >
+         borrow_desc = #{borrowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+         create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" > 
+         create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateUser != null" >
+         last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if> 
+      <if test="lastUpdateTime != null" >
+         last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowType != null" >
+         borrow_type = #{borrowType,jdbcType=VARCHAR},
+      </if> 
+      <if test="customerId != null" >
+         customer_id = #{customerId,jdbcType=VARCHAR},
+      </if> 
+      <if test="status != null" >
+          status = #{status,jdbcType=VARCHAR},
+      </if> 
+      <if test="repaymentType != null" > 
+          repayment_type = #{repaymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="manageExpenseRate != null" >
+      	  manage_expense_rate = (#{manageExpenseRate,jdbcType=VARCHAR})/100, 
+      </if>
+      </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+	<!--APP 推荐项目 查询需要字段 -->
+	  <sql id="appRecommendProjects">
+	  			pid,b.borrow_type,b.borrow_rate,b.bor_deadline,b.borrow_code,b.borrow_money,b.borrow_progress,b.invest_reward_scale,
+				FUNC_GET_DICT_CONT_NAME ('ACCRUAL_TYPE',b.accrual_type) AS accrual_type_name ,FUNC_GET_DICT_CONT_NAME('BORROW_TYPE',b.borrow_type) AS borrow_type_name,
+				is_jiaxi_ticket,b.publish_time,b.bor_status
+	  </sql>
+	<!--   APP 推荐项目  e计划 招标中 -->
+	  <select id="selectAppRecommendProjectsEplanBidding" resultMap="BaseResultMap">
+	  		SELECT
+				<include refid="appRecommendProjects" />
+			FROM  t_biz_borrow b	
+			WHERE borrow_type = '3'	AND bor_status = 2 
+			ORDER BY date_add(publish_time,INTERVAL b.deadline DAY) DESC
+			LIMIT 0,1;
+	  </select>
+  <!--   APP 推荐项目  e计划 招标结束 -->
+	   <select id="selectAppRecommendProjectsEplanEnd" resultMap="BaseResultMap">
+	  		SELECT
+				<include refid="appRecommendProjects" />
+			FROM  t_biz_borrow b	
+			WHERE borrow_type = '3'	AND bor_status in (4,5,6,7,8)
+			ORDER BY   borrow_rate DESC
+			LIMIT 0,1;
+	  </select>
+  <!--   APP 推荐项目  e首房 e抵押 招标中 -->
+	   <select id="selectAppRecommendProjectsEmortgageBidding" resultMap="BaseResultMap">
+	  		SELECT
+				<include refid="appRecommendProjects" />
+			FROM  t_biz_borrow b	
+			WHERE borrow_type in (1,2) AND bor_status = 2 
+			ORDER BY date_add(publish_time,INTERVAL b.deadline DAY) DESC
+			LIMIT 0,2;
+	  </select>
+  <!--   APP 推荐项目  e首房 e抵押 招标结束 -->
+	   <select id="selectAppRecommendProjectsEmortgageEnd" resultMap="BaseResultMap" >
+	  		SELECT
+				<include refid="appRecommendProjects" />
+			FROM  t_biz_borrow b	
+			WHERE borrow_type in (1,2)	AND bor_status in (4,5,6,7,8)
+			ORDER BY borrow_rate DESC
+			LIMIT 0,2;
+	  </select>
+  
+</mapper>

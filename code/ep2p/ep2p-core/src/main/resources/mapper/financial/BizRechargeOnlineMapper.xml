@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.BizRechargeOnlineMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.BizRechargeOnline" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="rec_status" property="recStatus" jdbcType="VARCHAR" />
+    <result column="rec_time" property="recTime" jdbcType="TIMESTAMP" />
+    <result column="pay_config_id" property="payConfigId" jdbcType="VARCHAR" />
+    <result column="pay_name" property="payName" jdbcType="VARCHAR"/>
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="rec_order_no" property="recOrderNo" jdbcType="INTEGER"/>
+    <result column="rec_onl_desc" property="recOnlDesc" jdbcType="VARCHAR" />
+    <association property="customer" javaType="com.yscf.core.model.user.CusTomer">
+    	<id column="clientId" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+	    <result column="sname" property="sname" jdbcType="VARCHAR" />
+	    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, customer_id, bank_id, amount, rec_status, rec_time, pay_config_id,
+    status, create_user, create_time, last_update_user, last_update_time, rec_order_no, rec_onl_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_recharge_online
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectBizRechargesByStatus" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	 select 
+    <include refid="Base_Column_List" />
+    from t_biz_recharge_online
+    where status = #{rechargeStatus,jdbcType=VARCHAR} order by rec_time ASC limit 0,20
+  </select>
+  
+  <!-- 通过订单号查询充值记录 -->
+  <select id="getRechargeByRecOrderNo" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  	select 
+  		<include refid="Base_Column_List" />
+  		from t_biz_recharge_online t
+  		where t.rec_order_no = #{recOrderNo,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 线上充值客户列表 分页查询 -->
+  <select id="selectOnlineRechargePage" resultMap="BaseResultMap" parameterType="map">
+  	SELECT
+		ro.PID,
+		ro.customer_id,
+		ro.amount,
+		ro.rec_status,
+		ro.rec_time,
+		ro.create_user,
+		ro.create_time,
+		ro.last_update_user,
+		ro.last_update_time,
+		ro.rec_order_no,
+		ro.rec_onl_desc,
+		ro.pay_config_id,
+		cc.PID clientId,
+		cc.customer_name,
+		cc.sname,
+		cc.phone_no,
+		pc.pay_name
+	FROM
+		t_biz_recharge_online ro
+	LEFT JOIN t_cust_customer cc ON ro.customer_id = cc.PID
+	Left join t_pay_config pc on pc.pid = ro.pay_config_id
+	WHERE ro.status = 1
+		<if test="map.sname != null">
+			and cc.sname like concat('%',#{map.sname,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.customerName != null">
+			and cc.customer_name like concat('%',#{map.customerName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.phoneNo != null">
+			and cc.phone_no like concat('%',#{map.phoneNo,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.recTimeBegin != null">
+			and ro.rec_time <![CDATA[ >= ]]>#{map.recTimeBegin,jdbcType=DATE}
+		</if>
+		<if test="map.recTimeEnd != null">
+			and ro.rec_time <![CDATA[ < ]]> date_add(#{map.recTimeEnd,jdbcType=DATE}, INTERVAL 1 day)
+		</if>
+		<if test="map.recOrderNo != null">
+			and ro.rec_order_no like concat('%',#{map.recOrderNo,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.recStatus != null">
+			and ro.rec_status = #{map.recStatus,jdbcType=VARCHAR}
+		</if>
+		order by ro.rec_time DESC
+  </select>
+  
+  
+  
+    <!-- 线上充值客户列表 导出 -->
+  <select id="selectBizRechargeOnlineEom" resultMap="BaseResultMap">
+  SELECT * from (
+	 SELECT *,
+	  	(@rown := @rown + 1) rowns
+	 FROM (
+	 	 SELECT * FROM (
+		  		SELECT
+		ro.PID,
+		ro.customer_id,
+		ro.amount,
+		ro.rec_status,
+		ro.rec_time,
+		ro.create_user,
+		ro.create_time,
+		ro.last_update_user,
+		ro.last_update_time,
+		ro.rec_order_no,
+		ro.rec_onl_desc,
+		ro.pay_config_id,
+		cc.PID clientId,
+		cc.customer_name,
+		cc.sname,
+		cc.phone_no,
+		pc.pay_name
+	FROM
+		t_biz_recharge_online ro
+	LEFT JOIN t_cust_customer cc ON ro.customer_id = cc.PID
+	Left join t_pay_config pc on pc.pid = ro.pay_config_id
+	WHERE ro.status = 1
+		<if test="map.customer!=null and map.customer.sname != null">
+			and cc.sname like concat('%',#{map.customer.sname,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.customer!=null and map.customer.customerName != null">
+			and cc.customer_name like concat('%',#{map.customer.customerName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.customer!=null and map.customer.phoneNo != null">
+			and cc.phone_no like concat('%',#{map.customer.phoneNo,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.recTimeBegin != null">
+			and ro.rec_time <![CDATA[ >= ]]>#{map.recTimeBegin,jdbcType=DATE}
+		</if>
+		<if test="map.recTimeEnd != null">
+			and ro.rec_time <![CDATA[ < ]]> date_add(#{map.recTimeEnd,jdbcType=DATE}, INTERVAL 1 day)
+		</if>
+		<if test="map.recOrderNo != null">
+			and ro.rec_order_no like concat('%',#{map.recOrderNo,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="map.recStatus != null">
+			and ro.rec_status = #{map.recStatus,jdbcType=VARCHAR}
+		</if>
+		order by ro.rec_time DESC
+		) t,(SELECT @rown := 0) b
+	)t
+) t WHERE 1=1 
+		<include refid="export_query_sql"></include>
+  </select>
+  
+   
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND t.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			AND t.rowns BETWEEN #{expm.startCheckrecords,jdbcType=INTEGER}
+				AND #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+  
+  
+  
+  <!-- 线上充值总金额 按条件查询 -->
+  <select id="selectSumAmountSelective" resultType="DECIMAL" parameterType="java.util.Map">
+  	SELECT
+		SUM(ro.amount)
+	FROM
+		t_biz_recharge_online ro
+	LEFT JOIN t_cust_customer cc ON ro.customer_id = cc.PID
+	Left join t_pay_config pc on pc.pid = ro.pay_config_id
+	WHERE ro.status = 1
+		<if test="sname != null">
+			and cc.sname like concat('%',#{sname,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="customerName != null">
+			and cc.customer_name like concat('%',#{customerName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="phoneNo != null">
+			and cc.phone_no like concat('%',#{phoneNo,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="recTimeBegin != null">
+			and ro.rec_time <![CDATA[ >= ]]>#{recTimeBegin,jdbcType=DATE}
+		</if>
+		<if test="recTimeEnd != null">
+			and ro.rec_time <![CDATA[ <= ]]> #{recTimeEnd,jdbcType=DATE}
+		</if>
+		<if test="recOrderNo != null">
+			and ro.rec_order_no like concat('%',#{recOrderNo,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="recStatus != null">
+			and ro.rec_status = #{recStatus,jdbcType=VARCHAR}
+		</if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_recharge_online
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.financial.BizRechargeOnline" >
+    insert into t_biz_recharge_online (PID, customer_id, bank_id, 
+      amount, rec_status, rec_time, 
+      pay_config_id, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, rec_onl_desc,rec_order_no)
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{bankId,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{recStatus,jdbcType=VARCHAR}, #{recTime,jdbcType=TIMESTAMP}, 
+      #{payConfigId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{recOnlDesc,jdbcType=VARCHAR},#{recOrderNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.BizRechargeOnline" >
+    insert into t_biz_recharge_online
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="recStatus != null" >
+        rec_status,
+      </if>
+      <if test="recTime != null" >
+        rec_time,
+      </if>
+      <if test="payConfigId != null" >
+        pay_config_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="recOnlDesc != null" >
+        rec_onl_desc,
+      </if>
+      <if test="recOrderNo">
+      	rec_order_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="recStatus != null" >
+        #{recStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="recTime != null" >
+        #{recTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payConfigId != null" >
+        #{payConfigId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recOnlDesc != null" >
+        #{recOnlDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="recOrderNo">
+      	#{recOrderNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.financial.BizRechargeOnline" >
+    update t_biz_recharge_online
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="recStatus != null" >
+        rec_status = #{recStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="recTime != null" >
+        rec_time = #{recTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payConfigId != null" >
+        pay_config_id = #{payConfigId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recOnlDesc != null" >
+        rec_onl_desc = #{recOnlDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="recOrderNo">
+      	rec_order_no = #{recOrderNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.financial.BizRechargeOnline" >
+    update t_biz_recharge_online
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      rec_status = #{recStatus,jdbcType=VARCHAR},
+      rec_time = #{recTime,jdbcType=TIMESTAMP},
+      pay_config_id = #{payConfigId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      rec_onl_desc = #{recOnlDesc,jdbcType=VARCHAR},
+      rec_order_no = #{recOrderNo,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.task.ReportCountQuartzMapper" >
+	<!-- 统计计算累计投资的结果  -->
+	<select id="selectThisAccumulReport" resultType="java.util.HashMap">
+		SELECT 
+			SUM(bbdl.investment_amount) amount,
+			DATE_FORMAT(bbdl.investment_time,'%Y') ayear,
+			DATE_FORMAT(bbdl.investment_time,'%m') amonth
+		FROM t_biz_borrow_detail bbdl 
+		LEFT JOIN t_biz_borrow bbz ON bbdl.borrow_id = bbz.PID 
+		WHERE 1 = 1 
+			AND bbdl.`status` = '1' 
+			<!--  如果是e计划 -->
+			AND CASE WHEN bbz.borrow_type = '3' THEN
+						2 = 2
+					ELSE 
+						bbz.bor_status > 4
+					END
+			<!--  统计的时间区间 最近的两个月 -->
+			AND bbdl.investment_time > STR_TO_DATE(CONCAT(LAST_DAY(NOW()- INTERVAL 2 MONTH),' 23:59:59'),'%Y-%m-%d %k:%i:%s')
+		GROUP BY 
+			DATE_FORMAT(bbdl.investment_time,'%Y'),
+			DATE_FORMAT(bbdl.investment_time,'%m')
+	</select>
+	
+ 	<!-- 查询是否有存在的值 -->
+ 	<select id="selectAccumulatedInvestReport" resultType="java.util.HashMap" parameterType="java.lang.String">
+ 		SELECT
+			rci.PID,
+			rci.ayear
+		FROM
+			t_report_cumulative_invest rci
+		WHERE
+			rci.ayear = #{ayear,jdbcType=VARCHAR}
+		AND rci.amonth = #{amonth,jdbcType=VARCHAR}
+ 	</select>
+ 
+ 	<!-- 删除对应年月的投资报表 -->
+ 	<delete id="deleteAccumulatedInvestReport" parameterType="java.lang.String">
+ 		DELETE FROM
+			t_report_cumulative_invest 
+		WHERE
+			ayear = #{ayear,jdbcType=VARCHAR}
+		AND amonth = #{amonth,jdbcType=VARCHAR}
+ 	</delete>
+ 
+ 	<!-- 插入对应的投资累计信息 -->
+	<insert id="insertAccumulatedInvestReport" parameterType="com.yscf.core.model.task.CumulativeIinvestReport">
+		INSERT INTO t_report_cumulative_invest (
+			pid,
+			amount,
+			ayear,
+			amonth,
+			create_time,
+			last_update_time,
+			status,
+			create_user,
+			version
+		)
+		VALUES(
+			#{pid,jdbcType=VARCHAR},
+			#{amount,jdbcType=DECIMAL},
+			#{ayear,jdbcType=VARCHAR},
+			#{amonth,jdbcType=VARCHAR},
+			NOW(),
+			NOW(),
+			'1',
+			#{createUser,jdbcType=VARCHAR},
+			'1'
+		)
+	</insert>
+	
+	<!-- ******** 已还本息  ******** -->
+	<!-- 查询已还本息 -->
+	<select id="selectThisAlsoPrincipalReport" resultType="java.util.HashMap">
+		SELECT 
+			SUM(IFNULL(brp.capital,0.00) + IFNULL(brp.interest,0.00) + IFNULL(brp.latefee,0.00)) amount,
+			DATE_FORMAT(brp.repaid_time,'%Y') ayear,
+			DATE_FORMAT(brp.repaid_time,'%m') amonth
+		FROM t_biz_repayment_plan brp
+		WHERE 1 = 1  
+			AND brp.status = '1' 
+			AND brp.receipt_paln_status > 2 
+			AND brp.repaid_time > STR_TO_DATE(CONCAT(LAST_DAY(NOW()- INTERVAL 2 MONTH),' 23:59:59'),'%Y-%m-%d %k:%i:%s')
+		GROUP BY 
+			DATE_FORMAT(brp.repaid_time,'%Y'),
+			DATE_FORMAT(brp.repaid_time,'%m')
+	</select>
+	
+	<!-- 查询已还本息中是否有存在的值 -->
+ 	<select id="selectAlsoPrincipalReport" resultType="java.util.HashMap" parameterType="java.lang.String">
+ 		SELECT
+			rci.PID,
+			rci.ayear
+		FROM
+			t_report_also_principal rci
+		WHERE
+			rci.ayear = #{ayear,jdbcType=VARCHAR}
+		AND rci.amonth = #{amonth,jdbcType=VARCHAR}
+ 	</select>
+	
+	
+	<!-- 删除对应年月的投资报表 -->
+ 	<delete id="deleteAlsoPrincipalReport" parameterType="java.lang.String">
+ 		DELETE FROM
+			t_report_also_principal 
+		WHERE
+			ayear = #{ayear,jdbcType=VARCHAR}
+		AND amonth = #{amonth,jdbcType=VARCHAR}
+ 	</delete>
+ 	
+ 	<!-- 插入新的累计投资信息 -->
+ 	<insert id="insertAlsoPrincipalReport" parameterType="com.yscf.core.model.task.AlsoPrincipalReport" >
+	    insert into t_report_also_principal (PID, amount, ayear, 
+	      amonth, create_time, last_update_time, 
+	      status, version)
+	    values (#{pid,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{ayear,jdbcType=VARCHAR}, 
+	      #{amonth,jdbcType=VARCHAR}, NOW(), NOW(), 
+	      '1', '1')
+  	</insert>
+ 
+ 	<!-- ********  累计用户收益  ******** -->
+ 	<!-- 查询已还本息 -->
+	<select id="selectThisUserBenefitReport" resultType="java.util.HashMap">
+		SELECT
+			SUM(IFNULL(brp.interest,0)) amount,
+			COUNT(DISTINCT brp.customer_id) usernum,
+			sum(IFNULL(brp.interest,0))/COUNT(DISTINCT brp.customer_id) useravg,
+			DATE_FORMAT(brp.create_time,'%Y') ayear,
+			DATE_FORMAT(brp.create_time,'%m') amonth
+		FROM
+			t_biz_receipt_plan brp
+		WHERE 1 = 1 
+			AND brp.status = '1'
+			AND brp.create_time > STR_TO_DATE(CONCAT(LAST_DAY(NOW()- INTERVAL 2 MONTH),' 23:59:59'),'%Y-%m-%d %k:%i:%s')
+		GROUP BY 
+			DATE_FORMAT(brp.repaid_time,'%Y'),
+			DATE_FORMAT(brp.repaid_time,'%m')
+	</select>
+	
+	<!-- 查询已还本息中是否有存在的值 -->
+ 	<select id="selectUserBenefitReport" resultType="java.util.HashMap" parameterType="java.lang.String">
+ 		SELECT
+			rci.PID,
+			rci.ayear
+		FROM
+			t_report_user_benefit rci
+		WHERE
+			rci.ayear = #{ayear,jdbcType=VARCHAR}
+		AND rci.amonth = #{amonth,jdbcType=VARCHAR}
+ 	</select>
+	
+	
+	<!-- 删除对应年月的投资报表 -->
+ 	<delete id="deleteUserBenefitReport" parameterType="java.lang.String">
+ 		DELETE FROM
+			t_report_user_benefit 
+		WHERE
+			ayear = #{ayear,jdbcType=VARCHAR}
+		AND amonth = #{amonth,jdbcType=VARCHAR}
+ 	</delete>
+ 	
+ 	<!-- 插入新的累计投资信息 -->
+ 	<insert id="insertUserBenefitReport" parameterType="com.yscf.core.model.task.UserBenefitReport" >
+	   insert into t_report_user_benefit (PID, amount, usernum, 
+	      useravg, ayear, amonth, 
+	      create_time, last_update_time, status, 
+	      version)
+	    values (#{pid,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{usernum,jdbcType=INTEGER}, 
+	      #{useravg,jdbcType=DOUBLE}, #{ayear,jdbcType=VARCHAR}, #{amonth,jdbcType=VARCHAR}, 
+	      NOW(), NOW(), '1', '1')
+  	</insert>
+  	
+  	
+  	<!-- ********  累计已发放收益  ******** -->
+  	<select id="selectThisGrantProfitReport" resultType="java.util.HashMap">
+		SELECT
+			SUM(IFNULL(brp.interest,0)) amount,
+			COUNT(DISTINCT brp.customer_id) usernum,
+			DATE_FORMAT(brp.create_time,'%Y') ayear,
+			DATE_FORMAT(brp.create_time,'%m') amonth
+		FROM
+			t_biz_receipt_plan brp
+		WHERE 1 = 1 
+			AND brp.status = '1'
+			AND brp.receipt_status > 4
+			AND brp.create_time > STR_TO_DATE(CONCAT(LAST_DAY(NOW()- INTERVAL 2 MONTH),' 23:59:59'),'%Y-%m-%d %k:%i:%s')
+		GROUP BY 
+			DATE_FORMAT(brp.repaid_time,'%Y'),
+			DATE_FORMAT(brp.repaid_time,'%m')
+	</select>
+	
+	<!-- 查询已还本息中是否有存在的值 -->
+ 	<select id="selectGrantProfitReport" resultType="java.util.HashMap" parameterType="java.lang.String">
+ 		SELECT
+			rci.PID,
+			rci.ayear
+		FROM
+			t_report_grant_profit rci
+		WHERE
+			rci.ayear = #{ayear,jdbcType=VARCHAR}
+		AND rci.amonth = #{amonth,jdbcType=VARCHAR}
+ 	</select>
+	
+	
+	<!-- 删除对应年月的投资报表 -->
+ 	<delete id="deleteGrantProfitReport" parameterType="java.lang.String">
+ 		DELETE FROM
+			t_report_grant_profit 
+		WHERE
+			ayear = #{ayear,jdbcType=VARCHAR}
+		AND amonth = #{amonth,jdbcType=VARCHAR}
+ 	</delete>
+ 	
+ 	<!-- 插入新的累计投资信息 -->
+ 	<insert id="insertGrantProfitReport" parameterType="com.yscf.core.model.task.GrantProfitReport" >
+	   insert into t_report_grant_profit (PID, amount, usernum, 
+	      ayear, amonth, crate_time, last_update_time, 
+	      status, version)
+	    values (#{pid,jdbcType=CHAR}, #{amount,jdbcType=DECIMAL}, #{usernum,jdbcType=CHAR}, 
+	      #{ayear,jdbcType=CHAR}, #{amonth,jdbcType=CHAR}, NOW(), NOW(), 
+	      '1', '1')
+  	</insert>
+  	
+ 
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- 配置数据字段 -->
+		<xlsdicts>
+			<xlsdict id="sex_id" lookup="sex">
+				<xlsparmater excelValue="男"  dbValue="A"  javaType="java.lang.String"></xlsparmater>
+				<xlsparmater excelValue="女"  dbValue="B"  javaType="java.lang.String"></xlsparmater>
+			</xlsdict>
+		</xlsdicts>
+		
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_customer"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.user.CusTomer"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+				 		<oxlsprojcol name="" property="total" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="用户名" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="姓名" property="sname" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="手机号码" property="phoneNo" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="注册时间" property="registrationTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="推荐人" property="refereeUser" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="客服" property="customerServiceUser" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="总待收" property="totalStay" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="可用余额" property="availableBalance" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="可用积分" property="availablePoint" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="经验值" property="empiricalValue" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="VIP" property="vipLevel" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="黑名单" property="isBlacklist" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="禁止提现" property="isForbidWithdraw" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="禁止债权转让" property="isForbidTransfer" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="用户状态" property="status" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+</xlsroot>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.business.CaffP2pReceiptTransferMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.business.CaffP2pReceiptTransfer" >
+    <id column="caffP2pReceiptTransferId" property="caffp2preceipttransferid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="caffP2pReceiptPlanId" property="caffp2preceiptplanid" jdbcType="BIGINT" />
+    <result column="expireDateLong" property="expiredatelong" jdbcType="BIGINT" />
+    <result column="newUserId" property="newuserid" jdbcType="BIGINT" />
+    <result column="profitRate" property="profitrate" jdbcType="DECIMAL" />
+    <result column="receiptDateLong" property="receiptdatelong" jdbcType="BIGINT" />
+    <result column="rootTransferId" property="roottransferid" jdbcType="BIGINT" />
+    <result column="serviceFeeRate" property="servicefeerate" jdbcType="DECIMAL" />
+    <result column="stateEnum" property="stateenum" jdbcType="INTEGER" />
+    <result column="stateInt" property="stateint" jdbcType="INTEGER" />
+    <result column="successAmount" property="successamount" jdbcType="DECIMAL" />
+    <result column="successDateLong" property="successdatelong" jdbcType="BIGINT" />
+    <result column="transferAmount" property="transferamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pReceiptTransferId, createdDateLong, version, userId, bitState, caffP2pReceiptPlanId, 
+    expireDateLong, newUserId, profitRate, receiptDateLong, rootTransferId, serviceFeeRate, 
+    stateEnum, stateInt, successAmount, successDateLong, transferAmount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pReceiptTransfer
+    where caffP2pReceiptTransferId = #{caffp2preceipttransferid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pReceiptTransfer
+    where caffP2pReceiptTransferId = #{caffp2preceipttransferid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.business.CaffP2pReceiptTransfer" >
+    insert into CaffP2pReceiptTransfer (caffP2pReceiptTransferId, createdDateLong, 
+      version, userId, bitState, 
+      caffP2pReceiptPlanId, expireDateLong, newUserId, 
+      profitRate, receiptDateLong, rootTransferId, 
+      serviceFeeRate, stateEnum, stateInt, 
+      successAmount, successDateLong, transferAmount
+      )
+    values (#{caffp2preceipttransferid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{bitstate,jdbcType=BIGINT}, 
+      #{caffp2preceiptplanid,jdbcType=BIGINT}, #{expiredatelong,jdbcType=BIGINT}, #{newuserid,jdbcType=BIGINT}, 
+      #{profitrate,jdbcType=DECIMAL}, #{receiptdatelong,jdbcType=BIGINT}, #{roottransferid,jdbcType=BIGINT}, 
+      #{servicefeerate,jdbcType=DECIMAL}, #{stateenum,jdbcType=INTEGER}, #{stateint,jdbcType=INTEGER}, 
+      #{successamount,jdbcType=DECIMAL}, #{successdatelong,jdbcType=BIGINT}, #{transferamount,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pReceiptTransfer" >
+    insert into CaffP2pReceiptTransfer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2preceipttransferid != null" >
+        caffP2pReceiptTransferId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="caffp2preceiptplanid != null" >
+        caffP2pReceiptPlanId,
+      </if>
+      <if test="expiredatelong != null" >
+        expireDateLong,
+      </if>
+      <if test="newuserid != null" >
+        newUserId,
+      </if>
+      <if test="profitrate != null" >
+        profitRate,
+      </if>
+      <if test="receiptdatelong != null" >
+        receiptDateLong,
+      </if>
+      <if test="roottransferid != null" >
+        rootTransferId,
+      </if>
+      <if test="servicefeerate != null" >
+        serviceFeeRate,
+      </if>
+      <if test="stateenum != null" >
+        stateEnum,
+      </if>
+      <if test="stateint != null" >
+        stateInt,
+      </if>
+      <if test="successamount != null" >
+        successAmount,
+      </if>
+      <if test="successdatelong != null" >
+        successDateLong,
+      </if>
+      <if test="transferamount != null" >
+        transferAmount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2preceipttransferid != null" >
+        #{caffp2preceipttransferid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="caffp2preceiptplanid != null" >
+        #{caffp2preceiptplanid,jdbcType=BIGINT},
+      </if>
+      <if test="expiredatelong != null" >
+        #{expiredatelong,jdbcType=BIGINT},
+      </if>
+      <if test="newuserid != null" >
+        #{newuserid,jdbcType=BIGINT},
+      </if>
+      <if test="profitrate != null" >
+        #{profitrate,jdbcType=DECIMAL},
+      </if>
+      <if test="receiptdatelong != null" >
+        #{receiptdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="roottransferid != null" >
+        #{roottransferid,jdbcType=BIGINT},
+      </if>
+      <if test="servicefeerate != null" >
+        #{servicefeerate,jdbcType=DECIMAL},
+      </if>
+      <if test="stateenum != null" >
+        #{stateenum,jdbcType=INTEGER},
+      </if>
+      <if test="stateint != null" >
+        #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="successamount != null" >
+        #{successamount,jdbcType=DECIMAL},
+      </if>
+      <if test="successdatelong != null" >
+        #{successdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="transferamount != null" >
+        #{transferamount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pReceiptTransfer" >
+    update CaffP2pReceiptTransfer
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="caffp2preceiptplanid != null" >
+        caffP2pReceiptPlanId = #{caffp2preceiptplanid,jdbcType=BIGINT},
+      </if>
+      <if test="expiredatelong != null" >
+        expireDateLong = #{expiredatelong,jdbcType=BIGINT},
+      </if>
+      <if test="newuserid != null" >
+        newUserId = #{newuserid,jdbcType=BIGINT},
+      </if>
+      <if test="profitrate != null" >
+        profitRate = #{profitrate,jdbcType=DECIMAL},
+      </if>
+      <if test="receiptdatelong != null" >
+        receiptDateLong = #{receiptdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="roottransferid != null" >
+        rootTransferId = #{roottransferid,jdbcType=BIGINT},
+      </if>
+      <if test="servicefeerate != null" >
+        serviceFeeRate = #{servicefeerate,jdbcType=DECIMAL},
+      </if>
+      <if test="stateenum != null" >
+        stateEnum = #{stateenum,jdbcType=INTEGER},
+      </if>
+      <if test="stateint != null" >
+        stateInt = #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="successamount != null" >
+        successAmount = #{successamount,jdbcType=DECIMAL},
+      </if>
+      <if test="successdatelong != null" >
+        successDateLong = #{successdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="transferamount != null" >
+        transferAmount = #{transferamount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where caffP2pReceiptTransferId = #{caffp2preceipttransferid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.business.CaffP2pReceiptTransfer" >
+    update CaffP2pReceiptTransfer
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      bitState = #{bitstate,jdbcType=BIGINT},
+      caffP2pReceiptPlanId = #{caffp2preceiptplanid,jdbcType=BIGINT},
+      expireDateLong = #{expiredatelong,jdbcType=BIGINT},
+      newUserId = #{newuserid,jdbcType=BIGINT},
+      profitRate = #{profitrate,jdbcType=DECIMAL},
+      receiptDateLong = #{receiptdatelong,jdbcType=BIGINT},
+      rootTransferId = #{roottransferid,jdbcType=BIGINT},
+      serviceFeeRate = #{servicefeerate,jdbcType=DECIMAL},
+      stateEnum = #{stateenum,jdbcType=INTEGER},
+      stateInt = #{stateint,jdbcType=INTEGER},
+      successAmount = #{successamount,jdbcType=DECIMAL},
+      successDateLong = #{successdatelong,jdbcType=BIGINT},
+      transferAmount = #{transferamount,jdbcType=DECIMAL}
+    where caffP2pReceiptTransferId = #{caffp2preceipttransferid,jdbcType=BIGINT}
+  </update>
+</mapper>

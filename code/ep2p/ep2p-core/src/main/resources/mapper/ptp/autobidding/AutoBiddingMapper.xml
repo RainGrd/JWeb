@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.ptp.autobidding.AutoBiddingMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.ptp.autobidding.AutoBidding" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="balanceratio" property="balanceratio" jdbcType="INTEGER" />
+    <result column="minborrowmonth" property="minborrowmonth" jdbcType="INTEGER" />
+    <result column="maxborrowmonth" property="maxborrowmonth" jdbcType="INTEGER" />
+    <result column="minborrowrate" property="minborrowrate" jdbcType="DECIMAL" />
+    <result column="maxborrowrate" property="maxborrowrate" jdbcType="DECIMAL" />
+    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+    <result column="autostatus" property="autostatus" jdbcType="INTEGER" />
+    <result column="extfield1" property="extfield1" jdbcType="VARCHAR" />
+    <result column="extfield2" property="extfield2" jdbcType="VARCHAR" />
+    <result column="extfield3" property="extfield3" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="rownums" property="ranking" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    pid, customer_id, amount, balanceratio, minborrowmonth, maxborrowmonth, minborrowrate, 
+    maxborrowrate, borrow_type, autostatus, extfield1, extfield2, extfield3, create_user, 
+    create_time, last_update_user, last_update_time, status, version, description
+  </sql>
+  
+  <sql id="Base_ColumnQen_List" >
+    abase.pid, abase.customer_id, amount, abase.balanceratio, abase.minborrowmonth, abase.maxborrowmonth, abase.minborrowrate, 
+    abase.maxborrowrate, abase.borrow_type, abase.autostatus, abase.extfield1, abase.extfield2, abase.extfield3, abase.create_user, 
+    abase.create_time, abase.last_update_user, abase.last_update_time, abase.status, abase.version, abase.description,
+    bbase.rownums
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_auto_bidding
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 通过用户id查询对应的自动投标信息 -->
+  <select id="selectAutoBiddingList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	select 
+    	<include refid="Base_ColumnQen_List" />
+    from t_auto_bidding abase
+	LEFT JOIN 
+    	(
+    	SELECT
+			(@rowNo := @rowNo + 1) rownums,
+			a.pid,
+			a.customer_id,
+			a.auto_bidding_id
+		FROM
+			t_auto_bidding_queue a,
+			(SELECT @rowNo := 0) b
+		WHERE
+			a.status = '1'
+		ORDER BY
+			queuetime ASC
+    	) bbase
+    on abase.pid = bbase.auto_bidding_id 
+    where abase.status = '1' 
+    	<if test="customerId != null and customerId != ''" >
+	      and abase.customer_id = #{customerId,jdbcType=VARCHAR}
+	    </if>
+	order by abase.last_update_time desc 
+  </select>
+  
+  <!-- 查询已经启动的投标项目 -->
+  <select id="selectStartBiddingList" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    	<include refid="Base_Column_List" />
+    from t_auto_bidding
+    where status = '1' and autostatus = 1 
+    	<if test="userid != null and userid != ''" >
+	      and customer_id = #{userid,jdbcType=VARCHAR}
+	    </if>
+  </select>
+  
+  <!-- 通过主键和版本号查询对应用户的自动投标信息  -->
+  <select id="selectKeyVersionAutoBidding" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    	<include refid="Base_Column_List" />
+    from t_auto_bidding
+    where status = '1' 
+	      and customer_id = #{userid,jdbcType=VARCHAR} 
+	      and version =  #{vsion,jdbcType=VARCHAR} 
+	      and pid =  #{pid,jdbcType=VARCHAR} 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_auto_bidding
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.ptp.autobidding.AutoBidding" >
+    insert into t_auto_bidding (pid, customer_id, amount, 
+      balanceratio, minborrowmonth, maxborrowmonth, 
+      minborrowrate, maxborrowrate, borrow_type, 
+      autostatus, extfield1, extfield2, 
+      extfield3, create_user, create_time, 
+      last_update_user, last_update_time, status, 
+      version, description)
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{balanceratio,jdbcType=INTEGER}, #{minborrowmonth,jdbcType=INTEGER}, #{maxborrowmonth,jdbcType=INTEGER}, 
+      #{minborrowrate,jdbcType=DECIMAL}, #{maxborrowrate,jdbcType=DECIMAL}, #{borrowType,jdbcType=VARCHAR}, 
+      #{autostatus,jdbcType=INTEGER}, #{extfield1,jdbcType=VARCHAR}, #{extfield2,jdbcType=VARCHAR}, 
+      #{extfield3,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, NOW(), 
+      #{lastUpdateUser,jdbcType=VARCHAR}, NOW(), '1', 
+      '1', #{description,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.ptp.autobidding.AutoBidding" >
+    insert into t_auto_bidding
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="balanceratio != null" >
+        balanceratio,
+      </if>
+      <if test="minborrowmonth != null" >
+        minborrowmonth,
+      </if>
+      <if test="maxborrowmonth != null" >
+        maxborrowmonth,
+      </if>
+      <if test="minborrowrate != null" >
+        minborrowrate,
+      </if>
+      <if test="maxborrowrate != null" >
+        maxborrowrate,
+      </if>
+      <if test="borrowType != null" >
+        borrow_type,
+      </if>
+      <if test="autostatus != null" >
+        autostatus,
+      </if>
+      <if test="extfield1 != null" >
+        extfield1,
+      </if>
+      <if test="extfield2 != null" >
+        extfield2,
+      </if>
+      <if test="extfield3 != null" >
+        extfield3,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceratio != null" >
+        #{balanceratio,jdbcType=INTEGER},
+      </if>
+      <if test="minborrowmonth != null" >
+        #{minborrowmonth,jdbcType=INTEGER},
+      </if>
+      <if test="maxborrowmonth != null" >
+        #{maxborrowmonth,jdbcType=INTEGER},
+      </if>
+      <if test="minborrowrate != null" >
+        #{minborrowrate,jdbcType=DECIMAL},
+      </if>
+      <if test="maxborrowrate != null" >
+        #{maxborrowrate,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowType != null" >
+        #{borrowType,jdbcType=VARCHAR},
+      </if>
+      <if test="autostatus != null" >
+        #{autostatus,jdbcType=INTEGER},
+      </if>
+      <if test="extfield1 != null" >
+        #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        NOW(),
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        NOW(),
+      </if>
+      <if test="status != null" >
+        '1',
+      </if>
+      <if test="version != null" >
+        '1',
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.ptp.autobidding.AutoBidding" >
+    update t_auto_bidding
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceratio != null" >
+        balanceratio = #{balanceratio,jdbcType=INTEGER},
+      </if>
+      <if test="minborrowmonth != null" >
+        minborrowmonth = #{minborrowmonth,jdbcType=INTEGER},
+      </if>
+      <if test="maxborrowmonth != null" >
+        maxborrowmonth = #{maxborrowmonth,jdbcType=INTEGER},
+      </if>
+      <if test="minborrowrate != null" >
+        minborrowrate = #{minborrowrate,jdbcType=DECIMAL},
+      </if>
+      <if test="maxborrowrate != null" >
+        maxborrowrate = #{maxborrowrate,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowType != null" >
+        borrow_type = #{borrowType,jdbcType=VARCHAR},
+      </if>
+      <if test="autostatus != null" >
+        autostatus = #{autostatus,jdbcType=INTEGER},
+      </if>
+      <if test="extfield1 != null" >
+        extfield1 = #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        extfield2 = #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        extfield3 = #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = NOW(),
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = version + 1,
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.ptp.autobidding.AutoBidding" >
+    update t_auto_bidding
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      balanceratio = #{balanceratio,jdbcType=INTEGER},
+      minborrowmonth = #{minborrowmonth,jdbcType=INTEGER},
+      maxborrowmonth = #{maxborrowmonth,jdbcType=INTEGER},
+      minborrowrate = #{minborrowrate,jdbcType=DECIMAL},
+      maxborrowrate = #{maxborrowrate,jdbcType=DECIMAL},
+      borrow_type = #{borrowType,jdbcType=VARCHAR},
+      autostatus = #{autostatus,jdbcType=INTEGER},
+      extfield1 = #{extfield1,jdbcType=VARCHAR},
+      extfield2 = #{extfield2,jdbcType=VARCHAR},
+      extfield3 = #{extfield3,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = NOW(),
+      status = #{status,jdbcType=VARCHAR},
+      version = version + 1,
+      description = #{description,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 失效已经启动的自动投标的数据 -->
+  <update id="updateInvalidStartBidding" parameterType="java.lang.String">
+  	update t_auto_bidding 
+  	set autostatus = 0 ,
+  		last_update_user = #{userid,jdbcType=VARCHAR},
+  		last_update_time = NOW(),
+  		version = version + 1
+  	where status = '1' and customer_id = #{userid,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

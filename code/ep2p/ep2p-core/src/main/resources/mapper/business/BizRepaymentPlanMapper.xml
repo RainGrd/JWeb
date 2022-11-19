@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizRepaymentPlanMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizRepaymentPlan" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="borrow_id" property="borrowId" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="capital" property="capital" jdbcType="DECIMAL" />
+	    <result column="expireactual_time" property="expireactualTime" jdbcType="TIMESTAMP" />
+	    <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP" />
+	    <result column="latefee" property="latefee" jdbcType="DECIMAL" />
+	    <result column="management_cost" property="managementCost" jdbcType="DECIMAL" />
+	    <result column="latefeecalculate_time" property="latefeecalculateTime" jdbcType="TIMESTAMP" />
+	    <result column="payamount" property="payamount" jdbcType="DECIMAL" />
+	    <result column="prepayment_fee" property="prepaymentFee" jdbcType="DECIMAL" />
+	    <result column="payamount_time" property="payamountTime" jdbcType="TIMESTAMP" />
+	    <result column="planindex" property="planindex" jdbcType="VARCHAR" />
+	    <result column="repaidamount" property="repaidamount" jdbcType="DECIMAL" />
+	    <result column="repaid_time" property="repaidTime" jdbcType="TIMESTAMP" />
+	    <result column="interest" property="interest" jdbcType="DECIMAL" />
+	    <result column="interest_type" property="interestType" jdbcType="VARCHAR" />
+	    <result column="receipt_paln_status" property="receiptPalnStatus" jdbcType="VARCHAR" />
+	    <result column="receiptPalnStatusName" property="receiptPalnStatusName" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="rep_pla_desc" property="repPlaDesc" jdbcType="VARCHAR" />
+	    <result column="remaining_capital" property="remainingCapital" jdbcType="VARCHAR" />
+	    <!-- 外表字段 -->
+	    <result column="borrowCode" property="borrowCode" jdbcType="VARCHAR" />
+	    <result column="borrowName" property="borrowName" jdbcType="VARCHAR" />
+	    <result column="borDeadline" property="borDeadline" jdbcType="INTEGER" />
+	    <result column="borTotalAmount" property="borTotalAmount" jdbcType="DECIMAL" />
+	    <result column="borrowMoney" property="borrowMoney" jdbcType="DECIMAL" />
+	    <result column="borrowStatus" property="borrowStatus" jdbcType="VARCHAR" />
+  	</resultMap>
+  
+  	<resultMap id="overdueRateMap" type="com.yscf.core.model.business.BizOverdueRateVO" >
+	    <result column="overdue_num" property="overdueNum" jdbcType="VARCHAR" />
+	    <result column="overdue_amt" property="overdueAmt" jdbcType="DECIMAL" />
+  	</resultMap>  
+  
+  	<sql id="Base_Column_List" >
+	    PID, borrow_id, customer_id, capital, expireactual_time, expire_time, latefee, latefeecalculate_time, 
+	    payamount, payamount_time, planindex, repaidamount, repaid_time, interest, interest_type, 
+	    receipt_paln_status, status, create_user, create_time, last_update_user, last_update_time, 
+	    rep_pla_desc,management_cost,expireactual_time,prepayment_fee,remaining_capital,
+	    FUNC_GET_DICT_CONT_NAME('BIZ_REPLAN_STATUS',receipt_paln_status) AS receiptPalnStatusName
+  	</sql>
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_biz_repayment_plan
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	<select id="findListByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_biz_repayment_plan
+	    where borrow_id = #{borrowId,jdbcType=VARCHAR} ORDER BY  expire_time ASC
+  	</select>
+  	
+  	<select id="findRepaymentPlanByStatus" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_biz_repayment_plan
+	    where receipt_paln_status = #{bizReplanStatus,jdbcType=VARCHAR}
+	     and DATE_FORMAT(expire_time,'%Y-%m-%d') <![CDATA[ <= ]]> #{time,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<select id="findRepaymentPlanByTime" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_biz_repayment_plan
+	    where receipt_paln_status = #{bizReplanStatus,jdbcType=VARCHAR}
+	     and DATE_FORMAT(repaid_time,'%Y-%m-%d') <![CDATA[ < ]]> #{time,jdbcType=VARCHAR}
+  	</select>
+  
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_biz_repayment_plan
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  
+  	<delete id="deleteBatch" parameterType="java.lang.String" >
+	    delete from t_biz_repayment_plan
+	    where borrow_id = #{borrowId,jdbcType=VARCHAR} and customer_id = #{customerId,jdbcType=VARCHAR}
+  	</delete>
+  	<insert id="insert" parameterType="com.yscf.core.model.business.BizRepaymentPlan" >
+	    insert into t_biz_repayment_plan (PID, borrow_id, customer_id, 
+	      capital, remaining_capital,expireactual_time, expire_time, 
+	      latefee, management_cost,latefeecalculate_time, payamount, 
+	      payamount_time, planindex, repaidamount, 
+	      repaid_time, interest, interest_type, 
+	      receipt_paln_status, status, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      rep_pla_desc)
+	    values (#{pid,jdbcType=VARCHAR}, #{borrowId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+	      #{capital,jdbcType=DECIMAL},#{remainingCapital,jdbcType=DECIMAL}, #{expireactualTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}, 
+	      #{latefee,jdbcType=DECIMAL}, #{managementCost,jdbcType=DECIMAL},#{latefeecalculateTime,jdbcType=TIMESTAMP}, #{payamount,jdbcType=DECIMAL}, 
+	      #{payamountTime,jdbcType=TIMESTAMP}, #{planindex,jdbcType=VARCHAR}, #{repaidamount,jdbcType=DECIMAL}, 
+	      #{repaidTime,jdbcType=TIMESTAMP}, #{interest,jdbcType=DECIMAL}, #{interestType,jdbcType=VARCHAR}, 
+	      #{receiptPalnStatus,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{repPlaDesc,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	  
+  <!-- 批量新增 -->
+  <insert id="saveBatch" parameterType="java.util.List">
+   insert into t_biz_repayment_plan (PID, borrow_id, customer_id, 
+      capital, remaining_capital, expireactual_time, 
+      expire_time, latefee, latefeecalculate_time, 
+      payamount, payamount_time, planindex, 
+      repaidamount, repaid_time, interest, 
+      management_cost, interest_type, receipt_paln_status, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, rep_pla_desc, 
+      version)
+    values <foreach collection="list" item="item"  separator=",">
+    
+    (#{item.pid,jdbcType=VARCHAR}, #{item.borrowId,jdbcType=VARCHAR}, #{item.customerId,jdbcType=VARCHAR}, 
+      #{item.capital,jdbcType=DECIMAL}, #{item.remainingCapital,jdbcType=DECIMAL}, #{item.expireactualTime,jdbcType=TIMESTAMP}, 
+      #{item.expireTime,jdbcType=TIMESTAMP}, #{item.latefee,jdbcType=DECIMAL}, #{item.latefeecalculateTime,jdbcType=TIMESTAMP}, 
+      #{item.payamount,jdbcType=DECIMAL}, #{item.payamountTime,jdbcType=TIMESTAMP}, #{item.planindex,jdbcType=VARCHAR}, 
+      #{item.repaidamount,jdbcType=DECIMAL}, #{item.repaidTime,jdbcType=TIMESTAMP}, #{item.interest,jdbcType=DECIMAL}, 
+      #{item.managementCost,jdbcType=DECIMAL}, #{item.interestType,jdbcType=VARCHAR}, #{item.receiptPalnStatus,jdbcType=VARCHAR}, 
+      #{item.status,jdbcType=VARCHAR}, #{item.createUser,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+      #{item.lastUpdateUser,jdbcType=VARCHAR}, #{item.lastUpdateTime,jdbcType=TIMESTAMP}, #{item.repPlaDesc,jdbcType=VARCHAR}, 
+      '1'
+      )
+  </foreach>
+  </insert>
+  
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.business.BizRepaymentPlan" >
+	    insert into t_biz_repayment_plan
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="borrowId != null" >
+	        borrow_id,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="capital != null" >
+	        capital,
+	      </if>
+	      <if test="remainingCapital != null">
+	      	remaining_capital,
+	      </if>
+	      <if test="expireactualTime != null" >
+	        expireactual_time,
+	      </if>
+	      <if test="expireTime != null" >
+	        expire_time,
+	      </if>
+	      <if test="latefee != null" >
+	        latefee,
+	      </if>
+	      <if test="managementCost != null">
+	      	management_cost,
+	      </if>
+	      <if test="latefeecalculateTime != null" >
+	        latefeecalculate_time,
+	      </if>
+	      <if test="payamount != null" >
+	        payamount,
+	      </if>
+	      <if test="payamountTime != null" >
+	        payamount_time,
+	      </if>
+	      <if test="planindex != null" >
+	        planindex,
+	      </if>
+	      <if test="repaidamount != null" >
+	        repaidamount,
+	      </if>
+	      <if test="repaidTime != null" >
+	        repaid_time,
+	      </if>
+	      <if test="interest != null" >
+	        interest,
+	      </if>
+	      <if test="interestType != null" >
+	        interest_type,
+	      </if>
+	      <if test="receiptPalnStatus != null" >
+	        receipt_paln_status,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="repPlaDesc != null" >
+	        rep_pla_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="borrowId != null" >
+	        #{borrowId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="capital != null" >
+	        #{capital,jdbcType=DECIMAL},
+	      </if>
+	      <if test="remainingCapital != null">
+	      	#{remainingCapital,jdbcType=DECIMAL},
+	      </if>
+	      <if test="expireactualTime != null" >
+	        #{expireactualTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expireTime != null" >
+	        #{expireTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="latefee != null" >
+	        #{latefee,jdbcType=DECIMAL},
+	      </if>
+	      <if test="managementCost != null">
+	      	#{managementCost,jdbcType=DECIMAL},
+	      </if>
+	      <if test="latefeecalculateTime != null" >
+	        #{latefeecalculateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="payamount != null" >
+	        #{payamount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="payamountTime != null" >
+	        #{payamountTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="planindex != null" >
+	        #{planindex,jdbcType=VARCHAR},
+	      </if>
+	      <if test="repaidamount != null" >
+	        #{repaidamount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="repaidTime != null" >
+	        #{repaidTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="interest != null" >
+	        #{interest,jdbcType=DECIMAL},
+	      </if>
+	      <if test="interestType != null" >
+	        #{interestType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="receiptPalnStatus != null" >
+	        #{receiptPalnStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="repPlaDesc != null" >
+	        #{repPlaDesc,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.business.BizRepaymentPlan" >
+	    update t_biz_repayment_plan
+	    <set >
+	      <if test="borrowId != null" >
+	        borrow_id = #{borrowId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="capital != null" >
+	        capital = #{capital,jdbcType=DECIMAL},
+	      </if>
+	      <if test="expireactualTime != null" >
+	        expireactual_time = #{expireactualTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expireTime != null" >
+	        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="latefee != null" >
+	        latefee = #{latefee,jdbcType=DECIMAL},
+	      </if>
+	      <if test="latefeecalculateTime != null" >
+	        latefeecalculate_time = #{latefeecalculateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="payamount != null" >
+	        payamount = #{payamount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="payamountTime != null" >
+	        payamount_time = #{payamountTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="planindex != null" >
+	        planindex = #{planindex,jdbcType=VARCHAR},
+	      </if>
+	      <if test="repaidamount != null" >
+	        repaidamount = #{repaidamount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="repaidTime != null" >
+	        repaid_time = #{repaidTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="interest != null" >
+	        interest = #{interest,jdbcType=DECIMAL},
+	      </if>
+	      <if test="interestType != null" >
+	        interest_type = #{interestType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="receiptPalnStatus != null" >
+	        receipt_paln_status = #{receiptPalnStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="repPlaDesc != null" >
+	        rep_pla_desc = #{repPlaDesc,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizRepaymentPlan" >
+	    update t_biz_repayment_plan
+	    set borrow_id = #{borrowId,jdbcType=VARCHAR},
+	      customer_id = #{customerId,jdbcType=VARCHAR},
+	      capital = #{capital,jdbcType=DECIMAL},
+	      expireactual_time = #{expireactualTime,jdbcType=TIMESTAMP},
+	      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+	      latefee = #{latefee,jdbcType=DECIMAL},
+	      latefeecalculate_time = #{latefeecalculateTime,jdbcType=TIMESTAMP},
+	      payamount = #{payamount,jdbcType=DECIMAL},
+	      payamount_time = #{payamountTime,jdbcType=TIMESTAMP},
+	      planindex = #{planindex,jdbcType=VARCHAR},
+	      repaidamount = #{repaidamount,jdbcType=DECIMAL},
+	      repaid_time = #{repaidTime,jdbcType=TIMESTAMP},
+	      interest = #{interest,jdbcType=DECIMAL},
+	      interest_type = #{interestType,jdbcType=VARCHAR},
+	      receipt_paln_status = #{receiptPalnStatus,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      rep_pla_desc = #{repPlaDesc,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  
+  	<!--  根据逾期天数获取逾期金额、逾期期数 -->
+    <select id="selectOverdueRateVO" resultMap="overdueRateMap" parameterType="com.yscf.core.model.business.BizOverdueRateVO" >
+	    SELECT
+			count(1) as overdue_num,
+			sum(overdueAmt) as overdue_amt
+		FROM
+			(
+				SELECT
+					(IFNULL(capital,0) + IFNULL(interest,0)) AS overdueAmt,
+					datediff(
+						IFNULL(repaid_time,#{toDay,jdbcType=TIMESTAMP}),
+						expire_time
+					) overdue_days
+				FROM
+					t_biz_repayment_plan where status = 1 
+			) t
+		WHERE 1 = 1
+			<if test="startOverdueDay != null and startOverdueDay!=0" >
+		        and t.overdue_days  <![CDATA[>=]]>  #{startOverdueDay,jdbcType=VARCHAR}
+		    </if>
+			<if test="endOverdueDay != null and endOverdueDay!=0" >
+		       AND t.overdue_days  <![CDATA[<=]]>  #{endOverdueDay,jdbcType=VARCHAR}
+		    </if>
+		
+  	</select>
+  
+    <!-- 查询总还款期数 -->
+    <select id="getSumReapymentPlanNum" resultType="java.lang.Integer"  >
+	   select count(1) from  t_biz_repayment_plan where status = 1
+    </select>
+    
+    <!-- 查询总逾期期数 -->
+    <select id="getSumOverdueNum" resultType="java.lang.Integer"  parameterType="com.yscf.core.model.business.BizOverdueRateVO">
+	  	SELECT count(1)  
+	  	
+	  		FROM t_biz_repayment_plan 
+	  		
+	  	where status = 1 and datediff(
+						IFNULL(repaid_time,#{toDay,jdbcType=TIMESTAMP}),
+						expire_time
+					)  > 0 
+    </select>
+    
+    <!--  获取已还款金额 -->
+    <select id="getHasRepaymentAmt" resultType="java.math.BigDecimal"  >
+	  	SELECT sum(IFNULL(repaidamount,0))  
+	  	
+	  		FROM t_biz_repayment_plan 
+	  		
+	  	where status = 1 and repaid_time is not null
+    </select>
+    
+    <!--  获取正常待还金额 -->
+    <select id="getPendingRepaymentAmt" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.business.BizOverdueRateVO" >
+    	SELECT sum((IFNULL(capital,0) + IFNULL(interest,0)))
+	  	
+	  		FROM t_biz_repayment_plan 
+	  		
+	  	where status = 1 and datediff(#{toDay,jdbcType=TIMESTAMP},expire_time) <![CDATA[<=]]>   0  and repaid_time is null
+    </select>
+    
+    <!--  获取逾期未还金额 -->
+     <select id="getOverdueNoRepaymentAmt" resultType="java.math.BigDecimal" parameterType="com.yscf.core.model.business.BizOverdueRateVO" >
+	  	SELECT sum((IFNULL(capital,0) + IFNULL(interest,0)))
+	  	
+	  		FROM t_biz_repayment_plan 
+	  		
+	  	where status = 1 and datediff(#{toDay,jdbcType=TIMESTAMP},expire_time) <![CDATA[>]]>   0  and repaid_time is null
+    </select>
+    
+	<!-- 前台_我的借款_待还款 -->
+	<select id="selectPendingRepayment" resultMap="BaseResultMap" parameterType="map" >
+		select bb.PID,bb.borrow_code borrowCode,bb.borrow_name borrowName,bb.borrow_money borrowMoney,bb.bor_deadline borDeadline,
+			bb.bor_status,FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',bb.bor_status) AS borrowStatus,
+			(select sum(brp.repaidamount) from t_biz_repayment_plan brp where bb.PID = brp.borrow_id) AS repaidamount,
+			(select sum(brp.capital+brp.latefee+brp.interest+brp.management_cost) from t_biz_repayment_plan brp where bb.PID = brp.borrow_id) AS borTotalAmount,
+			(select count(brp.planindex) from t_biz_repayment_plan brp where bb.PID = brp.borrow_id  and brp.receipt_paln_status = 6 ) AS planindex,
+			(select DATE_FORMAT(max(brp.expire_time),'%Y-%m-%d') from t_biz_repayment_plan brp where bb.PID = brp.borrow_id) AS expire_time
+		from t_biz_borrow bb 
+		where bb.bor_status in (5,6,7) 
+		and bb.customer_id = #{customerId,jdbcType=VARCHAR} 
+		ORDER BY expire_time asc
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 前台_我的借款_待还款的总数 -->
+	<select id="selectPendingRepaymentCount" resultType="java.lang.Integer" parameterType="map" >
+		select count(1) 
+		from t_biz_borrow bb
+		where bb.bor_status in (5,6,7) 
+		and bb.customer_id = #{customerId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 前台_我的借款_已还款 -->
+	<select id="selectRepayment" resultMap="BaseResultMap" parameterType="map" >
+		select bb.PID,bb.borrow_code borrowCode,bb.borrow_name borrowName,bb.borrow_money borrowMoney,
+			bb.bor_status,FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',bb.bor_status) AS borrowStatus,
+			(select sum(brp.repaidamount) from t_biz_repayment_plan brp where bb.PID = brp.borrow_id) AS repaidamount
+		from t_biz_borrow bb 
+		where bb.bor_status = 8 
+		and bb.customer_id = #{customerId,jdbcType=VARCHAR} 
+		ORDER BY bb.borrow_code desc
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 前台_我的借款_已还款 的总数 -->
+	<select id="selectRepaymentCount" resultType="java.lang.Integer" parameterType="map" >
+		select count(1) 
+		from t_biz_borrow bb 
+		where bb.bor_status = 8 
+		and bb.customer_id = #{customerId,jdbcType=VARCHAR} 
+	</select>
+	
+	<!-- 通过借款ID得到还款记录集合 -->
+	<select id="selectRepaymentsByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+		<include refid="Base_Column_List" />
+	    from t_biz_repayment_plan
+	    where status = 1
+	     and borrow_id = #{borrowId,jdbcType=VARCHAR}
+	     ORDER BY planindex;
+	</select>
+	
+	<!-- 通过借款ID得到还款记录集合 -->
+	<select id="getRepaymentPlanIndexByDate" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+	    <include refid="Base_Column_List" />
+		FROM
+			t_biz_repayment_plan
+		WHERE
+			borrow_id = #{borrowId,jdbcType=VARCHAR}
+		AND (
+			TO_DAYS(expire_time) - TO_DAYS(
+				str_to_date(
+					#{sysDate,jdbcType=VARCHAR},
+					'%Y-%m-%d'
+				)
+			) = 0
+			OR TO_DAYS(expire_time) - TO_DAYS(
+				str_to_date(
+					#{sysDate,jdbcType=VARCHAR},
+					'%Y-%m-%d'
+				)
+			) > 0
+		)
+		ORDER BY
+			planindex ASC
+		LIMIT 1
+	</select>
+
+	<!-- API>>待还款列表 -->
+	<select id="selectPendingRepaymentAPI" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select brp.pid,bb.borrow_code borrowCode,DATE_FORMAT(brp.expire_time,'%Y-%m-%d') expireTime,brp.receipt_paln_status,brp.borrow_id,
+		CASE brp.receipt_paln_status when 1 then '还款中' when 2 then '逾期还款' when 3 then '逾期垫付' end as receiptPalnStatusName,
+		case when (brp.interest + brp.capital + brp.latefee) is null then 0 ELSE (brp.interest + brp.capital + brp.latefee) end as borTotalAmount,
+		brp.planindex,bb.bor_deadline borDeadline
+		from t_biz_repayment_plan brp,t_biz_borrow bb
+		WHERE brp.borrow_id = bb.PID
+		AND brp.receipt_paln_status in (1,2,3)
+		AND brp.customer_id = #{customerId,jdbcType=VARCHAR}
+		ORDER BY brp.expire_time asc
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+  <!-- 提前还款批量修改 -->
+  <update id="batchUpdateToPrepayment" parameterType="java.util.List">
+    
+	  	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update t_biz_repayment_plan tcc
+				<set>
+			<if test="item.prepaymentFee != null" >
+				prepayment_fee = #{item.prepaymentFee,jdbcType=VARCHAR}, 
+			</if>
+			<if test="item.repaidTime != null" >
+				repaid_time = #{item.repaidTime,jdbcType=VARCHAR}, 
+			</if>
+			<if test="item.interest != null" >
+				interest = #{item.interest,jdbcType=VARCHAR}, 
+			</if>
+			<if test="item.managementCost != null" >
+				management_cost = #{item.managementCost,jdbcType=VARCHAR}, 
+			</if>
+			<if test="item.receiptPalnStatus != null" >
+				receipt_paln_status = #{item.receiptPalnStatus,jdbcType=VARCHAR}, 
+			</if>
+			<if test="item.lastUpdateUser != null" >
+				last_update_user = #{item.lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+		</set>
+				where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	
+  </update>
+  <!-- 根据系统时间和借款得到最近的还款计划 -->
+	<select id="selectRepayByTime" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+			t_biz_repayment_plan
+		WHERE
+			borrow_id = #{borrowId,jdbcType=VARCHAR}
+		AND `status` = 1
+		AND expire_time > NOW()
+		AND receipt_paln_status = 1
+		ORDER BY expire_time
+		LIMIT 0,
+		 1
+	</select>
+	
+	<!-- 通过借款id得到逾期的还款计划 -->
+	<select id="selectOverdueRepayment" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+			r.PID, borrow_id, r.customer_id, capital, expireactual_time, expire_time, latefee, latefeecalculate_time, 
+		    payamount, payamount_time, planindex, repaidamount, repaid_time, interest, interest_type, 
+		    receipt_paln_status, r.status, r.create_user, r.create_time, r.last_update_user, r.last_update_time, 
+		    rep_pla_desc,management_cost,expireactual_time,prepayment_fee,remaining_capital
+		FROM
+			t_biz_repayment_plan r
+		INNER JOIN t_biz_borrow b ON (b.PID = r.borrow_id)
+		WHERE
+			r.`status` = 1
+		AND r.receipt_paln_status in (2,3)
+		AND r.borrow_id = #{borrowId,jdbcType=VARCHAR}
+	</select>
+</mapper>

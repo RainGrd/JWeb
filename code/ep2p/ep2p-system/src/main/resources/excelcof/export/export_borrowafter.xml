@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- 配置数据字段 -->
+		<xlsdicts>
+			<xlsdict id="sex_id" lookup="sex">
+				<xlsparmater excelValue="男"  dbValue="A"  javaType="java.lang.String"></xlsparmater>
+				<xlsparmater excelValue="女"  dbValue="B"  javaType="java.lang.String"></xlsparmater>
+			</xlsdict>
+		</xlsdicts>
+		
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="borrow_after_manage"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.business.BizBorrowAfter"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="借款名称" property="borrowName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="借款人" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="姓名" property="sname" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="可用余额" property="availableBalance" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="手机号码" property="phoneNo" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="借款金额" property="borrowMoney" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="借款类型" property="borrowType" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="房产总价" property="homeTotal" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="年利率（%）" property="borrowApr" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="期限（月）" property="periods" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="还款时间" property="repaidTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="还款方式" property="repaymentType" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="本期还款金额" property="capital" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="状态" property="receiptPalnStatus" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="是否黑名单" property="isBlackList" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="备注" property="repPlaDesc" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+</xlsroot>

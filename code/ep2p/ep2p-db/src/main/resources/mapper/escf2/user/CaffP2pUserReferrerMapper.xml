@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.user.CaffP2pUserReferrerMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.user.CaffP2pUserReferrer" >
+    <id column="caffP2pUserReferrerId" property="caffp2puserreferrerid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="referrerId" property="referrerid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pUserReferrerId, createdDateLong, version, userId, bitState, referrerId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pUserReferrer
+    where caffP2pUserReferrerId = #{caffp2puserreferrerid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pUserReferrer
+    where caffP2pUserReferrerId = #{caffp2puserreferrerid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserReferrer" >
+    insert into CaffP2pUserReferrer (caffP2pUserReferrerId, createdDateLong, 
+      version, userId, bitState, 
+      referrerId)
+    values (#{caffp2puserreferrerid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{bitstate,jdbcType=BIGINT}, 
+      #{referrerid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserReferrer" >
+    insert into CaffP2pUserReferrer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2puserreferrerid != null" >
+        caffP2pUserReferrerId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="referrerid != null" >
+        referrerId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2puserreferrerid != null" >
+        #{caffp2puserreferrerid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="referrerid != null" >
+        #{referrerid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserReferrer" >
+    update CaffP2pUserReferrer
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="referrerid != null" >
+        referrerId = #{referrerid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where caffP2pUserReferrerId = #{caffp2puserreferrerid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.user.CaffP2pUserReferrer" >
+    update CaffP2pUserReferrer
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      bitState = #{bitstate,jdbcType=BIGINT},
+      referrerId = #{referrerid,jdbcType=BIGINT}
+    where caffP2pUserReferrerId = #{caffp2puserreferrerid,jdbcType=BIGINT}
+  </update>
+</mapper>

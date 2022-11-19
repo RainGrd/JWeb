@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysMenu" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="parent_auth_id" property="parentAuthId" jdbcType="VARCHAR" />
+    <result column="parent_menu_name" property="parentMenuName" jdbcType="VARCHAR" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="menu_visible" property="menuVisible" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="menu_desc" property="menuDesc" jdbcType="VARCHAR" />
+    <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+    <result column="menu_level" property="menuLevel" javaType="INTEGER"/>
+    <result column="menu_name_en" property="menuNameEn" jdbcType="VARCHAR" />
+    <result column="is_leaf" property="isLeaf" jdbcType="VARCHAR" />
+    <result column="menu_ico" property="menuIco" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="menu_code" property="menuCode" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <resultMap id="PermissionResultMap" type="com.yscf.core.model.system.SysMenu" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="parent_auth_id" property="parentAuthId" jdbcType="VARCHAR" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="menu_visible" property="menuVisible" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="menu_desc" property="menuDesc" jdbcType="VARCHAR" />
+    <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+    <result column="menu_level" property="menuLevel" javaType="INTEGER"/>
+    <result column="menu_name_en" property="menuNameEn" jdbcType="VARCHAR" />
+    <result column="is_leaf" property="isLeaf" jdbcType="VARCHAR" />
+    <result column="menu_ico" property="menuIco" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="menu_code" property="menuCode" jdbcType="INTEGER"/>
+    <collection  property="buttons" ofType="com.yscf.core.model.system.SysButton">
+		<id property="pid" column="button_id" jdbcType="VARCHAR"/>
+		<result property="buttonName" column="button_name" jdbcType="VARCHAR"/>
+		<result property="buttonCode" column="button_code" jdbcType="VARCHAR"/>
+		<result property="buttonIco" column="button_ico" jdbcType="VARCHAR"/>
+		<result property="menuButtonId" column="menu_button_id" jdbcType="VARCHAR"/>
+	</collection >
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    PID, parent_auth_id,(select menu_name from t_sys_menu t where t.PID = m.parent_auth_id ) as parent_menu_name, 
+    menu_name, menu_visible, menu_url, menu_desc, menu_order,menu_level, menu_name_en, 
+    is_leaf, menu_ico, status, create_user, create_time, last_update_user, last_update_time, 
+    version,menu_code
+  </sql>
+  <!-- 权限查询 -->
+  <select id="selectPermission" resultMap="PermissionResultMap">
+    SELECT
+		m.PID,
+		m.parent_auth_id,
+		m.menu_name,
+		m.menu_visible,
+		m.menu_url,
+		m.menu_desc,
+		m.menu_order,
+		m.menu_level,
+		m.menu_name_en,
+		m.is_leaf,
+		m.menu_ico,
+		m.menu_code,
+		mb.PID AS menu_button_id,
+		b.pid AS button_id,
+		b.button_name,
+		b.button_code,
+		b.button_ico
+	FROM
+		t_sys_menu m
+		LEFT JOIN t_sys_menu_butt_rel mb ON m.PID = mb.menu_id
+		LEFT JOIN t_sys_button b ON b.PID = mb.button_id
+	where menu_visible = 1
+	order by m.menu_level, m.menu_order
+  </select>
+  
+  <!-- 查询所有菜单 -->
+  <select id="queryAllMenu" resultMap="BaseResultMap">
+  	select 
+	    <include refid="Base_Column_List" />
+	from t_sys_menu m 
+	order by m.menu_level, m.menu_order
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_menu m
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="map">
+  	 select 
+	    DISTINCT m.PID,
+		m.parent_auth_id,
+		m.menu_name,
+		m.menu_visible,
+		m.menu_url,
+		m.menu_desc,
+		m.menu_order,
+		m.menu_level,
+		m.menu_name_en,
+		m.is_leaf,
+		m.menu_ico,
+		m.menu_code
+	 from  t_sys_menu m,
+		t_sys_role_menu_butt_rel rmb,
+		t_sys_user_role_rel urr
+	 where menu_visible = 1
+  	  <if test="pid != null" >
+  	  	and PID = #{pid,jdbcType=VARCHAR}
+  	  </if>
+	  <if test="parentAuthId != null" >
+        and parent_auth_id = #{parentAuthId,jdbcType=VARCHAR}
+      </if>
+      <if test="menuLevel !=null">
+      	 and menu_level = #{menuLevel,jdbcType=INTEGER}
+      </if>
+      and m.PID = rmb.menu_id
+	  and urr.role_id = rmb.role_id
+      and urr.user_id = #{userId,jdbcType=VARCHAR}
+      order by m.menu_level, m.menu_order
+  </select>
+  
+  <!-- 查询菜单最大编码 -->
+  <select id="selectMaxMenuCode" resultType="java.lang.String">
+  	SELECT MAX(menu_code) from t_sys_menu
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_menu
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.system.SysMenu" >
+    insert into t_sys_menu (PID, parent_auth_id, menu_name, 
+      menu_visible, menu_url, menu_desc, 
+      menu_order,menu_level, menu_name_en, is_leaf, 
+      menu_ico, status, create_user, 
+      create_time, last_update_user, last_update_time, 
+      version,menu_code)
+    values (#{pid,jdbcType=VARCHAR}, #{parentAuthId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+      #{menuVisible,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR}, #{menuDesc,jdbcType=VARCHAR}, 
+      #{menuOrder,jdbcType=INTEGER},#{menuOrder,jdbcType=INTEGER}, #{menuNameEn,jdbcType=VARCHAR}, #{isLeaf,jdbcType=VARCHAR}, 
+      #{menuIco,jdbcType=VARCHAR}, 1, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=VARCHAR},#{menuCode,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.system.SysMenu" >
+    insert into t_sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        PID,
+      <if test="parentAuthId != null" >
+        parent_auth_id,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuVisible != null" >
+        menu_visible,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="menuDesc != null" >
+        menu_desc,
+      </if>
+      <if test="menuOrder != null" >
+        menu_order,
+      </if>
+      <if test="menuLevel !=null">
+      	menu_level,
+      </if>
+      <if test="menuNameEn != null" >
+        menu_name_en,
+      </if>
+      <if test="isLeaf != null" >
+        is_leaf,
+      </if>
+      <if test="menuIco != null" >
+        menu_ico,
+      </if>
+        status,
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="menuCode != null" >
+      	menu_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{pid,jdbcType=VARCHAR},
+      <if test="parentAuthId != null" >
+        #{parentAuthId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuVisible != null" >
+        #{menuVisible,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null" >
+        #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="menuOrder != null" >
+        #{menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="menuLevel !=null">
+      	#{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="menuNameEn != null" >
+        #{menuNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIco != null" >
+        #{menuIco,jdbcType=VARCHAR},
+      </if>
+        1,
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCode != null" >
+        #{menuCode,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysMenu" >
+    update t_sys_menu
+    <set >
+      <if test="parentAuthId != null" >
+        parent_auth_id = #{parentAuthId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuVisible != null" >
+        menu_visible = #{menuVisible,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null" >
+        menu_desc = #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="menuOrder != null" >
+        menu_order = #{menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="menuLevel !=null">
+      	menu_level = #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="menuNameEn != null" >
+        menu_name_en = #{menuNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        is_leaf = #{isLeaf,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIco != null" >
+        menu_ico = #{menuIco,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysMenu" >
+    update t_sys_menu
+    set parent_auth_id = #{parentAuthId,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_visible = #{menuVisible,jdbcType=VARCHAR},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      menu_desc = #{menuDesc,jdbcType=VARCHAR},
+      menu_order = #{menuOrder,jdbcType=INTEGER},
+      menu_level = #{menuLevel,jdbcType=INTEGER},
+      menu_name_en = #{menuNameEn,jdbcType=VARCHAR},
+      is_leaf = #{isLeaf,jdbcType=VARCHAR},
+      menu_ico = #{menuIco,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

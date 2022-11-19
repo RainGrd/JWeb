@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysUserMapper">
+	<resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysUser">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+		<result column="qq_no" property="qqNo" jdbcType="VARCHAR" />
+		<result column="webchat_no" property="webchatNo" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="account_no" property="accountNo" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+		<result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="service_user_count" property="serviceUserCount" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		PID, name, phone_no, qq_no, webchat_no, password, account_no, 
+		 CASE status
+                  WHEN 1 THEN
+                   '启用'
+                  WHEN 0 THEN
+                   '禁用'
+                END status,
+		create_user,
+		create_time, last_update_user, last_update_time, version
+	</sql>
+	<!-- 根据角色编码 	获取该角色下的所有用户 -->
+	<select id="queryUserByRoleCode" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+			c.PID,
+			c. NAME,
+			c.phone_no,
+			c.qq_no,
+			c.webchat_no,
+			c. PASSWORD,
+			c.account_no,
+			c. STATUS,
+			c.create_user,
+			c.create_time,
+			c.last_update_user,
+			c.last_update_time,
+			c.service_user_count
+		FROM
+			(
+				SELECT
+					su.PID,
+					su. NAME,
+					su.phone_no,
+					su.qq_no,
+					su.webchat_no,
+					su. PASSWORD,
+					su.account_no,
+					su. STATUS,
+					su.create_user,
+					su.create_time,
+					su.last_update_user,
+					su.last_update_time,
+					su.version,
+					(
+						SELECT
+							count(1)
+						FROM
+							t_cust_customer c
+						WHERE
+							c.customer_service_user = su.PID
+					) service_user_count
+				FROM
+					t_sys_user su
+				WHERE
+					su.`status` = 1
+				AND su.PID IN (
+					SELECT
+						ur.user_id
+					FROM
+						t_sys_user_role_rel ur
+					WHERE
+						ur.role_id = (
+							SELECT
+								sr.PID
+							FROM
+								t_sys_role sr
+							WHERE
+								sr.role_code = 10024
+						)
+				)
+			) c
+		WHERE
+			c.service_user_count <![CDATA[ < ]]> 1000
+			order by c.service_user_count asc
+	</select>
+	<select id="getSysUserByPassword" resultType="Integer" parameterType="String">
+		select count(1) from t_sys_user where password = #{password,jdbcType=VARCHAR}
+	</select>
+	<select id="getSysUserByUserNameCount" resultType="Integer" parameterType="String">
+		select count(1) from t_sys_user where name = #{userName,jdbcType=VARCHAR}
+	</select>
+	<select id="getSysUserByUserName" resultMap="BaseResultMap"  parameterType="String">
+		select PID, name, phone_no, qq_no, webchat_no, password, account_no,
+			status,create_user,
+			create_time, last_update_user, last_update_time, version
+		from t_sys_user where name = #{userName,jdbcType=VARCHAR}
+	</select>
+	<select id="getSysUserByAccountNo" resultMap="BaseResultMap" parameterType="String">
+		select PID, name, phone_no, qq_no, webchat_no, password, account_no,
+			status,create_user,
+			create_time, last_update_user, last_update_time, version
+		from t_sys_user 
+		where status <![CDATA[ >= ]]> 0 
+			AND account_no = #{accountNo,jdbcType=VARCHAR}
+			
+	</select>
+	<select id="selectSelectiveCount" resultType="Integer" parameterType="com.yscf.core.model.system.SysUser">
+		select count(1) from t_sys_user where status = 1
+		<trim suffixOverrides=",">
+			<if test="pid != null">
+				and pid = #{pid,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				and password = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="phoneNo != null">
+				and phone_no = #{phoneNo,jdbcType=VARCHAR}
+			</if>
+			<if test="qqNo != null">
+				and qq_no = #{qqNo,jdbcType=VARCHAR}
+			</if>
+			<if test="webchatNo != null">
+				and webchat_no = #{webchatNo,jdbcType=VARCHAR}
+			</if>
+			<if test="accountNo != null">
+				and account_no = #{accountNo,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and status = #{status,jdbcType=VARCHAR}
+			</if>
+			<if test="createUser != null">
+				and create_user = #{createUser,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastUpdateUser != null">
+				and last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+			</if>
+			<if test="lastUpdateTime != null">
+				and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="version != null">
+				and version = #{version,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="selectSelective" resultMap="BaseResultMap" parameterType="com.yscf.core.model.system.SysUser">
+		select
+			<include refid="Base_Column_List"/>
+		from t_sys_user where status = 1
+		<trim suffixOverrides=",">
+			<if test="pid != null">
+				and pid = #{pid,jdbcType=VARCHAR}
+			</if>
+			<if test="name != null">
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				and password = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="phoneNo != null">
+				and phone_no = #{phoneNo,jdbcType=VARCHAR}
+			</if>
+			<if test="qqNo != null">
+				and qq_no = #{qqNo,jdbcType=VARCHAR}
+			</if>
+			<if test="webchatNo != null">
+				and webchat_no = #{webchatNo,jdbcType=VARCHAR}
+			</if>
+			<if test="accountNo != null">
+				and account_no = #{accountNo,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				and status = #{status,jdbcType=VARCHAR}
+			</if>
+			<if test="createUser != null">
+				and create_user = #{createUser,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				and create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastUpdateUser != null">
+				and last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+			</if>
+			<if test="lastUpdateTime != null">
+				and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="version != null">
+				and version = #{version,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</select>
+<!--     用户管理查询 ,不带分页功能的-->
+	<select id="selectAll" parameterType="com.yscf.core.model.system.SysUser" resultMap="BaseResultMap">
+	   select
+	    <include refid="Base_Column_List"/>
+	    from t_sys_user
+	    where 1=1
+	    and status >= 0
+	    <if test="accountNo != null" >
+        and  account_no like  concat('%',#{accountNo,jdbcType=VARCHAR},'%' )
+       </if>
+       <if test="name != null" >
+        and  name like   concat('%',#{name,jdbcType=VARCHAR},'%' )
+      </if>
+        <if test="phoneNo != null"  >
+        and  phone_No like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+        <if test="status != null" >
+        and  status like  concat('%',#{status,jdbcType=VARCHAR},'%' )
+      </if>
+	</select>
+	
+	<!--     用户管理查询 ,带分页功能的-->
+	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+	   select
+	   		<include refid="Base_Column_List"/>
+	   from t_sys_user
+	   where 1=1 and status >= 0
+		   <if test="sysUser.accountNo != null" >
+	        and  account_no like concat('%',#{sysUser.accountNo,jdbcType=VARCHAR},'%' )
+	       </if>
+	        <if test="sysUser.name != null" >
+	        and  name like concat('%',#{sysUser.name,jdbcType=VARCHAR},'%' )
+	      </if>
+	        <if test="sysUser.phoneNo != null"  >
+	        and  phone_No like  concat('%',#{sysUser.phoneNo,jdbcType=VARCHAR},'%' )
+	      </if>
+	        <if test="sysUser.status != null" >
+	        and  status like  concat('%',#{sysUser.status,jdbcType=VARCHAR},'%' )
+	      </if>
+	      order by create_time desc
+	</select>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		*
+		from t_sys_user 
+		where  PID = #{pid,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryUsersByRoleId" resultMap="BaseResultMap" parameterType="map">
+		select <include refid="Base_Column_List"/>
+		 from t_sys_user su where su.status = 1 and su.PID in
+		(select ur.user_id from t_sys_user_role_rel ur where ur.role_id =  #{map.roleId,jdbcType=VARCHAR})
+		<if test="map.queryStr != null">
+			and (su.account_no like
+			concat('%',#{map.queryStr,jdbcType=VARCHAR},'%')
+			or su.name like concat('%',#{map.queryStr,jdbcType=VARCHAR},'%')
+			or su.phone_no like concat('%',#{map.queryStr,jdbcType=VARCHAR},'%'))
+		</if>
+	</select>
+	
+	<select id="queryNoUsersByRoleId" resultMap="BaseResultMap" parameterType="map">
+		select <include refid="Base_Column_List"/>
+		 from t_sys_user su where su.status = 1 and su.PID not in
+		(select ur.user_id from t_sys_user_role_rel ur where ur.role_id =  #{map.roleId,jdbcType=VARCHAR})
+		<if test="map.queryStr != null">
+			and (su.account_no like  concat('%',#{map.queryStr,jdbcType=VARCHAR},'%' )
+			 or su.name like  concat('%',#{map.queryStr,jdbcType=VARCHAR},'%' ) 
+			 or su.phone_no like concat('%',#{map.queryStr,jdbcType=VARCHAR},'%' ))
+		</if>
+	</select>
+<!--     验证用户是否存在 -->
+	<select id="validateUserAccount" parameterType="java.lang.String" resultType="Integer">
+	     select count(*) from t_sys_user tt where tt.account_no = #{userAccount,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from t_sys_user
+		where PID = #{pid,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insertSelective" parameterType="com.yscf.core.model.system.SysUser">
+		insert into t_sys_user (PID, name, phone_no,
+		qq_no, webchat_no, password,
+		account_no, status, create_user,
+		create_time, last_update_user, last_update_time,
+		version)
+		values (#{pid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{phoneNo,jdbcType=VARCHAR},
+		#{qqNo,jdbcType=VARCHAR}, #{webchatNo,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+		#{accountNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{version,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insert" parameterType="com.yscf.core.model.system.SysUser">
+		insert into t_sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="phoneNo != null">
+				phone_no,
+			</if>
+			<if test="qqNo != null">
+				qq_no,
+			</if>
+			<if test="webchatNo != null">
+				webchat_no,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="accountNo != null">
+				account_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNo != null">
+				#{phoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="qqNo != null">
+				#{qqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="webchatNo != null">
+				#{webchatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="accountNo != null">
+				#{accountNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysUser">
+		update t_sys_user
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNo != null">
+				phone_no = #{phoneNo,jdbcType=VARCHAR},
+			</if>
+			<if test="qqNo != null">
+				qq_no = #{qqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="webchatNo != null">
+				webchat_no = #{webchatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="accountNo != null">
+				account_no = #{accountNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysUser">
+		update t_sys_user
+		set name = #{name,jdbcType=VARCHAR},
+		phone_no = #{phoneNo,jdbcType=VARCHAR},
+		qq_no = #{qqNo,jdbcType=VARCHAR},
+		webchat_no = #{webchatNo,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		account_no = #{accountNo,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		create_user = #{createUser,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+		last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+		version = #{version,jdbcType=VARCHAR}
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+<!-- 	批量删除用户管理列表 -->
+	<delete id="deleteBtach" parameterType="java.util.List">
+	 	update 
+	  		t_sys_user 
+  		set 
+  			status=-1
+		where pid in 
+		<foreach item="itemId" collection="list" open="(" separator="," close=")">
+		          #{itemId}
+		</foreach>
+	</delete>
+<!-- 	根据pid重置用户密码 -->
+   <update id="resetPassword" parameterType="com.yscf.core.model.system.SysUser">
+      		update t_sys_user tsu set tsu.`password`= #{password,jdbcType=VARCHAR} where tsu.PID= #{pid,jdbcType=VARCHAR}
+   </update>
+</mapper>

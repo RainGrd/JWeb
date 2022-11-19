@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue常用指令演示</title>
+</head>
+<script src="js/vue.js"></script>
+<body>
+<div id="app">
+
+    <div v-for="addr in address">
+        {{addr}}<br/>
+    </div>
+    <hr/>
+    <div v-for="(addr,i) in address">
+        {{i+1}}:{{addr}}<br/>
+    </div>
+</div>
+</body>
+<!--创建vue核心对象-->
+<script>
+
+    new Vue({
+        el:"#app",
+        data(){
+            return {
+                username:"",
+                url:"https://www.baidu.com/",
+                count:3,
+                address :[
+                    "北京","上海","西安"
+                ]
+            }
+        }
+    });
+</script>
+</html>

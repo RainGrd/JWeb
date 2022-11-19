@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.system.CaffP2pPayConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.system.CaffP2pPayConfig" >
+    <id column="caffP2pPayConfigId" property="caffp2ppayconfigid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="paySystemInt" property="paysystemint" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.yscf.db.model.escf2.system.CaffP2pPayConfig" extends="BaseResultMap" >
+    <result column="exInfo1" property="exinfo1" jdbcType="LONGVARCHAR" />
+    <result column="exInfo2" property="exinfo2" jdbcType="LONGVARCHAR" />
+    <result column="merchantId" property="merchantid" jdbcType="LONGVARCHAR" />
+    <result column="signKey" property="signkey" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pPayConfigId, createdDateLong, version, userId, paySystemInt
+  </sql>
+  <sql id="Blob_Column_List" >
+    exInfo1, exInfo2, merchantId, signKey
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from CaffP2pPayConfig
+    where caffP2pPayConfigId = #{caffp2ppayconfigid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pPayConfig
+    where caffP2pPayConfigId = #{caffp2ppayconfigid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.system.CaffP2pPayConfig" >
+    insert into CaffP2pPayConfig (caffP2pPayConfigId, createdDateLong, 
+      version, userId, paySystemInt, 
+      exInfo1, exInfo2, merchantId, 
+      signKey)
+    values (#{caffp2ppayconfigid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{paysystemint,jdbcType=INTEGER}, 
+      #{exinfo1,jdbcType=LONGVARCHAR}, #{exinfo2,jdbcType=LONGVARCHAR}, #{merchantid,jdbcType=LONGVARCHAR}, 
+      #{signkey,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.system.CaffP2pPayConfig" >
+    insert into CaffP2pPayConfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2ppayconfigid != null" >
+        caffP2pPayConfigId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="paysystemint != null" >
+        paySystemInt,
+      </if>
+      <if test="exinfo1 != null" >
+        exInfo1,
+      </if>
+      <if test="exinfo2 != null" >
+        exInfo2,
+      </if>
+      <if test="merchantid != null" >
+        merchantId,
+      </if>
+      <if test="signkey != null" >
+        signKey,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2ppayconfigid != null" >
+        #{caffp2ppayconfigid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="paysystemint != null" >
+        #{paysystemint,jdbcType=INTEGER},
+      </if>
+      <if test="exinfo1 != null" >
+        #{exinfo1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exinfo2 != null" >
+        #{exinfo2,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="merchantid != null" >
+        #{merchantid,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="signkey != null" >
+        #{signkey,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.system.CaffP2pPayConfig" >
+    update CaffP2pPayConfig
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="paysystemint != null" >
+        paySystemInt = #{paysystemint,jdbcType=INTEGER},
+      </if>
+      <if test="exinfo1 != null" >
+        exInfo1 = #{exinfo1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exinfo2 != null" >
+        exInfo2 = #{exinfo2,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="merchantid != null" >
+        merchantId = #{merchantid,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="signkey != null" >
+        signKey = #{signkey,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where caffP2pPayConfigId = #{caffp2ppayconfigid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yscf.db.model.escf2.system.CaffP2pPayConfig" >
+    update CaffP2pPayConfig
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      paySystemInt = #{paysystemint,jdbcType=INTEGER},
+      exInfo1 = #{exinfo1,jdbcType=LONGVARCHAR},
+      exInfo2 = #{exinfo2,jdbcType=LONGVARCHAR},
+      merchantId = #{merchantid,jdbcType=LONGVARCHAR},
+      signKey = #{signkey,jdbcType=LONGVARCHAR}
+    where caffP2pPayConfigId = #{caffp2ppayconfigid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.system.CaffP2pPayConfig" >
+    update CaffP2pPayConfig
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      paySystemInt = #{paysystemint,jdbcType=INTEGER}
+    where caffP2pPayConfigId = #{caffp2ppayconfigid,jdbcType=BIGINT}
+  </update>
+</mapper>

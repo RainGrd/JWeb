@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_cust_exchangeStatistics_manage"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.user.CustExchangeDetail"
+				 	headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="类别" property="exchangeType" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="笔数" property="pensNumber" javaType="java.lang.Integer" ></oxlsprojcol>
+						<oxlsprojcol name="笔数占比" property="pensNumberProportion" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="总额" property="total" javaType="java.lang.Double" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+</xlsroot>

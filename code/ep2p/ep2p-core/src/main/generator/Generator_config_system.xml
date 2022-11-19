@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- 配置文件 -->
+   	<properties resource="generator-config-system.properties"/>
+    
+   	<!-- JDBC驱动JAR包 -->
+	<classPathEntry location="${jdbc.driver.jar}" />
+
+	<context id="project_context" defaultModelType="flat" targetRuntime="Ibatis3">
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+
+		<commentGenerator>
+		    <!-- 这个属性用来指定MBG生成的代码中是否包含任何注释。 这个属性有以下可选值：
+				false,这是默认值,当这个属性是false或者没有指定时，所有生成的元素都会包含
+					用来说明这是生成元素的注释。  
+				true,当这个属性是true时，不会往生成的元素中添加任何注释。  
+				警告:  如果您将这个值设为true，那么所有的代码合并都会被禁用。
+		     -->
+			<property name="suppressAllComments" value="true" />
+			
+			<!-- 这个元素用来指定生成的注释中是否包含生成的日期。 这个属性有以下可选值： 
+				false,这是默认值,当这个属性是false或者没有指定时，所有元素生成注释时都会
+					带着生成时间。  
+				true,当这个属性是true时，注释中不会添加时间戳。  
+			 -->
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+
+		<!-- 指定数据库连接所需的内省表的属性。 MyBatis Generator 使用JDBC的数据库元数据类
+			来发现您在配置中指定的属性表。 -->
+		<jdbcConnection driverClass="${jdbc.driver}"
+						connectionURL="${jdbc.url}" 
+						userId="${jdbc.username}"
+						password="${jdbc.password}" />
+
+		<javaTypeResolver>
+		    <!-- true,当这个属性是true时， the Java type resolver will always use 
+		    	java.math.BigDecimal if the database column is of type DECIMAL or NUMERIC.  -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!--  used to define properties of the Java model generator. 
+			The Java Model Generator builds primary key classes, record classes, 
+			and Query by Example classes that match the introspected table.
+		 -->
+		<javaModelGenerator 
+		    targetPackage="${java.code.model.package}"
+			targetProject="${java.code.model.src}">
+			<property name="constructorBased" value="false"/>
+			<property name="enableSubPackages" value="true" />
+			<property name="immutable" value="false"/>
+			<property name="rootClass" value="${java.code.model.super.class}"/>
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 用于定义SQL映射生成器的属性。 SQL映射生成器为每一个内省的表生成MyBatis/iBATIS形式的XML文件。 -->
+		<sqlMapGenerator 
+		    targetPackage="${java.code.xml.package}"
+			targetProject="${java.code.xml.src}">
+			
+		    <!-- 这个属性用来选择MGB是否根据基于目录和内省表来生成不同的Java包。  -->
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 用于定义 Java 客户端代码生成器的属性。 Java客户端生成器生成Java接口和类，
+			它可以简单地使用生成的Java模型和XML映射文件。 在iBATIS2目标环境中，这些对
+			象可以生成DAO接口和实现类形式的代码。 对Mybatis来说，会生成Mapper接口形式的代码。 -->
+		<javaClientGenerator 
+		    targetPackage="${java.code.dao.package}"
+			targetProject="${java.code.dao.src}" 
+			type="${java.code.generator.type}" >
+			<!-- 这个属性用来选择MGB是否根据基于目录和内省表来生成不同的Java包。  -->
+			<property name="enableSubPackages" value="true"/>	
+			<!-- 此属性用于指定一个所有生成的接口都继承的父接口。  -->
+			<property name="rootInterface" value="${java.code.dao.super.class}"/>   
+		</javaClientGenerator>
+
+		<!-- 
+			enableCountByExample="false" 
+			enableUpdateByExample="false"
+			enableDeleteByExample="false" 
+			enableSelectByExample="false"
+			selectByExampleQueryId="false"
+			enableInsert="true"
+			enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true"
+			enableDeleteByPrimaryKey="true"
+			selectByPrimaryKeyQueryId="true"
+		 -->
+<!-- 		<table tableName="t_sys_user" domainObjectName="SysUser"  enableCountByExample="false"  enableUpdateByExample="false"  -->
+<!-- 		    enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<!-- 		<table tableName="t_cust_customer" domainObjectName="cusTomer"  enableCountByExample="false"  enableUpdateByExample="false"  -->
+<!-- 		    enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<!-- 		<table tableName="t_cust_update_service_water" domainObjectName="CusUpdateServiceWater"  enableCountByExample="false"  enableUpdateByExample="false"  -->
+<!-- 		    enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<!-- 		<table tableName="t_cust_largess_vip_water" domainObjectName="CustLargessVipWater"  enableCountByExample="false"  enableUpdateByExample="false"  -->
+<!-- 		    enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<!-- 		<table tableName="t_sys_sms_templates" domainObjectName="SysSmsTemplates" enableCountByExample="false" enableUpdateByExample="false"  -->
+<!-- 			 enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<!-- 			<table tableName="t_cust_status_water" domainObjectName="CustStatusWater" enableCountByExample="false" enableUpdateByExample="false"  -->
+<!-- 			 enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 			<table tableName="t_cust_wit_status_water" domainObjectName="CustWitStatusWater" enableCountByExample="false" enableUpdateByExample="false"  -->
+<!-- 			 enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 			<table tableName="t_cust_blacklist_status_water" domainObjectName="CustBlacklistStatusWater" enableCountByExample="false" enableUpdateByExample="false"  -->
+<!-- 			 enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<!-- 			<table tableName="t_cust_bid_status_water" domainObjectName="CustBidStatusWater" enableCountByExample="false" enableUpdateByExample="false"  -->
+<!-- 			 enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat"> -->
+<!-- 			<property name="useActualColumnNames" value="false" /> -->
+<!-- 		</table> -->
+<<<<<<< .mine
+			<table tableName="t_cust_message_feedback" domainObjectName="CustMessageFeedback" enableCountByExample="false" enableUpdateByExample="false" 
+=======
+			<table tableName="t_cust_mess_record" domainObjectName="CustMessRecord" enableCountByExample="false" enableUpdateByExample="false" 
+>>>>>>> .r6533
+			 enableDeleteByExample="false"  enableSelectByExample="false" selectByExampleQueryId="false" modelType="flat">
+			<property name="useActualColumnNames" value="false" />
+		</table>
+	</context>
+</generatorConfiguration>

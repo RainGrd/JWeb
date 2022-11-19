@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.business.CaffP2pBidMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.business.CaffP2pBid" >
+    <id column="caffP2pBidId" property="caffp2pbidid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="lastestBidTimeLong" property="lastestbidtimelong" jdbcType="BIGINT" />
+    <result column="successDateLong" property="successdatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="autoBidAmount" property="autobidamount" jdbcType="DECIMAL" />
+    <result column="availableAmount" property="availableamount" jdbcType="DECIMAL" />
+    <result column="bidCount" property="bidcount" jdbcType="INTEGER" />
+    <result column="bidStateInt" property="bidstateint" jdbcType="INTEGER" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="borrowId" property="borrowid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pBidId, createdDateLong, lastestBidTimeLong, successDateLong, version, userId, 
+    amount, autoBidAmount, availableAmount, bidCount, bidStateInt, bitState, borrowId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pBid
+    where caffP2pBidId = #{caffp2pbidid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pBid
+    where caffP2pBidId = #{caffp2pbidid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.business.CaffP2pBid" >
+    insert into CaffP2pBid (caffP2pBidId, createdDateLong, lastestBidTimeLong, 
+      successDateLong, version, userId, 
+      amount, autoBidAmount, availableAmount, 
+      bidCount, bidStateInt, bitState, 
+      borrowId)
+    values (#{caffp2pbidid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, #{lastestbidtimelong,jdbcType=BIGINT}, 
+      #{successdatelong,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, 
+      #{amount,jdbcType=DECIMAL}, #{autobidamount,jdbcType=DECIMAL}, #{availableamount,jdbcType=DECIMAL}, 
+      #{bidcount,jdbcType=INTEGER}, #{bidstateint,jdbcType=INTEGER}, #{bitstate,jdbcType=BIGINT}, 
+      #{borrowid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pBid" >
+    insert into CaffP2pBid
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2pbidid != null" >
+        caffP2pBidId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="lastestbidtimelong != null" >
+        lastestBidTimeLong,
+      </if>
+      <if test="successdatelong != null" >
+        successDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="autobidamount != null" >
+        autoBidAmount,
+      </if>
+      <if test="availableamount != null" >
+        availableAmount,
+      </if>
+      <if test="bidcount != null" >
+        bidCount,
+      </if>
+      <if test="bidstateint != null" >
+        bidStateInt,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="borrowid != null" >
+        borrowId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2pbidid != null" >
+        #{caffp2pbidid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="lastestbidtimelong != null" >
+        #{lastestbidtimelong,jdbcType=BIGINT},
+      </if>
+      <if test="successdatelong != null" >
+        #{successdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="autobidamount != null" >
+        #{autobidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="availableamount != null" >
+        #{availableamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidcount != null" >
+        #{bidcount,jdbcType=INTEGER},
+      </if>
+      <if test="bidstateint != null" >
+        #{bidstateint,jdbcType=INTEGER},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="borrowid != null" >
+        #{borrowid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.business.CaffP2pBid" >
+    update CaffP2pBid
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="lastestbidtimelong != null" >
+        lastestBidTimeLong = #{lastestbidtimelong,jdbcType=BIGINT},
+      </if>
+      <if test="successdatelong != null" >
+        successDateLong = #{successdatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="autobidamount != null" >
+        autoBidAmount = #{autobidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="availableamount != null" >
+        availableAmount = #{availableamount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidcount != null" >
+        bidCount = #{bidcount,jdbcType=INTEGER},
+      </if>
+      <if test="bidstateint != null" >
+        bidStateInt = #{bidstateint,jdbcType=INTEGER},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="borrowid != null" >
+        borrowId = #{borrowid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where caffP2pBidId = #{caffp2pbidid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.business.CaffP2pBid" >
+    update CaffP2pBid
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      lastestBidTimeLong = #{lastestbidtimelong,jdbcType=BIGINT},
+      successDateLong = #{successdatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      autoBidAmount = #{autobidamount,jdbcType=DECIMAL},
+      availableAmount = #{availableamount,jdbcType=DECIMAL},
+      bidCount = #{bidcount,jdbcType=INTEGER},
+      bidStateInt = #{bidstateint,jdbcType=INTEGER},
+      bitState = #{bitstate,jdbcType=BIGINT},
+      borrowId = #{borrowid,jdbcType=BIGINT}
+    where caffP2pBidId = #{caffp2pbidid,jdbcType=BIGINT}
+  </update>
+</mapper>

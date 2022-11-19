@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+
+		
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_recharge_online"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.ptp.financial.BizRechargeOnlineModel"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="客户名称" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="真实姓名" property="realName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="手机号码" property="phoneNo" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="充值渠道" property="rechargeType" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="充值时间" property="rechargeTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="充值金额" property="rechargeAmount" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="订单号" property="orderCode" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="审核状态" property="statusName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="处理人" property="createUser" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="备注" property="remark" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+		
+</xlsroot>

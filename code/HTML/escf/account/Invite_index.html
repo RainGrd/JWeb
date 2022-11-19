@@ -1,0 +1,90 @@
+t_biz_receipt_plan   收款计划表  查待收金额，本金  map.put("{客户名}", smsVo.getMobile());   
+	@Resource
+	public IBizReceiptPlanService bizReceiptPlanService; 
+
+	BizReceiptPlanServiceImpl  selectAllPage（）
+
+	BizReceiptPlanMapper.xml
+
+
+	@Override
+	public PageList<CustDueinWater> selectAllPage(CustDueinWater custDueinWater,
+			PageInfo pageInfo) {
+		CustDueinWaterMapper mapper = (CustDueinWaterMapper) getDao();
+		PageList<CustDueinWater>  totalDaiShou = mapper.selectAllPage(custDueinWater, pageInfo);
+		Map<String,BigDecimal> map = mapper.selectAllPageSum(custDueinWater);
+		CustDueinWater custDueinWater2 = new CustDueinWater();
+		if(map!=null){
+		custDueinWater2.setDueinTotalValue(map.get("dueinTotalValue"));
+		custDueinWater2.setCorpus(map.get("corpus"));
+		custDueinWater2.setAccrual(map.get("accrual"));
+		totalDaiShou.add(custDueinWater2);
+		}
+ 		return totalDaiShou;
+	}
+
+	SysParamsServiceImpl  	SysParamsServiceImpl  
+
+
+http://localhost:8066/ep2p/business/financialProductsManageController/index/toFinProdPage.shtml  e计划
+
+javascript:window.location.href='http://localhost:8066/ep2p/business/optionalInvestController/index/toOptionalInvestList.shtml' e首房/e抵押
+
+
+http://localhost:8066/ep2p/activityArea/acticityAreaController/index/toActivityArea.shtml  更多 
+
+
+url : BASE_PATH+"/securityCenter/bankController/updateTradingPwdByCustId.shtml",
+
+
+FFFFFFFFCD1D77F1!2C30FE17ED31468ABBE32E6EC1EFB3  
+
+192.168.1.222:8081
+
+查看文件是否上传到服务器删的步骤
+
+路径：192.168.1.222:8081/system/
+
+用户名：root  yecf.123
+
+137871148888  123456.b
+
+
+ 账户key ：1a36f44c8ccd4d90b3cb6c41e0a428a1
+
+ bankcardNo: "6214856551072188"
+belongingBank: "招商银行"
+belongingCity: "深圳"
+belongingProvince: "广东"
+
+src="http://localhost:8066/ep2p/theme/default/images/alpha.png"
+
+http://localhost:8066/ep2p/theme/default/images/alpha.png
+
+13600000033   18900000000   13145956755
+
+
+//查vip等级
+		List<SysVipinfo> list = sysVipinfoService.selectVipLevelById(userid);
+		String vipLevel = list.get(0).getVipLevel();
+		if(null != vipLevel || !"".equals(vipLevel)){
+			String vips = "VIP"+vipLevel;
+			if(!"".equals(vipLevel) && vipLevel!=null){
+				req.setAttribute("vipLevel",vips);
+			}else{
+				req.setAttribute("vipLevel","VIP");
+			}
+		}else{
+			req.setAttribute("vipLevel","VIP");
+		}
+
+
+FFFFFFFFCD1D77F1!34B1055A27264615912E921F0BFEEC
+
+FFFFFFFFCD1D77F1!538A910FA0F442ACA8F4A4B128CDF5
+
+
+<!--查客户信息 -->
+	<select id="selectVipInfo" resultMap="BaseResultMap">
+	    
+	</select>

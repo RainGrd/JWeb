@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustEmergencyContactMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustEmergencyContact" >
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="user_Name" property="userName" jdbcType="VARCHAR" />
+    <result column="original_PassWord" property="originalPassWord" jdbcType="VARCHAR" />
+    <result column="trade_Password" property="tradePassword" jdbcType="VARCHAR" />
+    <result column="login_Time" property="loginTime" jdbcType="VARCHAR" />
+    <result column="trading_Time" property="tradingTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--   根据客户ID查密码,重置密码需要匹配旧密码 -->
+  <select id="selectOriginalByCusPid" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CustEmergencyContact">
+       select tcc.password         original_PassWord,
+       		  tcc.tradePassword    trade_Password 
+       		  from t_cust_customer tcc 
+       	where tcc.pid= #{custPid,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.yscf.core.model.user.CustEmergencyContact" >
+    insert into t_cust_emergency_contact (pid, name, relation, 
+      phone_no, customer_id)
+    values (#{pid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, 
+      #{phoneNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.CustEmergencyContact" >
+    insert into t_cust_emergency_contact
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="relation != null" >
+        relation,
+      </if>
+      <if test="phoneNo != null" >
+        phone_no,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null" >
+        #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert> 
+
+<!--   根据客户id修改紧急联系人信息 -->
+  <update id="updateEmergencyContact" parameterType="com.yscf.core.model.user.CustEmergencyContact">
+       update t_cust_emergency_contact tcec
+      	<set>	
+      		tcec.name = #{contact.name,jdbcType=VARCHAR},
+	        tcec.relation = #{contact.relation,jdbcType=VARCHAR},
+	        tcec.phone_no = #{contact.phoneNo,jdbcType=VARCHAR},
+        	tcec.customer_id = #{contact.customerId,jdbcType=VARCHAR}
+        </set>
+          where tcec.pid = #{contact.pid,jdbcType=VARCHAR}
+  </update>
+<!--   根据客户id修改用户名和联系地址 -->
+  <update id="updateCusNameByCusPid" parameterType="com.yscf.core.model.user.CustEmergencyContact">
+       update t_cust_customer tcc 
+       <set>
+           <if test="record.userName != null" >
+		          tcc.customer_name = #{record.userName,jdbcType=VARCHAR}
+		   </if>
+		   <if test="record.address!= null" >
+		          tcc.home_address = #{record.address,jdbcType=VARCHAR}
+		   </if>
+       </set>
+       where tcc.pid = #{record.customerId,jdbcType=VARCHAR}
+  </update>
+<!--   修改登录密码 -->
+  <update id="saveNewPassWord" parameterType="com.yscf.core.model.user.CustEmergencyContact">
+        update t_cust_customer tcc 
+        <set>
+            tcc.password= #{record.newPassWord,jdbcType=VARCHAR}
+        </set>
+            where tcc.pid = #{record.customerId,jdbcType=VARCHAR}
+  </update>
+  
+  <!--   修改交易密码 -->
+  <update id="saveNewTradePassWord" parameterType="com.yscf.core.model.user.CustEmergencyContact">
+        update t_cust_customer tcc 
+        <set>
+            tcc.tcc.tradePassword = #{record.tradePassword,jdbcType=VARCHAR}
+        </set>
+            where tcc.pid = #{record.customerId,jdbcType=VARCHAR}
+  </update>
+<!--   根据客户查登录系统时间和交易时间 -->
+  <select id="selectLoginTimeByAccount" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT  tsl.create_time login_Time,
+              tcc.create_time trading_Time 
+        FROM  t_sys_log tsl,
+        	  t_cust_customer tcc 
+		WHERE tsl.operand_type = '2'
+		  AND tsl.system_type = '1'
+		  AND tsl.oper_type = '1'
+		  AND tsl.account_no = tcc.customer_name
+		  AND tsl.account_no = #{account,jdbcType=VARCHAR}
+  </select>
+</mapper>

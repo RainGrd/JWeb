@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- 基础模板 -->
+	<definition name="temp.usercenter.base" template="/WEB-INF/templates/usercenter.jsp">
+		<put-attribute name="headmeta" value="/layout/headmeta.jsp"></put-attribute>
+		<put-attribute name="title" value=""></put-attribute>
+		<put-attribute name="navsmall" value="/WEB-INF/view/homepage/navsmall.jsp"></put-attribute>
+		<put-attribute name="remindtip" value="/layout/remindtip.jsp"></put-attribute>
+		<put-attribute name="servicebar" value="/layout/servicebar.jsp"></put-attribute>
+		<put-attribute name="mainmenu" value="/WEB-INF/view/homepage/mainmenu.jsp"></put-attribute>
+		<put-attribute name="footer" value="/layout/footer.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心账户总览 -->
+	<definition name="temp.usercenter.page" extends="temp.usercenter.base">
+		<put-attribute name="title" value="账户总览- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userleftmenu" value="/WEB-INF/view/personcenter/personmenus/user_left_muen.jsp"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/accountoverview/personcAccViewPage.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心账户总览 -> 自动投标 -->
+	<definition name="temp.usercenter.automaticbid" extends="temp.usercenter.page">
+		<put-attribute name="title" value="账户总览- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/accountoverview/automaticBid/automaticbidList.jsp"></put-attribute>
+	</definition>
+	
+	
+	<!-- 个人中心我的投资 -->
+	<definition name="temp.usercenter.invest" extends="temp.usercenter.page">
+		<put-attribute name="title" value="我的投资- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/myinvestment/myInvestIndex.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心我的投资 项目明细-->
+	<definition name="temp.usercenter.invest.pro.info" extends="temp.usercenter.page">
+		<put-attribute name="title" value="项目明细- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/myinvestment/projectdetail/projectinfo.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心我的投资 项目明细  债权转让详情-->
+	<definition name="temp.usercenter.invest.pro.info.transferinfo" extends="temp.usercenter.page">
+		<put-attribute name="title" value="项目明细- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/myinvestment/projectdetail/transferConfirm.jsp"></put-attribute>
+	</definition>
+	<!-- 个人中心我的投资 已完结  项目明细-->
+	<definition name="temp.usercenter.invest.pro.info.projectinfo" extends="temp.usercenter.page">
+		<put-attribute name="title" value="项目明细- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/myinvestment/projectdetail/pinfo.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心我的投资 充值提现-->
+	<definition name="temp.usercenter.rechargewithdraw" extends="temp.usercenter.page">
+		<put-attribute name="title" value="充值提现-e生财富"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/rechargewithdrawal/payIndex.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心我的借款 -->
+	<definition name="temp.usercenter.borrow" extends="temp.usercenter.page">
+		<put-attribute name="title" value="我的借款- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/myborrowing/personalCenterBorrow.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心债权管理 -->
+	<definition name="temp.usercenter.transfer" extends="temp.usercenter.page">
+		<put-attribute name="title" value="债权管理-e生财富"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/claimsmanage/transferManagelist.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心资金流水 -->
+	<definition name="temp.usercenter.cashflow" extends="temp.usercenter.page">
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/fundsflow/userRightCashflow.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 我的福利 -->
+	<definition name="temp.usercenter.welfare" extends="temp.usercenter.page">
+		<put-attribute name="title" value="我的福利- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/mybenefits/myWelfare.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 我的福利>>>	我的积分 -->
+	<definition name="temp.usercenter.myPoint" extends="temp.usercenter.page">
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/mybenefits/my_point.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 	我的银行卡列表 -->
+	<definition name="temp.usercenter.bankList" extends="temp.usercenter.page">
+		<put-attribute name="title" value="银行卡管理-e生财富-yscf.com"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/myBankList.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 我的 消息中心 -->
+	<definition name="temp.usercenter.msglist" extends="temp.usercenter.page">
+		<put-attribute name="title" value="消息中心- e生财富 yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/messagecenter/userRightMessage.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 我的 邀请有奖 -->
+	<definition name="temp.usercenter.prize" extends="temp.usercenter.page">
+	     <put-attribute name="title" value="邀请有奖-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/inviteprizes/userRightPrize.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>个人资料 -->
+	<definition name="temp.usercenter.personal_data" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyIndex.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>>>>>>>>>>>>>>>>>>>>>>>>>开始>>更改安全邮箱>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+	
+	<!-- 安全中心>>>个人资料>>>更改安全邮箱>>>选择更换页面方式页面 -->
+	<definition name="temp.usercenter.safety_change_email" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyemail/safetyChangeemail.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>个人资料>>>更改安全邮箱>>>原邮箱更换页面 -->
+	<definition name="temp.usercenter.safety_verifye_mailfor_email" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyemail/safetyVerifyemailforemail.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>个人资料>>>更改安全邮箱>>>手机号更换安全邮箱页面 -->
+	<definition name="temp.usercenter.safety_verify_mobilefor_email" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyemail/safetyVerifymobileforemail.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>个人资料>>>更改安全邮箱>>>更换已发送提醒页面 -->
+	<definition name="temp.usercenter.safety_sent_email" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyemail/safetySentEmail.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>个人资料>>>更改安全邮箱>>>更换填写新邮箱页面 -->
+	<definition name="temp.usercenter.safety_new_email" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyemail/safetyNewemail.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 安全中心>>>个人资料>>>更改安全邮箱>>>更换邮箱更换成功页面 -->
+	<definition name="temp.usercenter.safety_end_email" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyemail/safetyEndemail.jsp"></put-attribute>
+	</definition>
+	<!-- 安全中心>>>>>>>>>>>>>>>>>>>>>>>>>>>>>结束>>更改安全邮箱>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+	
+	<!-- 安全中心>>>>>>>>>>>>>>>>>>>>>>>>>>>>>开始>>更改安全手机>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+	
+	<!-- 安全中心>>>个人资料>>>更改安全手机>>>更换安全手机选择更换方式页面 -->
+	<definition name="temp.usercenter.safety_chanemode" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyphone/safetyChanemode.jsp"></put-attribute>
+	</definition>
+	<!-- 安全中心>>>个人资料>>>更改安全手机>>>更换原手机号码页面 -->
+	<definition name="temp.usercenter.safety_verify_mobile" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyphone/safetyVerifymobile.jsp"></put-attribute>
+	</definition>
+	<!-- 安全中心>>>个人资料>>>更改安全手机>>>更换验证身份证页面 -->
+	<definition name="temp.usercenter.safety_verify_id_for_mobil" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyphone/safetyVerifyIdForMobil.jsp"></put-attribute>
+	</definition>
+	<!-- 安全中心>>>个人资料>>>更改安全手机>>>更换手机  验证新手机页面 -->
+	<definition name="temp.usercenter.safety_new_mobile" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyphone/safetyNewmobile.jsp"></put-attribute>
+	</definition>
+	<!-- 安全中心>>>个人资料>>>更改安全手机>>>更换手机绑定成功页面 -->
+	<definition name="temp.usercenter.safety_chanewin" extends="temp.usercenter.page">
+		<put-attribute name="title" value="安全中心-e生财富yscf.com- 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/securitycenter/safetyphone/safetyChanewin.jsp"></put-attribute>
+	</definition>
+	<!-- 安全中心>>>>>>>>>>>>>>>>>>>>>>>>>>>>>结束>>更改安全手机>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+	
+	<!-- vip等级信息 -->
+	<definition name="temp.usercenter.toVipLevelInfo" extends="temp.usercenter.page">
+		<put-attribute name="title" value="VIP信息- e生财富 yscf.com - 高效的网络融资平台"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/vipInfo/vipLevelInfo.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 线上充值 -->
+	<definition name="temp.usercenter.recharge" extends="temp.usercenter.page">
+		<put-attribute name="title" value="线上充值"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/fundsflow/recharge/rechargeOnline.jsp"></put-attribute>
+	</definition>
+	<definition name="temp.usercenter.rechargedo" extends="temp.usercenter.page">
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/fundsflow/recharge/rechargeOnlineDo.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 个人中心-头像设置  -->
+	<definition name="temp.usercenter.avatar" extends="temp.usercenter.page">
+		<put-attribute name="title" value="个人中心-头像设置"></put-attribute>
+		<put-attribute name="userrightcont" value="/WEB-INF/view/personcenter/accountinfo/accountAvatar.jsp"></put-attribute>
+	</definition>
+	
+</tiles-definitions>

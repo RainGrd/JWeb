@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_receipt_transfer"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.ptp.financial.BizReceiptTransferModel"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="债权编号" property="transferCode" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="借款名称" property="borrowName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="剩余/总期次" property="issue" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="发布时间" property="createTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="年利率" property="yearRate" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="项目价值" property="projectValue" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="转让价格" property="successAmount" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="转让人" property="createUserName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="购买人" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="购买时间" property="successTime" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="状态" property="statusName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="备注" property="des" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+
+</xlsroot>

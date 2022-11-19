@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.ptp.autobidding.AutoBiddingQueueRemarksMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="auto_bidding_id" property="autoBiddingId" jdbcType="VARCHAR" />
+    <result column="borrow_id" property="borrowId" jdbcType="VARCHAR" />
+    <result column="auto_result_status" property="autoResultStatus" jdbcType="INTEGER" />
+    <result column="extfield1" property="extfield1" jdbcType="VARCHAR" />
+    <result column="extfield2" property="extfield2" jdbcType="VARCHAR" />
+    <result column="extfield3" property="extfield3" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ResultMapWithBLOBs" type="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    pid, customer_id, auto_bidding_id, borrow_id, auto_result_status, extfield1, extfield2, 
+    extfield3, create_user, create_time, last_update_user, last_update_time, status, 
+    version
+  </sql>
+  
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_auto_bidding_queue_remarks
+    where pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_auto_bidding_queue_remarks
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" >
+    insert into t_auto_bidding_queue_remarks (pid, customer_id, auto_bidding_id, 
+      borrow_id, auto_result_status, extfield1, 
+      extfield2, extfield3, create_user, 
+      create_time, last_update_user, last_update_time, 
+      status, version, description
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{autoBiddingId,jdbcType=VARCHAR}, 
+      #{borrowId,jdbcType=VARCHAR}, #{autoResultStatus,jdbcType=INTEGER}, #{extfield1,jdbcType=VARCHAR}, 
+      #{extfield2,jdbcType=VARCHAR}, #{extfield3,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" >
+    insert into t_auto_bidding_queue_remarks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="autoBiddingId != null" >
+        auto_bidding_id,
+      </if>
+      <if test="borrowId != null" >
+        borrow_id,
+      </if>
+      <if test="autoResultStatus != null" >
+        auto_result_status,
+      </if>
+      <if test="extfield1 != null" >
+        extfield1,
+      </if>
+      <if test="extfield2 != null" >
+        extfield2,
+      </if>
+      <if test="extfield3 != null" >
+        extfield3,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoBiddingId != null" >
+        #{autoBiddingId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null" >
+        #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoResultStatus != null" >
+        #{autoResultStatus,jdbcType=INTEGER},
+      </if>
+      <if test="extfield1 != null" >
+        #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+      	#{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" >
+    update t_auto_bidding_queue_remarks
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoBiddingId != null" >
+        auto_bidding_id = #{autoBiddingId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null" >
+        borrow_id = #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoResultStatus != null" >
+        auto_result_status = #{autoResultStatus,jdbcType=INTEGER},
+      </if>
+      <if test="extfield1 != null" >
+        extfield1 = #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        extfield2 = #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        extfield3 = #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" >
+    update t_auto_bidding_queue_remarks
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      auto_bidding_id = #{autoBiddingId,jdbcType=VARCHAR},
+      borrow_id = #{borrowId,jdbcType=VARCHAR},
+      auto_result_status = #{autoResultStatus,jdbcType=INTEGER},
+      extfield1 = #{extfield1,jdbcType=VARCHAR},
+      extfield2 = #{extfield2,jdbcType=VARCHAR},
+      extfield3 = #{extfield3,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueueRemarks" >
+    update t_auto_bidding_queue_remarks
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      auto_bidding_id = #{autoBiddingId,jdbcType=VARCHAR},
+      borrow_id = #{borrowId,jdbcType=VARCHAR},
+      auto_result_status = #{autoResultStatus,jdbcType=INTEGER},
+      extfield1 = #{extfield1,jdbcType=VARCHAR},
+      extfield2 = #{extfield2,jdbcType=VARCHAR},
+      extfield3 = #{extfield3,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

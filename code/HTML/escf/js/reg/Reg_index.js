@@ -1,0 +1,9 @@
+(function(){
+	gougou(".reg_all");
+	$(".reg_js_a").click(function(){
+		$(".reg_all").addClass("none").eq(2).removeClass("none");
+	});
+	$(".reg_js_b").click(function(){
+		$(".reg_all").addClass("none").eq(1).removeClass("none");
+	})
+})();

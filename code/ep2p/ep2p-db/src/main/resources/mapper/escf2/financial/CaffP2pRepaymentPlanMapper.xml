@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.financial.CaffP2pRepaymentPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.financial.CaffP2pRepaymentPlan" >
+    <id column="caffP2pRepaymentPlanId" property="caffp2prepaymentplanid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="borrowId" property="borrowid" jdbcType="BIGINT" />
+    <result column="borrowTypeInt" property="borrowtypeint" jdbcType="INTEGER" />
+    <result column="capital" property="capital" jdbcType="DECIMAL" />
+    <result column="expireDateActualLong" property="expiredateactuallong" jdbcType="BIGINT" />
+    <result column="expireDateLong" property="expiredatelong" jdbcType="BIGINT" />
+    <result column="interest" property="interest" jdbcType="DECIMAL" />
+    <result column="interestCalculationTypeInt" property="interestcalculationtypeint" jdbcType="INTEGER" />
+    <result column="lateFee" property="latefee" jdbcType="DECIMAL" />
+    <result column="lateFeeCalculateDateLong" property="latefeecalculatedatelong" jdbcType="BIGINT" />
+    <result column="payAmount" property="payamount" jdbcType="DECIMAL" />
+    <result column="payDateLong" property="paydatelong" jdbcType="BIGINT" />
+    <result column="planIndex" property="planindex" jdbcType="INTEGER" />
+    <result column="reference1" property="reference1" jdbcType="BIGINT" />
+    <result column="reference2" property="reference2" jdbcType="BIGINT" />
+    <result column="reference3" property="reference3" jdbcType="BIGINT" />
+    <result column="repaidAmount" property="repaidamount" jdbcType="DECIMAL" />
+    <result column="repaidDateLong" property="repaiddatelong" jdbcType="BIGINT" />
+    <result column="stateInt" property="stateint" jdbcType="INTEGER" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pRepaymentPlanId, createdDateLong, version, userId, borrowId, borrowTypeInt, 
+    capital, expireDateActualLong, expireDateLong, interest, interestCalculationTypeInt, 
+    lateFee, lateFeeCalculateDateLong, payAmount, payDateLong, planIndex, reference1, 
+    reference2, reference3, repaidAmount, repaidDateLong, stateInt, bitState
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pRepaymentPlan
+    where caffP2pRepaymentPlanId = #{caffp2prepaymentplanid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pRepaymentPlan
+    where caffP2pRepaymentPlanId = #{caffp2prepaymentplanid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.financial.CaffP2pRepaymentPlan" >
+    insert into CaffP2pRepaymentPlan (caffP2pRepaymentPlanId, createdDateLong, 
+      version, userId, borrowId, 
+      borrowTypeInt, capital, expireDateActualLong, 
+      expireDateLong, interest, interestCalculationTypeInt, 
+      lateFee, lateFeeCalculateDateLong, payAmount, 
+      payDateLong, planIndex, reference1, 
+      reference2, reference3, repaidAmount, 
+      repaidDateLong, stateInt, bitState
+      )
+    values (#{caffp2prepaymentplanid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{borrowid,jdbcType=BIGINT}, 
+      #{borrowtypeint,jdbcType=INTEGER}, #{capital,jdbcType=DECIMAL}, #{expiredateactuallong,jdbcType=BIGINT}, 
+      #{expiredatelong,jdbcType=BIGINT}, #{interest,jdbcType=DECIMAL}, #{interestcalculationtypeint,jdbcType=INTEGER}, 
+      #{latefee,jdbcType=DECIMAL}, #{latefeecalculatedatelong,jdbcType=BIGINT}, #{payamount,jdbcType=DECIMAL}, 
+      #{paydatelong,jdbcType=BIGINT}, #{planindex,jdbcType=INTEGER}, #{reference1,jdbcType=BIGINT}, 
+      #{reference2,jdbcType=BIGINT}, #{reference3,jdbcType=BIGINT}, #{repaidamount,jdbcType=DECIMAL}, 
+      #{repaiddatelong,jdbcType=BIGINT}, #{stateint,jdbcType=INTEGER}, #{bitstate,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.financial.CaffP2pRepaymentPlan" >
+    insert into CaffP2pRepaymentPlan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2prepaymentplanid != null" >
+        caffP2pRepaymentPlanId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="borrowid != null" >
+        borrowId,
+      </if>
+      <if test="borrowtypeint != null" >
+        borrowTypeInt,
+      </if>
+      <if test="capital != null" >
+        capital,
+      </if>
+      <if test="expiredateactuallong != null" >
+        expireDateActualLong,
+      </if>
+      <if test="expiredatelong != null" >
+        expireDateLong,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="interestcalculationtypeint != null" >
+        interestCalculationTypeInt,
+      </if>
+      <if test="latefee != null" >
+        lateFee,
+      </if>
+      <if test="latefeecalculatedatelong != null" >
+        lateFeeCalculateDateLong,
+      </if>
+      <if test="payamount != null" >
+        payAmount,
+      </if>
+      <if test="paydatelong != null" >
+        payDateLong,
+      </if>
+      <if test="planindex != null" >
+        planIndex,
+      </if>
+      <if test="reference1 != null" >
+        reference1,
+      </if>
+      <if test="reference2 != null" >
+        reference2,
+      </if>
+      <if test="reference3 != null" >
+        reference3,
+      </if>
+      <if test="repaidamount != null" >
+        repaidAmount,
+      </if>
+      <if test="repaiddatelong != null" >
+        repaidDateLong,
+      </if>
+      <if test="stateint != null" >
+        stateInt,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2prepaymentplanid != null" >
+        #{caffp2prepaymentplanid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="borrowid != null" >
+        #{borrowid,jdbcType=BIGINT},
+      </if>
+      <if test="borrowtypeint != null" >
+        #{borrowtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="capital != null" >
+        #{capital,jdbcType=DECIMAL},
+      </if>
+      <if test="expiredateactuallong != null" >
+        #{expiredateactuallong,jdbcType=BIGINT},
+      </if>
+      <if test="expiredatelong != null" >
+        #{expiredatelong,jdbcType=BIGINT},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=DECIMAL},
+      </if>
+      <if test="interestcalculationtypeint != null" >
+        #{interestcalculationtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="latefee != null" >
+        #{latefee,jdbcType=DECIMAL},
+      </if>
+      <if test="latefeecalculatedatelong != null" >
+        #{latefeecalculatedatelong,jdbcType=BIGINT},
+      </if>
+      <if test="payamount != null" >
+        #{payamount,jdbcType=DECIMAL},
+      </if>
+      <if test="paydatelong != null" >
+        #{paydatelong,jdbcType=BIGINT},
+      </if>
+      <if test="planindex != null" >
+        #{planindex,jdbcType=INTEGER},
+      </if>
+      <if test="reference1 != null" >
+        #{reference1,jdbcType=BIGINT},
+      </if>
+      <if test="reference2 != null" >
+        #{reference2,jdbcType=BIGINT},
+      </if>
+      <if test="reference3 != null" >
+        #{reference3,jdbcType=BIGINT},
+      </if>
+      <if test="repaidamount != null" >
+        #{repaidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="repaiddatelong != null" >
+        #{repaiddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="stateint != null" >
+        #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.financial.CaffP2pRepaymentPlan" >
+    update CaffP2pRepaymentPlan
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="borrowid != null" >
+        borrowId = #{borrowid,jdbcType=BIGINT},
+      </if>
+      <if test="borrowtypeint != null" >
+        borrowTypeInt = #{borrowtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="capital != null" >
+        capital = #{capital,jdbcType=DECIMAL},
+      </if>
+      <if test="expiredateactuallong != null" >
+        expireDateActualLong = #{expiredateactuallong,jdbcType=BIGINT},
+      </if>
+      <if test="expiredatelong != null" >
+        expireDateLong = #{expiredatelong,jdbcType=BIGINT},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=DECIMAL},
+      </if>
+      <if test="interestcalculationtypeint != null" >
+        interestCalculationTypeInt = #{interestcalculationtypeint,jdbcType=INTEGER},
+      </if>
+      <if test="latefee != null" >
+        lateFee = #{latefee,jdbcType=DECIMAL},
+      </if>
+      <if test="latefeecalculatedatelong != null" >
+        lateFeeCalculateDateLong = #{latefeecalculatedatelong,jdbcType=BIGINT},
+      </if>
+      <if test="payamount != null" >
+        payAmount = #{payamount,jdbcType=DECIMAL},
+      </if>
+      <if test="paydatelong != null" >
+        payDateLong = #{paydatelong,jdbcType=BIGINT},
+      </if>
+      <if test="planindex != null" >
+        planIndex = #{planindex,jdbcType=INTEGER},
+      </if>
+      <if test="reference1 != null" >
+        reference1 = #{reference1,jdbcType=BIGINT},
+      </if>
+      <if test="reference2 != null" >
+        reference2 = #{reference2,jdbcType=BIGINT},
+      </if>
+      <if test="reference3 != null" >
+        reference3 = #{reference3,jdbcType=BIGINT},
+      </if>
+      <if test="repaidamount != null" >
+        repaidAmount = #{repaidamount,jdbcType=DECIMAL},
+      </if>
+      <if test="repaiddatelong != null" >
+        repaidDateLong = #{repaiddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="stateint != null" >
+        stateInt = #{stateint,jdbcType=INTEGER},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+    </set>
+    where caffP2pRepaymentPlanId = #{caffp2prepaymentplanid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.financial.CaffP2pRepaymentPlan" >
+    update CaffP2pRepaymentPlan
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      borrowId = #{borrowid,jdbcType=BIGINT},
+      borrowTypeInt = #{borrowtypeint,jdbcType=INTEGER},
+      capital = #{capital,jdbcType=DECIMAL},
+      expireDateActualLong = #{expiredateactuallong,jdbcType=BIGINT},
+      expireDateLong = #{expiredatelong,jdbcType=BIGINT},
+      interest = #{interest,jdbcType=DECIMAL},
+      interestCalculationTypeInt = #{interestcalculationtypeint,jdbcType=INTEGER},
+      lateFee = #{latefee,jdbcType=DECIMAL},
+      lateFeeCalculateDateLong = #{latefeecalculatedatelong,jdbcType=BIGINT},
+      payAmount = #{payamount,jdbcType=DECIMAL},
+      payDateLong = #{paydatelong,jdbcType=BIGINT},
+      planIndex = #{planindex,jdbcType=INTEGER},
+      reference1 = #{reference1,jdbcType=BIGINT},
+      reference2 = #{reference2,jdbcType=BIGINT},
+      reference3 = #{reference3,jdbcType=BIGINT},
+      repaidAmount = #{repaidamount,jdbcType=DECIMAL},
+      repaidDateLong = #{repaiddatelong,jdbcType=BIGINT},
+      stateInt = #{stateint,jdbcType=INTEGER},
+      bitState = #{bitstate,jdbcType=BIGINT}
+    where caffP2pRepaymentPlanId = #{caffp2prepaymentplanid,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizFinanceProductsMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizFinanceProducts" >
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="borrow_id" property="borrowId" jdbcType="VARCHAR" />
+    <result column="borrow_agreement_id" property="borrowAgreementId" jdbcType="VARCHAR" />
+    <result column="finance_name" property="financeName" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="INTEGER" />
+    <result column="finance_arp" property="financeArp" jdbcType="DECIMAL" />
+    <result column="join_condition" property="joinCondition" jdbcType="VARCHAR" />
+    <result column="interest_time" property="interestTime" jdbcType="VARCHAR" />
+    <result column="earning_mode" property="earningMode" jdbcType="VARCHAR" />
+    <result column="expiration_date" property="expirationDate" jdbcType="VARCHAR" />
+    <result column="guarantee_mode" property="guaranteeMode" jdbcType="VARCHAR" />
+    <result column="rule_Introduction" property="ruleIntroduction" jdbcType="VARCHAR" />
+    <result column="project_description" property="projectDescription" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    pid, borrow_id, borrow_agreement_id, 
+      finance_name, deadline, finance_arp, 
+      join_condition, interest_time, earning_mode, 
+      expiration_date, guarantee_mode, rule_Introduction, 
+      project_description, create_user, create_time, 
+      last_update_user, last_update_time
+  </sql>
+  <insert id="insert" parameterType="com.yscf.core.model.business.BizFinanceProducts" >
+    insert into t_biz_finance_products (pid, borrow_id, borrow_agreement_id, 
+      finance_name, deadline, finance_arp, 
+      join_condition, interest_time, earning_mode, 
+      expiration_date, guarantee_mode, rule_Introduction, 
+      project_description, create_user, create_time, 
+      last_update_user, last_update_time)
+    values (#{pid,jdbcType=VARCHAR}, #{borrowId,jdbcType=VARCHAR}, #{borrowAgreementId,jdbcType=VARCHAR}, 
+      #{financeName,jdbcType=VARCHAR}, #{deadline,jdbcType=INTEGER}, #{financeArp,jdbcType=DECIMAL}, 
+      #{joinCondition,jdbcType=VARCHAR}, #{interestTime,jdbcType=VARCHAR}, #{earningMode,jdbcType=VARCHAR}, 
+      #{expirationDate,jdbcType=VARCHAR}, #{guaranteeMode,jdbcType=VARCHAR}, #{ruleIntroduction,jdbcType=VARCHAR}, 
+      #{projectDescription,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" /> 
+    FROM t_biz_finance_products 
+    	where  pid = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getBizFinanceProductsByBorrowId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" /> 
+    FROM t_biz_finance_products 
+    	where  borrow_id = #{borrowId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizFinanceProducts" >
+    update t_biz_finance_products
+    <set >
+      <if test="borrowId != null" >
+        borrow_id = #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowAgreementId != null" >
+        borrow_agreement_id = #{borrowAgreementId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeName != null" >
+        finance_name = #{financeName,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline,jdbcType=INTEGER},
+      </if> 
+       <if test="financeArp != null" >
+        finance_arp = #{financeArp,jdbcType=DECIMAL},
+      </if>
+      <if test="joinCondition != null" >
+        join_condition = #{joinCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="interestTime != null" >
+        interest_time = #{interestTime,jdbcType=VARCHAR},
+      </if>
+      <if test="earningMode != null" >
+        earning_mode = #{earningMode,jdbcType=VARCHAR},
+      </if>
+       <if test="expirationDate != null" >
+        expiration_date = #{expirationDate,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeMode != null" >
+        guarantee_mode = #{guaranteeMode,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleIntroduction != null" >
+        rule_introduction = #{ruleIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDescription != null" >
+        project_description = #{projectDescription,jdbcType=VARCHAR},
+      </if> 
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if> 
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.business.BizFinanceProducts" >
+    insert into t_biz_finance_products
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="borrowId != null" >
+        borrow_id,
+      </if>
+      <if test="borrowAgreementId != null" >
+        borrow_agreement_id,
+      </if>
+      <if test="financeName != null" >
+        finance_name,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="financeArp != null" >
+        finance_arp,
+      </if>
+      <if test="joinCondition != null" >
+        join_condition,
+      </if>
+      <if test="interestTime != null" >
+        interest_time,
+      </if>
+      <if test="earningMode != null" >
+        earning_mode,
+      </if>
+      <if test="expirationDate != null" >
+        expiration_date,
+      </if>
+      <if test="guaranteeMode != null" >
+        guarantee_mode,
+      </if>
+      <if test="ruleIntroduction != null" >
+        rule_Introduction,
+      </if>
+      <if test="projectDescription != null" >
+        project_description,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null" >
+        #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowAgreementId != null" >
+        #{borrowAgreementId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeName != null" >
+        #{financeName,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=INTEGER},
+      </if>
+      <if test="financeArp != null" >
+        #{financeArp,jdbcType=DECIMAL},
+      </if>
+      <if test="joinCondition != null" >
+        #{joinCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="interestTime != null" >
+        #{interestTime,jdbcType=VARCHAR},
+      </if>
+      <if test="earningMode != null" >
+        #{earningMode,jdbcType=VARCHAR},
+      </if>
+      <if test="expirationDate != null" >
+        #{expirationDate,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeMode != null" >
+        #{guaranteeMode,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleIntroduction != null" >
+        #{ruleIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDescription != null" >
+        #{projectDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

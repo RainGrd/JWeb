@@ -1,0 +1,243 @@
+/*资料上传s*/
+.bo_title{
+	height: 190px;
+}
+.bo_title_line{
+	display: inline-block;
+	height: 1px;
+	width: 280px;
+	background: #e5e9eb;
+}
+.bo_t_zi{
+	height: 38px;
+}
+.bo_t_zi_sa{
+	left: 5px;
+	top: 0;
+}
+.bo_t_zi_sb{
+	left: 363px;
+	top: 0;
+}
+.bo_t_zi_sc{
+	left: 722px;
+	top: 0;
+}
+.bo_t_zi_sd{
+	right: 16px;
+	top: 0px;
+}
+.bo_bd{
+	height: 507px;
+}
+.bo_bd li{
+	margin-left: 29px;
+	width: 360px;
+	height: 50px;
+	line-height: 50px;
+	float: left;
+}
+.bo_bd ul{
+	width: 1140px;
+	float: left;
+}
+.bo_bd_yan{
+	display: inline-block;
+	height: 22px;	
+	border-left: #d5d5d5 solid 1px;
+	width: 104px;
+	right: 0;
+	bottom: 13px;
+}
+/*资料上传e*/
+/*资质上传s*/
+.bo_zizhi_list{
+	height: 150px;
+	border-bottom: #f7f9f9 solid 1px;
+}
+.bo_zizhi_list_tj{
+	display: inline-block;
+	width: 163px;
+	height: 98px;
+	border: #eaeaea dashed 1px;
+	border-radius: 5px;
+	background: url(../images/bo_10.png) no-repeat;
+    background-position: 67px 31px;
+    margin-right: 25px;
+}
+.bo_zizhi_list_img{
+	display: inline-block;
+	width: 161px;
+	height: 96px;
+	border: #eaeaea solid 2px;
+	border-radius: 5px;
+	margin-right: 25px;
+	overflow: hidden;
+}
+.bo_zizhi_list_img img{
+	width: 100%;
+}
+.bo_zizhi_list_img:hover{
+	border: #559bbf solid 2px;
+}
+.bo_zizhi_list_img:hover .bo_zizhi_list_img_sc{
+	display: inline-block;
+}
+.bo_zizhi_list_img_sc{
+	display: none;
+	width: 30px;
+	height: 30px;
+    top: 34px;
+    left: 66px;
+}
+/*资质上传e*/
+
+/*成功s*/
+.bo_win{
+	height: 480px;
+}
+/*成功e*/
+/*借款信息s*/
+.bo_f_m{
+	border-radius: 4px;
+	padding: 10px;
+	width: 1015px;
+	height: 45px;
+	border: #d5d5d5 solid 2px;
+}
+.bo_y_m{
+	border-radius: 4px;
+	padding: 10px;
+	width: 1015px;
+	height: 220px;
+	border: #d5d5d5 solid 2px;
+}
+.bo_h_m{
+	border-radius: 4px;
+	padding: 10px;
+	width: 1015px;
+	height: 220px;
+	border: #d5d5d5 solid 2px;
+}
+/*借款信息e*/
+/*计算器s*/
+.ji_s{
+	padding-left: 45px;
+	padding-right: 45px;
+	background: #f2f5f7;
+	border-radius: 5px;
+	height: 260px;
+	width: 1050px;
+}
+.ji_s_l{
+	width: 245px;
+	overflow: hidden;
+	height: 47px;
+}
+.ji_s_l_se{
+	
+	width: 235px;
+	border: none;
+	height: 37px;
+	line-height: 37px;
+	padding-left: 10px;
+	//*/background: url(../images/ji_1.png) no-repeat;*/
+	/*//background-position: 198px 0px;*/
+}
+.ji_s_l_xia{
+	width: 37px;
+	height: 37px;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.oh_js{
+	margin: 5px;
+	overflow: hidden;
+	height: 37px;
+	display: inline-block;
+	width: 235px;
+	
+}
+.ji_s_l_in{
+	width: 225px;
+	border: none!important;
+	height: 37px!important;
+	line-height: 37px!important;
+	padding-left: 10px;
+    margin: 5px;
+	font-size: 16px;
+	background: url(../images/yuan_1.png) no-repeat;
+	background-position: 198px 0px;
+}
+.ji_s_l_ina{
+	width: 225px;
+	border: none!important;
+	height: 37px!important;
+	line-height: 37px!important;
+	padding-left: 10px;
+    margin: 5px;
+	font-size: 16px;
+	background: url(../images/yuan_2.png) no-repeat;
+	background-position: 198px 0px;
+}
+.ji_s_l_inb{
+	width: 225px;
+	border: none!important;
+	height: 37px!important;
+	line-height: 37px!important;
+	padding-left: 10px;
+    margin: 5px;
+	font-size: 16px;
+	background: url(../images/yuan_3.png) no-repeat;
+	background-position: 198px 0px;
+}
+.fr_bonder{
+	border-right: #c4d0da dashed 1px;
+}
+.shouyi_r{
+	width: 324px;
+}
+.th_h td{
+	    text-align: left;
+    height: 30px;
+    background: #F1F5F7;
+    color: #95A5A5;
+    font-weight: 100;
+    font-size: 14px;
+}
+/*计算器e*/
+/*选择楼盘s*/
+.bo_title_line_e{
+	display: inline-block;
+    height: 1px;
+    width: 190px;
+    background: #e5e9eb;
+}
+.bo_t_zi_sa_e{
+    left: 5px;
+    top: 0;	
+}
+.bo_t_zi_sb_e{
+    left: 274px;
+    top: 0;	
+}
+.bo_t_zi_sc_e{
+	left: 543px;
+    top: 0;
+}
+.bo_t_zi_sd_e{
+	left: 810px;
+    top: 0;
+}
+.bo_t_zi_se_e{
+	right: 20px;
+    top: 0px;	
+}
+/*选择楼盘e*/
+/*提示样式s*/
+.style_tis{
+	color: #f39c12;
+	border: solid 2px #f39c12!important;
+}
+/*提示样式e*/

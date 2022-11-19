@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.ActParConRelMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.ActParConRel" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+	    <result column="cond_id" property="condId" jdbcType="VARCHAR" />
+	    <result column="par_con_desc" property="parConDesc" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <result column="cond_name" property="condName" jdbcType="VARCHAR" />
+  	</resultMap>
+  
+  	<sql id="Base_Column_List" >
+	    PID, activity_id, cond_id, par_con_desc, status, create_user, create_time, last_update_user, 
+	    last_update_time, version
+  	</sql>
+  	
+  	<!-- 根据活动ID查询已选用的条件 -->
+  	<select id="selectActParConRelByObjectId" resultMap="BaseResultMap"  parameterType="java.lang.String" >
+  		select apcr.PID,apcr.activity_id,apcr.cond_id,pc.cond_name,aa.object_id
+		from t_act_par_con_rel apcr,t_pub_condition pc,t_act_activity aa
+		where  apcr.cond_id = pc.PID
+		and apcr.activity_id = aa.PID
+		and aa.object_id = #{objectId,jdbcType=VARCHAR}
+		and aa.activity_type = #{activityType,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_act_par_con_rel
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_act_par_con_rel
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.ActParConRel" >
+	    insert into t_act_par_con_rel (PID, activity_id, cond_id, 
+	      par_con_desc, status, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      version)
+	    values (#{pid,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{condId,jdbcType=VARCHAR}, 
+	      #{parConDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.ActParConRel" >
+	    insert into t_act_par_con_rel
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="activityId != null" >
+	        activity_id,
+	      </if>
+	      <if test="condId != null" >
+	        cond_id,
+	      </if>
+	      <if test="parConDesc != null" >
+	        par_con_desc,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityId != null" >
+	        #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condId != null" >
+	        #{condId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="parConDesc != null" >
+	        #{parConDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.ActParConRel" >
+	    update t_act_par_con_rel
+	    <set >
+	      <if test="activityId != null" >
+	        activity_id = #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="condId != null" >
+	        cond_id = #{condId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="parConDesc != null" >
+	        par_con_desc = #{parConDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.ActParConRel" >
+	    update t_act_par_con_rel
+	    set activity_id = #{activityId,jdbcType=VARCHAR},
+	      cond_id = #{condId,jdbcType=VARCHAR},
+	      par_con_desc = #{parConDesc,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 根绝活动类型和活动类型ID删除活动条件信息 -->
+  	<delete id="deleteByObjectIdAndActivityType" parameterType="java.lang.String">
+  		delete  from t_act_par_con_rel 
+	  	where activity_id = 
+	  	(select pid from t_act_activity 
+	  	where activity_type = #{activityType,jdbcType=VARCHAR} 
+	  	and object_id = #{objectId,jdbcType=VARCHAR} )
+  	</delete>
+</mapper>

@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.radio.BizProgramMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.radio.BizProgram" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="program_plate_id" property="programPlateId" jdbcType="VARCHAR" />
+    <result column="program_title" property="programTitle" jdbcType="VARCHAR" />
+    <result column="picture_file_id" property="pictureFileId" jdbcType="VARCHAR" />
+    <result column="appendix_file_id" property="appendixFileId" jdbcType="VARCHAR" />
+    <result column="program_text" property="programText" jdbcType="VARCHAR" />
+    <result column="program_order" property="programOrder" jdbcType="VARCHAR" />
+    <result column="program_level" property="programLevel" jdbcType="VARCHAR" />
+    <result column="program_type" property="programType" jdbcType="VARCHAR" />
+    <result column="forward_num" property="forwardNum" jdbcType="INTEGER" />
+    <result column="program_duration" property="programDuration" jdbcType="INTEGER" />
+    <result column="listen_num" property="listenNum" jdbcType="INTEGER" />
+    <result column="praise_num" property="praiseNum" jdbcType="INTEGER" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="eliminate_time" property="eliminateTime" jdbcType="TIMESTAMP" />
+    <result column="guest" property="guest" jdbcType="VARCHAR" />
+    <result column="predict_time" property="predictTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
+    <result column="pro_desc" property="proDesc" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="is_praise" property="isPraise" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="SocalAppResultMap" type="com.yscf.core.model.radio.SocalAppModel" >
+  	<result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="y" property="y" jdbcType="INTEGER" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    PID,
+    CASE program_plate_id
+	WHEN '1' THEN
+		'专家讲座'
+	WHEN '2' THEN
+		'百姓理财'
+	WHEN '3' THEN
+		'金融知识'
+	END program_plate_id,
+      program_title, picture_file_id, appendix_file_id, program_text, 
+    program_order, program_level, program_type, forward_num, program_duration, listen_num,
+    praise_num, publish_time, upload_time,eliminate_time, guest, predict_time, 
+     CASE STATUS
+		WHEN '1' THEN
+			'已发布'
+		WHEN '2' THEN
+			'预发布'
+		WHEN '3' THEN
+			'未发布'
+		WHEN '4' THEN
+			'已下架'
+		END STATUS,
+    create_user, 
+    create_time, last_update_user, last_update_time, pro_desc
+  </sql>
+  <sql id="Base_Column_List1">
+    PID,
+    program_plate_id,
+    program_title, picture_file_id, appendix_file_id, program_text, 
+    program_order, program_level, program_type, forward_num, program_duration, listen_num,
+    praise_num, publish_time, upload_time,eliminate_time, guest, predict_time, 
+    STATUS,
+    create_user, 
+    create_time, last_update_user, last_update_time, pro_desc
+  </sql>
+ 
+  <!-- 查询条件 --> 
+  <sql id="query_bizprogram_parme">
+  	  <if test="bizProgram.programTitle != null and bizProgram.programTitle !=''" >
+	        and  program_title like concat('%',#{bizProgram.programTitle,jdbcType=VARCHAR},'%' )
+	  </if>
+	  <if test="bizProgram.programPlateId != null and bizProgram.programPlateId !=0" >
+	        and  program_plate_id = #{bizProgram.programPlateId,jdbcType=VARCHAR}
+	  </if>
+	  <if test="bizProgram.uploadBeginTime != null and bizProgram.uploadBeginTime != '' " > 
+        	and  upload_time <![CDATA[ >= ]]> #{bizProgram.uploadBeginTime,jdbcType=DATE}
+       </if>
+       <if test="bizProgram.uploadEndTime != null and bizProgram.uploadEndTime != '' " > 
+       		and  upload_time <![CDATA[ <= ]]> date_add(#{bizProgram.uploadEndTime,jdbcType=DATE}, INTERVAL 1 day)
+       </if>
+       <if test="bizProgram.status != null and bizProgram.status !=0" >
+	        and  status = #{bizProgram.status,jdbcType=VARCHAR}
+	   </if>
+	   <if test="bizProgram.publishBeginTime != null and bizProgram.publishBeginTime != '' " > 
+        	and  publish_time <![CDATA[ >= ]]> #{bizProgram.publishBeginTime,jdbcType=DATE}
+       </if>
+       <if test="bizProgram.publishEndTime != null and bizProgram.publishEndTime != '' " > 
+       		and  publish_time <![CDATA[ <= ]]> date_add(#{bizProgram.publishEndTime,jdbcType=DATE}, INTERVAL 1 day) 
+       </if>
+       <if test="bizProgram.listenBeginNum != null and bizProgram.listenBeginNum != 0 " > 
+        	and  listen_num <![CDATA[ >= ]]> #{bizProgram.listenBeginNum,jdbcType=VARCHAR}
+       </if>
+       <if test="bizProgram.listenEndNum != null and bizProgram.listenEndNum != 0 " > 
+       		and  listen_num <![CDATA[ <= ]]> #{bizProgram.listenEndNum,jdbcType=VARCHAR}
+       </if>
+       <if test="bizProgram.praiseBeginNum != null and bizProgram.praiseBeginNum != 0 " > 
+        	and  praise_num <![CDATA[ >= ]]> #{bizProgram.praiseBeginNum,jdbcType=VARCHAR}
+       </if>
+       <if test="bizProgram.praiseEndNum != null and bizProgram.praiseEndNum != 0 " > 
+       		and  praise_num <![CDATA[ <= ]]> #{bizProgram.praiseEndNum,jdbcType=VARCHAR}
+       </if>
+  </sql>
+  
+  <!--   查询节目列表 -->
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="com.yscf.core.model.radio.BizProgram">
+       select  <include refid="Base_Column_List"></include>
+         from t_biz_program 
+         where 1=1
+         and status >= 0
+      	<include refid="query_bizprogram_parme"></include>
+       order by  create_time desc
+  </select>
+  
+  <!--   批量删除节目列表 -->
+  <delete id="beatchDeleteProgramList" parameterType="java.util.List">
+	 	update 
+	  		t_biz_program tt
+  		set 
+  			tt.status = '-1'
+		where tt.pid in 
+		<foreach item="itemId" collection="list" open="(" separator="," close=")">
+		          #{itemId}
+		</foreach>
+  </delete>
+  
+  <!--   根据pid预览或查看节目列表 -->
+  <select id="previewOrEditProgramById" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select <include refid="Base_Column_List1"></include>
+		from t_biz_program  
+		where  pid= #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!--   上传节目列表 -->
+  <insert id="uploadProgram" parameterType="com.yscf.core.model.radio.BizProgram">
+       insert into t_biz_program
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="programPlateId != null" >
+        program_plate_id,
+      </if>
+      <if test="programTitle != null" >
+        program_title,
+      </if>
+      <if test="pictureFileId != null" >
+        picture_file_id,
+      </if>
+      <if test="programText != null" >
+        program_text,
+      </if>
+      <if test="programType != null" >
+        program_type,
+      </if>
+      <if test="predictTime != null" >
+        predict_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="uploadTime != null" >
+        upload_time
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="programPlateId != null" >
+        #{programPlateId,jdbcType=VARCHAR},
+      </if>
+      <if test="programTitle != null" >
+        #{programTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureFileId != null" >
+        #{pictureFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="programText != null" >
+        #{programText,jdbcType=VARCHAR},
+      </if>
+      <if test="programType != null" >
+        #{programType,jdbcType=VARCHAR},
+      </if>
+      <if test="predictTime != null" >
+        #{predictTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploadTime != null" >
+       #{uploadTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </insert>
+  
+  <!--   根据pid更新发布时间 -->
+  <update id="updatepublishTime" parameterType="com.yscf.core.model.radio.BizProgram">
+      UPDATE t_biz_program  tbp
+				SET   tbp.status ='1',tbp.publish_time= #{bizProgram.publishTime,jdbcType=TIMESTAMP}
+				where tbp.PID = #{bizProgram.pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!--  根据pid下架节目-->
+  <update id="offlineProgram" parameterType="com.yscf.core.model.radio.BizProgram">
+      UPDATE t_biz_program  tbp
+				SET   tbp.status ='4',tbp.eliminate_time = #{bizProgram.eliminateTime,jdbcType=VARCHAR}
+				where tbp.PID = #{bizProgram.pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!--  根据pid设置预发布时间-->
+  <update id="savePredict" parameterType="com.yscf.core.model.radio.BizProgram">
+       UPDATE t_biz_program  tbp
+				SET  tbp.status ='2',tbp.publish_time = #{bizProgram.predictTime,jdbcType=VARCHAR}
+				where tbp.PID = #{bizProgram.pid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_program
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_program
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.radio.BizProgram" >
+    insert into t_biz_program (PID, program_plate_id, program_title, 
+      picture_file_id, appendix_file_id, program_text, 
+      program_order, program_level, program_type, 
+      forward_num, program_duration, listen_num, 
+      praise_num, publish_time, eliminate_time, 
+      guest, predict_time, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, pro_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{programPlateId,jdbcType=VARCHAR}, #{programTitle,jdbcType=VARCHAR}, 
+      #{pictureFileId,jdbcType=VARCHAR}, #{appendixFileId,jdbcType=VARCHAR}, #{programText,jdbcType=VARCHAR}, 
+      #{programOrder,jdbcType=VARCHAR}, #{programLevel,jdbcType=VARCHAR}, #{programType,jdbcType=VARCHAR}, 
+      #{forwardNum,jdbcType=INTEGER}, #{programDuration,jdbcType=INTEGER}, #{listenNum,jdbcType=INTEGER}, 
+      #{praiseNum,jdbcType=INTEGER}, #{publishTime,jdbcType=TIMESTAMP}, #{eliminateTime,jdbcType=TIMESTAMP}, 
+      #{guest,jdbcType=VARCHAR}, #{predictTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{proDesc,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.radio.BizProgram" >
+    insert into t_biz_program
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="programPlateId != null" >
+        program_plate_id,
+      </if>
+      <if test="programTitle != null" >
+        program_title,
+      </if>
+      <if test="pictureFileId != null" >
+        picture_file_id,
+      </if>
+      <if test="appendixFileId != null" >
+        appendix_file_id,
+      </if>
+      <if test="programText != null" >
+        program_text,
+      </if>
+      <if test="programOrder != null" >
+        program_order,
+      </if>
+      <if test="programLevel != null" >
+        program_level,
+      </if>
+      <if test="programType != null" >
+        program_type,
+      </if>
+      <if test="forwardNum != null" >
+        forward_num,
+      </if>
+      <if test="programDuration != null" >
+        program_duration,
+      </if>
+      <if test="listenNum != null" >
+        listen_num,
+      </if>
+      <if test="praiseNum != null" >
+        praise_num,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="eliminateTime != null" >
+        eliminate_time,
+      </if>
+      <if test="guest != null" >
+        guest,
+      </if>
+      <if test="predictTime != null" >
+        predict_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="proDesc != null" >
+        pro_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="programPlateId != null" >
+        #{programPlateId,jdbcType=VARCHAR},
+      </if>
+      <if test="programTitle != null" >
+        #{programTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureFileId != null" >
+        #{pictureFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="appendixFileId != null" >
+        #{appendixFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="programText != null" >
+        #{programText,jdbcType=VARCHAR},
+      </if>
+      <if test="programOrder != null" >
+        #{programOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="programLevel != null" >
+        #{programLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="programType != null" >
+        #{programType,jdbcType=VARCHAR},
+      </if>
+      <if test="forwardNum != null" >
+        #{forwardNum,jdbcType=INTEGER},
+      </if>
+      <if test="programDuration != null" >
+        #{programDuration,jdbcType=INTEGER},
+      </if>
+      <if test="listenNum != null" >
+        #{listenNum,jdbcType=INTEGER},
+      </if>
+      <if test="praiseNum != null" >
+        #{praiseNum,jdbcType=INTEGER},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eliminateTime != null" >
+        #{eliminateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="guest != null" >
+        #{guest,jdbcType=VARCHAR},
+      </if>
+      <if test="predictTime != null" >
+        #{predictTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="proDesc != null" >
+        #{proDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.radio.BizProgram" >
+    update t_biz_program
+    <set >
+      <if test="bizProgram.programPlateId != null" >
+        program_plate_id = #{bizProgram.programPlateId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.programTitle != null" >
+        program_title = #{bizProgram.programTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.pictureFileId != null and bizProgram.pictureFileId != ''">
+        picture_file_id = #{bizProgram.pictureFileId,jdbcType=VARCHAR},
+      </if>
+       <if test="bizProgram.programType != null and bizProgram.programType !=''" >
+        program_type = #{bizProgram.programType,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.appendixFileId != null" >
+        appendix_file_id = #{bizProgram.appendixFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.programText != null" >
+        program_text = #{bizProgram.programText,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.programOrder != null" >
+        program_order = #{bizProgram.programOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.programLevel != null" >
+        program_level = #{bizProgram.programLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.forwardNum != null" >
+        forward_num = #{bizProgram.forwardNum,jdbcType=INTEGER},
+      </if>
+      <if test="bizProgram.programDuration != null" >
+        program_duration = #{bizProgram.programDuration,jdbcType=INTEGER},
+      </if>
+      <if test="bizProgram.listenNum != null" >
+        listen_num = #{bizProgram.listenNum,jdbcType=INTEGER},
+      </if>
+      <if test="bizProgram.praiseNum != null" >
+        praise_num = #{bizProgram.praiseNum,jdbcType=INTEGER},
+      </if>
+      <if test="bizProgram.publishTime != null" >
+        publish_time = #{bizProgram.publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizProgram.eliminateTime != null" >
+        eliminate_time = #{bizProgram.eliminateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizProgram.guest != null" >
+        guest = #{bizProgram.guest,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.predictTime != null" >
+        predict_time = #{bizProgram.predictTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizProgram.status != null" >
+        status = #{bizProgram.status,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.createUser != null" >
+        create_user = #{bizProgram.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.createTime != null" >
+        create_time = #{bizProgram.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizProgram.lastUpdateUser != null" >
+        last_update_user = #{bizProgram.lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="bizProgram.lastUpdateTime != null" >
+        last_update_time = #{bizProgram.lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizProgram.proDesc != null" >
+        pro_desc = #{bizProgram.proDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{bizProgram.pid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.radio.BizProgram" >
+    update t_biz_program
+    set program_plate_id = #{programPlateId,jdbcType=VARCHAR},
+      program_title = #{programTitle,jdbcType=VARCHAR},
+      picture_file_id = #{pictureFileId,jdbcType=VARCHAR},
+      appendix_file_id = #{appendixFileId,jdbcType=VARCHAR},
+      program_text = #{programText,jdbcType=VARCHAR},
+      program_order = #{programOrder,jdbcType=VARCHAR},
+      program_level = #{programLevel,jdbcType=VARCHAR},
+      program_type = #{programType,jdbcType=VARCHAR},
+      forward_num = #{forwardNum,jdbcType=INTEGER},
+      program_duration = #{programDuration,jdbcType=INTEGER},
+      listen_num = #{listenNum,jdbcType=INTEGER},
+      praise_num = #{praiseNum,jdbcType=INTEGER},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      eliminate_time = #{eliminateTime,jdbcType=TIMESTAMP},
+      guest = #{guest,jdbcType=VARCHAR},
+      predict_time = #{predictTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      pro_desc = #{proDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!--                     图表统计数据列                                                                  -->
+  <!-- 统计总数信息 -->
+  <select id="selectStatisticsList" resultMap="BaseResultMap" parameterType="com.yscf.core.model.radio.BizProgram">
+  	select 
+  		<include refid="Base_Column_List"></include>
+    from 
+    	t_biz_program 
+    where 1=1 and status >= 0
+      	<include refid="query_bizprogram_parme"></include>
+      	<if test="bizProgram.timetype != null and bizProgram.timetype != ''">
+			<!-- 查询年份 -->
+			<if test="bizProgram.timetype == 1">
+				and date_format(publish_time, '%Y') = #{bizProgram.ymonthDay,jdbcType=VARCHAR}
+			</if>
+			<!-- 查询年月 -->
+			<if test="bizProgram.timetype == 2">
+				and date_format(publish_time, '%Y-%m') = #{bizProgram.ymonthDay,jdbcType=VARCHAR} 
+			</if>
+		</if>
+      	<if test="bizProgram.desc != null and bizProgram.desc != ''">
+      		order by ${bizProgram.desc} desc 
+      	</if>
+       	<if test="bizProgram.desc == null or bizProgram.desc == ''">
+       		order by create_time desc
+       	</if>
+  </select>
+  
+  <!-- 统计单个项目的各项数据信息 -->
+  <select id="selectOneProgrameData" resultType="java.util.Map" parameterType="java.util.Map">
+  	SELECT
+		<!-- 点赞 -->
+		SUM(
+			CASE WHEN t.program_type = 1 THEN
+				1
+			ELSE
+				0
+			END
+		) praisenum,
+		<!-- 播放 
+		SUM(
+			CASE WHEN t.program_type = 2 THEN
+				1
+			ELSE
+				0
+			END
+		) playnum,
+		-->
+		 <!-- 收听 -->
+		SUM(
+			CASE WHEN t.program_type = 3 THEN
+				1
+			ELSE
+				0
+			END
+		) listennum,
+		<!-- 转发 -->
+		SUM(
+			CASE WHEN t.program_type = 4 THEN
+				1
+			ELSE
+				0
+			END
+		) forwardnum
+	FROM
+		t_biz_program_customer_rel t 
+	WHERE 1 = 1 and t.status >= 1
+		<if test="ppid != null and ppid != ''">
+			and t.program_id = #{ppid,jdbcType=VARCHAR} 
+		</if>
+		<if test="type != null and type != ''">
+			<!-- 查询年份 -->
+			<if test="type == 1">
+				and date_format(t.create_time, '%Y-%m') = #{param,jdbcType=VARCHAR} 
+			</if>
+			<!-- 查询年月 -->
+			<if test="type == 2">
+				and date_format(t.create_time, '%Y-%m-%d') = #{param,jdbcType=VARCHAR} 
+			</if>
+		</if>
+		<if test="type != null and type != ''">
+			<!-- 查询年份 -->
+			<if test="type == 1">
+				GROUP BY date_format(t.create_time, '%Y-%m') 
+			</if>
+			<!-- 查询年月 -->
+			<if test="type == 2">
+				GROUP BY date_format(t.create_time, '%Y-%m-%d') 
+			</if>
+		</if>
+  </select>
+  
+  
+  <!-- 统计社交软件信息 -->
+  <select id="selectSocalAppInfo" resultMap="SocalAppResultMap" parameterType="java.util.Map">
+  	SELECT
+		FUNC_GET_DICT_CONT_NAME (
+			'TRANSPOND_TYPE',
+			tbpc.transpond_type
+		) name,
+		COUNT(tbpc.pid) y
+	FROM
+		t_biz_program_customer_rel tbpc
+	GROUP BY
+		tbpc.transpond_type
+  </select>
+  
+  <!-- 区域统计 -->
+  <select id="selectAreaStatistics" resultMap="SocalAppResultMap" parameterType="java.util.Map">
+  	SELECT
+		tbpcs.addr NAME,
+		COUNT(tbpcs.customer_id) y
+	FROM
+		t_biz_program_customer_rel tbpcs 
+	WHERE tbpcs.customer_id is not NULL
+	GROUP BY tbpcs.addr
+  </select>
+  
+  <!-- 统计用户性别分类 -->
+  <select id="selecUserSexTotal" resultType="java.lang.Integer"  parameterType="com.yscf.core.model.radio.BizProgram">
+		  	SELECT
+				count(sex) count
+		    FROM
+			(  
+				SELECT
+				   DISTINCT
+					CASE sex
+				WHEN '1' THEN
+					'男'
+				WHEN '2' THEN
+					'女'
+				END sex,
+				CASE program_plate_id
+			WHEN '1' THEN
+				'专家讲座'
+			WHEN '2' THEN
+				'百姓理财'
+			WHEN '3' THEN
+				'金融知识'
+			END program_plate_id,
+			tcc.PID
+			FROM
+				t_cust_customer tcc,
+				t_biz_program_customer_rel pcr,
+				t_biz_program tbp
+			WHERE
+				pcr.program_id = tbp.PID
+			AND tcc.PID = pcr.customer_id
+			) t where t.program_plate_id = #{bizProgram.programPlateId,jdbcType=VARCHAR}
+			 and t.sex = '男'
+		UNION ALL
+		SELECT
+			count(sex) count
+		FROM(
+				SELECT
+				     DISTINCT
+				CASE sex
+				WHEN '1' THEN
+					'男'
+				WHEN '2' THEN
+					'女'
+				END sex,
+				CASE program_plate_id
+			WHEN '1' THEN
+				'专家讲座'
+			WHEN '2' THEN
+				'百姓理财'
+			WHEN '3' THEN
+				'金融知识'
+			END program_plate_id,
+			tcc.PID
+			FROM
+				t_cust_customer tcc,
+				t_biz_program_customer_rel pcr,
+				t_biz_program tbp
+			WHERE
+				pcr.program_id = tbp.PID
+			AND tcc.PID = pcr.customer_id
+			) t where t.program_plate_id = #{bizProgram.programPlateId,jdbcType=VARCHAR}
+			and t.sex = '女'
+  </select>
+  
+  <!--   查节目板块类型 -->
+  <select id="selectProgramPlateType" resultMap="BaseResultMap">
+	     SELECT DISTINCT
+		CASE program_plate_id
+		WHEN '1' THEN
+			'专家讲座'
+		WHEN '2' THEN
+			'百姓理财'
+		WHEN '3' THEN
+			'金融知识'
+		END program_plate_id
+	FROM
+		t_biz_program tt
+  </select>
+  
+  <!-- 用户量信息 -->
+  <select id="selectUserCountData" resultType="java.util.Map" parameterType="java.lang.String">
+  	SELECT 
+		date_format(bpc.ta_time, '%H') formday,
+		COUNT(bpc.ip) tatolip
+	FROM 
+		t_biz_program_customer_rel bpc
+	WHERE
+		1 = 1 
+		AND bpc.program_type = '3' 
+		<if test="days != null and days != '' ">
+			AND date_format(bpc.ta_time, '%Y-%m-%d') = #{days,jdbcType=VARCHAR} 
+		</if> 
+		<if test="days == null or days == '' ">
+			AND 1 = 2 
+		</if>
+	GROUP BY 
+		date_format(bpc.ta_time, '%H')
+  </select>
+  
+	<!--api:查询节目播放列表 -->
+	<select id="selectRadioList" resultMap="BaseResultMap">
+		select   tbp.pid,
+		     	 tbp.program_title,
+		     	 CASE program_plate_id
+					WHEN '1' THEN
+						'专家讲座'
+					WHEN '2' THEN
+						'百姓理财'
+					WHEN '3' THEN
+						'金融知识'
+					END program_plate_id, 
+				 tbp.listen_num,
+				<!--封面 -->
+			     tbp.picture_file_id,
+			     <!--mp3路径 -->
+	             tbp.program_type,
+	             tbp.praise_num,
+	 			 tbp.create_time
+			FROM t_biz_program tbp
+	        where 1=1 
+	         and  tbp.`status`=1
+			  ORDER BY tbp.create_time
+			  LIMIT #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	</select>
+  
+	<!--api:查询节目播放列表总数 -->
+    <select id="selectRadioListCount" resultType="INTEGER">
+       select count(pid) from t_biz_program bp
+    </select>
+    
+	<!--api:查询节目播放列表路径 -->
+	<select id="selectRadioFilePath" resultMap="BaseResultMap">
+	  select <include refid="Base_Column_List"></include> 
+	   from  t_biz_program bp 
+	   where bp.pid = #{programId,jdbcType=VARCHAR}
+	</select>
+	
+	<!--api:查询节目人气播放列表-->
+	<select id="radioPopularityList" resultMap="BaseResultMap">
+	    select bp.pid,CASE program_plate_id
+					WHEN '1' THEN
+						'专家讲座'
+					WHEN '2' THEN
+						'百姓理财'
+					WHEN '3' THEN
+						'金融知识'
+					END program_plate_id,  
+					bp.picture_file_id,
+					bp.program_type,
+					bp.create_time,
+			    	bp.praise_num,
+			    	bp.program_title
+		       from t_biz_program bp 
+		       where  bp.`status`='1'
+		       ORDER BY bp.listen_num LIMIT 7
+	</select>
+	
+	<!--api：前台点赞加一条记录 -->
+	<insert id="insertBizProgramCust"  parameterType="com.yscf.core.model.radio.BizProgram">
+	    insert into t_biz_program_customer_rel
+	     <trim prefix="(" suffix=")" suffixOverrides="," >
+		      <if test="bizProgram.pid != null" >
+		        PID,
+		      </if>
+		      <if test="bizProgram.customerId != null" >
+		        customer_id,
+		      </if>
+		      <if test="bizProgram.programId != null" >
+		        program_id,
+		      </if>
+		      <if test="bizProgram.programType != null" >
+		        program_type,
+		      </if>
+		      <if test="bizProgram.isPraise != null" >
+		        is_praise,
+		      </if>
+		    </trim>
+		    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		      <if test="bizProgram.pid != null" >
+		        #{bizProgram.pid,jdbcType=VARCHAR},
+		      </if>
+		      <if test="bizProgram.customerId != null" >
+		        #{bizProgram.customerId,jdbcType=VARCHAR},
+		      </if>
+		      <if test="bizProgram.programId != null" >
+		        #{bizProgram.programId,jdbcType=VARCHAR},
+		      </if>
+		      <if test="bizProgram.programType != null" >
+		        #{bizProgram.programType,jdbcType=VARCHAR},
+		      </if>
+		      <if test="bizProgram.isPraise > 0 " >
+		        #{bizProgram.isPraise,jdbcType=INTEGER},
+		      </if>
+		    </trim>
+	</insert>
+	
+	<!--根据电台id查节目类型总数 -->
+	<select id="selectProgramTypeCountByRadioId" parameterType="java.lang.String" resultType="INTEGER">
+	    	SELECT COUNT(*) from t_biz_program_customer_rel pcr
+	    					 where pcr.program_type='1'
+	    					  and  pcr.program_id = #{radioId,jdbcType=VARCHAR};
+	</select>
+	
+	<!--根据节目pid查点赞数 -->
+	<select id="selectPraiseNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select bp.pid, 
+			   bp.praise_num as praise_num
+	      from t_biz_program bp
+	      where bp.PID = #{radioId,jdbcType=VARCHAR};
+	</select>
+	
+	<!--根据节目pid修改点赞数 -->
+	<update id="updatePraiseNum" parameterType="com.yscf.core.model.radio.BizProgram">
+	   update t_biz_program bp 
+	   			set bp.praise_num = #{bizProgram.praiseNum,jdbcType=VARCHAR}
+	   		    where bp.PID = #{bizProgram.pid,jdbcType=VARCHAR}
+	</update>
+	
+	<!--根据客户id查是否点赞 -->
+	<select id="selectIsPraise" parameterType="java.lang.String" resultMap="BaseResultMap">
+			select bpc.is_praise is_praise
+			  from t_biz_program_customer_rel bpc
+			  where bpc.customer_id = #{userId,jdbcType=INTEGER}
+	</select>
+</mapper>

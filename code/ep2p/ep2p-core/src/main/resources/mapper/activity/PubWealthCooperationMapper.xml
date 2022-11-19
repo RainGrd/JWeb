@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.PubWealthCooperationMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.activity.PubWealthCooperation" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="wealth_coop_name" property="wealthCoopName" jdbcType="VARCHAR" />
+    <result column="wealth_coop_value" property="wealthCoopValue" jdbcType="DECIMAL" />
+    <result column="invest_award_type" property="investAwardType" jdbcType="VARCHAR" /> 
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="inv_awa_desc" property="invAwaDesc" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_create_user" property="lastCreateUser" jdbcType="VARCHAR" />
+    <result column="last_create_time" property="lastCreateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    
+    <result column="act_tag" property="actTag" jdbcType="VARCHAR" />
+    <result column="act_code" property="actCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, wealth_coop_name, wealth_coop_value, invest_award_type , start_time, 
+    end_time, inv_awa_desc, status, create_user, create_time, last_create_user, last_create_time, 
+    act_code, act_tag,
+    version
+  </sql>
+  <!-- 查询所需字段 -->
+  	<sql id="link_column_list">
+  		coop.PID, coop.wealth_coop_name, coop.invest_award_type,coop.wealth_coop_value,coop.inv_awa_desc, coop.start_time, 
+	    coop.end_time, coop.status, coop.create_user, coop.create_time, coop.last_create_user, coop.last_create_time, coop.version,
+	    coop.act_code, coop.act_tag,
+	     
+	    coop.act_code as actCode, coop.act_tag as actTag, aa.activity_type as activityType, aa.sms_id as smsId, 
+	    aa.is_sms_warn as isSmsWarn, aa.act_desc as actDesc,sst.temp_code as tempCode,sst.sms_content as smsContent
+  	</sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="link_column_list" /> 
+    FROM t_pub_wealth_cooperation coop 
+		LEFT JOIN t_act_activity aa 
+		on coop.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 8 
+  		AND coop.status != -1 
+    	AND coop.PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_pub_wealth_cooperation
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.activity.PubWealthCooperation" >
+    insert into t_pub_wealth_cooperation (PID, wealth_coop_name, wealth_coop_value, 
+      invest_award_type, start_time, 
+      end_time, inv_awa_desc, status, 
+      create_user, create_time, last_create_user, 
+      last_create_time, version)
+    values (#{pid,jdbcType=VARCHAR}, #{wealthCoopName,jdbcType=VARCHAR}, #{wealthCoopValue,jdbcType=DECIMAL}, 
+      #{investAwardType,jdbcType=VARCHAR},   #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{invAwaDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastCreateUser,jdbcType=VARCHAR}, 
+      #{lastCreateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.activity.PubWealthCooperation" >
+    insert into t_pub_wealth_cooperation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="wealthCoopName != null" >
+        wealth_coop_name,
+      </if>
+      <if test="wealthCoopValue != null" >
+        wealth_coop_value, 
+      </if>
+      <if test="investAwardType != null" >
+        invest_award_type,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="invAwaDesc != null" >
+        inv_awa_desc,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastCreateUser != null" >
+        last_create_user,
+      </if>
+      <if test="lastCreateTime != null" >
+        last_create_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+       <if test="actCode != null" >
+        act_code,
+      </if>
+      <if test="actTag != null" >
+        act_tag,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="wealthCoopName != null" >
+        #{wealthCoopName,jdbcType=VARCHAR},
+      </if>
+      <if test="wealthCoopValue != null" >
+        #{wealthCoopValue,jdbcType=DECIMAL},
+      </if>
+      <if test="investAwardType != null" >
+        #{investAwardType,jdbcType=VARCHAR},
+      </if> 
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invAwaDesc != null" >
+        #{invAwaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCreateUser != null" >
+        #{lastCreateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCreateTime != null" >
+        #{lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="actCode != null" > 
+        #{actCode,jdbcType=VARCHAR},
+      </if>
+      <if test="actTag != null" >
+        #{actTag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.PubWealthCooperation" >
+    update t_pub_wealth_cooperation
+    <set >
+      <if test="wealthCoopName != null" >
+        wealth_coop_name = #{wealthCoopName,jdbcType=VARCHAR},
+      </if>
+      <if test="wealthCoopValue != null" >
+        wealth_coop_value = #{wealthCoopValue,jdbcType=DECIMAL},
+      </if>
+      <if test="investAwardType != null" >
+        invest_award_type = #{investAwardType,jdbcType=VARCHAR},
+      </if> 
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invAwaDesc != null" >
+        inv_awa_desc = #{invAwaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCreateUser != null" >
+        last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCreateTime != null" >
+        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actCode != null" >
+        act_code = #{actCode,jdbcType=VARCHAR},
+      </if>
+      <if test="actTag != null" >
+        act_tag = #{actTag ,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.PubWealthCooperation" >
+    update t_pub_wealth_cooperation
+    set wealth_coop_name = #{wealthCoopName,jdbcType=VARCHAR},
+      wealth_coop_value = #{wealthCoopValue,jdbcType=DECIMAL},
+      invest_award_type = #{investAwardType,jdbcType=VARCHAR}, 
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      inv_awa_desc = #{invAwaDesc,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询体验金信息列表,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		SELECT 
+  		<include refid="link_column_list" />
+  		FROM t_pub_wealth_cooperation coop 
+		LEFT JOIN t_act_activity aa 
+		on coop.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 8 
+  		AND coop.status != -1 
+  		<if test="map.actCode != null and map.actCode != '' " > 
+        	and  coop.act_code like concat('%',#{ map.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test=" map.wealthCoopName != null and  map.wealthCoopName != '' " > 
+        	and  coop.wealth_coop_name like concat('%',#{ map.wealthCoopName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test=" map.actTag != null and  map.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{ map.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        
+        <if test=" map.wealthCoopValue != null and  map.wealthCoopValue != '' " > 
+        	and  aa.wealth_coop_value like concat('%',#{ map.wealthCoopValue,jdbcType=VARCHAR},'%' )
+        </if> 
+        <if test=" map.beginApplyStartData != null and  map.beginApplyStartData != '' " > 
+        	and  coop.start_time <![CDATA[ >= ]]> #{ map.beginApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test=" map.endApplyStartData != null and  map.endApplyStartData != '' " > 
+        	and  coop.start_time <![CDATA[ <= ]]> #{ map.endApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test=" map.beginApplyFinishData != null and  map.beginApplyFinishData != '' " > 
+        	and  coop.end_time <![CDATA[ >= ]]> #{ map.beginApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test=" map.endApplyFinishData != null and  map.endApplyFinishData != '' " > 
+        	and  coop.end_time <![CDATA[ <= ]]> #{ map.endApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test=" map.status != null and  map.status != 0 " > 
+        	and  coop.status = #{ map.status,jdbcType=VARCHAR}
+        </if>
+        ORDER BY coop.create_time desc 
+  	</select>
+  	<!-- 批量删除体验金活动 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_pub_wealth_cooperation SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	<!-- 修改财富合伙人活动状态 -->
+  	<update id="updateActiivtyStatus" parameterType="java.lang.String">
+  		UPDATE t_pub_wealth_cooperation SET
+  		status = #{status,jdbcType=VARCHAR}
+  		where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	<!-- 查询进行中的 财富合伙人活动 -->
+  	<select id="selectActivateWealthCoop" resultMap="BaseResultMap">
+  	SELECT c.* from 
+		t_pub_wealth_cooperation c LEFT JOIN  
+		t_act_activity a  
+		on a.object_id = c.PID
+		WHERE NOW() BETWEEN a.start_date  and a.end_date 
+		AND NOW() BETWEEN c.start_time AND c.end_time
+		AND c.`status` = 2 
+		AND a.`status` = 2
+  	</select> 
+  	
+</mapper>

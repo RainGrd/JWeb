@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+	<student id="1">
+		<name>王同</name>
+		<course>java</course>
+		<result>89</result>
+	</student>
+	<student id="2">
+		<name>王同</name>
+		<course>java</course>
+		<result>89</result>
+	</student>
+</students>

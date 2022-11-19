@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xlsroot>
+		<!-- POI 2007 导出结果文件 -->
+		<oxlsproj id="export_receipt_plan_info"  version="XLS_VERSION" parseHandle="XLS_HANDLEPOI">
+				<oxlsprojsheet sheetid="demo_sheet01" name="Sheet1" entityClass="com.yscf.core.model.ptp.investment.BizReceiptPlanInfoModel"
+				 headerIndex="0"  writerRowsStartIndex="1" writerCellStartIndex="0"  istemp="false" iswriteHeader="true">
+						<oxlsprojcol name="借款编号" property="borrowCode" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="借款名称" property="borrowName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="投资人" property="customerName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="期次" property="issue" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="待收时间" property="expireTime" javaType="java.util.Date" ></oxlsprojcol>
+						<oxlsprojcol name="还款方式" property="repaymentTypeName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="本息" property="benXi" javaType="java.math.BigDecimal" ></oxlsprojcol>
+						<oxlsprojcol name="状态" property="receiptStatusName" javaType="java.lang.String" ></oxlsprojcol>
+						<oxlsprojcol name="备注" property="des2" javaType="java.lang.String" ></oxlsprojcol>
+				</oxlsprojsheet>
+		</oxlsproj>
+
+</xlsroot>

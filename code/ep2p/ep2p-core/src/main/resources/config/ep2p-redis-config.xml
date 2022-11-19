@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- Redis Pool -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.pool.maxIdle}" />
+		<property name="maxActive" value="${redis.pool.maxActive}" />
+		<property name="maxWait" value="${redis.pool.maxWait}" />
+		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+		<property name="testOnReturn" value="${redis.pool.testOnReturn}" />
+	</bean>
+
+	<bean id="jedisShardInfo_01" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg index="0" value="${redis.node.1.host}" />
+		<constructor-arg index="1" type="int" value="${redis.node.1.port}" />
+		<constructor-arg index="2" value="${redis.node.1.instance.name}" />
+		<property name="password" value="${redis.node.1.password}" />
+	</bean>
+
+	<bean id="jedisShardInfo_02" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg index="0" value="${redis.node.2.host}" />
+		<constructor-arg index="1" type="int" value="${redis.node.2.port}" />
+		<constructor-arg index="2" value="${redis.node.2.instance.name}" />
+		<property name="password" value="${redis.node.2.password}" />
+	</bean>
+
+	<!-- Redis分片处理 -->
+	<bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool"
+		destroy-method="destroy">
+		<constructor-arg ref="jedisPoolConfig" />
+		<constructor-arg>
+			<list>
+				<ref bean="jedisShardInfo_01" />
+				<ref bean="jedisShardInfo_02" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+</beans>

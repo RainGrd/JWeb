@@ -1,0 +1,26 @@
+t_biz_receipt_plan   收款计划表  查待收金额，本金  map.put("{客户名}", smsVo.getMobile());   
+	@Resource
+	public IBizReceiptPlanService bizReceiptPlanService; 
+
+	BizReceiptPlanServiceImpl  selectAllPage（）
+
+	BizReceiptPlanMapper.xml
+
+
+	@Override
+	public PageList<CustDueinWater> selectAllPage(CustDueinWater custDueinWater,
+			PageInfo pageInfo) {
+		CustDueinWaterMapper mapper = (CustDueinWaterMapper) getDao();
+		PageList<CustDueinWater>  totalDaiShou = mapper.selectAllPage(custDueinWater, pageInfo);
+		Map<String,BigDecimal> map = mapper.selectAllPageSum(custDueinWater);
+		CustDueinWater custDueinWater2 = new CustDueinWater();
+		if(map!=null){
+		custDueinWater2.setDueinTotalValue(map.get("dueinTotalValue"));
+		custDueinWater2.setCorpus(map.get("corpus"));
+		custDueinWater2.setAccrual(map.get("accrual"));
+		totalDaiShou.add(custDueinWater2);
+		}
+ 		return totalDaiShou;
+	}
+
+	SysParamsServiceImpl  	SysParamsServiceImpl  

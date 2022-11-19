@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>账户总览</title>
+		<meta name="Keywords" content="e生财富,网贷平台,网络投资理财">
+		<meta name="Description" content="">
+		<meta name="Author" content="">
+		<meta name="Copyright" content="">
+		<link rel="shortcut icon" href="" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="../css/common.css">
+		<link rel="stylesheet" type="text/css" href="../css/yscf.css">
+		<link rel="stylesheet" type="text/css" href="../css/usercenter.css">
+		<script type="text/javascript" charset="utf-8" src="../js/plugins/jquery-1.10.2.min.js"></script>
+		
+		
+		
+		
+		
+		<script type="text/javascript" charset="utf-8" src="../js/common/common.js"></script>
+		<!-- banner slide  js-->
+		<!-- time  js-->
+		<script type="text/javascript" charset="utf-8" src="../js/plugins/timeJs.js"></script>
+		<!-- top Ad scroll  js-->
+		<script type="text/javascript" charset="utf-8" src="../js/plugins/datepicker.js"></script>
+	</head>
+
+	<body>
+		
+		
+		
+		
+
+		
+		<input type="text"  class="ceshi" />
+		
+		
+		<div class="select_date"></div>
+		
+		
+		
+		
+		
+		
+		<div class="kong50"></div>
+		<div id="CalendarMain">
+			<div id="title">
+				<a class="selectBtn month" href="javascript:void(0)" onclick="CalendarHandler.CalculateLastMonthDays();">
+					<</a>
+						<a class="selectBtn selectYear" href="javascript:void(0)" onClick="CalendarHandler.CreateSelectYear(CalendarHandler.showYearStart);">2014年</a>
+						<a class="selectBtn selectMonth" onClick="CalendarHandler.CreateSelectMonth()">6月</a>
+						<a class="selectBtn nextMonth" href="javascript:void(0)" onClick="CalendarHandler.CalculateNextMonthDays();">></a>
+						<a class="selectBtn currentDay" href="javascript:void(0)" onClick="CalendarHandler.CreateCurrentCalendar(0,0,0);">今天</a>
+			</div>
+			<div id="context">
+				<div class="week">
+					<h3> 一 </h3>
+					<h3> 二 </h3>
+					<h3> 三 </h3>
+					<h3> 四 </h3>
+					<h3> 五 </h3>
+					<h3> 六 </h3>
+					<h3> 日 </h3>
+				</div>
+				<div id="center">
+					<div id="centerMain">
+						<div id="selectYearDiv"></div>
+						<div id="centerCalendarMain">
+						<div id="Container"></div>
+						</div>
+						<div id="selectMonthDiv"></div>
+					</div>
+				</div>
+				<!-- 	<div id="foots"><a id="footNow">19:14:34</a></div> -->
+			</div>
+		</div>
+	</body>
+
+</html>
+
+
+
+<script>
+$(".ceshi").val("2016/1/19")
+$(".ceshi").click(function(){
+console.log(CalendarHandler.CreateCalendar())
+	$("#Container").html(CalendarHandler.CreateCalendar("2016","1","19"));
+	$(".dayItem").attr("style","height: 205px; width: 300px; visibility: visible;");
+	$(".item").attr("style","width: 42.8571px; line-height: 34.1667px; height: 34.1667px;");
+})
+
+
+	
+</script>

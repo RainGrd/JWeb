@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue常用指令演示</title>
+</head>
+<script src="js/vue.js"></script>
+<body>
+<div id="app">
+    <a :href="url">百度一下</a>
+    <input v-model="url"/>
+    <input v-on:click="show()"/>
+    <input @:click="show()"/>
+</div>
+</body>
+<!--创建vue核心对象-->
+<script>
+    new Vue({
+        el:"#app",
+        data () {
+            return {
+                username:"",
+                url:"https://www.baidu.com/",
+            }
+        },
+        methods:{
+            show(){
+                alert("我被点了");
+            }
+        }
+    });
+</script>
+</html>

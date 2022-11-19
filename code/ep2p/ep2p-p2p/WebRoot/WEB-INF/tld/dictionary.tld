@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3g.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<tlib-version>1.2</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>Dictionary Taglib</short-name>
+	<uri>http://www.yscf.com/tld/dictionary</uri>
+	<description>
+		E生财富前端web自定数据字典值显示标签  作者：Lin.Xu
+	</description>
+
+	<tag>
+		<name>dicfmt</name>
+		<tag-class>com.yscf.ep2p.tags.DictionaryTagHandler</tag-class>
+		<body-content>empty</body-content>
+		
+		<!-- 是否是数据字典查询false表示不是，true表示数据字典查询 -->
+		<attribute>
+			<name>codekey</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<!-- 数据字典的key值 -->
+		<attribute>
+			<name>keyval</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		
+	</tag>
+</taglib>

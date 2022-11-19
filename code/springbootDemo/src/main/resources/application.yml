@@ -1,0 +1,28 @@
+hello:
+  helloMsg: mybatis
+
+
+server:
+  port: 8886
+spring:
+  profiles:
+    active: dev
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: /.jsp
+
+---
+server:
+  port: 8887
+spring:
+  profiles:
+    active: dev
+---
+  server:
+  port: 8888
+  spring:
+    profiles:
+      active: test
+
+

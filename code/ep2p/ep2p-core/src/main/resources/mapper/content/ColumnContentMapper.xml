@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.content.ColumnContentMapper">
+	<resultMap id="BaseResultMap" type="com.yscf.core.model.content.ColumnContent">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="title_name" property="titleName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="is_lower_level" property="isLowerLevel"
+			jdbcType="VARCHAR" />
+		<result column="colu_order" property="coluOrder" jdbcType="TIMESTAMP" />
+		<result column="is_custom_file" property="isCustomFile"
+			jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="dictId" property="dictId" jdbcType="VARCHAR" />
+		
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="colu_id" property="coluId" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_update_user" property="lastUpdateUser"
+			jdbcType="VARCHAR" />
+		<result column="last_update_time" property="lastUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="dict_cont_name" property="dictContName" jdbcType="VARCHAR" />
+		<result column="web_tag" property="webTag" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="file_url_img" property="fileUrlImg" jdbcType="VARCHAR" />
+		<result column="is_reading" property="isReading" jdbcType="VARCHAR" />
+	    <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+	    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+	    <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+	    <result column="file_pid" property="filePid" jdbcType="VARCHAR" />
+	    
+	    <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
+	    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		PID, title_name, status, is_lower_level, colu_order,
+		is_custom_file, url,
+		parent_id, content,
+		colu_id, create_user,
+		create_time, last_update_user, last_update_time, version,web_tag,img_url,is_reading,
+		begin_time,end_time
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select c.*,f.file_url,f.file_name,f.file_type,f.pid  file_pid , file.file_url file_url_img from 
+			t_cont_column_content c LEFT JOIN
+			t_cont_colu_content_file_rel r
+			on c.pid = r.colu_cont_id
+			LEFT JOIN
+			t_pub_file f
+			on r.file_id =  f.PID
+			LEFT JOIN
+			t_pub_file file
+			on file.pid = c.img_url
+		where c.PID = #{pid,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectColuContentByParameter" resultMap="BaseResultMap"
+		parameterType="map">
+		select cc.*, f.PID as file_pid , f.file_name,
+		f.file_url, TEMP.dict_cont_name 
+		from t_cont_column_content cc 
+			LEFT  JOIN 
+			(SELECT
+				t.colu_cont_id, group_concat(c.dict_cont_name ) as dict_cont_name, group_concat(c.PID) as dictId
+			FROM 
+				t_cont_tag t  inner join t_sys_dictionary_content c	 
+		where t.dict_cont_id = c.PID GROUP BY t.colu_cont_id) TEMP 
+			ON cc.pid = TEMP.colu_cont_id 
+		LEFT JOIN t_cont_colu_content_file_rel rel
+		ON rel.colu_cont_id = cc.pid
+		LEFT JOIN t_pub_file f 
+		ON f.pid = rel.file_id
+			where 1=1
+		<if test="map.titleName != null and map.titleName != '' ">
+			and cc.title_name like
+			concat('%',#{map.titleName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.status != null and map.status != ''">
+			and cc.status =#{map.status,jdbcType=VARCHAR}
+		</if>
+		<if test="map.createUser != null and map.createUser != ''">
+			and cc.create_user 
+			like
+			concat('%',#{map.createUser,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.createTime != null and map.createTime != ''">
+			and cc.create_time = #{map.createTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="map.lastUpdateUser != null and map.lastUpdateUser != '' ">
+			and cc.last_update_user like
+			concat('%',#{map.lastUpdateUser,jdbcType=VARCHAR},'%' )   
+		</if>
+		<if test="map.parentId != null and map.parentId != ''">
+			and cc.parent_id like
+			#{map.parentId,jdbcType=VARCHAR}
+		</if>
+		<if test="map.lastUpdateTime != null and map.lastUpdateTime != ''">
+			and cc.last_update_time like
+			#{map.lastUpdateTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="map.version != null and map.version != ''">
+			and cc.version = #{map.version,jdbcType=VARCHAR}
+		</if>
+		<if test="map.pid != null and map.pid != ''">
+			and cc.pid like = #{map.pid,jdbcType=VARCHAR}
+		</if>
+		<if test="map.coluId != null and map.coluId != ''">
+			and cc.colu_id = #{map.coluId,jdbcType=VARCHAR}
+		</if>
+		<if test="map.dictContName != null and map.dictContName != '-1'">
+			and dictId  like concat('%',#{map.dictContName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if
+			test="map.lastBeginUpdateTime != null and map.lastBeginUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(cc.last_update_time ,'%Y-%m-%d') >= #{map.lastBeginUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.lastEndUpdateTime != null and map.lastEndUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(cc.last_update_time ,'%Y-%m-%d') <= #{map.lastEndUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createBeginTime != null and map.createBeginTime != '' ">
+			and <![CDATA[DATE_FORMAT(cc.create_time ,'%Y-%m-%d') >= #{map.createBeginTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createEndTime != null and map.createEndTime != '' ">
+			and <![CDATA[DATE_FORMAT(cc.create_time ,'%Y-%m-%d') <= #{map.createEndTime,jdbcType=VARCHAR}]]>
+		</if>
+		
+	order by cc.colu_order desc
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		t_cont_column_content
+		where PID = #{pid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yscf.core.model.content.ColumnContent">
+		insert into
+		t_cont_column_content (PID, title_name, status,web_tag,img_url,
+		is_lower_level,
+		colu_order, is_custom_file,
+		url, parent_id, colu_id, content,
+		create_user, create_time, last_update_user,
+		last_update_time, version,begin_time,end_time
+		)
+		values (#{pid,jdbcType=VARCHAR},
+		#{titleName,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{webTag,jdbcType=VARCHAR},
+		#{imgUrl,jdbcType=VARCHAR},
+		#{isLowerLevel,jdbcType=VARCHAR}, #{coluOrder,jdbcType=VARCHAR},
+		#{isCustomFile,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{parentId,jdbcType=VARCHAR},
+		#{coluId,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		#{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR},
+		#{beginTime,jdbcType=VARCHAR},
+		#{endTime,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.yscf.core.model.content.ColumnContent">
+		insert into t_cont_column_content
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="titleName != null">
+				title_name,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="isLowerLevel != null">
+				is_lower_level,
+			</if>
+			<if test="coluOrder != null">
+				colu_order,
+			</if>
+			<if test="isCustomFile != null">
+				is_custom_file,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="coluId != null">
+				colu_id,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="beginTime != null">
+				begin_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="webTag != null">
+				web_tag ,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="titleName != null">
+				#{titleName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="isLowerLevel != null">
+				#{isLowerLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="coluOrder != null">
+				#{coluOrder,jdbcType=VARCHAR},
+			</if>
+			<if test="isCustomFile != null">
+				#{isCustomFile,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="coluId != null">
+				#{coluId,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="beginTime != null">
+				#{beginTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="webTag != null">
+				#{webTag,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.content.ColumnContent">
+		update t_cont_column_content
+		<set>
+			<if test="titleName != null">
+				title_name = #{titleName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="webTag != null">
+				web_tag = #{webTag,jdbcType=VARCHAR},
+			</if>
+			<if test="imgUrl != null">
+				img_url = #{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="isLowerLevel != null">
+				is_lower_level = #{isLowerLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="coluOrder != null">
+				colu_order = #{coluOrder,jdbcType=VARCHAR},
+			</if>
+			<if test="isCustomFile != null">
+				is_custom_file = #{isCustomFile,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="coluId != null">
+				colu_id = #{coluId,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if> 
+			<if test="beginTime != null">
+				#{begin_time,jdbcType=VARCHAR}, 
+			</if>
+			<if test="endTime != null">
+				#{end_time,jdbcType=VARCHAR}, 
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yscf.core.model.content.ColumnContent">
+		update
+		t_cont_column_content
+		set title_name = #{titleName,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		is_lower_level =
+		#{isLowerLevel,jdbcType=VARCHAR},
+		colu_order =
+		#{coluOrder,jdbcType=VARCHAR},
+		is_custom_file =
+		#{isCustomFile,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR},
+		parent_id = #{parentId,jdbcType=VARCHAR},
+		colu_id =
+		#{coluId,jdbcType=VARCHAR},
+		create_user =
+		#{createUser,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		last_update_user =
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		last_update_time =
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		version =
+		#{version,jdbcType=VARCHAR},
+		content = #{content,jdbcType=LONGVARCHAR}
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.content.ColumnContent">
+		update t_cont_column_content
+		<set>
+			<if test="titleName != null and titleName!= '' ">
+				title_name = #{titleName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status  != '' ">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="isLowerLevel != null and isLowerLevel  != '' ">
+				is_lower_level = #{isLowerLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="coluOrder != null and coluOrder  != '' ">
+				colu_order = #{coluOrder,jdbcType=VARCHAR},
+			</if>
+			<if test="isCustomFile != null and isCustomFile  != '' ">
+				is_custom_file = #{isCustomFile,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null and url  != '' ">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null and parentId  != '' ">
+				parent_id = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="coluId != null and coluId   != '' ">
+				colu_id = #{coluId,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null and createUser  != '' ">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null and createTime != '' ">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null and  lastUpdateUser != '' ">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null ">
+				content =#{content,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="version != null and version != '' ">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null and lastUpdateTime != '' ">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if> 
+			<if test="imgUrl != null and imgUrl != '' ">
+				img_url = #{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="webTag != null and webTag != '' ">
+				web_tag = #{webTag,jdbcType=VARCHAR},
+			</if>
+			<if test="beginTime != null and beginTime !='' ">
+				begin_time = #{beginTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="endTime != null and endTime !='' ">
+				end_time = #{endTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="batchUpdateByPids" parameterType="java.util.HashMap">
+		update t_cont_column_content
+		set status = #{map.status,jdbcType=VARCHAR}
+		where
+		PID in
+		<foreach item="pid" collection="map.pid" open="(" separator=","
+			close=")">
+			#{pid}
+		</foreach>
+	</update>
+	<update id="batchUpdateIsReadingByPids" parameterType="java.util.HashMap">
+		update t_cont_column_content
+		set is_reading = #{map.isReading,jdbcType=VARCHAR}
+		where
+		PID in
+		<foreach item="pid" collection="map.pid" open="(" separator=","
+			close=")">
+			#{pid}
+		</foreach>
+	</update>
+	<select id="selectAdvContentByWebTag" resultMap="BaseResultMap"
+		parameterType="java.lang.String"> 
+		select cc.*, f.PID as file_pid , f.file_name,
+		f.file_url, TEMP.dict_cont_name 
+		from t_cont_column_content cc 
+		INNER JOIN 
+		t_cont_column col
+		on col.pid = cc.parent_id
+			LEFT  JOIN 
+			(SELECT
+				t.colu_cont_id, group_concat(c.dict_cont_name ) as dict_cont_name, group_concat(c.PID) as dictId
+			FROM 
+				t_cont_tag t  inner join t_sys_dictionary_content c	 
+		where t.dict_cont_id = c.PID GROUP BY t.colu_cont_id) TEMP 
+			ON cc.pid = TEMP.colu_cont_id 
+		LEFT JOIN t_cont_colu_content_file_rel rel
+		ON rel.colu_cont_id = cc.pid
+		LEFT JOIN t_pub_file f 
+		ON f.pid = rel.file_id
+			where 1=1
+		and  cc.status=1 and col.web_tag = #{webTag,jdbcType=VARCHAR}
+		and( begin_time <![CDATA[<=]]> NOW() or ISNULL(begin_time) )
+		order by cc.colu_order desc
+	</select>
+	<select id="selectColumnContentByParentId" resultMap="BaseResultMap"
+		parameterType="java.lang.String"> 
+		select cc.*, f.PID as file_pid , f.file_name,
+		f.file_url, TEMP.dict_cont_name 
+		from t_cont_column_content cc 
+			LEFT  JOIN 
+			(SELECT
+				t.colu_cont_id, group_concat(c.dict_cont_name ) as dict_cont_name, group_concat(c.PID) as dictId
+			FROM 
+				t_cont_tag t  inner join t_sys_dictionary_content c	 
+		where t.dict_cont_id = c.PID GROUP BY t.colu_cont_id) TEMP 
+			ON cc.pid = TEMP.colu_cont_id 
+		LEFT JOIN t_cont_colu_content_file_rel rel
+		ON rel.colu_cont_id = cc.pid
+		LEFT JOIN t_pub_file f 
+		ON f.pid = rel.file_id
+			where 1=1
+		and  cc.status=1 and cc.parent_id = #{parentId,jdbcType=VARCHAR}
+		and( begin_time <![CDATA[<=]]> NOW() or ISNULL(begin_time) )
+		order by cc.colu_order desc
+		<if test="pageIndex != null and pageSize != null ">
+				limit #{pageIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select> 
+<!-- 	根据webTag 查询二级栏目 -->
+	<select id="selectContentMiddleByWebTag" resultMap="BaseResultMap"
+		parameterType="java.lang.String"> 
+		select c.*,f.file_url file_url_img 
+		from t_cont_column_content c 
+		LEFT JOIN t_pub_file f on f.pid = c.img_url  
+		where c.status=1 and  
+		c.web_tag =#{webTag,jdbcType=VARCHAR}  
+		order by c.colu_order desc
+	</select> 
+	<select id="selectColContentListByWebTag" resultMap="BaseResultMap"
+		parameterType="java.lang.String"> 
+		select cc.*,f.PID AS file_pid,f.file_name,f.file_url
+		<if test="customerId != null and isHome != '0'.toString()">
+		,(SELECT COUNT(*) FROM t_sys_notice_read_record r where r.column_content_id = cc.pid and r.customer_id = #{customerId,jdbcType=VARCHAR}) as is_reading
+		</if>
+ 			from t_cont_column_content cc
+			LEFT JOIN t_cont_colu_content_file_rel rel ON rel.colu_cont_id = cc.pid
+			LEFT JOIN t_pub_file f ON f.pid = rel.file_id
+			 where cc.parent_id = (
+					select pid from t_cont_column_content where web_tag = #{webTag,jdbcType=VARCHAR})
+		<if test="isHome == '0'.toString() ">
+				and cc.begin_time <![CDATA[<=]]> NOW() AND cc.end_time <![CDATA[>=]]> NOW() 
+		</if>
+		order by cc.colu_order desc
+		<if test="isHome != '0'.toString() and pageIndex != null and pageSize != null ">
+				limit #{pageIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectContentByWebTag" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select c.*,f.file_url,f.file_name,f.file_type,f.pid  file_pid , file.file_url file_url_img from 
+			t_cont_column_content c LEFT JOIN
+			t_cont_colu_content_file_rel r
+			on c.pid = r.colu_cont_id
+			LEFT JOIN
+			t_pub_file f
+			on r.file_id =  f.PID
+			LEFT JOIN
+			t_pub_file file
+			on file.pid = c.img_url
+		where  web_tag = #{webTag,jdbcType=VARCHAR} 
+	</select>
+</mapper>

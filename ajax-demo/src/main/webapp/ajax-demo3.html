@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    /*1.创建ajax对象*/
+    var xhr = new XMLHttpRequest();
+    //2.设置请求open("请求方式","请求地址")
+    xhr.open("GET", "http://localhost:5050/ajax-demo/ajaxServlet02")
+    /*3.发送请求*/
+    xhr.send();
+    xhr.onload = function() {
+        console.log(xhr.responseText);
+        var parseText = JSON.parse(this.responseText);
+        console.log(parseText);
+        var str="<h2>"+parseText.username+"</h2>"
+        document.body.innerHTML=str;
+    }
+    /*4.获取服务端响应到客户端的数据*/
+    /*xhr.onreadystatechange=function (){
+        if(this.readyState === 4 && this.status === 200){
+            console.log(this.responseText);
+        }
+    }*/
+</script>
+</html>

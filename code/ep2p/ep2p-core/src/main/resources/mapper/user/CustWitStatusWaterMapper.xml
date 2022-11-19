@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustWitStatusWaterMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustWitStatusWater" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="wit_status" property="witStatus" jdbcType="VARCHAR" />
+    <result column="eff_time" property="effTime" jdbcType="TIMESTAMP" />
+    <result column="exp_time" property="expTime" jdbcType="VARCHAR" />
+    <result column="up_desc" property="upDesc" jdbcType="VARCHAR" />
+    <result column="distribution_time" property="distributionTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="wit_sta_wat_desc" property="witStaWatDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, customer_id, 
+    CASE wit_status
+	WHEN 1 THEN
+	'启用'
+	WHEN 0 THEN
+	'禁用'
+	END wit_status,
+    eff_time, exp_time, up_desc, distribution_time, create_user, 
+    create_time, last_update_user, last_update_time, wit_sta_wat_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cust_wit_status_water
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cust_wit_status_water
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.user.CustWitStatusWater" >
+    insert into t_cust_wit_status_water (PID, customer_id, wit_status, 
+      eff_time, exp_time, up_desc, 
+      distribution_time, create_user, create_time, 
+      last_update_user, last_update_time, wit_sta_wat_desc
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{witStatus,jdbcType=VARCHAR}, 
+      #{effTime,jdbcType=TIMESTAMP}, #{expTime,jdbcType=VARCHAR}, #{upDesc,jdbcType=TIMESTAMP}, 
+      #{distributionTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{witStaWatDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.CustWitStatusWater" >
+    insert into t_cust_wit_status_water
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="witStatus != null" >
+        wit_status,
+      </if>
+      <if test="effTime != null" >
+        eff_time,
+      </if>
+      <if test="expTime != null" >
+        exp_time,
+      </if>
+      <if test="upDesc != null" >
+        up_desc,
+      </if>
+      <if test="distributionTime != null" >
+        distribution_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="witStaWatDesc != null" >
+        wit_sta_wat_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="witStatus != null" >
+        #{witStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="effTime != null" >
+        #{effTime,jdbcType=VARCHAR},
+      </if>
+      <if test="expTime != null" >
+        #{expTime,jdbcType=VARCHAR},
+      </if>
+      <if test="upDesc != null" >
+        #{upDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionTime != null" >
+        #{distributionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="witStaWatDesc != null" >
+        #{witStaWatDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustWitStatusWater" >
+    update t_cust_wit_status_water
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="witStatus != null" >
+        wit_status = #{witStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="effTime != null" >
+        eff_time = #{effTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expTime != null" >
+        exp_time = #{expTime,jdbcType=VARCHAR},
+      </if>
+      <if test="upDesc != null" >
+        up_desc = #{upDesc,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributionTime != null" >
+        distribution_time = #{distributionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="witStaWatDesc != null" >
+        wit_sta_wat_desc = #{witStaWatDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustWitStatusWater" >
+    update t_cust_wit_status_water
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      wit_status = #{witStatus,jdbcType=VARCHAR},
+      eff_time = #{effTime,jdbcType=TIMESTAMP},
+      exp_time = #{expTime,jdbcType=VARCHAR},
+      up_desc = #{upDesc,jdbcType=TIMESTAMP},
+      distribution_time = #{distributionTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      wit_sta_wat_desc = #{witStaWatDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+<!--   根据pid来查客户提现状态历史 信息 -->
+   <select id="selectCusStatusChangeHistoryById" parameterType="com.yscf.core.model.user.CustWitStatusWater" resultMap="BaseResultMap">
+   	    select <include refid="Base_Column_List"></include>
+   	    from t_cust_wit_status_water tcwsw
+   	   	where tcwsw.customer_id = #{custWitStatusWater.customerId,jdbcType=VARCHAR}
+  		 order by tcwsw.create_time desc
+   </select>
+  
+</mapper>

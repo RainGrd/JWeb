@@ -1,0 +1,222 @@
+@charset "utf-8";
+/* CSS Document */
+html{font-size: 62.5%;}
+html, body, div, span, h1, h2, h3, h4, h5, h6, 
+p, a, em, img, strong, dl, dt, dd, ol, ul, li
+{ margin:0; padding:0; border:0; outline:0; vertical-align:baseline;font-weight:normal;}
+a{ text-decoration:none;}
+body{ width:100%;font-family:"微软雅黑";font-size: 1.4rem; line-height:1.6rem; background:#ededed; }
+ol, ul{ list-style:none;}
+em,i { font-style: normal;}
+/*blockquote, q{quotes:none;}
+blockquote:before, blockquote:after,
+q:before, q:after{ content:''; content:none;}*/
+:focus{ outline:0;}
+table{ border-collapse:collapse; border-spacing:0;}	
+#web_wrap { width:375px; margin: 0 auto; 
+	transform-origin:top left;
+	-webkit-transform-origin:top left;
+	/*overflow:hidden;*/
+}
+.clear{height:0px; width:0px; line-height:0px; margin:0; padding:0px; clear:both;}
+.none{display:none;}
+.fl{float:left;}
+.fr{float:right;}
+.wrap{ width:100%; margin:0 auto; position:relative; text-align:center; }
+/*下载*/
+.downloadBox{width:100%; height:45px;background:#333333; }
+	.downloadBox a{display:inline-block; float:left; line-height:45px; font-size:1.4rem; color:#666666;}
+	.downloadBox .downloadBtn{width:86%;height:100%;background:url(../images/index.png) no-repeat 20px 10px; background-size:100%;text-indent:4.4rem;}
+	.downloadBox .downloadClose{width:14%;height:100%; background:url(../images/index.png) no-repeat 20px -27px;background-size:600%;}
+/*头部*/
+header{width:100%; height:50px;background:#2980b9 url(../images/index.png) no-repeat 20px -93px; background-size:98%; color:#fff; }
+	header a{display:inline-block; float:right; margin-right:22px;color:#fff; font-size:1.6rem; line-height:45px;}
+
+/*滑动广告*/
+.scroll_wrap{ width:100%; overflow:hidden; position:relative;}
+.scroll{ width:9999px; position:relative; top:0; left:0; }
+	.scroll li{float:left; width:375px; height:auto; display:block;}
+		.scroll li a{position:relative;width:375px;}
+			.scroll li a img{ width:100%;height:auto; display:inline-block;} 
+.scroll_bar { position:absolute; left:0px; bottom:0px; width:100%; margin-bottom:8px; text-align:center; }
+	.scroll_bar li { display:inline-block; padding:0; margin:0;  margin:0px 3px; width:8px; height:8px; background:#fff; opacity:0.3; border-radius:8px;}
+	.scroll_bar li.active{opacity:0.6;}
+
+/*首页导航*/
+.index_nav { width:90%; height:67px; padding:22px 5%; margin:0 auto;background:#fff;position:relative; top:-3px;}
+	.index_nav a{display:block; width:25%;float:left; font-size:0.8125em; text-align:center;}
+		.index_nav a p{height:22px; line-height:22px; text-shadow:none;font-family:"微软雅黑"; font-size:1.4rem; color:#2980b9; font-weight:normal;}
+	.index_nav img {width:60%;height:auto;margin-bottom:0px;}
+
+/*列表导航*/
+.navList{width:100%; height:auto; display:block; padding-bottom:26px; background:#fff;}
+	.navList li{width:100%; height:45px; padding:15px 0; }
+	.navList li:nth-child(odd){background:#f8f8f8;}
+	.navList li:nth-child(even){background:#fff;}
+		.navList li a{display:block; width:82%; padding-left:18%; height:100%; background-image:url(../images/index.png); background-repeat:no-repeat; background-size:80%;}
+		.navList li h4{font-size:1.6rem; color:#34495e; line-height:1.8rem; width:60%; float:left; font-weight:normal;}
+		.navList li h4 span{font-size:1.4rem; color:#5e778f; line-height:1.8rem;}
+		.navList li p.navListP{font-size:1.4rem;color:#f39c12; line-height:45px; float:right; margin-right:22px;}
+		.navList li p.navListP span{color:#c7c7cc; font-family:"宋体"; font-weight:bold; padding-left:5px;}
+		.navList li:nth-child(1) a{background-position:20px -274px;}
+		.navList li:nth-child(2) a{background-position:24px -312px;}
+		.navList li:nth-child(3) a{background-position:24px -352px;}
+		.navList li:nth-child(4) a{background-position:24px -394px;}
+		.navList li:nth-child(5) a{background-position:24px -430px;}
+/*底部*/
+footer{background:#797f83; width:100%; height:125px; text-align:center;}
+	footer h4 a{display:inline-block; width:33%; font-size:1.56rem; color:#c7c7cc; line-height:56px; float:left; font-weight:normal;}
+		footer h4 a:hover{color:#fff;}
+	footer p{font-size:1.4rem; color:#c7c7cc; line-height:1.6rem;}
+		footer p span{ text-decoration:underline;}
+
+/*e计划 列表页*/
+.sequence{width:100%;height:40px; background:#fff;}
+	.sequence p{width:33%; line-height:40px; color:#666666; font-size:1.4rem; text-align:center; float:left;}
+	.sequence p.active{color:#f39c12;}
+		.sequence p span{display:inline-block;  width:8px; height:20px; background:url(../images/index.png) no-repeat 0 -546px; background-size:4000%; margin-left:6px;}
+		.sequence p.active span{background:url(../images/index.png) no-repeat 0 -504px;}
+
+.ePlayList{background:#ebeff1;width:90%; height:auto; display:block; padding:20px 5% 0; margin-bottom:30px;}
+	.ePlayList li{width:100%; height:125px; background:#fff; margin-bottom:10px;}
+		.ePlayList li p{width:110px; margin-left:13px; font-size:1.4rem; color:#999999;display:inline-block; float:left; margin-top:30px;}
+		.ePlayList li p.ePlayListP2{margin-top:34px;}
+		.ePlayList li a{display:inline-block; float:left; text-decoration:none; margin-top:34px;}
+.btn{background:#2980b9; border-radius:2px; color:#fff; height:30px; line-height:30px; text-align:center; display:inline-block;}
+	.btn:hover{color:#fff;background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top , #F39C12, #F39C12) repeat scroll 0 0; border-color: #555555; box-shadow: 0 3px 0 #D78A0F inset, 0 1px 0 rgba(0, 0, 0, 0.2);}
+	.width80{width:80px;}
+	.fontSize30{font-size:3rem;}
+	.colorOrage{color:#f39c12;}
+	.fontsize24{font-size:2.4rem;}
+	.fontsize20{font-size:2rem;}
+	.fontsize16{font-size:1.6rem;}
+	.fontsize15{font-size:1.5rem;}
+	.fontsize14{font-size:1.4rem;}
+	.fontsize12{font-size:1.2rem;}
+.dropScheduleZ{width:100%; height:3px; background:#ebeff1; margin:8px 0; float:left; margin-top:18px;}
+.dropScheduleF{width:100px; height:3px; background:#3498db;}
+	.ePlayList li i{ font-style:normal; color:#bdc3c7; display:inline-block; padding:0 10px; border-right:1px solid #5e778f; line-height:16px;}
+	.ePlayList li i:first-child{margin-left:20px;}
+	.ePlayList li i:last-child{border-right:0px solid #fff;}
+
+/*e计划 详情页*/
+.eplanInfoTop{width:100%; height:280px; background:#3498db url(../images/eplanInfoTop_02.jpg) no-repeat center bottom; background-size:100%;}
+	.eplanInfoTop p{width:45%;float:left; margin-left:5%;color:#fff; padding-top:10px;}
+	.eplanInfoTop p:nth-child(2){margin-left:0; text-align:right;}
+	.eplanInfoTop article{ position:relative; top:54px; width:178px; height:178px; margin:0 auto;}
+.eplanInfoList{background:#fff; color:#999999; width:100%; height:auto; margin:12px 0;}
+	.eplanInfoList p{width:90%; margin:0 auto;line-height:44px; border-bottom:1px solid #c8c7cc;}
+	.eplanInfoList p:last-child{border-bottom:0px solid #fff;}
+		.eplanInfoList p span{float:right; text-align:right; color:#666666;}
+.eplanInfoObj,.eplanInfoDrop{width:100%; height:auto; background:#FFFFFF; overflow:hidden;}
+	.eplanInfoObj h4,.eplanInfoDrop h4{color:#666; height:45px; line-height:45px; text-indent:1rem; font-weight:normal;}
+		.eplanInfoObj h4 span,.eplanInfoDrop h4 span{display:inline-block; float:right; margin-right:1rem; background:url(../images/eplanInfoIcon.png) no-repeat center center; background-size:13px; width:13px; height:6px; padding:19px 0;}
+		.eplanInfoObj h4 .active,.eplanInfoDrop h4 .active{ transform:rotate(180deg); -webkit-transform:rotate(180deg); -moz-transform:rotate(180deg); -o-transform:rotate(180deg);}
+		.eplanInfoObj div,.eplanInfoDrop div{ height:0px;}
+		.eplanInfoObj div.active,.eplanInfoDrop div.active{padding-bottom:20px;height:auto;}
+	.eplanInfoObj p{width:86%; height:auto; color:#999; margin-left:9%; line-height:1.8rem;}
+		.eplanInfoObj p span{margin-left:-4%;}
+.eplanInfoDrop{margin:12px 0;}
+	.eplanInfoDrop div{width:90%; margin:0 auto; text-align:right;}
+		.eplanInfoDrop div h5{font-weight:normal; width:50%; display:inline-block; color:#666;line-height:20px; text-align:left; margin:10px 0;}
+		.eplanInfoDrop div h5 span{color:#999;}
+		.eplanInfoDrop div p{width:50%; display:inline-block; color:#333333; font-size:1.6rem; line-height:40px;margin:10px 0;}
+.eplanInfoBottom{width:100%; height:50px; background:#2980b9; position:relative; bottom:0px; left:0;}
+	.eplanInfoBottom .btnRectangular{width:100%;display:block; z-index:1; position:absolute; top:0px; left:0px; font-size:1.6rem; line-height:50px; text-align:center; color:#FFFFFF;}
+	.eplanInfoBottom .eplanBtnIcon{background:rgba(255,255,255,0.3); position:absolute; top:0;left:0; z-index:2;width:50px; height:50px;}
+		.eplanInfoBottom .eplanBtnIcon img{width:50px;}
+	/*环状进度*/
+	.circle {width: 178px;height: 178px;position: absolute;border-radius: 50%;background:url(../images/roolBox1.png);background-size:178px;}
+		.pie_left, .pie_right {width:178px; height:178px;position: absolute;top: 0px;left: 0px;}
+		.left, .right {width:178px; height:178px;background:url(../images/rool.png) no-repeat left top;background-size:178px;border-radius: 50%;position: absolute;top: 0;left: 0;}
+		.right {background:url(../images/rool.png) no-repeat right top;background-size:178px;}
+		.pie_right, .right {clip:rect(0,auto,auto,89px);transition: all ease-in 1s;}
+		.pie_left, .left {clip:rect(0,89px,auto,0);transition: all ease-out 1s 1s;}
+		.mask {width: 174px;height: 174px;border-radius: 50%;left: 2px;top: 2px;position: absolute;color:#fff; }
+		.eplanInfoTop p.ePlayRoolP1,.eplanInfoTop p.ePlayRoolP2{width:90px; height:50px; line-height:20px; float:left; text-align:left; margin-top:46px; margin-left:24px;}
+		.eplanInfoTop p.ePlayRoolP2{width:60px; margin-left:0px; margin-top:50px;height:40px;}
+		.line{height:1px; background:#6eb4e6; margin:5px 0 10px 22px;}
+		.eplanInfoTop .mask strong{ font-weight:normal; display:inline-block;width:100%; text-align:center;}
+		.w125{width:125px;}
+		.fontsize28{font-size:2.8rem;}
+		.circle i{opacity:0; height:0px; width:0;font-size:0px; line-height:0px;}
+/*收益计算器*/
+.calculator{width:100%; text-align:center; font-size:1.5rem; line-height:1.8rem;}
+.calculator span{color:#999999; font-size:1.4rem;}
+.calculator .calculatorP1{margin:50px auto;width:100%;}
+.calculator .calculatorP2,.calculator .calculatorP3{width:50%; color:#666666; float:left;}
+.calculator .calculatorInput{float:left; margin-top:54px; margin-left:32px; width:200px; height:45px;}
+.calculatorInput img{width:200px;z-index:2;margin-top:-10px;margin-left:-200px; }
+.calculatorInput input{width:200px; height:45px; margin-top:0px;margin-left:0px;border:0px solid #fff; text-align:center;background:url(../images/calculatorInput.jpg) no-repeat center bottom; background-size:100%;font-size:2rem; color:#2980b9;}
+.calculator .calculatorBtn{display:inline-block;width:100px; height:45px; margin-left:11px;float:left; margin-top:54px; font-size:1.6rem; line-height:45px;}
+a.blueBtn{background:#2980b9;}
+a.grayBtn{background:#bdc3c7;}
+.calculator .calculatorP4{margin-left:32px; margin-top:10px; text-align:left;}
+.calculator .calculatorP4 a{ text-decoration:underline;}
+.fontsize40{font-size:4rem;}
+/*立即投资*/
+.eplanDropInfo{width:100%; color:#666666; line-height:2rem;}
+.w260{width:260px;}
+.balance{margin-left:16px; line-height:42px; margin-top:10px;}
+.eplanDropInfo span.btnRound{width:78px; height:23px; margin-top:17px; border-radius:12px; text-align:center; display:inline-block;  border:1px solid #2980b9;font-size:1.4rem;color:#2980b9; background:#fff;}
+.eplanDropInfo span.active{color:#fff;background:#2980b9;}
+.eplanDropInfo .moneyInput,.eplanDropInfo .calculatorInfo{width:90%;padding:0 5%; height:45px; line-height:45px; border-top:1px solid #c8c7cc;border-bottom:1px solid #c8c7cc; background:#FFFFFF;}
+.eplanDropInfo .moneyInput input{color:#c7c7cc; border:0px solid #fff; margin-left:10px;}
+.eplanDropInfo .moneyInput span{text-align:right; float:right;color:#c7c7cc;}
+.eplanDropInfo .go{float:right;margin-right:15px; line-height:37px;}
+.eplanDropInfo .go span{display:inline-block; margin-left:15px;color:#c7c7cc; font-family:"宋体"; font-weight:bold;}
+.calculatorInfoBox{height:120px; width:100%; overflow:hidden; position:relative;}
+
+.eplanDropInfo .calculatorInfo{height:auto; width:90%; margin:0 auto;color:#999999; line-height:32px;position:absolute;top:-120px; transition:all 0.3s ease; }
+.calculatorInfoBox .active{top:0px;}
+.eplanDropInfo .calculatorInfo p{margin-left:30px;}
+.eplanDropInfo .calculatorInfo p span{color:#333333; margin-left:5px;}
+.eplanDropInfo .calculatorInfo p i{color:#c7c7cc;float:right;}
+.eplanDropInfo .calculatorInfo p:nth-child(1){margin-left:0px;}
+.eplanDropInfo a.btn{line-height:45px; margin:12px auto; width:265px; height:45px; display:block;}
+.dropAgreeBox{width:265px; margin:0 auto;}
+.dropAgreeBox div{float:left;display:inline-block;}
+.dropAgreeBox .dropAgree{margin-left:10px;}
+/*立即投资-弹出交易密码*/
+.popUpWrap{position:absolute; top:0px; left:0px; background:rgba(0,0,0,0.4); width:100%; height:100%;  text-align:center; display:none;}
+.transformScale{display:block;transform:scale(0.9); -webkit-transform:scale(0.9); transform-origin:center center; -webkit-transform-origin:center center; transition:all 0.5s linear;-webkit-transition:all 0.5s linear;}
+.transformScaleActive{display:block;transform:scale(1);-webkit-transform:scale(1);}
+.popPassword,.popPasswordError{width:265px; height:auto; padding:10px; position:absolute; top:170px; left:50%; margin-left:-142px; background:rgba(255,255,255,0.9); border-radius:3px;}
+.popUpWrap h4{line-height:50px; font-size:1.8rem; color:#000; text-align:center; font-weight:normal;}
+.popPassword .input{margin:0 auto;}
+.popPassword input{display:inline-block;border:0px;width:36px;height:36px;outline:none;font-size:1.4rem;font-weight:normal;text-align:center;line-height:36px;color:#666;background:rgba(255,255,255,0);}
+.popPassword .popPasswordBtn{width:100%; height:45px; line-height:45px; font-size:1.8rem; margin:10px auto;}
+.popPasswordError p{color:#666666;}
+.popPasswordError .popRetry{border-top:1px solid #d5d5d5; padding-top:6px; margin-top:20px;}
+.popRetry span{font-size:1.8rem; line-height:35px; color:#2980b9;display:inline-block; width:50%; float:left;}
+input::-webkit-input-placeholder { 
+color: #999; 
+-webkit-transition: color.5s; 
+} 
+input:focus::-webkit-input-placeholder, input:hover::-webkit-input-placeholder { 
+color: #c2c2c2; 
+-webkit-transition: color.5s; 
+} 
+
+/*加息券*/
+.addInterestList{display:block; margin:0 auto; width:88%; height:auto; padding-bottom:140px;}
+.addInterestList li{width:100%; height:150px; background:url(../images/interest.png) no-repeat center center; background-size:100%; text-align:center; margin-top:22px; line-height:26px;position:relative;}
+.addInterestList li h4{height:50px; width:100%; font-size:4rem; color:#fffe80; padding-top:33px;}
+.addInterestList li h4 span{font-size:3rem;}
+.addInterestList li p{ color:#fff; display:inline-block; margin:0 auto;}
+.addInterestList li p.p1{width:100%; display:block;}
+.addInterestList span.addInterestChoose{display:inline-block; width:65px; height:27px; border:1px solid #FFFFFF; border-radius:2px; background:rgba(232,108,68,0); color:#fff; position:absolute; right:12px;}
+.addInterestList span.active{border:1px solid rgba(232,108,68,1); background:rgba(232,108,68,1);}
+.addInterestBtn{width:100%; height:49px; font-size:1.8rem; line-height:49px; text-align:center;}
+
+/*投资成功*/
+.eplanSuccess{text-align:center; margin:17px auto; line-height:1.8rem;}
+.eplanSuccess img{width:48px; margin:8px auto;}
+.eplanSuccess h4{ font-size:1.8rem; color:#333333;}
+.eplanSuccess p{ font-size:1.4rem; color:#999999;}
+.eplanSuccessCon{width:359px;  background:url(../images/eplanSuccess.jpg)  repeat-y -359px center; background-size:718px;height:auto; margin:0 auto; padding:19px 0; font-size:1.5rem;}
+.eplanSuccessTop{width:359px; background:url(../images/eplanSuccess.jpg)  no-repeat left top;  background-size:718px;height:7px; margin:0 auto;}
+.eplanSuccessBottom{width:359px; background:url(../images/eplanSuccess.jpg)  no-repeat left bottom;  background-size:718px;height:7px; margin:0 auto;margin-bottom:48px;}
+.eplanSuccessCon p{width:96%; text-indent:12px;}
+.eplanSuccessCon p span{margin-right:12px;}
+.eplanSuccessBtn{width:265px; height:45px; line-height:45px; font-size:1.8rem; margin:0 auto; display:block;}

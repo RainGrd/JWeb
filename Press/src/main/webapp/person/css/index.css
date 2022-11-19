@@ -1,0 +1,197 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    margin: 0;
+    /* vh 是view height 既视窗高度的意思，100就是100%占满窗口高度 */
+    height: 100vh;
+    background-color: #eee;
+}
+
+/* * {
+  border: 1px solid #333;
+} */
+.flex {
+    display: flex;
+}
+
+a{
+    text-decoration: none;
+}
+/* 占满比例 */
+.flex1 {
+    flex: 1;
+    text-align: center;
+}
+
+/* 竖向 */
+.column {
+    flex-direction: column;
+}
+/* 阴影 */
+.yinYing {
+    box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
+    rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+}
+/* 白色背景 */
+.baiSe {
+    background-color: #fff;
+}
+/* 上下左右外边距 */
+.mg8 {
+    margin: 8px;
+}
+/* 右外边距 */
+.mgr8 {
+    margin-right: 8px;
+}
+/* 上外边距 */
+.mgt8 {
+    margin-top: 8px;
+}
+/* 四个小盒子 */
+.shuJu {
+    height: 100px;
+}
+/* 中间的大盒子 */
+.lieBiaoXiang {
+    height: 500px;
+}
+/* 导航条 */
+.daoHang {
+    padding: 10px 20px;
+    border-bottom: 1px solid rgb(201, 201, 201);
+    font-size: 14px;
+    color: #666;
+}
+.neiRong::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+}
+
+/* 当屏幕宽度小于600px时要改变的css */
+@media (max-width: 600px) {
+    /* 小屏幕上取消侧边栏，后面学js时会教怎么弹出 */
+    .ceBian {
+        display: none;
+    }
+    /* 内容栏和数据栏flex方向改为竖向 */
+    .neiRong {
+        flex-direction: column;
+    }
+    .shuJuQu {
+        flex-direction: column;
+    }
+    /* 右区加左外边距 */
+    .youQu {
+        margin-left: 8px;
+    }
+    /* 数据块外边距，大小改为自动宽高 */
+    .shuJu {
+        margin: 0 0 8px;
+        flex: auto;
+    }
+}
+
+
+/*text/css*/
+#_copy {
+    align-items: center;
+    background: #4494D5;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    font-size: 13px;
+    height: 30px;
+    justify-content: center;
+    position: absolute;
+    width: 60px;
+    z-index: 1000
+}
+
+#select-tooltip, #sfModal, .modal-backdrop, div[id^=reader-helper] {
+    display: none !important
+}
+
+.modal-open {
+    overflow: auto !important
+}
+
+._sf_adjust_body {
+    padding-right: 0 !important
+}
+/*侧边栏*/
+.broadside{
+    background: #4b4b4b;
+    box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px;
+    width: 350px;
+    overflow: hidden;
+    z-index: 3;
+}
+/*导航栏*/
+.nav{
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.nav a{
+    color: #fff;
+    margin: 0px auto;
+    line-height: 100px;
+}
+.nav li:hover{
+    background: #3c3c3c;
+}
+.headPortrait{
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #999;
+}
+/*头像*/
+.headPortrait img{
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    /*动画过渡*/
+    transition: transform 0.5s;
+}
+.headPortrait img:hover{
+    transform: rotate(360deg);
+}
+.border{
+    padding: 0px;
+    margin: 0px;
+    border-radius: 50%;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: #fff;
+
+}
+/*个人资料*/
+#warp{
+    width: 100%;
+    margin: 40px;
+    font-size: 16px;
+}
+.col_1_4{
+    width: 31%;
+    display: inline-block;
+    vertical-align: top;
+}
+.col_1_4 p{
+
+    text-align: left;
+    width: 100%;
+    height: 40px;
+}
+.title{
+    display: flex;
+    margin:20px;
+}
+

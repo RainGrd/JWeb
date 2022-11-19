@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.user.CaffP2pBorrowerDataMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.user.CaffP2pBorrowerData" >
+    <id column="caffP2pBorrowerDataId" property="caffp2pborrowerdataid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="availableCreditAmount" property="availablecreditamount" jdbcType="DECIMAL" />
+    <result column="borrowerTypeInt" property="borrowertypeint" jdbcType="INTEGER" />
+    <result column="maxCreditAmount" property="maxcreditamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pBorrowerDataId, createdDateLong, version, userId, availableCreditAmount, borrowerTypeInt, 
+    maxCreditAmount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pBorrowerData
+    where caffP2pBorrowerDataId = #{caffp2pborrowerdataid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pBorrowerData
+    where caffP2pBorrowerDataId = #{caffp2pborrowerdataid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.user.CaffP2pBorrowerData" >
+    insert into CaffP2pBorrowerData (caffP2pBorrowerDataId, createdDateLong, 
+      version, userId, availableCreditAmount, 
+      borrowerTypeInt, maxCreditAmount)
+    values (#{caffp2pborrowerdataid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{availablecreditamount,jdbcType=DECIMAL}, 
+      #{borrowertypeint,jdbcType=INTEGER}, #{maxcreditamount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pBorrowerData" >
+    insert into CaffP2pBorrowerData
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2pborrowerdataid != null" >
+        caffP2pBorrowerDataId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="availablecreditamount != null" >
+        availableCreditAmount,
+      </if>
+      <if test="borrowertypeint != null" >
+        borrowerTypeInt,
+      </if>
+      <if test="maxcreditamount != null" >
+        maxCreditAmount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2pborrowerdataid != null" >
+        #{caffp2pborrowerdataid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="availablecreditamount != null" >
+        #{availablecreditamount,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowertypeint != null" >
+        #{borrowertypeint,jdbcType=INTEGER},
+      </if>
+      <if test="maxcreditamount != null" >
+        #{maxcreditamount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pBorrowerData" >
+    update CaffP2pBorrowerData
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="availablecreditamount != null" >
+        availableCreditAmount = #{availablecreditamount,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowertypeint != null" >
+        borrowerTypeInt = #{borrowertypeint,jdbcType=INTEGER},
+      </if>
+      <if test="maxcreditamount != null" >
+        maxCreditAmount = #{maxcreditamount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where caffP2pBorrowerDataId = #{caffp2pborrowerdataid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.user.CaffP2pBorrowerData" >
+    update CaffP2pBorrowerData
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      availableCreditAmount = #{availablecreditamount,jdbcType=DECIMAL},
+      borrowerTypeInt = #{borrowertypeint,jdbcType=INTEGER},
+      maxCreditAmount = #{maxcreditamount,jdbcType=DECIMAL}
+    where caffP2pBorrowerDataId = #{caffp2pborrowerdataid,jdbcType=BIGINT}
+  </update>
+</mapper>

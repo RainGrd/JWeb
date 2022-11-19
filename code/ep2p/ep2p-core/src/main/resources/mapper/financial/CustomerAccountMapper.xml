@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yscf.core.dao.financial.CustomerAccountMapper">
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.CustomerAccount">
+    <id column="PID" jdbcType="VARCHAR" property="pid" />
+    <result column="customer_name" property="customer.customerName" jdbcType="VARCHAR" />
+    <result column="sname" property="customer.sname" jdbcType="VARCHAR" />
+    <result column="registration_time" property="customer.registrationTime" jdbcType="TIMESTAMP" />
+    <result column="phone_no" property="customer.phoneNo" jdbcType="VARCHAR" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="recharge_amount" jdbcType="DECIMAL" property="rechargeAmount" />
+    <result column="withdraw_amount" jdbcType="DECIMAL" property="withdrawAmount" />
+    <result column="due_amount" jdbcType="DECIMAL" property="dueAmount" />
+    <result column="available_amount" jdbcType="DECIMAL" property="availableAmount" />
+    <result column="freeze_amount" jdbcType="DECIMAL" property="freezeAmount" />
+    <result column="tender_amount" jdbcType="DECIMAL" property="tenderAmount" />
+    <result column="experience_amount" jdbcType="DECIMAL" property="experienceAmount" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_update_user" jdbcType="VARCHAR" property="lastUpdateUser" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="acc_com_desc" jdbcType="VARCHAR" property="accComDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ca.PID, ca.customer_id, ca.recharge_amount, ca.withdraw_amount, ca.due_amount, ca.available_amount, 
+    ca.freeze_amount, ca.tender_amount, ca.experience_amount, ca.status, ca.create_user, ca.create_time, 
+    ca.last_update_user, ca.last_update_time, ca.acc_com_desc,cust.customer_name,cust.sname,cust.phone_no,
+    cust.registration_time
+  </sql>
+  
+   <sql id="Amount_Column_List">
+    ca.PID, ca.customer_id, ca.recharge_amount, ca.withdraw_amount, ca.due_amount, ca.available_amount, 
+    ca.freeze_amount, ca.tender_amount, ca.experience_amount, ca.status, ca.create_user, ca.create_time, 
+    ca.last_update_user, ca.last_update_time, ca.acc_com_desc
+  </sql>
+  
+  
+  <sql id="query_sql">
+ 		 <if test="parasMap.customerName != null and parasMap.customerName!=''" >
+       		and  customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+       	</if>
+       	<if test="parasMap.sname != null and parasMap.sname != ''" >
+        	and  cust.sname like   concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+      	</if>
+        <if test="parasMap.phoneNo != null and parasMap.phoneNo != ''"  >
+        	and  cust.phone_No like  concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+      	</if>
+      	<if test="parasMap.rechargeStartValue != null and parasMap.rechargeStartValue != ''">
+        	and ca.recharge_amount <![CDATA[ >= ]]>#{parasMap.rechargeStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test=" parasMap.rechargeEndValue != null and parasMap.rechargeEndValue != ''">
+      		and ca.recharge_amount <![CDATA[ <= ]]>#{parasMap.rechargeEndValue,jdbcType=VARCHAR}
+      	</if>
+     	<if test="parasMap.withdrawStartValue != null and parasMap.withdrawStartValue !=''"  >
+        	and ca.withdraw_amount <![CDATA[ >= ]]>#{parasMap.withdrawStartValue,jdbcType=VARCHAR}
+      	</if>
+     	<if test="parasMap.withdrawEndValue != null and parasMap.withdrawEndValue !=''"  >
+        	and ca.withdraw_amount <![CDATA[ <= ]]>#{parasMap.withdrawEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.dueStartValue != null and parasMap.dueStartValue != ''"  >
+        	and ca.due_amount <![CDATA[ >= ]]>  #{parasMap.dueStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.dueEndValue != null and parasMap.dueEndValue != ''"  >
+        	and ca.due_amount <![CDATA[ <= ]]>  #{parasMap.dueEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.availableStartValue != null and parasMap.availableStartValue != ''"  >
+        	and ca.available_amount <![CDATA[ >= ]]>#{parasMap.availableStartValue,jdbcType=VARCHAR} 
+      	</if>
+      	<if test="parasMap.availableEndValue != null and parasMap.availableEndValue != ''">
+        	and ca.available_amount <![CDATA[ <= ]]>#{parasMap.availableEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.freezeStartValue != null and parasMap.freezeStartValue != ''"  >
+       		and ca.freeze_amount <![CDATA[ >= ]]>  #{parasMap.freezeStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.freezeEndValue != null and parasMap.freezeEndValue != ''"  >
+       		and ca.freeze_amount <![CDATA[ <= ]]> #{parasMap.freezeEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.tenderStartValue != null and parasMap.tenderStartValue != ''"  >
+        	and ca.tender_amount <![CDATA[ >= ]]>  #{parasMap.tenderStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.tenderEndValue != null and parasMap.tenderEndValue != ''"  >
+        	and ca.tender_amount <![CDATA[ <= ]]>  #{parasMap.tenderEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="parasMap.registrationStartValue != null and parasMap.registrationStartValue != ''">
+        	and cust.registration_time <![CDATA[ >= ]]> #{parasMap.registrationStartValue,jdbcType=DATE}
+      	</if>
+      	<if test="parasMap.registrationEndValue != null and parasMap.registrationEndValue != ''">
+        	and cust.registration_time <![CDATA[ < ]]> date_add(#{parasMap.registrationEndValue,jdbcType=DATE}, INTERVAL 1 day)
+      	</if>
+  </sql>
+  
+  <!-- 查询客户账户列表   条件查询	 分页 -->
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="map">
+		select 
+			<include refid="Base_Column_List" />
+		from t_cust_customer cust 
+		left join t_biz_customer_account ca
+   		on ca.customer_id = cust.pid
+		where cust.status >=0
+		<include refid="query_sql"></include>
+			order by ca.create_time desc
+	</select>
+  <!-- 导出账户客户列表 -->
+  <select id="selectCustomerAccountEom" resultMap="BaseResultMap">
+    select 
+    	*
+    from (
+    	select 
+    		*,
+    		(@rown := @rown + 1) rowns
+    	from (
+	  
+			select 
+				<include refid="Base_Column_List" />
+			from t_cust_customer cust 
+			left join t_biz_customer_account ca
+	   		on ca.customer_id = cust.pid
+			where cust.status >=0
+			<include refid="query_sql"></include>
+				order by ca.create_time desc
+			)t,
+		(SELECT @rown := 0) b
+	) t where 1=1 		
+		<include refid="export_query_sql"></include>
+</select>
+
+
+  
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND t.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			AND t.rowns BETWEEN #{expm.startCheckrecords,jdbcType=INTEGER}
+				AND #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+	
+	<!-- 统计客户账户列表资金		总计 -->
+  <select id="selectSumAmountSelective" resultType="java.util.Map" parameterType="java.util.Map">
+		select 
+			SUM(ca.recharge_amount) AS "rechargeAmount", 
+			SUM(ca.withdraw_amount) AS "withdrawAmount", 
+			SUM(ca.due_amount) AS "dueAmount", 
+			SUM(ca.available_amount) AS "availableAmount", 
+    		SUM(ca.freeze_amount) AS "freezeAmount", 
+    		SUM(ca.tender_amount) AS "tenderAmount", 
+    		SUM(ca.experience_amount) AS "experienceAmount"
+		from t_cust_customer cust 
+		left join t_biz_customer_account ca
+   		on ca.customer_id = cust.pid
+		where cust.status >=0
+		<if test="customerName != null" >
+       		and  customer_name like  concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+       	</if>
+       	<if test="sname != null" >
+        	and  cust.sname like   concat('%',#{sname,jdbcType=VARCHAR},'%' )
+      	</if>
+        <if test="phoneNo != null"  >
+        	and  cust.phone_No like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      	</if>
+      	<if test="rechargeStartValue != null">
+        	and ca.recharge_amount <![CDATA[ >= ]]>#{rechargeStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test=" rechargeEndValue != null">
+      		and ca.recharge_amount <![CDATA[ <= ]]>#{rechargeEndValue,jdbcType=VARCHAR}
+      	</if>
+     	<if test="withdrawStartValue != null"  >
+        	and ca.withdraw_amount <![CDATA[ >= ]]>#{withdrawStartValue,jdbcType=VARCHAR}
+      	</if>
+     	<if test="withdrawEndValue != null"  >
+        	and ca.withdraw_amount <![CDATA[ <= ]]>#{withdrawEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="dueStartValue != null"  >
+        	and ca.due_amount <![CDATA[ >= ]]>  #{dueStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="dueEndValue != null"  >
+        	and ca.due_amount <![CDATA[ <= ]]>  #{dueEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="availableStartValue != null"  >
+        	and ca.available_amount <![CDATA[ >= ]]>#{availableStartValue,jdbcType=VARCHAR} 
+      	</if>
+      	<if test="availableEndValue != null">
+        	and ca.available_amount <![CDATA[ <= ]]>#{availableEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="freezeStartValue != null"  >
+       		and ca.freeze_amount <![CDATA[ >= ]]>  #{freezeStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="freezeEndValue != null"  >
+       		and ca.freeze_amount <![CDATA[ <= ]]> #{freezeEndValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="tenderStartValue != null"  >
+        	and ca.tender_amount <![CDATA[ >= ]]>  #{tenderStartValue,jdbcType=VARCHAR}
+      	</if>
+      	<if test="tenderEndValue != null"  >
+        	and ca.tender_amount <![CDATA[ <= ]]>  #{tenderEndValue,jdbcType=VARCHAR}
+      	</if>
+     	<if test="registrationStartValue != null">
+        	and cust.registration_time <![CDATA[ >= ]]> #{registrationStartValue,jdbcType=DATE}
+      	</if>
+      	<if test="registrationEndValue != null">
+        	and cust.registration_time <![CDATA[ < ]]> date_add(#{registrationEndValue,jdbcType=DATE}, INTERVAL 1 day)
+      	</if>
+	</select>
+	
+	<!-- 统计客户账户列表资金		总计 -->
+  <select id="selectSumAmountSelectiveByVo" resultType="java.util.Map">
+		select 
+			SUM(ca.recharge_amount) AS "rechargeAmount", 
+			SUM(ca.withdraw_amount) AS "withdrawAmount", 
+			SUM(ca.due_amount) AS "dueAmount", 
+			SUM(ca.available_amount) AS "availableAmount", 
+    		SUM(ca.freeze_amount) AS "freezeAmount", 
+    		SUM(ca.tender_amount) AS "tenderAmount", 
+    		SUM(ca.experience_amount) AS "experienceAmount"
+		from t_cust_customer cust 
+		left join t_biz_customer_account ca
+   		on ca.customer_id = cust.pid
+		where cust.status >=0
+		<include refid="query_sql"></include>
+	</select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_customer_account
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <select id="getByCusterId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Amount_Column_List" />
+    from t_biz_customer_account ca
+    where customer_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_biz_customer_account
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.financial.CustomerAccount">
+    insert into t_biz_customer_account (PID, customer_id, recharge_amount, 
+      withdraw_amount, due_amount, available_amount, 
+      freeze_amount, tender_amount, experience_amount, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, acc_com_desc
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{rechargeAmount,jdbcType=DECIMAL}, 
+      #{withdrawAmount,jdbcType=DECIMAL}, #{dueAmount,jdbcType=DECIMAL}, #{availableAmount,jdbcType=DECIMAL}, 
+      #{freezeAmount,jdbcType=DECIMAL}, #{tenderAmount,jdbcType=DECIMAL}, #{experienceAmount,jdbcType=DECIMAL}, 
+      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{accComDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.CustomerAccount">
+    insert into t_biz_customer_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="rechargeAmount != null">
+        recharge_amount,
+      </if>
+      <if test="withdrawAmount != null">
+        withdraw_amount,
+      </if>
+      <if test="dueAmount != null">
+        due_amount,
+      </if>
+      <if test="availableAmount != null">
+        available_amount,
+      </if>
+      <if test="freezeAmount != null">
+        freeze_amount,
+      </if>
+      <if test="tenderAmount != null">
+        tender_amount,
+      </if>
+      <if test="experienceAmount != null">
+        experience_amount,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null">
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time,
+      </if>
+      <if test="accComDesc != null">
+        acc_com_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="rechargeAmount != null">
+        #{rechargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="withdrawAmount != null">
+        #{withdrawAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dueAmount != null">
+        #{dueAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="availableAmount != null">
+        #{availableAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="freezeAmount != null">
+        #{freezeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="tenderAmount != null">
+        #{tenderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="experienceAmount != null">
+        #{experienceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null">
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accComDesc != null">
+        #{accComDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.financial.CustomerAccount">
+    update t_biz_customer_account
+    <set>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="rechargeAmount != null">
+        recharge_amount = #{rechargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="withdrawAmount != null">
+        withdraw_amount = #{withdrawAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dueAmount != null">
+        due_amount = #{dueAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="availableAmount != null">
+        available_amount = #{availableAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="freezeAmount != null">
+        freeze_amount = #{freezeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="tenderAmount != null">
+        tender_amount = #{tenderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="experienceAmount != null">
+        experience_amount = #{experienceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null">
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accComDesc != null">
+        acc_com_desc = #{accComDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.financial.CustomerAccount">
+    update t_biz_customer_account
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      recharge_amount = #{rechargeAmount,jdbcType=DECIMAL},
+      withdraw_amount = #{withdrawAmount,jdbcType=DECIMAL},
+      due_amount = #{dueAmount,jdbcType=DECIMAL},
+      available_amount = #{availableAmount,jdbcType=DECIMAL},
+      freeze_amount = #{freezeAmount,jdbcType=DECIMAL},
+      tender_amount = #{tenderAmount,jdbcType=DECIMAL},
+      experience_amount = #{experienceAmount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      acc_com_desc = #{accComDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateCustAccountByUsersId" parameterType="java.util.Map">
+  	<foreach collection="userIds" item="userId" index="index" open="" close="" separator=";">  
+	    update t_biz_customer_account
+	    <set>  
+	      available_amount = available_amount+#{amount,jdbcType=DECIMAL},
+	      version = version+1
+	    </set> 
+	    where customer_id = #{userId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+  <update id="updateCustExperienceAmountByUsersId" parameterType="java.util.Map">
+  	<foreach collection="userIds" item="userId" index="index" open="" close="" separator=";">  
+	    update t_biz_customer_account
+	    <set>  
+	      experience_amount = experience_amount+#{amount,jdbcType=DECIMAL},
+	      version = version+1
+	    </set> 
+	    where customer_id = #{userId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+  <update id="updateCustAccountByMaps" parameterType="java.util.Map">
+  	<foreach collection="maps.keys" item="item" index="index" open="" close="" separator=";">   
+	    update t_biz_customer_account
+	    <set>  
+	      available_amount = available_amount+#{maps[${item}],jdbcType=DECIMAL},
+	      version = version+1
+	    </set> 
+	    where customer_id = #{item,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+</mapper>

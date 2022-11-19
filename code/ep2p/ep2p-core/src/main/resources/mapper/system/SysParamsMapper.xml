@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysParamsMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysParams" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="param_key" property="paramKey" jdbcType="VARCHAR" />
+    <result column="param_value" property="paramValue" jdbcType="VARCHAR" />
+    <result column="param_desc" property="paramDesc" jdbcType="VARCHAR" />
+    <result column="param_order" property="paramOrder" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, param_key, param_value, param_desc, param_order, status, create_user, create_time, 
+    last_update_user, last_update_time, version
+  </sql>
+  <select id="searchParamsByKeyOrVal" resultMap="BaseResultMap" parameterType="map">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_params
+    where status != 0
+    	<if test="map.paramKey != null ">
+    		 and ( param_key like  concat('%',#{map.paramKey,jdbcType=VARCHAR},'%' ) or param_value like  concat('%',#{map.paramKey,jdbcType=VARCHAR} ,'%' ) )
+    	</if> 
+    	order by create_time  desc
+  </select> 
+  
+   <select id="searchParamsByKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_sys_params
+	    where status != 0
+    	<if test="paramKey != null and paramKey!=''">
+    	   and  param_key =  #{paramKey,jdbcType=VARCHAR}
+    	</if> 
+  </select> 
+  
+  
+  <select id="getParamsByPid"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_params
+    where 1=1 
+        <if test=" pid != null || pid != '' ">
+    		 and pid =  #{pid,jdbcType=VARCHAR}  
+    	</if> 
+  </select> 
+  <update id="updateParamByPid" parameterType="com.yscf.core.model.system.SysParams" >
+    update t_sys_params
+    <set >
+      <if test="paramKey != null" >
+        param_key = #{paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="paramValue != null" >
+        param_value = #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="paramDesc != null" >
+        param_desc = #{paramDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="paramOrder != null" >
+        param_order = #{paramOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if> 
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+   <update id="batchDeletePara" parameterType="java.util.HashMap" >
+    update t_sys_params  
+    set   status = #{map.status,jdbcType=VARCHAR}   
+    	where PID in 
+	<foreach item="pid" collection="map.pid" open="(" separator="," close=")">
+		#{pid}
+	</foreach>
+  </update>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.system.SysParams">
+		insert into t_sys_params
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="paramKey != null">
+				param_key,
+			</if>
+			<if test="paramValue != null">
+				param_value,
+			</if>
+			<if test="paramDesc != null">
+				param_desc,
+			</if>  
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="paramKey != null">
+				#{paramKey,jdbcType=VARCHAR},
+			</if>
+			<if test="paramValue != null">
+				#{paramValue,jdbcType=VARCHAR},
+			</if>
+			<if test="paramDesc != null">
+				#{paramDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="paramOrder != null">
+				#{paramOrder,jdbcType=VARCHAR},
+			</if> 
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	  <select id="getParamsByParamKey"  parameterType="java.lang.String" resultMap="BaseResultMap" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_sys_params
+	    where status = 1 
+        <if test=" paramKey != null and paramKey != '' ">
+    		 and param_key =  #{paramKey,jdbcType=VARCHAR}  
+    	</if> 
+  </select> 
+</mapper>

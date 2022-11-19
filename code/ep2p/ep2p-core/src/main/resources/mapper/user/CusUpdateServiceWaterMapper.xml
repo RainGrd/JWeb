@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CusUpdateServiceWaterMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.CusUpdateServiceWater" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="old_cust_service_id" property="oldCustServiceId" jdbcType="VARCHAR" />
+    <result column="new_cust_service_id" property="newCustServiceId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="distribution_time" property="distributionTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" javaType="String"/>
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="DATE" javaType="String" />
+    <result column="upd_ser_wat_desc" property="updSerWatDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, old_cust_service_id,new_cust_service_id, customer_id, status, distribution_time, 
+    create_user, create_time, last_update_user, last_update_time, upd_ser_wat_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cust_update_service_water
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cust_update_service_water
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.user.CusUpdateServiceWater" >
+    insert into t_cust_update_service_water (PID, old_cust_service_id, new_cust_service_id, 
+      customer_id, status, distribution_time, 
+      create_user, create_time, last_update_user, 
+      last_update_time, upd_ser_wat_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{oldCustServiceId,jdbcType=VARCHAR}, #{newCustServiceId,jdbcType=VARCHAR}, 
+      #{customerId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{distributionTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{updSerWatDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.CusUpdateServiceWater" >
+    insert into t_cust_update_service_water
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="oldCustServiceId != null" >
+        old_cust_service_id,
+      </if>
+      <if test="newCustServiceId != null" >
+        new_cust_service_id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="distributionTime != null" >
+        distribution_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="updSerWatDesc != null" >
+        upd_ser_wat_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="oldCustServiceId != null" >
+        #{oldCustServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="newCustServiceId != null" >
+        #{newCustServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionTime != null" >
+        #{distributionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updSerWatDesc != null" >
+        #{updSerWatDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CusUpdateServiceWater" >
+    update t_cust_update_service_water
+    <set >
+      <if test="oldCustServiceId != null" >
+        old_cust_service_id = #{oldCustServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="newCustServiceId != null" >
+        new_cust_service_id = #{newCustServiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="distributionTime != null" >
+        distribution_time = #{distributionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updSerWatDesc != null" >
+        upd_ser_wat_desc = #{updSerWatDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CusUpdateServiceWater" >
+    update t_cust_update_service_water
+    set old_cust_service_id = #{oldCustServiceId,jdbcType=VARCHAR},
+      new_cust_service_id = #{newCustServiceId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      distribution_time = #{distributionTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      upd_ser_wat_desc = #{updSerWatDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <!--   根据pid查询客服历史详情 -->
+  <select id="cusHistoryDetailedById" resultMap="BaseResultMap"  parameterType="com.yscf.core.model.user.CusUpdateServiceWater">
+     	SELECT
+			TT.PID,
+			TT.new_cust_service_id,
+		  TT.old_cust_service_id,
+			(SELECT tsu.`name` FROM t_sys_user tsu  WHERE tsu.PID = TT.new_cust_service_id) create_user,
+			TT.create_time,
+			TT.upd_ser_wat_desc
+		FROM t_cust_update_service_water TT
+	   WHERE TT.customer_id= #{cusUpdateServiceWater.pid,jdbcType=VARCHAR}
+       ORDER BY  TT.create_time DESC
+  </select>
+</mapper>

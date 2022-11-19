@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizFundtallyMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizFundtally" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="detail_type" property="detailType" jdbcType="VARCHAR" />
+    <result column="deal_type" property="dealType" jdbcType="VARCHAR" />
+    <result column="actor_time" property="actorTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="fun_desc" property="funDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 关联所有字表  条件查询  分页  -->
+  <resultMap id="RelSelectiveResultMap" type="com.yscf.core.model.business.BizFundtally" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="detail_type" property="detailType" jdbcType="VARCHAR" />
+    <result column="deal_type" property="dealType" jdbcType="VARCHAR" />
+    <result column="actor_time" property="actorTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="fun_desc" property="funDesc" jdbcType="VARCHAR" />
+    <result column="income_amount" property="incomeAmount" jdbcType="DECIMAL" />
+    <result column="outlay_amount" property="outlayAmount" jdbcType="DECIMAL" />
+    <!-- 客户信息 -->
+    <association property="customer" javaType="com.yscf.core.model.user.CusTomer">
+    	<id column="customer_id" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+	    <result column="sname" property="sname" jdbcType="VARCHAR" />
+	    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    PID, customer_id, amount, balance, detail_type, deal_type, status, actor_time, create_user, create_time, 
+    last_update_user, last_update_time, fun_desc
+  </sql>
+  <sql id="selectCondition">
+  	<if test="customer != null and customer.customerName != null">
+		 AND cc.customer_name like concat('%',#{customer.customerName,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="customer != null and customer.sname != null">
+		 AND cc.sname like concat('%',#{customer.sname,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="customer != null and customer.phoneNo != null">
+		 AND cc.phone_no like concat('%',#{customer.phoneNo,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="detailType != null">
+		AND	bf.detail_type = #{detailType,jdbcType=VARCHAR}
+	</if>
+	<if test="beginActorTime != null">
+		 AND bf.actor_time <![CDATA[ >= ]]> #{beginActorTime,jdbcType=DATE}
+	</if>
+	<if test="endActorTime != null">
+		 AND bf.actor_time <![CDATA[ < ]]> date_add(#{endActorTime,jdbcType=DATE}, INTERVAL 1 day)
+	</if>
+  </sql>
+  
+    <sql id="selectConditionInvist">
+  	<if test="fundtally.customer != null and fundtally.customer.customerName != null">
+		 AND cc.customer_name like concat('%',#{customer.customerName,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="fundtally.customer != null and fundtally.customer.sname != null">
+		 AND cc.sname like concat('%',#{customer.sname,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="fundtally.customer != null and fundtally.customer.phoneNo != null">
+		 AND cc.phone_no like concat('%',#{customer.phoneNo,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="fundtally.detailType != null">
+		AND	bf.detail_type = #{detailType,jdbcType=VARCHAR}
+	</if>
+	<if test="fundtally.beginActorTime != null">
+		 AND bf.actor_time <![CDATA[ >= ]]> #{beginActorTime,jdbcType=DATE}
+	</if>
+	<if test="fundtally.endActorTime != null">
+		 AND bf.actor_time <![CDATA[ < ]]> date_add(#{endActorTime,jdbcType=DATE}, INTERVAL 1 day)
+	</if>
+  </sql>
+  
+  
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND t.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			AND t.rowns BETWEEN #{expm.startCheckrecords,jdbcType=INTEGER}
+				AND #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+	
+  <!-- 资金流水（通用）,条件查询,带分页功能的 -->
+  <select id="selectBizFundtallyPage" resultMap="RelSelectiveResultMap" parameterType="com.yscf.core.model.business.BizFundtally">
+  	SELECT
+		bf.PID,
+		bf.customer_id,
+		bf.amount,
+		bf.balance,
+		bf.detail_type,
+		bf.deal_type,
+		bf.fun_desc,
+		bf.actor_time,
+		IF(bf.deal_type ='1', bf.amount, 0) AS income_amount,
+		IF(bf.deal_type ='2', bf.amount, 0) AS outlay_amount,
+		cc.customer_name,
+		cc.sname,
+		cc.phone_no
+	FROM
+		t_biz_fundtally bf
+	LEFT JOIN t_cust_customer cc ON bf.customer_id = cc.PID
+	WHERE
+		bf.STATUS = 1
+	<include refid="selectCondition"></include>
+	LIMIT #{page} , #{limit}
+  </select>
+  
+  <!-- 资金流水（通用）,条件查询  	统计总金额 -->
+  <select id="selectSumAmountSelective" resultType="java.util.Map" parameterType="com.yscf.core.model.business.BizFundtally">
+  	SELECT
+		SUM(IF(bf.deal_type ='1', bf.amount, 0)) AS incomeAmount,
+		SUM(IF(bf.deal_type ='2', bf.amount, 0)) AS outlayAmount
+	FROM
+		t_biz_fundtally bf
+	LEFT JOIN t_cust_customer cc ON bf.customer_id = cc.PID
+	WHERE
+		bf.STATUS = 1
+	<include refid="selectCondition"></include>
+  </select>
+  
+  <!-- 资金流水（通用）,条件查询  	统计总记录条数 -->
+  <select id="selectBizFundtallyPageTotal" resultType="Integer" parameterType="com.yscf.core.model.business.BizFundtally">
+  	SELECT
+		COUNT(1)
+	FROM
+		t_biz_fundtally bf
+	LEFT JOIN t_cust_customer cc ON bf.customer_id = cc.PID
+	WHERE
+		bf.STATUS = 1
+	<include refid="selectCondition"></include>
+  </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_fundtally
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <!-- 资金流水（通用）,条件查询,带分页功能的 -->
+  <select id="selectBizFundtallyEom" resultMap="RelSelectiveResultMap">
+select 
+  	*
+  from (
+  	select 
+  		*,
+  		(@rown := @rown + 1) rowns
+  	from (
+	  	SELECT
+			bf.PID,
+			bf.customer_id,
+			bf.amount,
+			bf.balance,
+			bf.detail_type,
+			bf.deal_type,
+			bf.fun_desc,
+			bf.actor_time,
+			IF(bf.deal_type ='1', bf.amount, 0) AS income_amount,
+			IF(bf.deal_type ='2', bf.amount, 0) AS outlay_amount,
+			cc.customer_name,
+			cc.sname,
+			cc.phone_no
+		FROM
+			t_biz_fundtally bf
+		LEFT JOIN t_cust_customer cc ON bf.customer_id = cc.PID
+		WHERE
+			bf.STATUS = 1
+		<include refid="selectConditionInvist"></include>
+		)t,
+		(SELECT @rown := 0) b
+	) t where 1=1 		
+	<include refid="export_query_sql"></include>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_fundtally
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.business.BizFundtally" >
+    insert into t_biz_fundtally (PID, customer_id, amount, 
+      balance, detail_type, deal_type, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, fun_desc
+      )
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{balance,jdbcType=DECIMAL}, #{detailType,jdbcType=VARCHAR}, #{dealType,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{funDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.business.BizFundtally" >
+    insert into t_biz_fundtally
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="detailType != null" >
+        detail_type,
+      </if>
+      <if test="dealType != null" >
+        deal_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="funDesc != null" >
+        fun_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="detailType != null" >
+        #{detailType,jdbcType=VARCHAR},
+      </if>
+      <if test="dealType != null" >
+        #{dealType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="funDesc != null" >
+        #{funDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.business.BizFundtally" >
+    update t_biz_fundtally
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="detailType != null" >
+        detail_type = #{detailType,jdbcType=VARCHAR},
+      </if>
+      <if test="dealType != null" >
+        deal_type = #{dealType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="funDesc != null" >
+        fun_desc = #{funDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizFundtally" >
+    update t_biz_fundtally
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      detail_type = #{detailType,jdbcType=VARCHAR},
+      deal_type = #{dealType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      fun_desc = #{funDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertBizFundtallyByUserIds">
+    insert into t_biz_fundtally (PID, customer_id, amount, 
+      balance, detail_type, deal_type, 
+      status, create_user, create_time, 
+      last_update_user, last_update_time, fun_desc
+      ) values
+      <foreach collection="bizFundtallys" index="index" item="bizFundtally" open="(" separator="," close=")">
+	     #{bizFundtally.pid,jdbcType=VARCHAR}, #{bizFundtally.customerId,jdbcType=VARCHAR}, #{bizFundtally.amount,jdbcType=DECIMAL}, 
+	     #{bizFundtally.balance,jdbcType=DECIMAL}, #{bizFundtally.detailType,jdbcType=VARCHAR}, #{bizFundtally.dealType,jdbcType=VARCHAR}, 
+	     #{bizFundtally.status,jdbcType=VARCHAR}, #{bizFundtally.createUser,jdbcType=VARCHAR}, #{bizFundtally.createTime,jdbcType=TIMESTAMP}, 
+	     #{bizFundtally.lastUpdateUser,jdbcType=VARCHAR}, #{bizFundtally.lastUpdateTime,jdbcType=TIMESTAMP}, #{bizFundtally.funDesc,jdbcType=VARCHAR}
+	  </foreach>
+  </insert>
+</mapper>

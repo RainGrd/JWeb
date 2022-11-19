@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.ActBirPriItemActivityRelMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yscf.core.model.activity.ActBirPriItemActivityRel">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+		<result column="object_id" property="objectId" jdbcType="VARCHAR" />
+		<result column="pri_type" property="priType" jdbcType="VARCHAR" />
+		<result column="bir_pri_item_desc" property="birPriItemDesc"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="last_update_user" property="lastUpdateUser"
+			jdbcType="VARCHAR" />
+		<result column="last_update_time" property="lastUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="VARCHAR" />  
+		<result column="privilege_id" property="privilegeId" jdbcType="VARCHAR" />
+		<result column="privilege_name" property="privilegeName" jdbcType="VARCHAR" />
+		<result column="privilege_type" property="privilegeType" jdbcType="VARCHAR" /> 
+		
+		
+		<result column="start_date" property="startDate" jdbcType="VARCHAR" />
+   		<result column="end_date" property="endDate" jdbcType="VARCHAR" />
+		<result column="act_code" property="actCode" jdbcType="VARCHAR" /> 
+		<result column="act_name" property="actName" jdbcType="VARCHAR" /> 
+		<result column="act_tag" property="actTag" jdbcType="VARCHAR" /> 
+		<result column="pri_type" property="priType" jdbcType="VARCHAR" />   
+		<result column="participantsNumber" property="participantsNumber" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		PID, activity_id, object_id, pri_type, bir_pri_item_desc,
+		status,
+		create_user, create_time,
+		last_update_user, last_update_time,
+		version
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_act_bir_pri_item_activity_rel
+		where PID =
+		#{pid,jdbcType=VARCHAR}
+	</select>
+	<select id="selectBirPriByObjectId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_act_bir_pri_item_activity_rel
+		where activity_id =
+		#{activityId,jdbcType=VARCHAR}
+		
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		t_act_bir_pri_item_activity_rel
+		where PID = #{pid,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByObjectIdAndActivityType" parameterType="java.lang.String">
+		delete from
+		t_act_bir_pri_item_activity_rel
+		where activity_id = #{activityId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="com.yscf.core.model.activity.ActBirPriItemActivityRel">
+		insert into t_act_bir_pri_item_activity_rel (PID,
+		activity_id,
+		object_id,
+		pri_type, bir_pri_item_desc, status,
+		create_user, create_time, last_update_user,
+		last_update_time, version)
+		values (#{pid,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR},
+		#{objectId,jdbcType=VARCHAR},
+		#{priType,jdbcType=VARCHAR},
+		#{birPriItemDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		#{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.yscf.core.model.activity.ActBirPriItemActivityRel">
+		insert into t_act_bir_pri_item_activity_rel
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="activityId != null">
+				activity_id,
+			</if>
+			<if test="objectId != null">
+				object_id,
+			</if>
+			<if test="priType != null">
+				pri_type,
+			</if>
+			<if test="birPriItemDesc != null">
+				bir_pri_item_desc,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="activityId != null">
+				#{activityId,jdbcType=VARCHAR},
+			</if>
+			<if test="objectId != null">
+				#{objectId,jdbcType=VARCHAR},
+			</if>
+			<if test="priType != null">
+				#{priType,jdbcType=VARCHAR},
+			</if>
+			<if test="birPriItemDesc != null">
+				#{birPriItemDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.yscf.core.model.activity.ActBirPriItemActivityRel">
+		update t_act_bir_pri_item_activity_rel
+		<set>
+			<if test="activityId != null">
+				activity_id = #{activityId,jdbcType=VARCHAR},
+			</if>
+			<if test="objectId != null">
+				object_id = #{objectId,jdbcType=VARCHAR},
+			</if>
+			<if test="priType != null">
+				pri_type = #{priType,jdbcType=VARCHAR},
+			</if>
+			<if test="birPriItemDesc != null">
+				bir_pri_item_desc = #{birPriItemDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.yscf.core.model.activity.ActBirPriItemActivityRel">
+		update t_act_bir_pri_item_activity_rel
+		set activity_id =
+		#{activityId,jdbcType=VARCHAR},
+		object_id =
+		#{objectId,jdbcType=VARCHAR},
+		pri_type = #{priType,jdbcType=VARCHAR},
+		bir_pri_item_desc = #{birPriItemDesc,jdbcType=VARCHAR},
+		status =
+		#{status,jdbcType=VARCHAR},
+		create_user =
+		#{createUser,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		last_update_user =
+		#{lastUpdateUser,jdbcType=VARCHAR},
+		last_update_time =
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		version =
+		#{version,jdbcType=VARCHAR}
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<select id="selectPrivilege" resultMap="BaseResultMap">
+		SELECT
+				a.pid AS	privilege_id,
+				a.invest_award_name AS privilege_name,  
+				1 as privilege_type 
+				FROM
+				t_pub_invest_award a
+				WHERE
+				NOW()
+				BETWEEN a.start_time and a.end_time
+				AND a.is_bir_privilege = 1 
+				AND a.invest_award_type=3
+				AND a.status = 1
+				UNION ALL			 
+		SELECT
+				a.pid AS	privilege_id,
+				a.invest_award_name AS privilege_name,  
+				4 as privilege_type 
+				FROM
+				t_pub_invest_award a
+				WHERE
+				NOW()
+				BETWEEN a.start_time and a.end_time
+				AND a.is_bir_privilege = 1 
+				AND a.invest_award_type=2
+				AND a.status = 1
+				UNION ALL		 
+		SELECT
+				a.pid AS	privilege_id,
+				a.invest_award_name AS privilege_name,  
+				5 as privilege_type 
+				FROM
+				t_pub_invest_award a
+				WHERE
+				NOW()
+				BETWEEN a.start_time and a.end_time
+				AND a.is_bir_privilege = 1 
+				AND a.invest_award_type=1
+				AND a.status = 1
+				UNION ALL		 
+		SELECT
+				pid AS privilege_id,
+				rep_name AS
+				privilege_name,
+				2 AS privilege_type
+				FROM
+				t_pub_redpacket
+				WHERE
+				NOW()
+				BETWEEN eff_time and exp_time
+				AND is_bir_privilege = 1
+				AND status = 1
+				UNION ALL
+		SELECT
+				pid AS privilege_id,
+				exp_name AS
+				privilege_name,
+				3 AS privilege_type
+				FROM
+				t_pub_exp_gold
+				WHERE
+				NOW()
+				BETWEEN eff_time and exp_time
+				AND is_bir_privilege = 1
+				AND status = 1  
+	</select>
+	
+	
+	<select id="selectBirPriItem" resultMap="BaseResultMap" parameterType="map">
+		select a.pid,rel.object_id ,a.act_code,a.act_name,a.act_tag,rel.pri_type,a.status,a.start_date,a.end_date,( 
+		case 
+			when rel.pri_type =1  then (SELECT COUNT(*) FROM t_act_inv_awa_act_detail act  where act.activity_id = a.PID )
+		 	when rel.pri_type =4  then (SELECT COUNT(*) FROM t_act_inv_awa_act_detail act  where act.activity_id = a.PID)
+		    when rel.pri_type =5  then (SELECT COUNT(*) FROM t_act_inv_awa_act_detail act  where act.activity_id = a.PID)
+			when rel.pri_type =2  then (SELECT COUNT(*) FROM t_act_redp_act_detail act  where act.activity_id = a.PID)
+			when rel.pri_type =3  then (SELECT COUNT(*) FROM t_act_exp_act_detail act  where act.activity_id = a.PID)
+		end
+		) AS participantsNumber
+		from t_act_activity a INNER JOIN t_act_bir_pri_item_activity_rel rel
+		ON a.PID = rel.activity_id  
+		where a.status  <![CDATA[ <> ]]> -1
+		<if test="map.actCode != null and map.actCode != '' ">
+			and a.act_code like
+			concat('%',#{map.actCode,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.actName != null and map.actName != '' ">
+			and a.act_name like
+			concat('%',#{map.actName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.actTag != null and map.actTag != '' ">
+			and a.act_tag like
+			concat('%',#{map.actTag,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.activityId != null and map.activityId != '' ">
+			and rel.activity_id = #{map.activityId,jdbcType=VARCHAR} 
+		</if>
+		<if test="map.status != null and map.status != '' and map.status != 0"> 
+			<!-- 未开始 -->
+			<if test="map.status == '1'.toString() ">
+			and NOW() <![CDATA[ < ]]> a.start_date
+			</if>
+			<if test="map.status == '2'.toString() ">
+			and NOW() BETWEEN a.start_date and a.end_date
+			</if>
+			<if test="map.status == '3'.toString() ">
+			and NOW()  <![CDATA[ > ]]> a.end_date
+			</if>
+		</if>
+	</select> 
+	 <select id="selectTotalCondition" resultType="java.lang.Integer">
+     	select  SUM(( 
+		case 
+			when rel.pri_type =1  then (SELECT COUNT(*) FROM t_act_inv_awa_act_detail act  where act.activity_id = a.PID )
+		 	when rel.pri_type =4  then (SELECT COUNT(*) FROM t_act_inv_awa_act_detail act  where act.activity_id = a.PID)
+		    when rel.pri_type =5  then (SELECT COUNT(*) FROM t_act_inv_awa_act_detail act  where act.activity_id = a.PID)
+			when rel.pri_type =2  then (SELECT COUNT(*) FROM t_act_redp_act_detail act  where act.activity_id = a.PID)
+			when rel.pri_type =3  then (SELECT COUNT(*) FROM t_act_exp_act_detail act  where act.activity_id = a.PID)
+		end
+		)) AS participantsNumber
+		from t_act_activity a INNER JOIN t_act_bir_pri_item_activity_rel rel
+		ON a.PID = rel.activity_id  
+     </select>
+     <select id="selectBirPriRelByActivityId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_act_bir_pri_item_activity_rel
+		where activity_id =
+		#{activityId,jdbcType=VARCHAR}
+	</select>
+</mapper>

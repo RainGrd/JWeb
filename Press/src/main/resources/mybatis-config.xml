@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--加载配置文件-->
+    <properties resource="jdbc.properties"></properties>
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+        <!--开启延时加载-->
+    </settings>
+    <!--配置类型别名-->
+    <typeAliases>
+        <package name="com.press.entity"/>
+    </typeAliases>
+
+    <!--mybatis环境配置
+    尽管可以配置多个环境，但每个 SqlSessionFactory 实例只能选择一种环境
+    每个数据库对应一个 SqlSessionFactory 实例
+    -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!--数据库连接池-->
+            <dataSource type="POOLED">
+                <!--数据库连接信息-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <!--url地址-->
+                <property name="url" value="${jdbc.url}"/>
+                <!-- 用户名 -->
+                <property name="username" value="${jdbc.username}"/>
+                <!-- 密码 -->
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--加载SQL的映射文件-->
+<!--        <mapper resource="com/bdqn/mapper/UserMapper.xml"/>-->
+        <!--mapper代理方式 包扫描方式-->
+        <package name="com.press.mapper"/>
+    </mappers>
+
+</configuration>

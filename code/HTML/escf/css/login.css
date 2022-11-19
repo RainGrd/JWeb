@@ -1,0 +1,76 @@
+/*登录s*/
+.lo_f_bg{
+	width: 100%;
+}
+.lo_f_c{
+}
+.lo_f_c_i{
+	top: -16px;
+	left: 0;
+}
+.login{
+	width: 340px;
+	 
+	border: #d6d8d9 solid 1px;
+	border-radius: 5px;
+	right: 130px;
+	top: 110px;
+}
+.login_i{
+	width: 260px;
+}
+.login_i input{
+	height: 36px;
+	
+}
+input:not([type="image" i]), textarea {
+    box-sizing:content-box!important;
+}
+input:-webkit-autofill {
+-webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+.login_i_z{
+	width: 220px;
+}
+.login_i_m{
+	width: 220px;
+}
+
+.foot_bg{
+	
+}
+/*登录e*/
+
+/*找回登录密码s*/
+.login_z{
+	height: 630px;
+}
+.login_z_in{
+	width: 420px;
+}
+.z_yanzheng{
+	position: absolute;
+	left: 335px;top: 0;
+	width: 150px;
+}
+/*找回登录密码e*/
+/*确认密码s*/
+.login_q_in{
+	width: 335px;
+}
+/*确认密码e*/
+
+/*选择找回方式 s*/   
+.login_mobile{
+	display: inline-block;
+	width: 96px;
+	border: 2px solid #d5d5d5;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    height: 26px;
+}
+.login_h_in{
+	width: 315px;
+}
+/*选择找回方式 e*/ 

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+<link rel="stylesheet" type="text/css" href="assets/css/layui.css" media="all">
+<script src="assets/layui.js" charset="utf-8"></script>
+<style>
+    .layui-table th {
+        text-align: center;
+    }
+
+    #app {
+        width: 1300px;
+        margin: 0 auto;
+    }
+
+    #thisForm {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .input_operation input {
+        display: inline;
+        width: 50px;
+        padding: 0px;
+    }
+</style>
+<body>
+<form class="layui-form layui-form-pane" id="thisForm" action="/brand-demo/selectServlet" method="post">
+    <div class="layui-form-item">
+        <!--        <input type="text" id="selectBrand" name="selectBrand" placeholder="查询"-->
+        <!--               autocomplete="off" class="layui-input" style="width: 20%; display: inline-block">-->
+        <!--        <input class="layui-btn" type="submit" value="查询"/>-->
+        <a href="addBrand.html"><input class="layui-btn layui-btn-normal" type="button" value="添加"/></a>
+        <!--        <button type="button" class="layui-btn" id="export"><i class="layui-icon layui-icon-download-circle"></i>导出文件</button>-->
+    </div>
+</form>
+<div id="app">
+    <hr/>
+    <table border="1" cellpadding="0" cellspacing="0" id="tableData" class="layui-table" lay-size="lg">
+        <tr>
+            <th>选中状态</th>
+            <th>序号</th>
+            <th width="100px">品牌名称</th>
+            <th>企业名称</th>
+            <th>品牌介绍</th>
+            <th>排序</th>
+            <th>状态</th>
+            <th width="120px">操作</th>
+        </tr>
+        <tr align="center" v-for="(brand,i) in brands">
+            <td>
+                <div class="layui-form-item">
+                    <input type="checkbox" name="checkbox${brand.id}" lay-skin="primary"
+                           class="layui-unselect layui-form-checkbox layui-form-checked checkbox">
+                </div>
+            </td>
+            <td>{{i + 1}}</td>
+            <td>{{brand.brandName}}</td>
+            <td>{{brand.companyName}}</td>
+            <td>{{brand.description}}</td>
+            <td>{{brand.ordered}}</td>
+            <td v-if="brand.status==1">启用</td>
+            <td v-else="brand.status==0">弃用</td>
+            <td class="input_operation">
+                <button data-type="update" name="${brand.id}" class="layui-btn layui-btn-normal layui-btn-sm update"><i
+                        class="layui-icon">&#xe642;</i></button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger delete">
+                    <i class="layui-icon">&#xe640;</i>
+                </button>
+            </td>
+
+        </tr>
+    </table>
+</div>
+
+</body>
+
+<!--<script>
+    /*当页面加载完成后，发送ajax请求*/
+    window.onload = function () {
+        /*发送axios请求*/
+        axios({
+            method: "GET",
+            url: "http://localhost:8080/brand-demo/selectAllServlet"
+        }).then(function (response) {
+            /*获取数据*/
+            let data = response.data;
+            let tableHead = "<tr>\n" +
+                "        <th>序号</th>\n" +
+                "        <th>品牌名称</th>\n" +
+                "        <th>企业名称</th>\n" +
+                "        <th>排序</th>\n" +
+                "        <th>品牌介绍</th>\n" +
+                "        <th>状态</th>\n" +
+                "        <th>操作</th>\n" +
+                "    </tr>";
+            var status = "";
+            for (let i = 0; i < data.length; i++) {
+                let datum = data[i];
+                status = (datum.status == 1) ? "启用" : "禁用";
+                tableHead += "<tr align=\"center\">\n" +
+                    "        <td>" + (i + 1) + "</td>\n" +
+                    "        <td>" + datum.brandName + "</td>\n" +
+                    "        <td>" + datum.companyName + "</td>\n" +
+                    "        <td>" + datum.ordered + "</td>\n" +
+                    "        <td>" + datum.description + "</td>\n" +
+                    "        <td>" + status + "</td>\n" +
+                    "\n" +
+                    "        <td><a href=\"#\">修改</a> <a href=\"#\">删除</a></td>\n" +
+                    "    </tr>"
+            }
+            /*设置表格数据*/
+            document.getElementById("brandTable").innerHTML = tableHead;
+        })
+    }
+</script>-->
+<script>
+    new Vue({
+        /*指定这个Vue的作用范围*/
+        el: "#app",
+        data() {
+            return {
+                brands: []
+            }
+        },
+        mounted() {
+            /*页面加载后，发送异步请求*/
+            /*这个this就等于Vue对象*/
+            var _this = this;
+            axios({
+                method: "GET",
+                url: "http://localhost:8080/brand-demo/selectAllServlet"
+            }).then(function (response) {
+                console.log(response.data)
+                /*这个this指的是window对象*/
+                _this.brands = response.data;
+            })
+        }
+
+    })
+</script>
+</html>

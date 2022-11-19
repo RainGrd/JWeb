@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.content.adv.ContAdvContentMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yscf.core.model.content.adv.ContAdvContent">
+		<id column="PID" property="pid" jdbcType="VARCHAR" />
+		<result column="adv_id" property="advId" jdbcType="VARCHAR" />
+		<result column="title_name" property="titleName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="file_id" property="fileId" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="adv_order" property="advOrder" jdbcType="TIMESTAMP" />
+		<result column="last_update_user" property="lastUpdateUser"
+			jdbcType="VARCHAR" />
+		<result column="last_update_time" property="lastUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="file_url" property="fileUrl" jdbcType="VARCHAR" />  
+		<result column="file_name" property="fileName" jdbcType="VARCHAR" /> 
+	</resultMap>
+	<sql id="Base_Column_List">
+		PID, adv_id, title_name, status, file_id, create_user,
+		create_time,
+		adv_order,
+		last_update_user,
+		last_update_time, version, url
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		c.PID, c.adv_id, c.title_name, c.status, c.file_id, c.create_user,
+		c.create_time,
+		c.adv_order,
+		c.last_update_user,
+		c.last_update_time, c.version, c.url,f.file_url
+		from 
+		t_cont_adv_content c
+		INNER JOIN t_pub_file f 
+		ON f.pid = c.file_id 
+		where c.PID = #{c.pid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		t_cont_adv_content
+		where PID = #{pid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yscf.core.model.content.adv.ContAdvContent">
+		insert into t_cont_adv_content
+		(PID, adv_id, title_name,
+		status, file_id, create_user,
+		create_time,
+		last_update_user, last_update_time,
+		version, url,adv_order)
+		values
+		(#{pid,jdbcType=VARCHAR}, #{advId,jdbcType=VARCHAR},
+		#{titleName,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{fileId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR},
+		#{lastUpdateTime,jdbcType=TIMESTAMP},
+		#{version,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{advOrder,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yscf.core.model.content.adv.ContAdvContent">
+		insert into t_cont_adv_content
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				PID,
+			</if>
+			<if test="advId != null">
+				adv_id,
+			</if>
+			<if test="titleName != null">
+				title_name,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="fileId != null">
+				file_id,
+			</if>
+			<if test="createUser != null">
+				create_user,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="lastUpdateUser != null">
+				last_update_user,
+			</if>
+			<if test="lastUpdateTime != null">
+				last_update_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="advId != null">
+				#{advId,jdbcType=VARCHAR},
+			</if>
+			<if test="titleName != null">
+				#{titleName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="fileId != null">
+				#{fileId,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null">
+				#{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null">
+				#{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null">
+				#{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.content.adv.ContAdvContent">
+		update t_cont_adv_content
+		<set>
+			<if test="advId != null and advId != '' ">
+				adv_id = #{advId,jdbcType=VARCHAR},
+			</if>
+			<if test="titleName != null and titleName != ''">
+				title_name = #{titleName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="fileId != null and fileId != ''">
+				file_id = #{fileId,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null and lastUpdateUser != ''">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null and lastUpdateTime != ''">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null and version != ''">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null and url != ''">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="advOrder != null and advOrder != ''">
+				adv_order = #{advOrder,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.content.adv.ContAdvContent">
+		update
+		t_cont_adv_content
+		<set>
+			<if test="advId != null and advId != '' ">
+				adv_id = #{advId,jdbcType=VARCHAR},
+			</if>
+			<if test="titleName != null and titleName != ''">
+				title_name = #{titleName,jdbcType=VARCHAR},
+			</if>
+			<if test="advOrder != null and advOrder != ''">
+				adv_order = #{advOrder,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="fileId != null and fileId != ''">
+				file_id = #{fileId,jdbcType=VARCHAR},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				create_user = #{createUser,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateUser != null and lastUpdateUser != ''">
+				last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpdateTime != null and lastUpdateTime != ''">
+				last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null and version != ''">
+				version = #{version,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null and url != ''">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PID =
+		#{pid,jdbcType=VARCHAR}
+	</update>
+	<select id="selectAdvContentByParameter" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		c.PID, c.adv_id, c.title_name, c.status, c.file_id, c.create_user,
+		c.create_time,
+		c.adv_order,
+		c.last_update_user,
+		c.last_update_time, c.version, c.url,f.file_url
+		from 
+		t_cont_adv_content c
+		INNER JOIN t_pub_file f 
+		ON f.pid = c.file_id
+		where 1 = 1
+		<if test="map.titleName != null and map.titleName != '' ">
+			and c.title_name like
+			concat('%',#{map.titleName,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="map.status != null and map.status != ''">
+			and c.status =#{map.status,jdbcType=VARCHAR}
+		</if>
+		<if test="map.createUser != null and map.createUser != ''">
+			and c.create_user 
+			like 
+			concat('%',#{map.createUser,jdbcType=VARCHAR},'%' ) 
+		</if>
+		<if test="map.createTime != null and map.createTime != ''">
+			and c.create_time = #{map.createTime,jdbcType=VARCHAR}
+		</if>
+		<if test="map.lastUpdateUser != null and map.lastUpdateUser != '' ">
+			and c.last_update_user 
+			like
+			concat('%',#{map.lastUpdateUser,jdbcType=VARCHAR},'%' )  
+		</if>
+		<if test="map.lastUpdateTime != null and map.lastUpdateTime != ''">
+			and c.last_update_time like
+			#{map.lastUpdateTime,jdbcType=VARCHAR}
+		</if>
+		<if test="map.version != null and map.version != ''">
+			and c.version = #{map.version,jdbcType=VARCHAR}
+		</if>
+		<if test="map.pid != null and map.pid != ''">
+			and c.pid  = #{map.pid,jdbcType=VARCHAR}
+		</if>
+		<if test="map.advId != null and map.advId != ''">
+			and c.adv_id = #{map.advId,jdbcType=VARCHAR}
+		</if>
+		<if
+			test="map.lastBeginUpdateTime != null and map.lastBeginUpdateTime != '' ">
+			and <![CDATA[ DATE_FORMAT(c.last_update_time ,'%Y-%m-%d') >= #{map.lastBeginUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.lastEndUpdateTime != null and map.lastEndUpdateTime != '' ">
+			and <![CDATA[DATE_FORMAT(c.last_update_time ,'%Y-%m-%d') <= #{map.lastEndUpdateTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createBeginTime != null and map.createBeginTime != '' ">
+			and <![CDATA[DATE_FORMAT(c.create_time ,'%Y-%m-%d') >= #{map.createBeginTime,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="map.createEndTime != null and map.createEndTime != '' ">
+			and <![CDATA[DATE_FORMAT(c.create_time ,'%Y-%m-%d') <= #{map.createEndTime,jdbcType=VARCHAR}]]>
+		</if>
+		order by c.adv_order desc
+	</select>
+	<update id="batchUpdateByPids" parameterType="java.util.HashMap">
+		update t_cont_adv_content
+		set status = #{map.status,jdbcType=VARCHAR}
+		where
+		PID in
+		<foreach item="pid" collection="map.pid" open="(" separator=","
+			close=")">
+			#{pid}
+		</foreach>
+	</update>
+	<select id="selectAdvContentByWebTag" resultMap="BaseResultMap"
+		parameterType="java.lang.String"> 
+		SELECT
+			c.*,  f.file_name,f.file_url
+		FROM
+			t_cont_adv_content c
+		LEFT JOIN t_cont_advertisement a ON a.pid = c.adv_id
+		LEFT JOIN	t_pub_file f on c.file_id = f.PID
+			where c.status=1 and  a.avd_code = #{avdCode,jdbcType=VARCHAR}
+		order by c.adv_order DESC
+	</select>
+</mapper>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CusBirWarnHisMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CusBirWarnHis" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="vip_message" property="vipMessage" jdbcType="VARCHAR" />
+	    <result column="sms_temp_id" property="smsTempId" jdbcType="VARCHAR" />
+	    <result column="cust_account_id" property="custAccountId" jdbcType="VARCHAR" />
+	    <result column="is_wran" property="isWran" jdbcType="VARCHAR" />
+	    <result column="oper_time" property="operTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="bir_war_his_desc" property="birWarHisDesc" jdbcType="VARCHAR" />
+	    <!-- 外表字段 -->
+	    <result column="customerName" property="customerName" jdbcType="VARCHAR" />
+	    <result column="sname" property="sname" jdbcType="VARCHAR" />
+	    <result column="phoneNo" property="phoneNo" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+	    <result column="vipLevel" property="vipLevel" jdbcType="VARCHAR" />
+	    <result column="customerServiceUser" property="customerServiceUser" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 查询所需的列 -->
+  	<sql id="Base_Column_List" >
+	    cc.PID,cc.customer_name customerName,cc.phone_no phoneNo,cc.birthday birthday,
+	    cc.sname sname,cc.vip_level vipLevel,cbwh.vip_message,cbwh.is_wran,cbwh.oper_time
+  	</sql>
+	
+	<!-- 公有的查询 -->
+	<sql id="base_condition">
+		from  t_cust_customer cc
+		LEFT JOIN t_cust_bir_warn_his cbwh 
+		on cc.PID = cbwh.customer_id
+		where (DATE_FORMAT(cbwh.oper_time ,'%Y' ) = DATE_FORMAT(sysdate(),'%Y') 
+		or DATE_FORMAT(cbwh.oper_time ,'%Y' ) is null )
+		<if test="cusBirWarnHis.customerName != null and cusBirWarnHis.customerName != '' " > 
+        	and  cc.customer_name like concat('%',#{cusBirWarnHis.customerName,jdbcType=VARCHAR},'%' )
+        </if>
+		<if test="cusBirWarnHis.sname != null and cusBirWarnHis.sname != '' " > 
+        	and  cc.sname like concat('%',#{cusBirWarnHis.sname,jdbcType=VARCHAR},'%' )
+        </if>
+		<if test="cusBirWarnHis.phoneNo != null and cusBirWarnHis.phoneNo != '' " > 
+        	and  cc.phone_no =  #{cusBirWarnHis.phoneNo,jdbcType=VARCHAR}
+        </if>
+		<if test="cusBirWarnHis.refereeUser != null and cusBirWarnHis.refereeUser != '' " > 
+        	and  cc.referee_user = #{cusBirWarnHis.refereeUser,jdbcType=VARCHAR}
+        </if>
+        <if test="cusBirWarnHis.isWran == 1 and cusBirWarnHis.isWran != 0 " > 
+        	and  cbwh.is_wran = #{cusBirWarnHis.isWran,jdbcType=VARCHAR}
+        </if>
+        <if test="cusBirWarnHis.isWran == 2 and cusBirWarnHis.isWran != 0 " > 
+        	and  cbwh.is_wran is null 
+        </if>
+        <if test="cusBirWarnHis.customerServiceUser != null and cusBirWarnHis.customerServiceUser != '' " > 
+        	and  cc.customer_service_user = #{cusBirWarnHis.customerServiceUser,jdbcType=VARCHAR}
+        </if>
+        <if test="cusBirWarnHis.beginOperTime != null and cusBirWarnHis.beginOperTime != '' " > 
+        	and  DATE_FORMAT(cc.birthday,'%m-%d') <![CDATA[ >= ]]> #{cusBirWarnHis.beginOperTime,jdbcType=VARCHAR}
+        </if>
+        <if test="cusBirWarnHis.endOperTime != null and cusBirWarnHis.endOperTime != '' " > 
+        	and  DATE_FORMAT(cc.birthday,'%m-%d') <![CDATA[ <= ]]> #{cusBirWarnHis.endOperTime,jdbcType=VARCHAR}
+        </if>
+	</sql>
+	
+	<!-- 查询VIP生日提醒列表 -->
+	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+		select 
+	    <include refid="Base_Column_List" />
+	    <include refid="base_condition" />
+	</select>
+	
+	<!-- 查询今天VIP生日提醒数 -->
+	<select id="selectVipBirCount" resultType="java.lang.Integer">
+		select count(1)
+		from  t_cust_customer cc
+		where cc.status != -1   
+		and DATE_FORMAT(cc.birthday,'%m-%d') = DATE_FORMAT(sysdate(),'%m-%d')
+	</select>
+	
+	<!-- 导出查询 -->
+	<select id="selectAllPageDetailExport" resultMap="BaseResultMap" parameterType="map" >
+		select 
+		cc.PID,cc.customer_name customerName,cc.phone_no phoneNo,cc.birthday birthday,
+	    cc.sname sname,cc.vip_level vipLevel,cbwh.vip_message,cbwh.oper_time,
+	    CASE cbwh.is_wran WHEN 1 THEN '是' ELSE '否' END is_wran
+		<include refid="base_condition" />
+		<include refid="export_query_sql" />
+	</select>
+	
+  	<!-- 根据主键查询对象 -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_cust_bir_warn_his
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_bir_warn_his
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CusBirWarnHis" >
+	    insert into t_cust_bir_warn_his (PID, customer_id, vip_message, 
+	      sms_temp_id, cust_account_id, is_wran, 
+	      oper_time, status, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      bir_war_his_desc)
+	    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{vipMessage,jdbcType=VARCHAR}, 
+	      #{smsTempId,jdbcType=VARCHAR}, #{custAccountId,jdbcType=VARCHAR}, #{isWran,jdbcType=VARCHAR}, 
+	      #{operTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{birWarHisDesc,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<!-- 新增VIP生日提醒 -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CusBirWarnHis" >
+	    insert into t_cust_bir_warn_his
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="vipMessage != null" >
+	        vip_message,
+	      </if>
+	      <if test="smsTempId != null" >
+	        sms_temp_id,
+	      </if>
+	      <if test="custAccountId != null" >
+	        cust_account_id,
+	      </if>
+	      <if test="isWran != null" >
+	        is_wran,
+	      </if>
+	      <if test="operTime != null" >
+	        oper_time,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="birWarHisDesc != null" >
+	        bir_war_his_desc,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipMessage != null" >
+	        #{vipMessage,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsTempId != null" >
+	        #{smsTempId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="custAccountId != null" >
+	        #{custAccountId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isWran != null" >
+	        #{isWran,jdbcType=VARCHAR},
+	      </if>
+	      <if test="operTime != null" >
+	        #{operTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="birWarHisDesc != null" >
+	        #{birWarHisDesc,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CusBirWarnHis" >
+	    update t_cust_bir_warn_his
+	    <set >
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipMessage != null" >
+	        vip_message = #{vipMessage,jdbcType=VARCHAR},
+	      </if>
+	      <if test="smsTempId != null" >
+	        sms_temp_id = #{smsTempId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="custAccountId != null" >
+	        cust_account_id = #{custAccountId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isWran != null" >
+	        is_wran = #{isWran,jdbcType=VARCHAR},
+	      </if>
+	      <if test="operTime != null" >
+	        oper_time = #{operTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="birWarHisDesc != null" >
+	        bir_war_his_desc = #{birWarHisDesc,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CusBirWarnHis" >
+	    update t_cust_bir_warn_his
+	    set customer_id = #{customerId,jdbcType=VARCHAR},
+	      vip_message = #{vipMessage,jdbcType=VARCHAR},
+	      sms_temp_id = #{smsTempId,jdbcType=VARCHAR},
+	      cust_account_id = #{custAccountId,jdbcType=VARCHAR},
+	      is_wran = #{isWran,jdbcType=VARCHAR},
+	      oper_time = #{operTime,jdbcType=TIMESTAMP},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      bir_war_his_desc = #{birWarHisDesc,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 导出查询条件 -->
+  	<sql id="export_query_sql">
+	  	<if test="expm.exportSet != null and expm.exportSet != ''">
+	  	
+	  		<!-- 选择情况一 -->
+	  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+	  			AND cc.pid IN 
+	  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+			        #{item,jdbcType=VARCHAR} 
+			    </foreach>  
+	  		</if>
+	  		
+	  		<!-- 选择情况二 -->
+	  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+	  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+	  		</if>
+	  		
+	  		<!-- 选择情况三 -->
+	  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+				limit #{expm.startCheckrecords,jdbcType=INTEGER}, #{expm.endCheckrecords,jdbcType=INTEGER} 
+	  		</if>
+	  	</if>
+  	</sql>
+  	
+</mapper>

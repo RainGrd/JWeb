@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.PubRedpacketMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.PubRedpacket" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="rep_name" property="repName" jdbcType="VARCHAR" />
+	    <result column="rep_amount" property="repAmount" jdbcType="DECIMAL" />
+	    <result column="rep_number" property="repNumber" jdbcType="INTEGER" />
+	    <result column="only_max_amount" property="onlyMaxAmount" jdbcType="DECIMAL" />
+	    <result column="is_bir_privilege" property="isBirPrivilege" jdbcType="VARCHAR" />
+	    <result column="redpacket_type" property="redpacketType" jdbcType="VARCHAR" />
+	    <result column="allot_type" property="allotType" jdbcType="VARCHAR" />
+	    <result column="red_desc" property="redDesc" jdbcType="VARCHAR" />
+	    <result column="eff_time" property="effTime" jdbcType="TIMESTAMP" />
+	    <result column="exp_time" property="expTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_create_user" property="lastCreateUser" jdbcType="VARCHAR" />
+	    <result column="last_create_time" property="lastCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <!-- 外表数据字段 -->
+	   	<result column="actCode" property="actCode" jdbcType="VARCHAR" />
+	   	<result column="actTag" property="actTag" jdbcType="VARCHAR" />
+	   	<result column="activityType" property="activityType" jdbcType="VARCHAR" />
+	   	<result column="smsId" property="smsId" jdbcType="VARCHAR" />
+	   	<result column="isSmsWarn" property="isSmsWarn" jdbcType="VARCHAR" />
+	   	<result column="actDesc" property="actDesc" jdbcType="VARCHAR" />
+	   	<result column="tempCode" property="tempCode" jdbcType="VARCHAR" />
+	   	<result column="smsContent" property="smsContent" jdbcType="VARCHAR" />
+	   	<result column="createUserName" property="createUserName" jdbcType="VARCHAR" />
+	    <result column="actStatus" property="actStatus" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<sql id="Base_Column_List" >
+	    pr.PID, pr.rep_name, pr.rep_amount, pr.rep_number, pr.only_max_amount, pr.is_bir_privilege, 
+	    pr.redpacket_type, pr.allot_type, pr.red_desc, pr.eff_time, pr.exp_time, pr.status, 
+	    pr.create_user, pr.create_time, pr.last_create_user, pr.last_create_time, pr.version,
+	    (select name from t_sys_user user where user.PID = pr.create_user) as createUserName,aa.status actStatus,
+	    aa.act_code as actCode, aa.act_tag as actTag, aa.activity_type as activityType, aa.sms_id as smsId, 
+	    aa.is_sms_warn as isSmsWarn, aa.act_desc as actDesc,sst.temp_code as tempCode,sst.sms_content as smsContent
+  	</sql>
+  	
+  	<!-- 查询红包信息列表,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		SELECT 
+  		<include refid="Base_Column_List" />
+  		FROM t_pub_redpacket pr 
+		LEFT JOIN t_act_activity aa 
+		on pr.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 2 
+  		AND pr.status != -1 
+  		<if test="pubRedpacket.redpacketType != null and pubRedpacket.redpacketType != '' " > 
+        	and  pr.redpacket_type = #{pubRedpacket.redpacketType,jdbcType=VARCHAR}
+        </if>
+  		<if test="pubRedpacket.actCode != null and pubRedpacket.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{pubRedpacket.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubRedpacket.repName != null and pubRedpacket.repName != '' " > 
+        	and  pr.rep_name like concat('%',#{pubRedpacket.repName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubRedpacket.actTag != null and pubRedpacket.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{pubRedpacket.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubRedpacket.beginApplyStartData != null and pubRedpacket.beginApplyStartData != '' " > 
+        	and  pr.eff_time <![CDATA[ >= ]]> #{pubRedpacket.beginApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubRedpacket.endApplyStartData != null and pubRedpacket.endApplyStartData != '' " > 
+        	and  pr.eff_time <![CDATA[ <= ]]> #{pubRedpacket.endApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubRedpacket.beginApplyFinishData != null and pubRedpacket.beginApplyFinishData != '' " > 
+        	and  pr.exp_time <![CDATA[ >= ]]> #{pubRedpacket.beginApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubRedpacket.endApplyFinishData != null and pubRedpacket.endApplyFinishData != '' " > 
+        	and  pr.exp_time <![CDATA[ <= ]]> #{pubRedpacket.endApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubRedpacket.status != null and pubRedpacket.status != 0 " > 
+        	and  pr.status = #{pubRedpacket.status,jdbcType=VARCHAR}
+        </if>
+        ORDER BY pr.create_time desc 
+  	</select>
+  	
+  	<!-- 根据PID查询红包信息 -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    FROM t_pub_redpacket pr 
+		LEFT JOIN t_act_activity aa 
+		on pr.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 2 
+  		AND pr.status != -1 
+	    AND pr.PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_pub_redpacket
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.PubRedpacket" >
+	    insert into t_pub_redpacket (PID, rep_name, rep_amount, 
+	      rep_number, only_max_amount, is_bir_privilege, 
+	      redpacket_type, allot_type, red_desc, 
+	      eff_time, exp_time, status, 
+	      create_user, create_time, last_create_user, 
+	      last_create_time, version)
+	    values (#{pid,jdbcType=VARCHAR}, #{repName,jdbcType=VARCHAR}, #{repAmount,jdbcType=DECIMAL}, 
+	      #{repNumber,jdbcType=INTEGER}, #{onlyMaxAmount,jdbcType=DECIMAL}, #{isBirPrivilege,jdbcType=VARCHAR}, 
+	      #{redpacketType,jdbcType=VARCHAR}, #{allotType,jdbcType=VARCHAR}, #{redDesc,jdbcType=VARCHAR}, 
+	      #{effTime,jdbcType=TIMESTAMP}, #{expTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+	      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastCreateUser,jdbcType=VARCHAR}, 
+	      #{lastCreateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.PubRedpacket" >
+	    insert into t_pub_redpacket
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="repName != null" >
+	        rep_name,
+	      </if>
+	      <if test="repAmount != null" >
+	        rep_amount,
+	      </if>
+	      <if test="repNumber != null" >
+	        rep_number,
+	      </if>
+	      <if test="onlyMaxAmount != null" >
+	        only_max_amount,
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege,
+	      </if>
+	      <if test="redpacketType != null" >
+	        redpacket_type,
+	      </if>
+	      <if test="allotType != null" >
+	        allot_type,
+	      </if>
+	      <if test="redDesc != null" >
+	        red_desc,
+	      </if>
+	      <if test="effTime != null" >
+	        eff_time,
+	      </if>
+	      <if test="expTime != null" >
+	        exp_time,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user,
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="repName != null" >
+	        #{repName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="repAmount != null" >
+	        #{repAmount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="repNumber != null" >
+	        #{repNumber,jdbcType=INTEGER},
+	      </if>
+	      <if test="onlyMaxAmount != null" >
+	        #{onlyMaxAmount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="redpacketType != null" >
+	        #{redpacketType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="allotType != null" >
+	        #{allotType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="redDesc != null" >
+	        #{redDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="effTime != null" >
+	        #{effTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expTime != null" >
+	        #{expTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.PubRedpacket" >
+	    update t_pub_redpacket
+	    <set >
+	      <if test="repName != null" >
+	        rep_name = #{repName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="repAmount != null" >
+	        rep_amount = #{repAmount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="repNumber != null" >
+	        rep_number = #{repNumber,jdbcType=INTEGER},
+	      </if>
+	      <if test="onlyMaxAmount != null" >
+	        only_max_amount = #{onlyMaxAmount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="redpacketType != null" >
+	        redpacket_type = #{redpacketType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="allotType != null" >
+	        allot_type = #{allotType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="redDesc != null" >
+	        red_desc = #{redDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="effTime != null" >
+	        eff_time = #{effTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="expTime != null" >
+	        exp_time = #{expTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.PubRedpacket" >
+	    update t_pub_redpacket
+	    set rep_name = #{repName,jdbcType=VARCHAR},
+	      rep_amount = #{repAmount,jdbcType=DECIMAL},
+	      rep_number = #{repNumber,jdbcType=INTEGER},
+	      only_max_amount = #{onlyMaxAmount,jdbcType=DECIMAL},
+	      is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      redpacket_type = #{redpacketType,jdbcType=VARCHAR},
+	      allot_type = #{allotType,jdbcType=VARCHAR},
+	      red_desc = #{redDesc,jdbcType=VARCHAR},
+	      eff_time = #{effTime,jdbcType=TIMESTAMP},
+	      exp_time = #{expTime,jdbcType=TIMESTAMP},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量删除红包信息 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_pub_redpacket SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 修改活动的状态 -->
+  	<update id="updateActiivtyStatus" parameterType="java.lang.String">
+  		UPDATE t_pub_redpacket SET
+  		status = #{status,jdbcType=VARCHAR}
+  		where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+</mapper>

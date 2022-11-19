@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.user.CaffP2pUserMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.user.CaffP2pUser" >
+    <id column="caffP2pUserId" property="caffp2puserid" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="bitState2" property="bitstate2" jdbcType="BIGINT" />
+    <result column="bitState3" property="bitstate3" jdbcType="BIGINT" />
+    <result column="exkey" property="exkey" jdbcType="BIGINT" />
+    <result column="sourceInt" property="sourceint" jdbcType="INTEGER" />
+    <result column="loginErrorCount" property="loginerrorcount" jdbcType="INTEGER" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="tradePassword" property="tradepassword" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pUserId, bitState, bitState2, bitState3, exkey, sourceInt, loginErrorCount, 
+    createdDateLong, version, email, phone, name, password, tradePassword
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pUser
+    where caffP2pUserId = #{caffp2puserid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pUser
+    where caffP2pUserId = #{caffp2puserid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.user.CaffP2pUser" >
+    insert into CaffP2pUser (caffP2pUserId, bitState, bitState2, 
+      bitState3, exkey, sourceInt, 
+      loginErrorCount, createdDateLong, version, 
+      email, phone, name, 
+      password, tradePassword)
+    values (#{caffp2puserid,jdbcType=BIGINT}, #{bitstate,jdbcType=BIGINT}, #{bitstate2,jdbcType=BIGINT}, 
+      #{bitstate3,jdbcType=BIGINT}, #{exkey,jdbcType=BIGINT}, #{sourceint,jdbcType=INTEGER}, 
+      #{loginerrorcount,jdbcType=INTEGER}, #{createddatelong,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{tradepassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pUser" >
+    insert into CaffP2pUser
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2puserid != null" >
+        caffP2pUserId,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="bitstate2 != null" >
+        bitState2,
+      </if>
+      <if test="bitstate3 != null" >
+        bitState3,
+      </if>
+      <if test="exkey != null" >
+        exkey,
+      </if>
+      <if test="sourceint != null" >
+        sourceInt,
+      </if>
+      <if test="loginerrorcount != null" >
+        loginErrorCount,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="tradepassword != null" >
+        tradePassword,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2puserid != null" >
+        #{caffp2puserid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate2 != null" >
+        #{bitstate2,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate3 != null" >
+        #{bitstate3,jdbcType=BIGINT},
+      </if>
+      <if test="exkey != null" >
+        #{exkey,jdbcType=BIGINT},
+      </if>
+      <if test="sourceint != null" >
+        #{sourceint,jdbcType=INTEGER},
+      </if>
+      <if test="loginerrorcount != null" >
+        #{loginerrorcount,jdbcType=INTEGER},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="tradepassword != null" >
+        #{tradepassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.user.CaffP2pUser" >
+    update CaffP2pUser
+    <set >
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate2 != null" >
+        bitState2 = #{bitstate2,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate3 != null" >
+        bitState3 = #{bitstate3,jdbcType=BIGINT},
+      </if>
+      <if test="exkey != null" >
+        exkey = #{exkey,jdbcType=BIGINT},
+      </if>
+      <if test="sourceint != null" >
+        sourceInt = #{sourceint,jdbcType=INTEGER},
+      </if>
+      <if test="loginerrorcount != null" >
+        loginErrorCount = #{loginerrorcount,jdbcType=INTEGER},
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="tradepassword != null" >
+        tradePassword = #{tradepassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where caffP2pUserId = #{caffp2puserid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.user.CaffP2pUser" >
+    update CaffP2pUser
+    set bitState = #{bitstate,jdbcType=BIGINT},
+      bitState2 = #{bitstate2,jdbcType=BIGINT},
+      bitState3 = #{bitstate3,jdbcType=BIGINT},
+      exkey = #{exkey,jdbcType=BIGINT},
+      sourceInt = #{sourceint,jdbcType=INTEGER},
+      loginErrorCount = #{loginerrorcount,jdbcType=INTEGER},
+      createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      tradePassword = #{tradepassword,jdbcType=VARCHAR}
+    where caffP2pUserId = #{caffp2puserid,jdbcType=BIGINT}
+  </update>
+</mapper>

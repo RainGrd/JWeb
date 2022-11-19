@@ -1,0 +1,954 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizBorrowMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizBorrow" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="bor_order" property="borOrder" jdbcType="VARCHAR"/>
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+    <result column="borrow_code" property="borrowCode" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="home_id" property="homeId" jdbcType="VARCHAR" />
+    <result column="home_desc" property="homeDesc" jdbcType="VARCHAR" />
+    <result column="home_total" property="homeTotal" jdbcType="DECIMAL" />
+    <result column="borrow_money" property="borrowMoney" jdbcType="DECIMAL" />
+    <result column="borrow_time" property="borrowTime" jdbcType="TIMESTAMP" />
+    <result column="borrow_use" property="borrowUse" jdbcType="VARCHAR" />
+    <result column="payment" property="payment" jdbcType="VARCHAR" />
+    <result column="repayment_type" property="repaymentType" jdbcType="VARCHAR" />
+    <result column="accrual_type" property="accrualType" jdbcType="VARCHAR" />
+    <result column="other" property="other" jdbcType="VARCHAR" />
+    <result column="borrow_type" property="borrowType" jdbcType="VARCHAR" />
+    <result column="start_money" property="startMoney" jdbcType="DECIMAL" />
+    <result column="end_money" property="endMoney" jdbcType="DECIMAL" />
+    <result column="is_times_invest" property="isTimesInvest" jdbcType="VARCHAR" />
+    <result column="is_jiaxi_ticket" property="isJiaxiTicket" jdbcType="VARCHAR" />
+    <result column="invest_reward_scale" property="investRewardScale" jdbcType="DECIMAL" />
+    <result column="is_equitable_assignment" property="isEquitableAssignment" jdbcType="VARCHAR" />
+    <result column="already_money" property="alreadyMoney" jdbcType="DECIMAL" />
+    <result column="borrow_progress" property="borrowProgress" jdbcType="DECIMAL" />
+    <result column="gua_org_id" property="guaOrgId" jdbcType="VARCHAR" />
+    <result column="gua_org_name" property="guaOrgName" jdbcType="VARCHAR" />
+    <result column="oper_time" property="operTime" jdbcType="TIMESTAMP" />
+    <result column="is_split" property="isSplit" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+    <result column="surplus_money" property="surplusMoney" jdbcType="DECIMAL" />
+    <result column="borrow_password" property="borrowPassword" jdbcType="VARCHAR" />
+    <result column="bor_agr_id" property="borAgrId" jdbcType="VARCHAR" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="borrow_desc" property="borrowDesc" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="VARCHAR" />
+    <result column="bor_deadline" property="borDeadline" jdbcType="VARCHAR" />
+    <result column="borrow_rate" property="borrowRate" jdbcType="DECIMAL" />
+    <result column="hostage_info" property="hostageInfo" jdbcType="VARCHAR" />
+    <result column="hostage_valuable" property="hostageValuable" jdbcType="VARCHAR" />
+    <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+    <result column="house_info" property="houseInfo" jdbcType="VARCHAR" />
+    <result column="gua_acc" property="guaAcc" jdbcType="VARCHAR" />
+    <result column="risk_desc" property="riskDesc" jdbcType="VARCHAR" />
+    <result column="split_bor_count" property="splitBorCount" jdbcType="VARCHAR" />
+    <result column="tender_count" property="tenderCount" jdbcType="VARCHAR" />
+    <result column="bor_status" property="borStatus" jdbcType="VARCHAR" />
+    <result column="rest_reason" property="restReason" jdbcType="VARCHAR" />
+    <result column="manage_expense_rate" property="manageExpenseRate" jdbcType="DECIMAL" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="bor_full_time" property="borFullTime" jdbcType="TIMESTAMP" />
+    <result column="accrualTypeName" property="accrualTypeName" jdbcType="VARCHAR" />
+    <result column="borrowTypeName" property="borrowTypeName" jdbcType="VARCHAR" />
+    <result column="repaymentTypeName" property="repaymentTypeName" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="StatVOMap" type="com.yscf.core.model.ptp.financial.BizBorrowStatModel" >
+  	    <result column="borrowType" property="borrowType" jdbcType="VARCHAR" />
+	    <result column="totalAmount" property="totalAmount" jdbcType="DECIMAL" />
+	    <result column="totalCount" property="totalCount" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="borrowTimeMap" type="com.yscf.core.model.business.BizBorrowTimeVO" >
+    <result column="borrow_num" property="borrowNum" jdbcType="VARCHAR" />
+    <result column="borrow_amt" property="borrowAmt" jdbcType="DECIMAL" />
+  </resultMap> 
+  <sql id="Base_Column_List" >
+    PID, bor_order,parent_id, borrow_code, customer_id, home_id, home_desc, home_total, borrow_money,borrow_time, 
+    borrow_use, payment,  repayment_type, accrual_type, other, borrow_type, 
+    start_money, end_money, is_times_invest, is_jiaxi_ticket, invest_reward_scale as invest_reward_scale, is_equitable_assignment, 
+    already_money, borrow_progress,gua_org_id,FUNC_GET_DICT_CONT_NAME('GUA_ORG',gua_org_id) AS gua_org_name , oper_time, is_split, 
+    deadline, surplus_money, borrow_password, bor_agr_id, status, create_user, create_time, 
+    last_update_user, last_update_time, borrow_desc,apply_time,bor_deadline,borrow_rate as borrow_rate,hostage_info,province,city,
+    hostage_valuable,borrow_name,house_info,gua_acc,risk_desc,publish_time, split_bor_count, tender_count, bor_status,manage_expense_rate as manage_expense_rate,bor_full_time,
+    FUNC_GET_DICT_CONT_NAME('ACCRUAL_TYPE',accrual_type) as accrualTypeName,
+    FUNC_GET_DICT_CONT_NAME('BORROW_TYPE',borrow_type) as borrowTypeName,
+    FUNC_GET_DICT_CONT_NAME('REPAYMENT_TYPE',repayment_type) as repaymentTypeName,
+    version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_borrow
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBidOkBorrows" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_biz_borrow
+  	where borrow_money = already_money and bor_status=4
+  </select>
+  <!-- 根据借款类型获取最新的借款标的 -->
+  <select id="getLastBorrowByBorrowType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_borrow b
+    where b.borrow_type = #{borrowType,jdbcType=VARCHAR} 
+    	  and b.status = 1 and b.publish_time is not null and b.bor_status in (1,2,4,5,6,7,8)
+    ORDER BY b.publish_time DESC limit 0,1
+  </select>
+  <!-- 查询借款项目类型统计占比 -->
+  <select id="selectStatByBorrowType" resultMap="StatVOMap" parameterType="java.lang.String" >
+	SELECT
+		b.borrow_type AS borrowType,
+		SUM(b.borrow_money) AS totalAmount,
+		COUNT(b.PID) AS totalCount
+	FROM
+		t_biz_borrow b
+	WHERE
+		b.bor_status <![CDATA[ >= ]]> #{borrowStatus,jdbcType=VARCHAR} 
+		AND  b.status = 1
+	GROUP BY
+		b.borrow_type 
+  </select>
+  
+    <!-- 统计借款数量占比 -->
+  <select id="findByBorrowCountData" resultMap="StatVOMap" parameterType="java.lang.String" >
+	SELECT
+		count(pid) AS totalCount,
+		tb.bor_status AS borrowType
+	FROM
+		t_biz_borrow tb
+	WHERE
+		(tb.bor_status <![CDATA[ >= ]]> #{borrowStatus4,jdbcType=VARCHAR} or tb.bor_status = #{borrowStatus0,jdbcType=VARCHAR} or tb.bor_status = #{borrowStatus3,jdbcType=VARCHAR})
+		AND  tb.borrow_type <![CDATA[ < ]]> 4
+		AND  tb.status = 1
+	GROUP BY
+		tb.bor_status
+  </select>
+  
+  <select id="getBorrowCountByStandard" resultType="Integer">
+    select 
+  	COUNT(PID)
+    from t_biz_borrow t
+    where t.borrow_type = #{borrowType,jdbcType=VARCHAR} 
+    AND t.bor_status = #{borrowStatus,jdbcType=VARCHAR} 
+    
+    <if test="start != null and start!='' " >
+    <![CDATA[ AND t.publish_time >=   #{start,jdbcType=VARCHAR}]]>  
+    </if>
+     <if test="end != null and end !='' " >
+     <![CDATA[ AND t.publish_time <=   #{end,jdbcType=VARCHAR}]]>  
+    </if>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizBorrow" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_borrow where 1 = 1
+    <if test="pid != null" >
+        and PID = #{pid,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowCode != null" >
+        and borrow_code = #{borrowCode,jdbcType=VARCHAR}
+      </if>
+      <if test="customerId != null" >
+        and customer_id = #{customerId,jdbcType=VARCHAR}
+      </if>
+      <if test="homeId != null" >
+        and home_id = #{homeId,jdbcType=VARCHAR}
+      </if>
+      <if test="homeDesc != null" >
+        and home_desc = #{homeDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="homeTotal != null" >
+        and home_total = #{homeTotal,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowMoney != null" >
+        and borrow_money = #{borrowMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowTime != null" >
+        and borrow_time = #{borrowTime,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowUse != null" >
+        and borrow_use = #{borrowUse,jdbcType=VARCHAR}
+      </if>
+      <if test="payment != null" >
+        and payment = #{payment,jdbcType=VARCHAR}
+      </if>
+      <if test="repaymentType != null" >
+        and repayment_type = #{repaymentType,jdbcType=VARCHAR}
+      </if>
+      <if test="accrualType != null" >
+        and accrual_type = #{accrualType,jdbcType=VARCHAR}
+      </if>
+      <if test="other != null" >
+        and other = #{other,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowType != null" >
+        and borrow_type = #{borrowType,jdbcType=VARCHAR}
+      </if>
+      <if test="startMoney != null" >
+        and start_money = #{startMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="endMoney != null" >
+        and end_money #{endMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="isTimesInvest != null" >
+        and is_times_invest #{isTimesInvest,jdbcType=VARCHAR}
+      </if>
+      <if test="isJiaxiTicket != null" >
+        and is_jiaxi_ticket = #{isJiaxiTicket,jdbcType=VARCHAR}
+      </if>
+      <if test="investRewardScale != null" >
+        and invest_reward_scale = #{investRewardScale,jdbcType=VARCHAR}
+      </if>
+      <if test="isEquitableAssignment != null" >
+        and is_equitable_assignment = #{isEquitableAssignment,jdbcType=VARCHAR}
+      </if>
+      <if test="alreadyMoney != null" >
+        and already_money = #{endValue,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowProgress != null" >
+        and borrow_progress = #{borrowProgress,jdbcType=VARCHAR}
+      </if>
+      <if test="guaOrgId != null" >
+        and gua_org_id = #{guaOrgId,jdbcType=VARCHAR}
+      </if>
+      <if test="operTime != null" >
+        and oper_time = #{operTime,jdbcType=VARCHAR}
+      </if>
+      <if test="isSplit != null" >
+        and is_split = #{isSplit,jdbcType=VARCHAR}
+      </if>
+      <if test="deadline != null" >
+        and deadline = #{deadline,jdbcType=VARCHAR}
+      </if>
+      <if test="surplusMoney != null" >
+        and surplus_money = #{surplusMoney,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowPassword != null" >
+        and borrow_password = #{borrowPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="borAgrId != null" >
+        and bor_agr_id = #{borAgrId,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="createUser != null" >
+        and create_user = #{createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null" >
+        and create_time = #{createTime,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdateUser != null" >
+        and last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdateTime != null" >
+        and last_update_time = #{lastUpdateTime,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowDesc != null" >
+        and borrow_desc = #{borrowDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="applyTime != null" >
+        and apply_time = #{applyTime,jdbcType=VARCHAR}
+      </if>
+      <if test="borDeadline != null" >
+        and bor_deadline = #{borDeadline,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowRate != null and borrowRate != 0" >
+        and borrow_rate = #{borrowRate,jdbcType=VARCHAR}
+      </if>
+      <if test="hostageInfo != null" >
+        and hostage_info = #{hostageInfo,jdbcType=VARCHAR}
+      </if>
+      <if test="hostageValuable != null" >
+        and hostage_valuable = #{hostageValuable,jdbcType=VARCHAR}
+      </if>
+      <if test="borrowName != null" >
+        and borrow_name = #{borrowName,jdbcType=VARCHAR}
+      </if>
+      <if test="houseInfo != null" >
+        and house_info = #{houseInfo,jdbcType=VARCHAR}
+      </if>
+      <if test="guaAcc != null" >
+        and gua_acc = #{guaAcc,jdbcType=VARCHAR}
+      </if>
+      <if test="riskDesc != null" >
+        and risk_desc = #{riskDesc,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    update t_biz_borrow set status = 0 
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.business.BizBorrow" >
+    insert into t_biz_borrow (PID, borrow_code, customer_id, 
+      home_id, home_desc, home_total, 
+      borrow_money, borrow_time, borrow_use, 
+      payment, repayment_type, 
+      accrual_type, other, borrow_type, 
+      start_money, end_money, is_times_invest, 
+      is_jiaxi_ticket, invest_reward_scale, is_equitable_assignment, 
+      already_money, 
+      borrow_progress, gua_org_id, oper_time, 
+      is_split, deadline, surplus_money, 
+      borrow_password, bor_agr_id, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, borrow_desc,apply_time,bor_deadline,
+      borrow_rate,hostage_info,hostage_valuable,borrow_name,house_info,gua_acc,risk_desc,
+      parent_id,bor_order,publish_time,split_bor_count,tender_count,bor_status,manage_expense_rate,province,city,bor_full_time,version)
+    values (#{pid,jdbcType=VARCHAR}, #{borrowCode,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{homeId,jdbcType=VARCHAR}, #{homeDesc,jdbcType=VARCHAR}, #{homeTotal,jdbcType=DECIMAL}, 
+      #{borrowMoney,jdbcType=DECIMAL}, #{borrowTime,jdbcType=TIMESTAMP}, #{borrowUse,jdbcType=VARCHAR}, 
+      #{payment,jdbcType=VARCHAR}, #{repaymentType,jdbcType=VARCHAR}, 
+      #{accrualType,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, #{borrowType,jdbcType=VARCHAR}, 
+      #{startMoney,jdbcType=DECIMAL}, #{endMoney,jdbcType=DECIMAL}, #{isTimesInvest,jdbcType=VARCHAR}, 
+      #{isJiaxiTicket,jdbcType=VARCHAR}, (#{investRewardScale,jdbcType=DECIMAL}), #{isEquitableAssignment,jdbcType=VARCHAR}, 
+      #{alreadyMoney,jdbcType=DECIMAL}, 
+      #{borrowProgress,jdbcType=DECIMAL}, #{guaOrgId,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}, 
+      #{isSplit,jdbcType=VARCHAR}, #{deadline,jdbcType=VARCHAR}, #{surplusMoney,jdbcType=DECIMAL}, 
+      #{borrowPassword,jdbcType=VARCHAR}, #{borAgrId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{borrowDesc,jdbcType=VARCHAR}, #{applyTime,jdbcType=VARCHAR},
+      #{borDeadline,jdbcType=VARCHAR},(#{borrowRate,jdbcType=VARCHAR}),#{hostageInfo,jdbcType=VARCHAR},
+      #{hostageValuable,jdbcType=VARCHAR},#{borrowName,jdbcType=VARCHAR},
+      #{houseInfo,jdbcType=VARCHAR},#{guaAcc,jdbcType=VARCHAR},#{riskDesc,jdbcType=VARCHAR},
+      #{parentId,jdbcType=VARCHAR},#{borOrder,jdbcType=VARCHAR},#{publishTime,jdbcType=TIMESTAMP},
+      #{splitBorCount,jdbcType=VARCHAR},#{tenderCount,jdbcType=VARCHAR},#{borStatus,jdbcType=VARCHAR},#{manageExpenseRate,jdbcType=DECIMAL},
+      #{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{borFullTime,jdbcType=TIMESTAMP},'1'
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.business.BizBorrow" >
+    insert into t_biz_borrow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="borrowCode != null" >
+        borrow_code,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="homeId != null" >
+        home_id,
+      </if>
+      <if test="homeDesc != null" >
+        home_desc,
+      </if>
+      <if test="homeTotal != null" >
+        home_total,
+      </if>
+      <if test="borrowMoney != null" >
+        borrow_money,
+      </if>
+      <if test="borrowTime != null" >
+        borrow_time,
+      </if>
+      <if test="borrowUse != null" >
+        borrow_use,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+      <if test="repaymentType != null" >
+        repayment_type,
+      </if>
+      <if test="accrualType != null" >
+        accrual_type,
+      </if>
+      <if test="other != null" >
+        other,
+      </if>
+      <if test="borrowType != null" >
+        borrow_type,
+      </if>
+      <if test="startMoney != null" >
+        start_money,
+      </if>
+      <if test="endMoney != null" >
+        end_money,
+      </if>
+      <if test="isTimesInvest != null" >
+        is_times_invest,
+      </if>
+      <if test="isJiaxiTicket != null" >
+        is_jiaxi_ticket,
+      </if>
+      <if test="investRewardScale != null" >
+        invest_reward_scale,
+      </if>
+      <if test="isEquitableAssignment != null" >
+        is_equitable_assignment,
+      </if>
+      <if test="alreadyMoney != null" >
+        already_money,
+      </if>
+      <if test="borrowProgress != null" >
+        borrow_progress,
+      </if>
+      <if test="guaOrgId != null" >
+        gua_org_id,
+      </if>
+      <if test="operTime != null" >
+        oper_time,
+      </if>
+      <if test="isSplit != null" >
+        is_split,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="surplusMoney != null" >
+        surplus_money,
+      </if>
+      <if test="borrowPassword != null" >
+        borrow_password,
+      </if>
+      <if test="borAgrId != null" >
+        bor_agr_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="borrowDesc != null" >
+        borrow_desc,
+      </if>
+      <if test="applyTime != null" >
+        apply_time,
+      </if>
+      <if test="borDeadline != null" >
+        bor_deadline,
+      </if>
+      <if test="borrowRate != null and borrowRate != 0" >
+        borrow_rate,
+      </if>
+      <if test="hostageInfo != null" >
+        hostage_info,
+      </if>
+      <if test="hostageValuable != null" >
+        hostage_valuable,
+      </if>
+      <if test="borrowName != null" >
+        borrow_name,
+      </if>
+      <if test="houseInfo != null" >
+        house_info ,
+      </if>
+      <if test="guaAcc != null" >
+        gua_acc,
+      </if>
+      <if test="riskDesc != null" >
+        risk_desc,
+      </if>
+      <if test="manageExpenseRate != null" >
+        manage_expense_rate,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city
+      </if>
+      <if test="borFullTime != null" >
+        bor_full_time
+      </if>
+      <if test="version != null and version!='' " >
+        version
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowCode != null" >
+        #{borrowCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="homeId != null" >
+        #{homeId,jdbcType=VARCHAR},
+      </if>
+      <if test="homeDesc != null" >
+        #{homeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="homeTotal != null" >
+        #{homeTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowMoney != null" >
+        #{borrowMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowTime != null" >
+        #{borrowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowUse != null" >
+        #{borrowUse,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentType != null" >
+        #{repaymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="accrualType != null" >
+        #{accrualType,jdbcType=VARCHAR},
+      </if>
+      <if test="other != null" >
+        #{other,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowType != null" >
+        #{borrowType,jdbcType=VARCHAR},
+      </if>
+      <if test="startMoney != null" >
+        #{startMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="endMoney != null" >
+        #{endMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isTimesInvest != null" >
+        #{isTimesInvest,jdbcType=VARCHAR},
+      </if>
+      <if test="isJiaxiTicket != null" >
+        #{isJiaxiTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="investRewardScale != null" >
+        (#{investRewardScale,jdbcType=DECIMAL}),
+      </if>
+      <if test="isEquitableAssignment != null" >
+        #{isEquitableAssignment,jdbcType=VARCHAR},
+      </if>
+      <if test="alreadyMoney != null" >
+        #{alreadyMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowProgress != null" >
+        #{borrowProgress,jdbcType=DECIMAL},
+      </if>
+      <if test="guaOrgId != null" >
+        #{guaOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null" >
+        #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSplit != null" >
+        #{isSplit,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=VARCHAR},
+      </if>
+      <if test="surplusMoney != null" >
+        #{surplusMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowPassword != null" >
+        #{borrowPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="borAgrId != null" >
+        #{borAgrId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowDesc != null" >
+        #{borrowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="borDeadline != null" >
+        #{borDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowRate != null and borrowRate != 0" >
+        (#{borrowRate,jdbcType=VARCHAR}),
+      </if>
+      <if test="hostageInfo != null" >
+        #{hostageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="hostageValuable != null" >
+        #{hostageValuable,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowName != null" >
+        #{borrowName,jdbcType=VARCHAR},
+      </if>
+      <if test="houseInfo != null" >
+        #{houseInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="guaAcc != null" >
+        #{guaAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="riskDesc != null" >
+        #{riskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="manageExpenseRate != null" >
+        #{manageExpenseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="borFullTime != null" >
+        #{borFullTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="version != null and version!='' " >
+        version = #{version,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.business.BizBorrow" >
+    update t_biz_borrow
+    <set >
+      <if test="borOrder != null" >
+        bor_order = #{borOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="homeId != null" >
+        home_id = #{homeId,jdbcType=VARCHAR},
+      </if>
+      <if test="guaOrgId != null" >
+        gua_org_id = #{guaOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowName != null" >
+        borrow_name = #{borrowName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowCode != null" >
+        borrow_code = #{borrowCode,jdbcType=VARCHAR},
+      </if>
+      <if test="homeDesc != null" >
+        home_desc = #{homeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="homeTotal != null" >
+        home_total = #{homeTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowMoney != null" >
+        borrow_money = #{borrowMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowTime != null" >
+        borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowUse != null" >
+        borrow_use = #{borrowUse,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentType != null" >
+        repayment_type = #{repaymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="accrualType != null" >
+        accrual_type = #{accrualType,jdbcType=VARCHAR},
+      </if>
+      <if test="other != null" >
+        other = #{other,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowType != null" >
+        borrow_type = #{borrowType,jdbcType=VARCHAR},
+      </if>
+      <if test="startMoney != null" >
+        start_money = #{startMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="endMoney != null" >
+        end_money = #{endMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="isTimesInvest != null" >
+        is_times_invest = #{isTimesInvest,jdbcType=VARCHAR},
+      </if>
+      <if test="isJiaxiTicket != null" >
+        is_jiaxi_ticket = #{isJiaxiTicket,jdbcType=VARCHAR},
+      </if>
+      <if test="investRewardScale != null" >
+        invest_reward_scale = #{investRewardScale,jdbcType=DECIMAL},
+      </if>
+      <if test="isEquitableAssignment != null" >
+        is_equitable_assignment = #{isEquitableAssignment,jdbcType=VARCHAR},
+      </if>
+      <if test="endValue != null" >
+        end_value = #{endValue,jdbcType=DECIMAL},
+      </if>
+      <if test="alreadyMoney != null" >
+        already_money = #{alreadyMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowProgress != null" >
+        borrow_progress = #{borrowProgress,jdbcType=DECIMAL},
+      </if>
+      <if test="operTime != null" >
+        oper_time = #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSplit != null" >
+        is_split = #{isSplit,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline,jdbcType=VARCHAR},
+      </if>
+      <if test="surplusMoney != null" >
+        surplus_money = #{surplusMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="borrowPassword != null" >
+        borrow_password = #{borrowPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="borDeadline != null" >
+        bor_deadline = #{borDeadline,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borAgrId != null" >
+        bor_agr_id = #{borAgrId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null" >
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borFullTime != null" >
+        bor_full_time = #{borFullTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowTag != null" >
+        borrow_tag = #{borrowTag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowDesc != null" >
+        borrow_desc = #{borrowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowRate != null" >
+        borrow_rate = #{borrowRate,jdbcType=DECIMAL},
+      </if>
+      <if test="hostageInfo != null" >
+        hostage_info = #{hostageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="hostageValuable != null" >
+        hostage_valuable = #{hostageValuable,jdbcType=VARCHAR},
+      </if>
+      <if test="houseInfo != null" >
+        house_info = #{houseInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="guaAcc != null" >
+        gua_acc = #{guaAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="riskDesc != null" >
+        risk_desc = #{riskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="splitBorCount != null" >
+        split_bor_count = #{splitBorCount,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderCount != null" >
+        tender_count = #{tenderCount,jdbcType=VARCHAR},
+      </if>
+      <if test="borStatus != null" >
+        bor_status = #{borStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="restReason != null" >
+        rest_reason = #{restReason,jdbcType=VARCHAR},
+      </if>
+      <if test="manageExpenseRate != null" >
+        manage_expense_rate = #{manageExpenseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = version+1
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+      <if test="version != null and version != ''" >
+       and  version = #{version,jdbcType=VARCHAR}
+      </if> 
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizBorrow" >
+   update t_biz_borrow
+    set bor_order = #{borOrder,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      home_id = #{homeId,jdbcType=VARCHAR},
+      gua_org_id = #{guaOrgId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      borrow_name = #{borrowName,jdbcType=VARCHAR},
+      borrow_code = #{borrowCode,jdbcType=VARCHAR},
+      home_desc = #{homeDesc,jdbcType=VARCHAR},
+      home_total = #{homeTotal,jdbcType=DECIMAL},
+      borrow_money = #{borrowMoney,jdbcType=DECIMAL},
+      borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+      borrow_use = #{borrowUse,jdbcType=VARCHAR},
+      payment = #{payment,jdbcType=VARCHAR},
+      repayment_type = #{repaymentType,jdbcType=VARCHAR},
+      accrual_type = #{accrualType,jdbcType=VARCHAR},
+      other = #{other,jdbcType=VARCHAR},
+      borrow_type = #{borrowType,jdbcType=VARCHAR},
+      start_money = #{startMoney,jdbcType=DECIMAL},
+      end_money = #{endMoney,jdbcType=DECIMAL},
+      is_times_invest = #{isTimesInvest,jdbcType=VARCHAR},
+      is_jiaxi_ticket = #{isJiaxiTicket,jdbcType=VARCHAR},
+      invest_reward_scale = #{investRewardScale,jdbcType=DECIMAL},
+      is_equitable_assignment = #{isEquitableAssignment,jdbcType=VARCHAR},
+      already_money = #{alreadyMoney,jdbcType=DECIMAL},
+      borrow_progress = #{borrowProgress,jdbcType=DECIMAL},
+      oper_time = #{operTime,jdbcType=TIMESTAMP},
+      is_split = #{isSplit,jdbcType=VARCHAR},
+      deadline = #{deadline,jdbcType=VARCHAR},
+      surplus_money = #{surplusMoney,jdbcType=DECIMAL},
+      borrow_password = #{borrowPassword,jdbcType=VARCHAR},
+      bor_deadline = #{borDeadline,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      bor_agr_id = #{borAgrId,jdbcType=VARCHAR},
+      apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      bor_full_time = #{borFullTime,jdbcType=TIMESTAMP},
+      borrow_tag = #{borrowTag,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      borrow_desc = #{borrowDesc,jdbcType=VARCHAR},
+      borrow_rate = #{borrowRate,jdbcType=DECIMAL},
+      hostage_info = #{hostageInfo,jdbcType=VARCHAR},
+      hostage_valuable = #{hostageValuable,jdbcType=VARCHAR},
+      house_info = #{houseInfo,jdbcType=VARCHAR},
+      gua_acc = #{guaAcc,jdbcType=VARCHAR},
+      risk_desc = #{riskDesc,jdbcType=VARCHAR},
+      split_bor_count = #{splitBorCount,jdbcType=VARCHAR},
+      tender_count = tenderCount + 1,
+      bor_status = #{borStatus,jdbcType=VARCHAR},
+      rest_reason = #{restReason,jdbcType=VARCHAR},
+      manage_expense_rate = #{manageExpenseRate,jdbcType=DECIMAL},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      version = version + 1
+    where PID = #{pid,jdbcType=VARCHAR}  and version = #{version,jdbcType=VARCHAR}
+  </update>
+  <!--  根据借款期限获得借款金额，借款笔数 -->
+    <select id="selectBorrowTime" resultMap="borrowTimeMap" parameterType="com.yscf.core.model.business.BizBorrowTimeVO" >
+	    SELECT
+			count(1) as borrow_num,
+			sum(borrow_money) as borrow_amt
+		FROM
+			t_biz_borrow t
+		WHERE 1 = 1 and t.borrow_type in (1,2,3)  and t.bor_status in (4,5,6,7,8) and t.status = 1 
+			<if test="startBorrowTime != null and startBorrowTime!=0" >
+		        and t.bor_deadline  <![CDATA[>=]]>  #{startBorrowTime,jdbcType=VARCHAR}
+		    </if>
+			<if test="endBorrowTime != null and endBorrowTime!=0" >
+		       AND t.bor_deadline  <![CDATA[<]]>  #{endBorrowTime,jdbcType=VARCHAR}
+		    </if>
+		
+  </select>
+<!-- 到期修改 状态为预发布的 标的 -->
+  <update id="updateBorrowPublish" parameterType="java.lang.String" >
+  	  update t_biz_borrow 
+		set bor_status =2 , publish_time = NOW() where `status` = '1' and bor_status = '1' 
+		and publish_time is not null and 
+		publish_time <![CDATA[<=]]> NOW()
+  </update>
+  <select id="selectExpireBorrowIds" resultMap="BaseResultMap" parameterType="java.util.Date">
+  	select 
+  	<include refid="Base_Column_List" />
+    from t_biz_borrow
+    where bor_status = 2 and date_add(publish_time,INTERVAL deadline day) <![CDATA[<=]]> #{time,jdbcType=TIMESTAMP}
+  </select>
+	
+	<!-- API>>已还款列表 -->
+	<select id="selectAlreadyRepaymentAPI" resultMap="BaseResultMap" parameterType="map" >
+		select bb.pid,bb.borrow_code,bb.borrow_money,bb.bor_deadline, 
+		FUNC_GET_DICT_CONT_NAME('BORROW_STATUS_SEARCH',bb.bor_status) AS borStatus 
+		FROM t_biz_borrow bb 
+		WHERE bb.`status` = 1 
+		AND bb.bor_status = 8 
+		AND bb.customer_id = #{customerId,jdbcType=VARCHAR} 
+		ORDER BY bb.borrow_time desc 
+		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}  
+	</select>
+	
+	<!-- 根据客户ID查询未结清的借款数据条数 -->
+	<select id="getNoSettleCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+		SELECT
+			count(1)
+		FROM
+			t_biz_borrow b,
+			t_biz_borrow_approve p
+		WHERE
+			p.bor_id = b.PID
+		AND p.approve_status != 1
+		AND b.bor_status != 8
+		and b.status = 1 
+		and p.status = 1
+		AND b.customer_id = #{customerId,jdbcType=VARCHAR} 
+	</select>
+	<!-- 得到需要进入招标中状态的分标 -->
+	<select id="getToBorrowBidding" resultMap="BaseResultMap" parameterType="map">
+		SELECT	
+			<include refid="Base_Column_List" />
+		FROM
+			t_biz_borrow
+		WHERE
+			parent_id = #{map.parentId,jdbcType=VARCHAR} 
+		AND bor_order > #{map.borOrder,jdbcType=INTEGER} 
+		AND status = 1
+		ORDER BY
+			bor_order+0
+	</select>
+	<!-- 通过借款状态得到借款列表 -->
+	<select id="getBorrowByBorStauts" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT	
+			<include refid="Base_Column_List" />
+		FROM
+			t_biz_borrow
+		where bor_status = #{borStatus,jdbcType=VARCHAR} 
+		AND status = 1	
+	</select>
+</mapper>

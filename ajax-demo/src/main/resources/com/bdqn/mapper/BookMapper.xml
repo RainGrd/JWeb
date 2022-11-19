@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.mapper.BookMapper">
+    <!--用于起别名-->
+    <resultMap id="bookResultMap" type="book">
+            <result column="bookname" property="bookName"></result>
+    </resultMap>
+    <!--结果集映射-->
+    <select id="selectBookName" resultType="book" resultMap="bookResultMap">
+        select * from tb_book where bookname=#{bookName} and delstatus=1;
+    </select>
+</mapper>

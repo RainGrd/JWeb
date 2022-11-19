@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!ELEMENT web-app (servlet*,servlet-mapping)>
+<!ELEMENT servlet (servlet-name,servlet-class)>
+<!ELEMENT servlet-name (#PCDATA)>
+<!ELEMENT servlet-class (#PCDATA)>
+<!ELEMENT servlet-mapping (servlet-name,url-patten)>
+<!ELEMENT url-patten (#PCDATA)>

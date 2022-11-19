@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CustSignInMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.user.CustSignIn" >
+	    <id column="pid" property="pid" jdbcType="VARCHAR" />
+	    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+	    <result column="sign_in_time" property="signInTime" jdbcType="TIMESTAMP" />
+	    <result column="sign_in_platform" property="signInPlatform" jdbcType="INTEGER" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<sql id="Base_Column_List" >
+    	pid, customer_id, sign_in_time, sign_in_platform, create_time, create_user, version 
+  	</sql>
+  	
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    	select  
+    	<include refid="Base_Column_List" /> 
+    	from t_cust_sign_in 
+    	where pid = #{pid,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- 查询签到达人榜(签到次数前五名) -->
+  	<select id="selectSignInDarenCharts" resultMap="BaseResultMap">
+  		select cc.sname,cc.image_url imageUrl,COUNT(csi.customer_id) signInCount
+		from t_cust_sign_in csi 
+		LEFT JOIN t_cust_customer cc 
+		on csi.customer_id = cc.PID 
+		where cc.`status` = 1 
+		and cc.is_freeze = 1  
+		and cc.is_blacklist = 1  
+		GROUP BY csi.customer_id 
+		ORDER BY COUNT(csi.customer_id) desc ,sname ASC
+		LIMIT 5 
+  	</select>
+  	
+  	<!-- 查询客户签到天数 -->
+  	<select id="selectUserSignInSum" resultType="java.lang.Integer" parameterType="java.lang.String">
+  		select count(1) 
+  		from t_cust_sign_in 
+  		where customer_id = #{customerId,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<!-- 判断是否签到 -->
+  	<select id="checkWhetheSignIn" resultType="java.lang.Integer" parameterType="java.lang.String">
+  		select count(1) 
+  		from t_cust_sign_in 
+  		where DATE_FORMAT(sign_in_time ,'%Y%m%d' ) = DATE_FORMAT(sysdate(),'%Y%m%d') 
+  		and customer_id = #{customerId,jdbcType=VARCHAR} 
+  	</select>
+  	
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_cust_sign_in
+	    where pid = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.user.CustSignIn" >
+    	insert into t_cust_sign_in (pid, customer_id, sign_in_time, 
+      	sign_in_platform, create_time, create_user, 
+      	version)
+    	values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{signInTime,jdbcType=TIMESTAMP}, 
+      	#{signInPlatform,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      	#{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.user.CustSignIn" >
+	    insert into t_cust_sign_in
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        pid,
+	      </if>
+	      <if test="customerId != null" >
+	        customer_id,
+	      </if>
+	      <if test="signInTime != null" >
+	        sign_in_time,
+	      </if>
+	      <if test="signInPlatform != null" >
+	        sign_in_platform,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="customerId != null" >
+	        #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="signInTime != null" >
+	        #{signInTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="signInPlatform != null" >
+	        #{signInPlatform,jdbcType=INTEGER},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CustSignIn" >
+	    update t_cust_sign_in
+	    <set >
+	      <if test="customerId != null" >
+	        customer_id = #{customerId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="signInTime != null" >
+	        sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="signInPlatform != null" >
+	        sign_in_platform = #{signInPlatform,jdbcType=INTEGER},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where pid = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CustSignIn" >
+	    update t_cust_sign_in
+	    set customer_id = #{customerId,jdbcType=VARCHAR},
+	      sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+	      sign_in_platform = #{signInPlatform,jdbcType=INTEGER},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      version = #{version,jdbcType=VARCHAR}
+	    where pid = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+</mapper>

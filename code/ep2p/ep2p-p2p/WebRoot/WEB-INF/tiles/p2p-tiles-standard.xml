@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	
+	<!-- 新手标基础模板 -->
+	<definition name="temp.standard.base" template="/WEB-INF/templates/standard.jsp">
+		<put-attribute name="headmeta" value="/layout/headmeta.jsp"></put-attribute>
+		<put-attribute name="navsmall" value="/WEB-INF/view/homepage/navsmall.jsp"></put-attribute>
+		<put-attribute name="remindtip" value="/layout/remindtip.jsp"></put-attribute>
+		<put-attribute name="servicebar" value="/layout/servicebar.jsp"></put-attribute>
+		<put-attribute name="mainmenu" value="/WEB-INF/view/homepage/mainmenu.jsp"></put-attribute>
+		<put-attribute name="footer" value="/layout/footer.jsp"></put-attribute>
+	</definition>
+	
+	<!--新手标详情 -->
+	<definition name="standard.info" extends="temp.standard.base">
+		<put-attribute name="info" value="/WEB-INF/view/mywtinvest/newstandard/info.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 体验标详情 -->
+	<definition name="experience.info" extends="temp.standard.base">
+		<put-attribute name="info" value="/WEB-INF/view/mywtinvest/experienceborrow/info.jsp"></put-attribute>
+	</definition>
+	
+</tiles-definitions>

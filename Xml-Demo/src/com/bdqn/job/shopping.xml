@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE basket SYSTEM "shopping.dtd"><!--引入DTD-->
+<basket>
+    <meat Origin="湖南宁乡" id="1" varieties="猪肉">
+        <part>腿</part>
+        <quality>上等</quality>
+        <price>150.00</price>
+        <discount>5</discount>
+    </meat>
+    <meat Origin="内蒙古科尔沁" id="2" varieties="牛肉">
+        <part>腿</part>
+        <quality>上等</quality>
+        <price>500.00</price>
+        <discount>5</discount>
+    </meat>
+</basket>

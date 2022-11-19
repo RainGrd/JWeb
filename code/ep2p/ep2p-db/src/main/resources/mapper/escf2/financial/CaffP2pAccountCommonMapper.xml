@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.financial.CaffP2pAccountCommonMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.financial.CaffP2pAccountCommon" >
+    <id column="caffP2pAccountCommonId" property="caffp2paccountcommonid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="availableAmount" property="availableamount" jdbcType="DECIMAL" />
+    <result column="frozenAmount" property="frozenamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffP2pAccountCommonId, createdDateLong, version, userId, availableAmount, frozenAmount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffP2pAccountCommon
+    where caffP2pAccountCommonId = #{caffp2paccountcommonid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffP2pAccountCommon
+    where caffP2pAccountCommonId = #{caffp2paccountcommonid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountCommon" >
+    insert into CaffP2pAccountCommon (caffP2pAccountCommonId, createdDateLong, 
+      version, userId, availableAmount, 
+      frozenAmount)
+    values (#{caffp2paccountcommonid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{availableamount,jdbcType=DECIMAL}, 
+      #{frozenamount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountCommon" >
+    insert into CaffP2pAccountCommon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caffp2paccountcommonid != null" >
+        caffP2pAccountCommonId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="availableamount != null" >
+        availableAmount,
+      </if>
+      <if test="frozenamount != null" >
+        frozenAmount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caffp2paccountcommonid != null" >
+        #{caffp2paccountcommonid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="availableamount != null" >
+        #{availableamount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenamount != null" >
+        #{frozenamount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountCommon" >
+    update CaffP2pAccountCommon
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="availableamount != null" >
+        availableAmount = #{availableamount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenamount != null" >
+        frozenAmount = #{frozenamount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where caffP2pAccountCommonId = #{caffp2paccountcommonid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.financial.CaffP2pAccountCommon" >
+    update CaffP2pAccountCommon
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      availableAmount = #{availableamount,jdbcType=DECIMAL},
+      frozenAmount = #{frozenamount,jdbcType=DECIMAL}
+    where caffP2pAccountCommonId = #{caffp2paccountcommonid,jdbcType=BIGINT}
+  </update>
+</mapper>

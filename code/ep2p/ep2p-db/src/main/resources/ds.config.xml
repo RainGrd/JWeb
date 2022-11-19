@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<ds-config>
+	<!-- escf3.0 数据库连接  -->
+	<pool>
+		<type>mysql</type>
+		<name>escf3</name>
+		<driver>com.mysql.jdbc.Driver</driver>
+		<url>jdbc:mysql://192.168.1.222:3306/escf3</url>
+		<username>root</username>
+		<password>mysql99</password>
+		<maxconn>100</maxconn>
+	</pool>
+	<!-- escf2.0 数据库连接  -->
+	<pool>
+		<type>mysql</type>
+		<name>escf2</name>
+		<driver>com.mysql.jdbc.Driver</driver>
+		<url>jdbc:mysql://192.168.1.222:3306/yscf2</url>
+		<username>root</username>
+		<password>mysql99</password>
+		<maxconn>100</maxconn>
+	</pool>
+	<!-- escf3.0数据库连接  -->
+	<pool>
+		<type>mysql</type>
+		<name>escf</name>
+		<driver>com.mysql.jdbc.Driver</driver>
+		<url>jdbc:mysql://192.168.1.222:3306/escf</url>
+		<username>root</username>
+		<password>mysql99</password>
+		<maxconn>100</maxconn>
+	</pool>
+</ds-config>

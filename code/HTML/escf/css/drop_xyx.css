@@ -1,0 +1,159 @@
+/*drop\drop.2\drop.2.psd e计划 抵押装让表格 s*/
+.dr_sx_i{
+    border-radius: 5px;
+    background: #297FB9;
+    padding: 5px 8px;
+    font-size: 12px;
+    line-height: 10px!important;
+    display: inline-block;
+    color: #FFF;
+    text-align: center;	
+}
+.dr_sx_i_{
+	border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 12px;
+    line-height: 10px!important;
+    display: inline-block;
+    color: #2980b9;
+    text-align: center;	
+}
+.dr_sx i:hover{
+    background: #297FB9;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+/*drop\drop.2\drop.2.psd e计划 抵押装让表格 e*/
+
+/*体验标s*/
+.tyb_all{
+	width: 1140px;
+	height: 335px;
+	background: url(../images//dr_2.png) no-repeat;
+}
+.tyb_a_l{
+	width: 670px;
+	height: 260px;
+	border-right: #95a5a6 dashed 1px;
+	margin-left: 66px;
+}
+.tyb_a_l_p1{
+	margin-top: 23px;
+	
+}
+.tyb_a_l_s1{
+	display: inline-block;
+	width: 265px;
+}
+.tyb_a_l_s2{
+	display: inline-block;
+	width: 180px;
+}
+.tyb_a_l_s3{
+	display: inline-block;
+	width: 200px;
+}
+.tyb_a_l_i1{
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 12px;
+    line-height: 10px!important;
+    display: inline-block;
+    text-align: center;	
+}
+.tyb_a_r{
+	width: 280px;
+	height: 260px;
+	margin-right: 65px;
+}
+.tyb_a_r_p1{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background: #51677c;
+	height: 5px;
+	width: 100%;
+}
+.tyb_a_r_p1 span{
+	display: inline-block;
+	width: 100%;
+	 height: 5px;
+	 background: #f1c40f;
+	 float: left;
+}
+.dr_tyj{
+	width: 100%;
+	height: 90px;
+	background: url(../images/dr_3.png) no-repeat;
+}
+.dr_tyj_login{
+	width: 100%;
+	height: 35px;
+	background: url(../images/dr_3.png) no-repeat;
+	background-position: 0px -55px;
+}
+.dr_tyj_j{
+	bottom: 0;
+	height: 35px;
+	left: 0;
+}
+.dr_tyj_lg{
+	height: 35px;
+	width: 100%;
+	border: #bdc3c7 dashed 1px;
+	border-radius: 5px;
+	
+}
+.drop_list{
+	width: 150px;
+	height: 97px;
+	display: inline-block;
+	
+}
+.drop_list_bg_l{
+	background: url(../images/dr_5.png) no-repeat;
+}
+.drop_list_bg_b{
+	background: url(../images/dr_4.png) no-repeat;
+}
+.drop_list_bg_b i{
+	color:#34495e ;
+}
+.drop_list_bg_l .size24{
+	color: #fffe80;
+}
+.drop_list_bg_l .size12{
+	color: #FFFFFF;
+}
+.drop_list_ia{
+	left: 0;
+	top: 15px;
+	width: 100%;
+	text-align: center;
+}
+.drop_list_ib{
+	text-align: center;
+	width: 100%;
+	left: 0;
+	top: 53px;
+}
+/*体验标e*/
+.scrollBox{width:1000%; height:200px; position:absolute; top:0px; left:0px;}
+.h240{height:240px;}
+.top1500{top:-1500px;}
+
+.scrollWrap a{position:absolute; top:80px; opacity:0.4; width:40px; height:40px; border-radius:50%; background:rgba(0,0,0,0.3); font-family:"宋体"; color:#fff; font-size:40px; line-height:40px; text-align:center; z-index:2;}
+.scrollWrap a:hover{background:rgba(0,0,0,0.5);}
+.scrollWrap .pagePre{left:0px;}
+.scrollWrap .pageNext{left:540px;}
+.scrollWrap p{position:absolute; top:215px; left:290px; width:40px;}
+.scrollWrap p span.pageIndex{color:#11D4FC;}
+.scrollWrap p span.pageLenght{color:#333;}
+.scrollBox ul{width:530px; height:200px; float:left;display:block; margin-left:40px;}
+
+
+
+
+
+
+

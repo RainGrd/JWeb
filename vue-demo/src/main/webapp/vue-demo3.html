@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue常用指令演示</title>
+</head>
+<script src="js/vue.js"></script>
+<body>
+<div id="app">
+    <div v-if="count==3">div1</div>
+    <div v-else-if="count==4">div2</div>
+    <div v-else>div3</div>
+    <br/>
+    <input v-model="count">
+    <br/>
+    <br/>
+    <div v-show="count==3">div4</div>
+
+</div>
+</body>
+<!--创建vue核心对象-->
+<script>
+
+    new Vue({
+        el:"#app",
+        data(){
+            return {
+                username:"",
+                url:"https://www.baidu.com/",
+                count:3,
+            }
+        }
+    });
+</script>
+</html>

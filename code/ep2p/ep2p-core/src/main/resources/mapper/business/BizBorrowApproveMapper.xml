@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.business.BizBorrowApproveMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.business.BizBorrowApprove" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="bor_his_id" property="borHisId" jdbcType="VARCHAR" />
+    <result column="bor_id" property="borId" jdbcType="VARCHAR" />
+    <result column="approve_status" property="approveStatus" jdbcType="VARCHAR" />
+    <result column="approve_user" property="approveUser" jdbcType="VARCHAR" />
+    <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP" />
+    <result column="vouch_opinion" property="vouchOpinion" jdbcType="VARCHAR" />
+    <result column="lend_opinion" property="lendOpinion" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="bor_cond_desc" property="borCondDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, bor_his_id, bor_id, approve_node, approve_status, approve_user, approve_time, 
+    vouch_opinion, status, create_user, create_time, last_update_user, last_update_time, 
+    bor_cond_desc,lend_opinion
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_borrow_approve
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.yscf.core.model.business.BizBorrowApprove" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from t_biz_borrow_approve
+	    where 1 = 1 
+	      <if test="pid != null" >
+	        and PID = #{pid,jdbcType=VARCHAR}
+	      </if>
+	      <if test="borHisId != null" >
+	        and bor_his_id = #{borHisId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="borId != null" >
+	        and bor_id =  #{borId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="approveStatus != null" >
+	        and approve_status = #{approveStatus,jdbcType=VARCHAR}
+	      </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_borrow_approve
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.business.BizBorrowApprove" >
+    insert into t_biz_borrow_approve (PID, bor_his_id, bor_id, 
+      approve_status, approve_user, 
+      approve_time, vouch_opinion, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, bor_cond_desc,lend_opinion)
+    values (#{pid,jdbcType=VARCHAR}, #{borHisId,jdbcType=VARCHAR}, #{borId,jdbcType=VARCHAR}, 
+      #{approveStatus,jdbcType=VARCHAR}, #{approveUser,jdbcType=VARCHAR}, 
+      #{approveTime,jdbcType=TIMESTAMP}, #{vouchOpinion,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{borCondDesc,jdbcType=VARCHAR}, #{lendOpinion,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.business.BizBorrowApprove" >
+    insert into t_biz_borrow_approve
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="borHisId != null" >
+        bor_his_id,
+      </if>
+      <if test="borId != null" >
+        bor_id,
+      </if>
+      <if test="approveStatus != null" >
+        approve_status,
+      </if>
+      <if test="approveUser != null" >
+        approve_user,
+      </if>
+      <if test="approveTime != null" >
+        approve_time,
+      </if>
+      <if test="vouchOpinion != null" >
+        vouch_opinion,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="borCondDesc != null" >
+        bor_cond_desc,
+      </if>
+      <if test="lendOpinion != null" >
+        lend_opinion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="borHisId != null" >
+        #{borHisId,jdbcType=VARCHAR},
+      </if>
+      <if test="borId != null" >
+        #{borId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveStatus != null" >
+        #{approveStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="approveUser != null" >
+        #{approveUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null" >
+        #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vouchOpinion != null" >
+        #{vouchOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borCondDesc != null" >
+        #{borCondDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="lendOpinion != null" >
+        #{lendOpinion,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.business.BizBorrowApprove" >
+    update t_biz_borrow_approve
+    <set >
+      <if test="borHisId != null" >
+        bor_his_id = #{borHisId,jdbcType=VARCHAR},
+      </if>
+      <if test="borId != null" >
+        bor_id = #{borId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveStatus != null" >
+        approve_status = #{approveStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="approveUser != null" >
+        approve_user = #{approveUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null" >
+        approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vouchOpinion != null" >
+        vouch_opinion = #{vouchOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borCondDesc != null" >
+        bor_cond_desc = #{borCondDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="lendOpinion != null" >
+        lend_opinion = #{lendOpinion,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.business.BizBorrowApprove" >
+    update t_biz_borrow_approve
+    set bor_his_id = #{borHisId,jdbcType=VARCHAR},
+      bor_id = #{borId,jdbcType=VARCHAR},
+      approve_status = #{approveStatus,jdbcType=VARCHAR},
+      approve_user = #{approveUser,jdbcType=VARCHAR},
+      approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      vouch_opinion = #{vouchOpinion,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      bor_cond_desc = #{borCondDesc,jdbcType=VARCHAR},
+      lend_opinion = #{lendOpinion,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

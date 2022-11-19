@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.system.SysDistionaryMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.system.SysDistionary" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="dict_name" property="dictName" jdbcType="VARCHAR" />
+    <result column="dict_desc" property="dictDesc" jdbcType="VARCHAR" />
+    <result column="is_update" property="isUpdate" jdbcType="VARCHAR" />
+    <result column="dict_code" property="dictCode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, dict_name, dict_desc, is_update, dict_code, status, create_user, create_time, 
+    last_update_user, last_update_time, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary
+    where  1 = 1 
+      <if test="map.dictNameLike != null" >
+        and  dict_name like  concat('%',#{map.dictNameLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.dictCodeLike != null" >
+        and  dict_code like   concat('%',#{map.dictCodeLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.dictName != null" >
+        and  dict_name like  = #{map.dictName,jdbcType=VARCHAR}
+      </if>
+      <if test="map.dictDesc != null" >
+        and dict_desc like   concat('%',#{map.dictDesc,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.isUpdate != null" >
+        and is_update = #{map.isUpdate,jdbcType=VARCHAR}
+      </if>
+      <if test="map.dictCode != null" >
+        and dict_code like #{map.dictCode,jdbcType=VARCHAR}
+      </if>
+      <if test="map.status != null" >
+        and status = #{map.status,jdbcType=VARCHAR}
+      </if>
+      <if test="map.createUser != null" >
+        and create_user like  concat('%',#{map.create_user,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="map.lastUpdateUser != null" >
+        and last_update_user like   concat('%',#{map.lastUpdateUser,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="map.version != null" >
+        and version = #{map.version,jdbcType=VARCHAR}
+      </if>
+      <if test="map.dictNameOrCode != null" >
+      	and  ( dict_name like  concat('%',#{map.dictNameOrCode,jdbcType=VARCHAR},'%' ) or  dict_code like  concat('%',#{map.dictNameOrCode,jdbcType=VARCHAR},'%' ) )
+      </if>
+      order by create_time  desc 
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.yscf.core.model.system.SysDistionary" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary
+    where  1 = 1 
+      <if test="dictNameLike != null" >
+        and  dict_name like  concat('%',#{dictNameLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="dictCodeLike != null" >
+        and  dict_code like   concat('%',#{dictCodeLike,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="dictName != null" >
+        and  dict_name like  = #{dictName,jdbcType=VARCHAR}
+      </if>
+      <if test="dictDesc != null" >
+        and dict_desc like concat('%',#{dictDesc,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="isUpdate != null" >
+        and is_update = #{isUpdate,jdbcType=VARCHAR}
+      </if>
+      <if test="dictCode != null" >
+        and dict_code like #{dictCode,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="createUser != null" >
+        and create_user like  concat('%',#{create_user,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="lastUpdateUser != null" >
+        and last_update_user like   concat('%',#{lastUpdateUser,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="version != null" >
+        and version = #{version,jdbcType=VARCHAR}
+      </if>
+      <if test="dictNameOrCode != null" >
+      	and  ( dict_name like  concat('%',#{dictNameOrCode,jdbcType=VARCHAR},'%' ) or  dict_code like  concat('%',#{dictNameOrCode,jdbcType=VARCHAR},'%' ) )
+      </if>
+      order by create_time  desc 
+  </select>
+  
+  <select id="validateCode" resultMap="BaseResultMap" parameterType="com.yscf.core.model.system.SysDistionary" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_dictionary
+    where  1 = 1 
+    	and status = 1
+        and dict_code like #{dictCode,jdbcType=VARCHAR}
+      <if test="pid != null" >
+        and pid != #{pid,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sys_dictionary
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.system.SysDistionary" >
+    insert into t_sys_dictionary (PID, dict_name, dict_desc, 
+      is_update, dict_code, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, version)
+    values (#{pid,jdbcType=VARCHAR}, #{dictName,jdbcType=VARCHAR}, #{dictDesc,jdbcType=VARCHAR}, 
+      #{isUpdate,jdbcType=VARCHAR}, #{dictCode,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.system.SysDistionary" >
+    insert into t_sys_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="dictName != null" >
+        dict_name,
+      </if>
+      <if test="dictDesc != null" >
+        dict_desc,
+      </if>
+      <if test="isUpdate != null" >
+        is_update,
+      </if>
+      <if test="dictCode != null" >
+        dict_code,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="dictName != null" >
+        #{dictName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictDesc != null" >
+        #{dictDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isUpdate != null" >
+        #{isUpdate,jdbcType=VARCHAR},
+      </if>
+      <if test="dictCode != null" >
+        #{dictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.system.SysDistionary" >
+    update t_sys_dictionary
+    <set >
+      <if test="dictName != null" >
+        dict_name = #{dictName,jdbcType=VARCHAR},
+      </if>
+      <if test="dictDesc != null" >
+        dict_desc = #{dictDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isUpdate != null" >
+        is_update = #{isUpdate,jdbcType=VARCHAR},
+      </if>
+      <if test="dictCode != null" >
+        dict_code = #{dictCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.system.SysDistionary" >
+    update t_sys_dictionary
+    set dict_name = #{dictName,jdbcType=VARCHAR},
+      dict_desc = #{dictDesc,jdbcType=VARCHAR},
+      is_update = #{isUpdate,jdbcType=VARCHAR},
+      dict_code = #{dictCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStatusBatch" parameterType="java.util.HashMap" >
+  
+    update t_sys_dictionary set status = #{map.status,jdbcType=VARCHAR}
+    
+    where PID in 
+    <foreach item="idItem" collection="map.idItem" open="(" separator="," close=")">
+		#{idItem}
+	</foreach>
+  </update>
+</mapper>

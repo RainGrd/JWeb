@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- 借款基础模板 -->
+	<definition name="temp.borrow.base" template="/WEB-INF/templates/borrow.jsp">
+		<put-attribute name="headmeta" value="/layout/headmeta.jsp"></put-attribute>
+		<put-attribute name="navsmall" value="/WEB-INF/view/homepage/navsmall.jsp"></put-attribute>
+		<put-attribute name="remindtip" value="/layout/remindtip.jsp"></put-attribute>
+		<put-attribute name="servicebar" value="/layout/servicebar.jsp"></put-attribute>
+		<put-attribute name="mainmenu" value="/WEB-INF/view/homepage/mainmenu.jsp"></put-attribute>
+		<put-attribute name="footer" value="/layout/footer.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 我要借款页面 -->
+	<definition name="temp.borrow.page" extends="temp.borrow.base">
+		<put-attribute name="borrowPage" value="/WEB-INF/view/mywtborrow/borrowHomePage.jsp"></put-attribute>
+	</definition>
+	
+</tiles-definitions>

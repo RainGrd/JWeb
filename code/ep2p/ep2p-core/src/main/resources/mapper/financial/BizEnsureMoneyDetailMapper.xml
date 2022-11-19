@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.BizEnsureMoneyDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.BizEnsureMoneyDetail" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="ens_mon_det_type" property="ensMonDetType" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="borrow_id" property="borrowId" jdbcType="VARCHAR" />
+    <result column="happen_value" property="happenValue" jdbcType="DECIMAL" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="actor_user" property="actorUser" jdbcType="VARCHAR" />
+    <result column="cator_time" property="catorTime" jdbcType="VARCHAR" />
+    <result column="fee_type" property="feeType" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="ens_mon_det_desc" property="ensMonDetDesc" jdbcType="VARCHAR" />
+    <result column="ens_mon_det_type_name" property="ensMonDetTypeName" jdbcType="VARCHAR" />
+    <result column="actor_user_name" property="actorUserName" jdbcType="VARCHAR" />
+    <result column="income" property="income" jdbcType="DECIMAL" />
+    <result column="expenditures" property="expenditures" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PID, ens_mon_det_type, customer_id, borrow_id, happen_value, actor_user,cator_time,fee_type,
+    balance, status, create_user, create_time, last_update_user, last_update_time, ens_mon_det_desc
+  </sql>
+  
+  <sql id="base_column_list">
+  			d.PID, 
+			d.ens_mon_det_type,
+			(FUNC_GET_DICT_CONT_NAME('ENS_MON_DET_TYPE',d.ens_mon_det_type)) as ens_mon_det_type_name, 
+			d.customer_id, 
+			d.borrow_id,
+			d.happen_value, 
+			IF(d.fee_type = 1,d.happen_value,null)as income,
+			IF(d.fee_type = 2,d.happen_value,null)as expenditures,
+			d.actor_user,
+			(FUNC_GET_USER_NAME(d.actor_user)) as actor_user_name,
+			d.cator_time,
+			d.fee_type,
+   			d.balance, 
+   			d.status, 
+   			d.create_user, 
+   			d.create_time, 
+   			d.last_update_user, 
+   			d.last_update_time,
+   			d.ens_mon_det_desc,
+   			c.customer_name,
+   			c.sname,
+   			c.phone_no
+  </sql>
+  
+  <sql id="query_where">
+       <if test="isDetail == null or isDetail == '' " >
+        and (d.ens_mon_det_type = 1 or d.ens_mon_det_type = 2 or d.ens_mon_det_type = 3 )
+      </if>
+ 	  <if test="startDate != null and startDate!=''" >
+        and d.cator_time  <![CDATA[>=]]>  #{startDate,jdbcType=VARCHAR}
+      </if>
+ 	  <if test="endDate != null and endDate!=''" >
+        and d.cator_time  <![CDATA[<=]]>  #{endDate,jdbcType=VARCHAR}
+      </if>
+      <if test="ensMonDetType != null and ensMonDetType!='' " >
+        and d.ens_mon_det_type =  #{ensMonDetType,jdbcType=VARCHAR}
+      </if>
+      <if test="feeType != null and feeType!='' " >
+        and d.fee_type =  #{feeType,jdbcType=VARCHAR}
+      </if>
+      <if test="customerName != null and customerName!='' " >
+        and c.customer_name like  concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="sname != null and sname!='' " >
+        and c.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="phoneNo != null and phoneNo!='' " >
+        and c.phone_no like concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+  </sql>
+  
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="map">
+		select 
+			<include refid="base_column_list" />
+		from t_biz_ensure_money_detail d left join t_cust_customer c on d.customer_id = c.pid where 1 = 1
+		  <if test="parasMap.isDetail == null or parasMap.isDetail == '' " >
+	        and (d.ens_mon_det_type = '2007' or d.ens_mon_det_type = '2009'  or d.ens_mon_det_type = '2010' )
+	      </if>
+	 	  <if test="parasMap.startDate != null and parasMap.startDate!=''" >
+	        and d.cator_time  <![CDATA[>=]]>  #{parasMap.startDate,jdbcType=VARCHAR}
+	      </if>
+	 	  <if test="parasMap.endDate != null and parasMap.endDate!=''" >
+	        and d.cator_time  <![CDATA[<=]]>  #{parasMap.endDate,jdbcType=VARCHAR}
+	      </if>
+	      <if test="parasMap.ensMonDetType != null and parasMap.ensMonDetType!='' " >
+	        and d.ens_mon_det_type =  #{parasMap.ensMonDetType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="parasMap.feeType != null and parasMap.feeType!='' " >
+	        and d.fee_type =  #{parasMap.feeType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="parasMap.customerName != null and parasMap.customerName!='' " >
+	        and c.customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+	      </if>
+	      <if test="parasMap.sname != null and parasMap.sname!='' " >
+	        and c.sname like concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+	      </if>
+	      <if test="parasMap.phoneNo != null and parasMap.phoneNo!='' " >
+	        and c.phone_no like concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+	      </if>
+		order by cator_time desc
+	</select>
+	
+	<select id="selectAll" resultMap="BaseResultMap" parameterType="com.yscf.core.model.financial.BizEnsureMoneyDetail">
+		select 
+			<include refid="base_column_list" />
+		from t_biz_ensure_money_detail d left join t_cust_customer c on d.customer_id = c.pid where 1 = 1
+			<include refid="query_where" />
+		order by cator_time desc
+	</select>
+	
+	<select id="selectSumHappenValue" resultMap="BaseResultMap" parameterType="com.yscf.core.model.financial.BizEnsureMoneyDetail">
+		select 
+			sum(happen_value) as happen_value
+		from t_biz_ensure_money_detail d left join t_cust_customer c on d.customer_id = c.pid where 1 = 1
+		
+		  <if test="isDetail == null or isDetail=='' " >
+	       and (d.ens_mon_det_type = '2007' or d.ens_mon_det_type = '2009'  or d.ens_mon_det_type = '2010' )
+	      </if>
+	 	  <if test="startDate != null and startDate!=''" >
+	        and d.cator_time  <![CDATA[>=]]>  #{startDate,jdbcType=VARCHAR}
+	      </if>
+	 	  <if test="endDate != null and endDate!=''" >
+	        and d.cator_time  <![CDATA[<=]]>  #{endDate,jdbcType=VARCHAR}
+	      </if>
+	      <if test="ensMonDetType != null and ensMonDetType!='' " >
+	        and d.ens_mon_det_type =  #{ensMonDetType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="feeType != null and feeType!='' " >
+	        and d.fee_type =  #{feeType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="customerName != null and customerName!='' " >
+	        and c.customer_name like  concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+	      </if>
+	      <if test="sname != null and sname!='' " >
+	        and c.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+	      </if>
+	      <if test="phoneNo != null and phoneNo!='' " >
+	        and c.phone_no like concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+	      </if>
+		order by cator_time desc
+	</select>
+	
+	  <!-- 导出查询 -->
+  <select id="selectEnsureMoneyDetail" resultMap="BaseResultMap" >
+	SELECT 
+	
+		<include refid="base_column_list"></include>
+		
+	from t_biz_ensure_money_detail d left join t_cust_customer c on d.customer_id = c.pid  where 1 = 1
+	
+	  <if test="bba.isDetail == null or bba.isDetail=='' " >
+        and (d.ens_mon_det_type = '2007' or d.ens_mon_det_type = '2009'  or d.ens_mon_det_type = '2010' )
+      </if>
+ 	  <if test="bba.startDate != null and bba.startDate!=''" >
+        and d.cator_time  <![CDATA[>=]]>  #{bba.startDate,jdbcType=VARCHAR}
+      </if>
+ 	  <if test="bba.endDate != null and bba.endDate!=''" >
+        and d.cator_time  <![CDATA[<=]]>  #{bba.endDate,jdbcType=VARCHAR}
+      </if>
+      <if test="bba.ensMonDetType != null and bba.ensMonDetType!='' " >
+        and d.ens_mon_det_type =  #{bba.ensMonDetType,jdbcType=VARCHAR}
+      </if>
+      <if test="bba.feeType != null and bba.feeType!='' " >
+        and d.fee_type =  #{bba.feeType,jdbcType=VARCHAR}
+      </if>
+      <if test="bba.customerName != null and bba.customerName!='' " >
+        and c.customer_name like  concat('%',#{bba.customerName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="bba.sname != null and bba.sname!='' " >
+        and c.sname like concat('%',#{bba.sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="bba.phoneNo != null and bba.phoneNo!='' " >
+        and c.phone_no like concat('%',#{bba.phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+		<include refid="export_query_sql"></include>
+  </select>
+  
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  	
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND d.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			limit #{expm.startCheckrecords,jdbcType=INTEGER}, #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+  
+  
+  
+	
+	
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_ensure_money_detail
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_ensure_money_detail
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.financial.BizEnsureMoneyDetail" >
+    insert into t_biz_ensure_money_detail (PID, ens_mon_det_type, 
+      customer_id, borrow_id, 
+      happen_value, balance, actor_user, status, cator_time,fee_type
+      create_user, create_time, last_update_user, 
+      last_update_time, ens_mon_det_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{ensMonDetType,jdbcType=VARCHAR}, 
+      #{customerId,jdbcType=VARCHAR}, #{borrowId,jdbcType=VARCHAR},
+      #{happenValue,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{actorUser,jdbcType=VARCHAR},  #{status,jdbcType=VARCHAR},
+      #{catorTime,jdbcType=TIMESTAMP}, #{feeType,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{ensMonDetDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.BizEnsureMoneyDetail" >
+    insert into t_biz_ensure_money_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="ensMonDetType != null" >
+        ens_mon_det_type,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="borrowId != null" >
+        borrow_id,
+      </if>
+      <if test="happenValue != null" >
+        happen_value,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="feeType != null" >
+        fee_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="actorUser != null" >
+        actor_user,
+      </if>
+      <if test="catorTime != null" >
+        cator_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="ensMonDetDesc != null" > 
+        ens_mon_det_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null and pid != ''" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="ensMonDetType != null and ensMonDetType != ''" >
+        #{ensMonDetType,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null and customerId != ''" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null and borrowId != ''" >
+        #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="happenValue != null" >
+        #{happenValue,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="feeType != null and feeType != ''" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null and status != ''" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="actorUser != null and actorUser != ''" >
+        #{actorUser,jdbcType=DECIMAL},
+      </if>
+      <if test="catorTime != null and catorTime != ''" >
+        #{catorTime,jdbcType=DECIMAL},
+      </if>
+      <if test="createUser != null and createUser != ''" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null and createTime != ''" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null and lastUpdateUser != ''" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null and lastUpdateTime != ''" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ensMonDetDesc != null and ensMonDetDesc != ''" >
+        #{ensMonDetDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.financial.BizEnsureMoneyDetail" >
+    update t_biz_ensure_money_detail
+    <set >
+      <if test="ensMonDetType != null" >
+        ens_mon_det_type = #{ensMonDetType,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null" >
+        borrow_id = #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        fee_type = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="happenValue != null" >
+        happen_value = #{happenValue,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="actorUser != null" >
+        actor_user = #{actorUser,jdbcType=DECIMAL},
+      </if>
+      <if test="catorTime != null" >
+        cator_time = #{catorTime,jdbcType=DECIMAL},
+      </if>
+      <if test="feeType != null" >
+        fee_type = #{feeType,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ensMonDetDesc != null" >
+        ens_mon_det_desc = #{ensMonDetDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.financial.BizEnsureMoneyDetail" >
+    update t_biz_ensure_money_detail
+    set
+      ens_mon_det_type = #{ensMonDetType,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      borrow_id = #{borrowId,jdbcType=VARCHAR},
+      actor_user = #{actorUser,jdbcType=VARCHAR},
+      cator_time = #{catorTime,jdbcType=VARCHAR},
+      fee_type = #{feeType,jdbcType=VARCHAR},
+      happen_value = #{happenValue,jdbcType=DECIMAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      ens_mon_det_desc = #{ensMonDetDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.PubActivityAreaMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.PubActivityArea" >
+	    <result column="pid" property="pid" jdbcType="VARCHAR" />
+	    <result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+	    <result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+	    <result column="activity_code" property="activityCode" jdbcType="VARCHAR" />
+	    <result column="activity_url" property="activityUrl" jdbcType="VARCHAR" />
+	    <result column="activity_image" property="activityImage" jdbcType="VARCHAR" />
+	    <result column="file_id" property="fileId" jdbcType="VARCHAR" />
+	    <result column="is_shows" property="isShows" jdbcType="INTEGER" />
+	    <result column="is_disable" property="isDisable" jdbcType="INTEGER" />
+	    <result column="activity_start_date" property="activityStartDate" jdbcType="TIMESTAMP" />
+	    <result column="activity_end_date" property="activityEndDate" jdbcType="TIMESTAMP" />
+	    <result column="activity_type" property="activityType" jdbcType="INTEGER" />
+	    <result column="activity_status" property="activityStatus" jdbcType="VARCHAR" />
+	    <result column="extfield1" property="extfield1" jdbcType="VARCHAR" />
+	    <result column="extfield2" property="extfield2" jdbcType="VARCHAR" />
+	    <result column="extfield3" property="extfield3" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="activity_desc" property="activityDesc" jdbcType="VARCHAR" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 活动专区需要展示的列 -->
+  	<sql id="base_column_list">
+  		paa.pid , paa.activity_id , paa.activity_name , paa.activity_code , paa.activity_url , paa.activity_image , paa.is_shows ,
+  		paa.activity_start_date , paa.activity_end_date ,  paa.activity_type , paa.activity_status , paa.status , paa.file_id , 
+  		paa.version , paa.create_user , paa.create_time , paa.last_update_user , paa.last_update_time , paa.activity_desc, paa.is_disable    
+  	</sql>
+  	
+  	<!-- 条件and链接sql -->
+  	<sql id="base_condition">
+  		from t_pub_activity_area paa
+  		where paa.status = 1  
+  		<if test="pubActivityArea.activityCode != null and pubActivityArea.activityCode != '' " > 
+        	and  paa.activity_code like concat('%',#{pubActivityArea.activityCode,jdbcType=VARCHAR},'%' )
+        </if>
+  		<if test="pubActivityArea.activityName != null and pubActivityArea.activityName != '' " > 
+        	and  paa.activity_name like concat('%',#{pubActivityArea.activityName,jdbcType=VARCHAR},'%' )
+        </if>
+  		<if test="pubActivityArea.activityType != null and pubActivityArea.activityType != -1 " > 
+        	and  paa.activity_type = #{pubActivityArea.activityType,jdbcType=VARCHAR}
+        </if>
+  		<if test="pubActivityArea.isShows != null and pubActivityArea.isShows != -1 " > 
+        	and  paa.is_shows = #{pubActivityArea.isShows,jdbcType=VARCHAR}
+        </if>
+        <if test="pubActivityArea.beginStartData != null and pubActivityArea.beginStartData != '' " > 
+        	and  paa.activity_start_date <![CDATA[ >= ]]> #{pubActivityArea.beginStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubActivityArea.endStartData != null and pubActivityArea.endStartData != '' " > 
+        	and  paa.activity_start_date <![CDATA[ <= ]]> #{pubActivityArea.endStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubActivityArea.beginFinishData != null and pubActivityArea.beginFinishData != '' " > 
+        	and  paa.activity_end_date <![CDATA[ >= ]]> #{pubActivityArea.beginFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubActivityArea.endFinishData != null and pubActivityArea.endFinishData != '' " > 
+        	and  paa.activity_end_date <![CDATA[ <= ]]> #{pubActivityArea.endFinishData,jdbcType=TIMESTAMP}
+        </if>
+  	</sql>
+  	
+  	<!-- 后台_分页查询活动专区列表 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		select 
+  		<include refid="base_column_list" />
+  		<include refid="base_condition" />
+  	</select>
+  	
+  	<!-- 前台_活动专区展示信息 -->
+  	<select id="selectShowActicityArea" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  		select 
+  		<include refid="base_column_list" />
+  		from t_pub_activity_area paa
+  		where paa.status != -1 
+  		and paa.is_shows = 1 
+  		and paa.is_disable = 1 
+  		and paa.activity_image is not null
+  		LIMIT #{pageSize,jdbcType=INTEGER}
+  	</select>
+  	
+  	<!-- 前台_活动专区加载信息 -->
+  	<select id="selectLoadActicityArea" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  		select 
+  		<include refid="base_column_list" />
+  		from t_pub_activity_area paa
+  		where paa.status != -1 
+  		and paa.is_shows = 1 
+  		and paa.is_disable = 1 
+  		and paa.activity_image is not null
+  		LIMIT #{pageIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER} 
+  	</select>
+  	
+  	<!-- 检查当前编号是否存在 -->
+  	<select id="checkCodeIsExistence" resultType="java.lang.Integer" parameterType="java.lang.String">
+  		select count(*)
+  		from t_pub_activity_area
+  		where activity_code = #{activityCode,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 根据主键查询 -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select pid, activity_id, activity_name, activity_code, activity_url, file_id, activity_image, 
+  		is_shows, activity_start_date, activity_end_date, activity_type, activity_status, create_user, 
+  		create_time, last_update_user, last_update_time, activity_desc, status, version
+  		from t_pub_activity_area
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.PubActivityArea" >
+	    insert into t_pub_activity_area (pid, activity_id, activity_name, 
+	      activity_url , activity_image , is_shows ,file_id , 
+	      activity_code, activity_start_date, activity_end_date, 
+	      activity_type, activity_status, extfield1, 
+	      extfield2, extfield3, create_user, 
+	      create_time, last_update_user, last_update_time, activity_desc,
+	      status, version)
+	    values (#{pid,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{activityName,jdbcType=VARCHAR}, 
+	      #{activityUrl,jdbcType=VARCHAR}, #{activityImage,jdbcType=VARCHAR}, #{isShows,jdbcType=INTEGER}, #{fileId,jdbcType=INTEGER},
+	      #{activityCode,jdbcType=VARCHAR}, #{activityStartDate,jdbcType=TIMESTAMP}, #{activityEndDate,jdbcType=TIMESTAMP}, 
+	      #{activityType,jdbcType=INTEGER}, #{activityStatus,jdbcType=VARCHAR}, #{extfield1,jdbcType=VARCHAR}, 
+	      #{extfield2,jdbcType=VARCHAR}, #{extfield3,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{activityDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.PubActivityArea" >
+	    insert into t_pub_activity_area
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        pid,
+	      </if>
+	      <if test="activityId != null" >
+	        activity_id,
+	      </if>
+	      <if test="activityName != null" >
+	        activity_name,
+	      </if>
+	      <if test="activityCode != null" >
+	        activity_code,
+	      </if>
+	      <if test="activityUrl != null" >
+	        activity_url,
+	      </if>
+	      <if test="activityImage != null" >
+	        activity_image,
+	      </if>
+	      <if test="fileId != null" >
+	        file_id,
+	      </if>
+	      <if test="isShows != null" >
+	        is_shows,
+	      </if>
+	      <if test="activityStartDate != null" >
+	        activity_start_date,
+	      </if>
+	      <if test="activityEndDate != null" >
+	        activity_end_date,
+	      </if>
+	      <if test="activityType != null" >
+	        activity_type,
+	      </if>
+	      <if test="activityStatus != null" >
+	        activity_status,
+	      </if>
+	      <if test="extfield1 != null" >
+	        extfield1,
+	      </if>
+	      <if test="extfield2 != null" >
+	        extfield2,
+	      </if>
+	      <if test="extfield3 != null" >
+	        extfield3,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="activityDesc != null" >
+	        activity_desc,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	      <if test="isDisable != null" >
+	        is_disable,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityId != null" >
+	        #{activityId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityName != null" >
+	        #{activityName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityCode != null" >
+	        #{activityCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityUrl != null" >
+	        #{activityUrl,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityImage != null" >
+	        #{activityImage,jdbcType=VARCHAR},
+	      </if>
+	      <if test="fileId != null" >
+	        #{fileId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isShows != null" >
+	        #{isShows,jdbcType=INTEGER},
+	      </if>
+	      <if test="activityStartDate != null" >
+	        #{activityStartDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityEndDate != null" >
+	        #{activityEndDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityType != null" >
+	        #{activityType,jdbcType=INTEGER},
+	      </if>
+	      <if test="activityStatus != null" >
+	        #{activityStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="extfield1 != null" >
+	        #{extfield1,jdbcType=VARCHAR},
+	      </if>
+	      <if test="extfield2 != null" >
+	        #{extfield2,jdbcType=VARCHAR},
+	      </if>
+	      <if test="extfield3 != null" >
+	        #{extfield3,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityDesc != null" >
+	        #{activityDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isDisable != null" >
+	        #{isDisable,jdbcType=INTEGER},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<!-- 修改活动导致活动专区信息改变 -->
+  	<update id="updateActiviayByArea" parameterType="com.yscf.core.model.activity.PubActivityArea">
+  		update t_pub_activity_area 
+  		<set >
+	      <if test="activityName != null" >
+	        activity_name = #{activityName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isDisable != null" >
+	        is_disable = #{isDisable,jdbcType=INTEGER},
+	      </if>
+	      <if test="activityStartDate != null" >
+	        activity_start_date = #{activityStartDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityEndDate != null" >
+	        activity_end_date = #{activityEndDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      	version = version + 1,
+	      </set>
+	      where activity_code = #{activityCode,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 修改活动专区 -->
+  	<update id="updatePubActivityArea" parameterType="com.yscf.core.model.activity.PubActivityArea" >
+  		update t_pub_activity_area 
+  		<set >
+	      <if test="activityName != null" >
+	        activity_name = #{activityName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityCode != null" >
+	        activity_code = #{activityCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityUrl != null" >
+	        activity_url = #{activityUrl,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityImage != null" >
+	        activity_image = #{activityImage,jdbcType=VARCHAR},
+	      </if>
+	      <if test="fileId != null" >
+	        file_id = #{fileId,jdbcType=VARCHAR},
+	      </if>
+	      <if test="activityStartDate != null" >
+	        activity_start_date = #{activityStartDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityEndDate != null" >
+	        activity_end_date = #{activityEndDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="activityDesc != null" >
+	        activity_desc = #{activityDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      	version = version + 1,
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+	    and version = #{version,jdbcType=INTEGER}
+  	</update>
+  	
+  	<!-- 根据活动类型and活动ID修改活动状态 -->
+  	<update id="updateActivityStatus" parameterType="map">
+  		update t_pub_activity_area 
+  		set activity_status = #{activityStatus,jdbcType=VARCHAR} 
+	    where activity_id = #{activityId,jdbcType=VARCHAR} 
+	    and activity_type = #{activityType,jdbcType=INTEGER} 
+  	</update>
+  	
+  	<!-- 根据主键修改活动是否展示 -->
+  	<update id="updateIsShows" parameterType="com.yscf.core.model.activity.PubActivityArea">
+  		update t_pub_activity_area 
+  		set is_shows = #{isShows,jdbcType=INTEGER} , 
+  		last_update_user = #{lastUpdateUser,jdbcType=VARCHAR} , 
+  		last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP} 
+  		where pid = #{pid,jdbcType=VARCHAR} 
+  	</update>
+  	
+  	<!-- 删除其他活动 -->
+  	<update id="deletePubActivityArea" parameterType="com.yscf.core.model.activity.PubActivityArea">
+  		update t_pub_activity_area
+  		set status = -1 , 
+  		last_update_user = #{lastUpdateUser,jdbcType=VARCHAR} , 
+  		last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP} 
+  		where pid = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 根据主键修改活动是否展示 -->
+  	<update id="updateIsDisable" parameterType="com.yscf.core.model.activity.PubActivityArea">
+  		update t_pub_activity_area 
+  		set is_shows = #{isShows,jdbcType=INTEGER} , 
+  		last_update_user = #{lastUpdateUser,jdbcType=VARCHAR} , 
+  		last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP} 
+  		where pid = #{pid,jdbcType=VARCHAR} 
+  	</update>
+  	
+  	<!-- 查询当前最新的活动(根据类型) -->
+  	<select id="selectPubActivityByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  		select pid, activity_id, activity_name, activity_code, activity_url, file_id, activity_image, 
+  		is_shows, activity_start_date, activity_end_date, activity_type, activity_status, create_user, 
+  		max(create_time), last_update_user, last_update_time, activity_desc, status, version 
+  		from t_pub_activity_area 
+		where is_shows = 1  
+		and is_disable = 1 
+		and (activity_image is not null || activity_image != '') 
+		and activity_type = #{activityType,jdbcType=INTEGER} 
+		ORDER BY activity_type 
+  	</select>
+  	
+</mapper>

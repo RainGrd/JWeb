@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.db.dao.escf2.system.CaffFileMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.db.model.escf2.system.CaffFile" >
+    <id column="caffFileId" property="cafffileid" jdbcType="BIGINT" />
+    <result column="createdDateLong" property="createddatelong" jdbcType="BIGINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="albumId" property="albumid" jdbcType="BIGINT" />
+    <result column="bitState" property="bitstate" jdbcType="BIGINT" />
+    <result column="fileTypeInt" property="filetypeint" jdbcType="INTEGER" />
+    <result column="ioName" property="ioname" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    caffFileId, createdDateLong, version, albumId, bitState, fileTypeInt, ioName, name, 
+    userId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from CaffFile
+    where caffFileId = #{cafffileid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from CaffFile
+    where caffFileId = #{cafffileid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.db.model.escf2.system.CaffFile" >
+    insert into CaffFile (caffFileId, createdDateLong, version, 
+      albumId, bitState, fileTypeInt, 
+      ioName, name, userId
+      )
+    values (#{cafffileid,jdbcType=BIGINT}, #{createddatelong,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, 
+      #{albumid,jdbcType=BIGINT}, #{bitstate,jdbcType=BIGINT}, #{filetypeint,jdbcType=INTEGER}, 
+      #{ioname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userid,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.db.model.escf2.system.CaffFile" >
+    insert into CaffFile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cafffileid != null" >
+        caffFileId,
+      </if>
+      <if test="createddatelong != null" >
+        createdDateLong,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="albumid != null" >
+        albumId,
+      </if>
+      <if test="bitstate != null" >
+        bitState,
+      </if>
+      <if test="filetypeint != null" >
+        fileTypeInt,
+      </if>
+      <if test="ioname != null" >
+        ioName,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cafffileid != null" >
+        #{cafffileid,jdbcType=BIGINT},
+      </if>
+      <if test="createddatelong != null" >
+        #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="albumid != null" >
+        #{albumid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="filetypeint != null" >
+        #{filetypeint,jdbcType=INTEGER},
+      </if>
+      <if test="ioname != null" >
+        #{ioname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.db.model.escf2.system.CaffFile" >
+    update CaffFile
+    <set >
+      <if test="createddatelong != null" >
+        createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="albumid != null" >
+        albumId = #{albumid,jdbcType=BIGINT},
+      </if>
+      <if test="bitstate != null" >
+        bitState = #{bitstate,jdbcType=BIGINT},
+      </if>
+      <if test="filetypeint != null" >
+        fileTypeInt = #{filetypeint,jdbcType=INTEGER},
+      </if>
+      <if test="ioname != null" >
+        ioName = #{ioname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where caffFileId = #{cafffileid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.db.model.escf2.system.CaffFile" >
+    update CaffFile
+    set createdDateLong = #{createddatelong,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT},
+      albumId = #{albumid,jdbcType=BIGINT},
+      bitState = #{bitstate,jdbcType=BIGINT},
+      fileTypeInt = #{filetypeint,jdbcType=INTEGER},
+      ioName = #{ioname,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=BIGINT}
+    where caffFileId = #{cafffileid,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,1951 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.CusTomerMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.CusTomer" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE"/>
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="res_reg" property="resReg" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="sex_name" property="sexName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
+    <result column="referee_user" property="refereeUser" jdbcType="VARCHAR" />
+    <result column="customer_service_user" property="customerServiceUser" jdbcType="VARCHAR" />
+    <result column="total_stay" property="totalStay" jdbcType="DECIMAL" />
+    <result column="available_balance" property="availableBalance" jdbcType="DECIMAL" />
+    <result column="available_point" property="availablePoint" jdbcType="INTEGER" />
+    <result column="empirical_value" property="empiricalValue" jdbcType="INTEGER" />
+    <result column="is_blacklist" property="isBlacklist" jdbcType="VARCHAR" />
+    <result column="is_forbid_withdraw" property="isForbidWithdraw" jdbcType="VARCHAR" />
+    <result column="is_forbid_transfer" property="isForbidTransfer" jdbcType="VARCHAR" />
+    <result column="is_freeze" property="isFreeze" jdbcType="VARCHAR" />
+    <result column="vip_time" property="vipTime" jdbcType="INTEGER"/>
+    <result column="is_vip" property="isVip" jdbcType="VARCHAR" />
+    <result column="vip_level" property="vipLevel" jdbcType="VARCHAR" />
+    <result column="is_attestation" property="isAttestation" jdbcType="VARCHAR" />
+    <result column="identification_no" property="identificationNo" jdbcType="VARCHAR" />
+    <result column="is_marriage" property="isMarriage" jdbcType="VARCHAR" />
+    <result column="is_marriage_name" property="isMarriageName" jdbcType="VARCHAR" />
+    <result column="home_address" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="now_address" property="nowAddress" jdbcType="VARCHAR" />
+    <result column="came_sz_time" property="cameSzTime" jdbcType="VARCHAR" />
+    <result column="wechat_no" property="wechatNo" jdbcType="VARCHAR" />
+    <result column="immediate_family" property="immediateFamily" jdbcType="VARCHAR" />
+    <result column="immediate_family_no" property="immediateFamilyNo" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime"  jdbcType="TIMESTAMP" javaType="String"/>
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime"  jdbcType="TIMESTAMP" javaType="String" />
+    <result column="cust_desc" property="custDesc" jdbcType="VARCHAR" />
+    <result column="vip_name" property="vipName" jdbcType="VARCHAR" />
+    <result column="vipInfo_Pid" property="vipInfoPid" jdbcType="VARCHAR" />
+    <result column="invest_award_type" property="investAwardType" jdbcType="VARCHAR" />
+    <result column="total_num" property="totalNum" jdbcType="VARCHAR" />
+    <result column="invest_award_value" property="investAwardValue" jdbcType="VARCHAR" />
+    <result column="freeze_value" property="frozenAmount" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="VARCHAR" />
+    <result column="rep_amount" property="receivedRedEnvelope" jdbcType="VARCHAR" />
+    <result column="exp_amount" property="experienceGold" jdbcType="VARCHAR" />
+    <result column="account_balance" property="totalAccount" jdbcType="VARCHAR" />
+    <result column="get_amount" property="paychecksAmount" jdbcType="VARCHAR" />
+    <result column="use_status" property="useStatus" jdbcType="VARCHAR" />
+    <result column="get_time" property="getTime" jdbcType="VARCHAR" />
+    <result column="red_desc" property="redDesc" jdbcType="VARCHAR" />
+    <result column="fund_value" property="investmentAccount" jdbcType="VARCHAR" />
+    <result column="award_amount" property="investmentReward" jdbcType="VARCHAR" />
+    <result column="recommend_reward" property="recommendReward" jdbcType="VARCHAR" />
+    <result column="net_Interest" property="netInterest" jdbcType="VARCHAR" />
+    <result column="recharge_Total" property="rechargeTotal" jdbcType="VARCHAR" />
+    <result column="withdrawals_Total" property="withdrawalsTotal" jdbcType="VARCHAR" />
+    <result column="total_stay" property="totalStay" jdbcType="VARCHAR" />
+    <result column="acc_rual" property="receivedInterest" jdbcType="VARCHAR" />
+    <result column="cus_service_name" property="cusServiceName" jdbcType="VARCHAR" />
+    <result column="cus_service_pid" property="cusServicePid" jdbcType="VARCHAR" />
+    <result column="attestation_status" property="attestationStatus" jdbcType="VARCHAR" />
+    <result column="is_authentication" property="isAuthentication" jdbcType="VARCHAR" />
+    <result column="customer_service_id" property="oldcusServiceId" jdbcType="VARCHAR" />
+    <result column="vipPID" property="vipPID" jdbcType="VARCHAR" />
+    <result column="vipLevelName" property="vipLevelName" jdbcType="VARCHAR" />
+    <result column="index_" property="index" jdbcType="VARCHAR" />
+    <result column="locked_time" property="lockedTime" jdbcType="VARCHAR" />
+    <result column="error_time" property="errorTime" jdbcType="VARCHAR" />
+    <result column="error_count" property="errorCount" jdbcType="VARCHAR" />
+    <result column="is_locked" property="isLocked" jdbcType="VARCHAR" />
+    <result column="emergerncy_name" property="emergerncyName" jdbcType="VARCHAR" />
+    <result column="emergerncy_relation" property="emergerncyRelation" jdbcType="VARCHAR" />
+    <result column="emergerncy_phone_no" property="emergerncyPhoneNo" jdbcType="VARCHAR" />
+    <result column="login_Time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="trading_Time" property="tradingTime" jdbcType="TIMESTAMP" />
+    <result column="tradePassword" property="tradePassword" jdbcType="VARCHAR" />
+    <result column="referral_code" property="referralCode" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="emergencyContactPid" property="emergencyContactPid" jdbcType="VARCHAR" />
+    <result column="is_invest" property="bid" jdbcType="VARCHAR" />
+    <result column="trade_error_count" property="tradeErrorCount" jdbcType="INTEGER" />
+    <result column="trade_freeze_time" property="tradeFreezeTime" jdbcType="TIMESTAMP" />
+    <result column="trade_errot_time" property="tradeErrotTime" jdbcType="TIMESTAMP" />
+    
+    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
+    <result column="jx_interest" property="jxInterest" jdbcType="VARCHAR" />
+    <result column="mobile_device_machine_code" property="mobileDeviceMachineCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tcc.PID PID,
+    tcc.vip_id,
+	tcc.customer_name customer_name,
+	tcc.sname sname,
+	tcc.index_,
+	tcc.birthday birthday,
+	tcc. PASSWORD PASSWORD,
+	tcc.tradePassword tradePassword,
+	tcc.phone_no phone_no,
+	tcc.email email,
+	tcc.sex,
+	FUNC_GET_DICT_CONT_NAME('CUSTOMER_SEX',tcc.sex) AS sex_name,
+	 tcc.age age,
+	 tcc.res_reg res_reg,
+	 tcc.vip_time,
+	 CASE tcc.`status`
+	WHEN 1 THEN
+		'启用'
+	WHEN 0 THEN
+		'禁用'
+	END 'STATUS',
+	 tcc.registration_time registration_time,
+	 (select cc.customer_name from t_cust_customer cc where cc.PID =tcc.referee_user) referee_user,
+	 (SELECT tsu.`name` FROM t_sys_user tsu WHERE tcc.customer_service_user = tsu.PID ) customer_service_user,
+    (SELECT tsu.PID FROM t_sys_user tsu WHERE tcc.customer_service_user = tsu.PID) customer_service_id,
+	 tcc.available_point available_point,
+	 tcc.empirical_value empirical_value,
+	 CASE is_invest
+	 WHEN 1 THEN
+		'允许'
+	 WHEN 0 THEN
+		'禁止'
+	 END is_invest,
+	 CASE is_blacklist
+	WHEN 1 THEN
+		'否'
+	WHEN 0 THEN
+		'是'
+	END is_blacklist,
+	 CASE is_forbid_withdraw
+	WHEN 1 THEN
+		'允许'
+	WHEN 0 THEN
+		'禁止'
+	END is_forbid_withdraw,
+	 CASE is_forbid_transfer
+	WHEN 1 THEN
+		'允许'
+	WHEN 0 THEN
+		'禁止'
+	END is_forbid_transfer,
+	 CASE tcc.is_freeze
+	WHEN 1 THEN
+		'允许'
+	WHEN 0 THEN
+		'禁止'
+	END is_freeze,
+	 CASE is_vip
+	WHEN 1 THEN
+		'是'
+	WHEN 0 THEN
+		'否'
+	END is_vip,
+	 tcc.identification_no identification_no,
+	 CASE is_attestation
+	WHEN 1 THEN
+		'待审核'
+	WHEN 2 THEN
+		'已认证'
+	WHEN 3 THEN
+		'未认证'
+	WHEN 4 THEN
+		'已拒绝'
+	END is_attestation,
+	tcc.is_marriage,
+	FUNC_GET_DICT_CONT_NAME('MARITAL_STATUS',tcc.is_marriage) AS is_marriage_name,
+	 tcc.home_address home_address,
+	 tcc.now_address now_address,
+	 tcc.came_sz_time came_sz_time,
+	 tcc.wechat_no wechat_no,
+	 tcc.immediate_family immediate_family,
+	 tcc.immediate_family_no immediate_family_no,
+	 tcc.create_user create_user,
+	 tcc.create_time create_time,
+	 tcc.last_update_user last_update_user,
+	 tcc.last_update_time last_update_time,
+	 tcc.cust_desc cust_desc,
+	(SELECT tpv.vip_level FROM t_pub_vipinfo tpv where tpv.pid = tcc.vip_id) vip_level,
+	(SELECT tpv.vip_name FROM t_pub_vipinfo tpv where tpv.pid = tcc.vip_id) vip_name,
+	(SELECT tpv.PID FROM t_pub_vipinfo tpv where tpv.pid = tcc.vip_id) vipInfo_Pid,
+	tcc.image_url image_url,
+	(select bca.available_amount from t_biz_customer_account bca where tcc.pid = bca.customer_id) available_balance,
+	(select bca.due_amount from t_biz_customer_account bca where tcc.pid = bca.customer_id) total_stay,
+	tcc.mobile_device_machine_code
+  </sql>
+   <sql id="Base_Column_List1" >
+    tcc.PID PID,
+	tcc.customer_name customer_name,
+	tcc.sname sname,
+	tcc.index_,
+	tcc.birthday birthday,
+	tcc.PASSWORD PASSWORD,
+	tcc.phone_no phone_no,
+	tcc.email email,
+	tcc.sex,
+	FUNC_GET_DICT_CONT_NAME('CUSTOMER_SEX',tcc.sex) AS sex_name,
+	tcc.vip_time,
+	CASE tcc.`status`
+	WHEN 1 THEN
+	'启用'
+	WHEN 0 THEN
+	'禁用'
+	END 'STATUS',
+	tcc.registration_time registration_time,
+	(select cc.customer_name from t_cust_customer cc where cc.PID =tcc.referee_user) referee_user,
+	(SELECT
+		tsu.`name`
+	FROM
+		t_sys_user tsu
+WHERE tcc.customer_service_user = tsu.PID) customer_service_user,
+	tcc.available_point available_point,
+	tcc.empirical_value empirical_value,
+	CASE is_blacklist
+	WHEN 1 THEN
+	'否'
+	WHEN 0 THEN
+	'是'
+	END is_blacklist,
+	CASE is_forbid_withdraw
+	WHEN 1 THEN
+	'允许'
+	WHEN 0 THEN
+	'禁止'
+	END is_forbid_withdraw,
+	CASE is_forbid_transfer
+	WHEN 1 THEN
+	'允许'
+	WHEN 0 THEN
+	'禁止'
+	END is_forbid_transfer,
+	CASE tcc.is_freeze
+	WHEN 1 THEN
+	'允许'
+	WHEN 0 THEN
+	'禁止'
+	END is_freeze,
+	CASE is_vip
+	WHEN 1 THEN
+	'是'
+	WHEN 0 THEN
+	'否'
+	END is_vip,
+	tcc.identification_no identification_no,
+	CASE is_attestation
+	WHEN 1 THEN
+		'审核中'
+	WHEN 2 THEN
+		'已同意'
+	WHEN 3 THEN
+	'已拒绝'
+	END is_attestation,
+	tcc.is_marriage,
+	FUNC_GET_DICT_CONT_NAME('MARITAL_STATUS',tcc.is_marriage) AS is_marriage_name,
+	tcc.home_address home_address,
+	tcc.now_address now_address,
+	tcc.came_sz_time came_sz_time,
+	tcc.wechat_no wechat_no,
+	tcc.immediate_family immediate_family,
+	tcc.immediate_family_no immediate_family_no,
+	tcc.create_user create_user,
+	tcc.create_time create_time,
+	tcc.last_update_user last_update_user,
+	tcc.last_update_time last_update_time,
+	tcc.cust_desc cust_desc,
+	count(1) total_num,
+    <!-- 投资奖励 -->
+	(select SUM(cfw.fund_value) from t_cust_fund_water cfw where tcc.PID=cfw.customer_id and cfw.business_type='403') tzjl,
+<!--  可用余额 -->
+  (SELECT SUM(bca.available_amount) from t_biz_customer_account bca where tcc.PID =bca.customer_id) available_balance,
+<!--  冻结金额 -->
+  (SELECT SUM(bca.freeze_amount) from t_biz_customer_account bca where tcc.PID =bca.customer_id) freeze_value,
+<!--账户总额 =可用余额+冻结金额 -->
+   (select sum(bca.available_amount + bca.freeze_amount) from t_biz_customer_account bca where tcc.PID =bca.customer_id) account_balance,
+<!--体验金 -->
+  (SELECT SUM(bca.experience_amount) from t_biz_customer_account bca where tcc.PID =bca.customer_id) exp_amount,
+<!--待收本金 -->
+  (SELECT sum(brp.capital) FROM t_biz_receipt_plan brp WHERE brp.customer_id = tcc.pid AND brp.receipt_status IN ('1','2','3')) total_stay,
+<!--待收利息(不要扣除利息管理费) -->
+   (
+	SELECT SUM(receipt_status)
+  FROM
+	( SELECT
+			CASE receipt_status
+		  WHEN 1 THEN
+			      brp.receivable_hike + brp.net_interest
+		  WHEN 2 THEN
+					  brp.receivable_hike + brp.net_interest + brp.late_fee
+			WHEN 3 THEN
+						brp.receivable_hike + brp.net_interest
+			WHEN 4 THEN
+			IF (
+				brp.is_vip = 1,
+				brp.net_interest,
+				0
+			)
+		WHEN 5 THEN
+			0
+		WHEN 6 THEN
+			0
+		END receipt_status
+		FROM
+			t_biz_receipt_plan brp,
+      t_cust_customer tcc
+		WHERE
+			brp.customer_id = tcc.pid
+	) dd 
+   ) acc_rual,
+<!--投资利息(要扣除利息管理费的) -->
+  (SELECT sum(brp.receivable_interest) from t_biz_receipt_plan brp where brp.customer_id=tcc.PID) net_Interest,
+<!--加息收益 -->
+  (SELECT sum(brp.net_hike) from t_biz_receipt_plan brp where tcc.pid = brp.customer_id) jx_interest,
+<!-- 投资奖励 -->
+<!--红包收益 -->
+  (select SUM(cfw.fund_value) from t_cust_fund_water cfw where tcc.PID=cfw.customer_id and cfw.business_type='415') rep_amount,
+<!--推荐奖励 -->
+  (select SUM(cfw.fund_value) from t_cust_fund_water cfw where tcc.PID=cfw.customer_id and cfw.business_type='405') recommend_reward,
+<!--充值总额 -->
+  (select sum(bca.recharge_amount) FROM t_biz_customer_account bca where tcc.pid=bca.customer_id) recharge_Total,
+<!--提现总额 -->
+  (select sum(bca.withdraw_amount) FROM t_biz_customer_account bca where tcc.pid=bca.customer_id) withdrawals_Total,
+<!-- 投资总额 -->
+  (select sum(bca.tender_amount) FROM t_biz_customer_account bca where tcc.pid=bca.customer_id) fund_value,
+  tcc.mobile_device_machine_code
+  </sql>
+  <sql id="Base_Column_List2">
+	tbrp.PID,
+	tbrp.customer_name,
+	tbrp.sname,
+	tbrp.index_,
+	tbrp.birthday,
+	tbrp.phone_no,
+	tbrp.email,
+	tbrp.sex,
+	tbrp.age,
+	tbrp.res_reg,
+	tbrp.vip_time,
+	tbrp. STATUS,
+	tbrp.registration_time,
+	tbrp.referee_user,
+	tbrp.customer_service_user,
+	tbrp.available_point,
+	tbrp.empirical_value,
+	tbrp.is_blacklist,
+	tbrp.is_forbid_withdraw,
+	tbrp.is_forbid_transfer,
+	tbrp.is_freeze,
+	tbrp.is_vip,
+	tbrp.vip_level,
+	tbrp.identification_no,
+	tbrp.is_attestation,
+	tbrp.is_marriage,
+	tbrp.home_address home_address,
+	tbrp.now_address now_address,
+	tbrp.came_sz_time came_sz_time,
+	tbrp.wechat_no wechat_no,
+	tbrp.immediate_family immediate_family,
+	tbrp.immediate_family_no immediate_family_no,
+	tbrp.create_user create_user,
+	tbrp.create_time create_time,
+	tbrp.last_update_user last_update_user,
+	tbrp.last_update_time last_update_time,
+	tbrp.cust_desc,
+	tbrp.mobile_device_machine_code
+  </sql>
+  <sql id="customerSearcher">
+   	  <if test="cusTomer.customerName != null and cusTomer.customerName !=''" >
+	        and  tcc.customer_name like concat('%',#{cusTomer.customerName,jdbcType=VARCHAR},'%' )
+	  </if>
+      <if test="cusTomer.sname != null  and cusTomer.sname !=''" >
+       		 and  tcc.sname like concat('%',#{cusTomer.sname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="cusTomer.happenBeginTime != null and cusTomer.happenBeginTime != '' " > 
+        	and  tcc.registration_time <![CDATA[ >= ]]> #{cusTomer.happenBeginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="cusTomer.happenEndTime != null and cusTomer.happenEndTime != '' " > 
+        	and  tcc.registration_time <![CDATA[ <= ]]> #{cusTomer.happenEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="cusTomer.phoneNo != null and cusTomer.phoneNo !=''" >
+       		 and  tcc.phone_no like  concat('%',#{cusTomer.phoneNo,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="cusTomer.status != null and cusTomer.status !=''" >
+       		 and  tcc.status  = #{cusTomer.status,jdbcType=VARCHAR}
+      </if>
+      <if test="cusTomer.cusServicePid != null and cusTomer.cusServicePid !=''" >
+        	and  tcc.customer_service_user = #{cusTomer.cusServicePid,jdbcType=VARCHAR}
+      </if>
+	 <if test="cusTomer.isAttestation != null and cusTomer.isAttestation !='' and cusTomer.isAttestation != 0" >
+        	and  tcc.is_attestation = #{cusTomer.isAttestation,jdbcType=VARCHAR}
+      </if>
+	  <if test="cusTomer.availableBeginBalance != null and cusTomer.availableBeginBalance !=''" > 
+		    and available_balance <![CDATA[ >= ]]> #{cusTomer.availableBeginBalance,jdbcType=DECIMAL} 
+	  </if>
+	  <if test="cusTomer.availableEndBalance != null and cusTomer.availableEndBalance !=''" > 
+		    and available_balance <![CDATA[ <= ]]> #{cusTomer.availableEndBalance,jdbcType=DECIMAL} 
+	  </if>
+	  <if test="cusTomer.refereeUser != null and cusTomer.refereeUser !=''" > 
+	        and  referee_user like  concat('%',#{cusTomer.refereeUser,jdbcType=VARCHAR},'%' )
+	  </if> 
+	  <if test="cusTomer.disableUser != null and cusTomer.disableUser !=''" >
+            and  tcc.status ='0'
+     </if>
+     <if test="cusTomer.isVip != null and cusTomer.isVip !=''" >
+            and  tcc.is_vip ='0'
+     </if>
+	 <if test="cusTomer.isForbidTransfer != null and cusTomer.isForbidTransfer !=''" >
+            and  tcc.is_forbid_transfer ='0'
+     </if>
+	 <if test="cusTomer.isForbidWithdraw != null and cusTomer.isForbidWithdraw !=''" >
+            and  tcc.is_forbid_withdraw ='0'
+     </if>
+     
+     <if test="cusTomer.isBlacklist != null and cusTomer.isBlacklist !=''" >
+        and  tcc.is_blacklist = #{cusTomer.isBlacklist,jdbcType=VARCHAR}
+     </if>
+     
+     <if test="cusTomer.isFreeze != null and cusTomer.isFreeze !=''" >
+        and  tcc.is_freeze = #{cusTomer.isFreeze,jdbcType=VARCHAR}
+     </if>
+     
+     <if test="(cusTomer.cusBor != null and cusTomer.cusBor !='') and  (cusTomer.cusBorAndCusInv =='') "  >
+        and  tcc.bor_or_inv_cus in ('1','3')
+     </if>
+     <if test="(cusTomer.cusInv != null and cusTomer.cusInv !='') and  (cusTomer.cusBorAndCusInv =='') " >
+        and  tcc.bor_or_inv_cus in ('2','3')
+     </if>
+     <if test="cusTomer.cusBorAndCusInv != '' and cusTomer.cusBorAndCusInv != null" >
+     	and  tcc.bor_or_inv_cus in ('1','2','3')
+     </if>
+  </sql>
+<!--   条件查询 -->
+  <select id="selectAllPage" parameterType="com.yscf.core.model.user.CusTomer" resultMap="BaseResultMap">
+  			select 
+  			<include refid="Base_Column_List"></include>
+  			from t_cust_customer tcc left join
+  			     t_biz_customer_account bca on tcc.pid=bca.customer_id
+  	       where 1=1
+  	       <include refid="customerSearcher"></include>
+  	         order by create_time desc
+  </select> 
+<!--   统计客户列表数据 -->
+     <select id="selectAllPageSum" resultType="java.util.Map" parameterType="com.yscf.core.model.user.CusTomer">
+  		select  sum(bca.due_amount) "totalStay",
+			    sum(bca.available_amount) "availableBalance",
+			    tcc.create_time create_time
+  			from t_cust_customer tcc left join
+				 t_biz_customer_account  bca
+       	    	on  tcc.PID=bca.customer_id
+  	       <include refid="customerSearcher"></include>
+  </select> 
+  <!--   根据vip级别查询 -->
+	 <select id="selectAllPageByVipId" resultMap="BaseResultMap" parameterType="map">
+	     select 
+  			<include refid="Base_Column_List"></include>
+  			from t_cust_customer tcc,
+  				 t_sys_user tsu,
+  				  t_pub_vipinfo tpv,
+  				  t_biz_customer_account bca
+  			where 1=1
+  			and tcc.customer_service_user = tsu.PID
+  			and tpv.pid = tcc.vip_id
+  			and tcc.PID=bca.customer_id
+  		<if test="statusArr != null and statusArr != '' "> 
+        	and  vip_id in 
+        	<foreach item="itemId" collection="statusArr" open="(" separator="," close=")">
+		          #{itemId}
+		    </foreach>
+        </if>
+  	       <include refid="customerSearcher"></include>
+  	         order by create_time desc
+	 </select>
+	  <!--   根据vip级别查询 -->
+	  <select id="selectAllPageByVipISum" resultType="java.util.Map" parameterType="map">
+  		select 
+  			sum(tcc.total_stay) "totalStay",
+			sum(bca.available_amount) "availableBalance",
+			tcc.create_time create_time
+  			from t_cust_customer tcc,
+  				 t_sys_user tsu,
+  				 t_pub_vipinfo tpv,
+  				 t_biz_customer_account bca
+  			where 1=1
+  			and tcc.customer_service_user = tsu.PID
+  			and tpv.pid = tcc.vip_id
+  			and tcc.PID=bca.customer_id
+  		<if test="statusArr != null and statusArr != '' "> 
+        	and  vip_id in 
+        	<foreach item="itemId" collection="statusArr" open="(" separator="," close=")">
+		          #{itemId}
+		    </foreach>
+        </if>
+  	       <include refid="customerSearcher"></include>
+  	         order by create_time desc
+  </select> 
+  
+<!--   根据批量客户id查询 ，用于批量更换客服列表展示-->
+   <select id="selectCusByPid" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+   		select <include refid="Base_Column_List"></include> 
+   		       from t_cust_customer tcc
+   		       where
+   		      tcc.pid in 
+   		       <foreach item="itemId" collection="map.pid" open="(" separator="," close=")">
+		          #{itemId}
+		</foreach>
+   </select>
+<!--    根据客户id查客服 -->
+  <select id="selectCustomerServiceById" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT su.`name` cus_service_name,
+  			 su.PID	cus_service_pid
+  	  from t_sys_user su,
+			t_sys_user_role_rel sur,
+			t_sys_role sr
+	  WHERE su.PID = sur.user_id
+		AND sur.role_id = sr.PID
+		AND sr.parent_role_code = '10007'
+  </select>
+  
+  
+  <!-- 根据客户id查询其对应的交易冻结到期时间 -->
+  <select id="selectTradeFreezeTimeByUserId" resultType="java.util.Date" parameterType="java.lang.String">
+     SELECT
+		cc.trade_freeze_time
+	FROM
+		t_cust_customer cc
+	WHERE
+		cc.pid = #{customerId,jdbcType=VARCHAR};
+  </select>
+  
+  <!-- 根据客户id查询其对应的交易错误累计截止时间 -->
+  <select id="selectTradeErrorTimeByUserId" resultType="java.util.Date" parameterType="java.lang.String">
+     SELECT
+		cc.trade_errot_time
+	FROM
+		t_cust_customer cc
+	WHERE
+		cc.pid = #{customerId,jdbcType=VARCHAR};
+  </select>
+  
+  <!-- 根据客户id查询其对应的交易错误次数 -->
+  <select id="selectTradeCountByUserId" resultType="INTEGER" parameterType="java.lang.String">
+     SELECT
+		cc.trade_error_count
+	FROM
+		t_cust_customer cc
+	WHERE
+		cc.pid = #{customerId,jdbcType=VARCHAR};
+  </select>
+  
+  <select id="isOverdue" resultType="INTEGER" parameterType="java.lang.String">
+     SELECT
+		COUNT(pid)
+	 FROM
+		t_biz_repayment_plan brp
+	 WHERE
+		brp.customer_id =#{userId,jdbcType=VARCHAR}
+	 AND brp.receipt_paln_status IN ('2', '3')
+	
+  </select>
+  
+  
+  
+  <!--    查询vip等级 -->
+  <select id="selectVipLevel" resultMap="BaseResultMap">
+      SELECT
+            DISTINCT
+		    tpv.PID vipPID, 
+			tpv.vip_level vipLevelName
+		FROM
+			t_pub_vipinfo tpv,
+			t_cust_customer tcc
+		WHERE
+			tcc.vip_id = tpv.pid
+		  ORDER BY tpv.vip_level ASC
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select  <include refid="Base_Column_List"></include> from t_cust_customer tcc
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectTradePwdByUserId" resultType="String" parameterType="java.lang.String" >
+    select tradePassword  from t_cust_customer tcc
+    where PID = #{customerId,jdbcType=VARCHAR}
+  </select>
+  <select id="getSrcPointByUserId" resultType="Integer" parameterType="java.lang.String" >
+    select tcc.available_point  from t_cust_customer tcc
+    where PID = #{customerId,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="selectCusByCustomerName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List2" />
+	    from t_cust_customer tbrp
+	    where tbrp.customer_name = #{customerName,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getBuyUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List2" />
+	    from t_cust_customer tbrp
+	    where tbrp.PID = #{userId,jdbcType=VARCHAR}
+  </select>
+   <select id="getVip" resultType="String" parameterType="java.lang.String" >
+	    select 
+	    tbrp.is_vip
+	    from t_cust_customer tbrp
+	    where tbrp.PID = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+<!--   根据客户id查客户资料 -->
+  <select id="selectPersonData" parameterType="java.lang.String" resultMap="BaseResultMap">
+<!--       SELECT tcc.PID, -->
+<!-- 			tcc.phone_no phone_no, -->
+<!-- 			tcc.customer_name customer_name, -->
+<!-- 			tcc.email email, -->
+<!-- 			tcc.home_address home_address, -->
+<!-- 			tcc.tradePassword tradePassword, -->
+<!-- 		    tcec.`name` emergerncy_name, -->
+<!-- 			tcec.relation emergerncy_relation, -->
+<!--             tcec.phone_no emergerncy_phone_no, -->
+<!-- 			tcc.create_time trading_Time, -->
+<!-- 			tsl.create_time  login_Time		   -->
+<!-- 	   FROM  t_cust_customer tcc, -->
+<!--              t_cust_emergency_contact  tcec, -->
+<!--              t_sys_log tsl -->
+<!-- 	   WHERE tcc.PID=tcec.customer_id -->
+<!-- 	    AND  tsl.operand_type='2' -->
+<!-- 	    AND  tsl.system_type='1' -->
+<!-- 	    AND tsl.oper_type='1' -->
+<!--      	AND  tsl.account_no=tcc.customer_name -->
+<!-- 		AND  tcc.PID = #{customerId,jdbcType=VARCHAR}  -->
+			SELECT
+					tcc.PID,
+					tcc.phone_no phone_no,
+					tcc.customer_name customer_name,
+					tcc.email email,
+					tcc.home_address home_address,
+					tcc.tradePassword tradePassword,
+					tcc.`password` password,
+					tcec.`name` emergerncy_name,
+					tcec.relation emergerncy_relation,
+					tcec.phone_no emergerncy_phone_no,
+					tcec.pid  emergencyContactPid,
+					tcc.last_trading_time trading_Time,
+					tcc.last_login_time login_Time,
+					tcc.is_attestation is_attestation
+				FROM
+					t_cust_customer tcc
+				LEFT JOIN t_cust_emergency_contact tcec ON tcc.PID = tcec.customer_id
+				WHERE tcc.PID = #{customerId,jdbcType=VARCHAR}
+  </select>
+  
+<!--     根据客户id查用户信息 --> 
+	<select id="getUserInfoByPid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		  SELECT  tcc.customer_name  customer_name,
+		  		  tcc.phone_no phone_no,
+    			   bca.available_amount account_balance
+		   FROM    t_cust_customer tcc,
+   				    t_biz_customer_account bca
+			WHERE  tcc.pid=bca.customer_id
+	        and   tcc.PID = #{customerId,jdbcType=VARCHAR} LIMIT 1
+   </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cust_customer tcc
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.user.CusTomer" >
+    insert into t_cust_customer (PID, customer_name, sname, 
+      birthday, password, phone_no, 
+      email, sex,age,res_reg, status, 
+      registration_time, referee_user, customer_service_user, 
+      total_stay, available_point, 
+      empirical_value, is_blacklist, is_forbid_withdraw, 
+      is_forbid_transfer, is_freeze, vip_time, 
+      is_vip, vip_level, is_attestation, 
+      identification_no, is_marriage, home_address, 
+      now_address, came_sz_time, wechat_no, 
+      immediate_family, immediate_family_no, create_user, 
+      create_time, last_update_user, last_update_time, 
+      cust_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, #{sname,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, #{phoneNo,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, #{resReg,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{registrationTime,jdbcType=TIMESTAMP}, #{refereeUser,jdbcType=VARCHAR}, #{customerServiceUser,jdbcType=VARCHAR}, 
+      #{totalStay,jdbcType=DECIMAL}, #{availableBalance,jdbcType=DECIMAL}, #{availablePoint,jdbcType=INTEGER}, 
+      #{empiricalValue,jdbcType=DECIMAL}, #{isBlacklist,jdbcType=VARCHAR}, #{isForbidWithdraw,jdbcType=VARCHAR}, 
+      #{isForbidTransfer,jdbcType=VARCHAR}, #{isFreeze,jdbcType=VARCHAR}, #{vipTime,jdbcType=INTEGER}, 
+      #{isVip,jdbcType=VARCHAR}, #{vipLevel,jdbcType=VARCHAR}, #{isAttestation,jdbcType=VARCHAR}, 
+      #{identificationNo,jdbcType=VARCHAR}, #{isMarriage,jdbcType=VARCHAR}, #{homeAddress,jdbcType=VARCHAR}, 
+      #{nowAddress,jdbcType=VARCHAR}, #{cameSzTime,jdbcType=VARCHAR}, #{wechatNo,jdbcType=VARCHAR}, 
+      #{immediateFamily,jdbcType=VARCHAR}, #{immediateFamilyNo,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{custDesc,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.CusTomer" >
+    insert into t_cust_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="sname != null" >
+        sname,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="phoneNo != null" >
+        phone_no,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="resReg != null" >
+        res_reg,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="registrationTime != null" >
+        registration_time,
+      </if>
+      <if test="refereeUser != null and refereeUser != ''" >
+        referee_user,
+      </if>
+      <if test="referralCode != null and referralCode!=''" >
+        referral_code,
+      </if>
+      <if test="customerServiceUser != null" >
+        customer_service_user,
+      </if>
+      <if test="totalStay != null" >
+        total_stay,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="availablePoint != null" >
+        available_point,
+      </if>
+      <if test="empiricalValue != null" >
+        empirical_value,
+      </if>
+      <if test="isBlacklist != null" >
+        is_blacklist,
+      </if>
+      <if test="isForbidWithdraw != null" >
+        is_forbid_withdraw,
+      </if>
+      <if test="isForbidTransfer != null" >
+        is_forbid_transfer,
+      </if>
+      <if test="isFreeze != null" >
+        is_freeze,
+      </if>
+      <if test="vipTime != null" >
+        vip_time,
+      </if>
+      <if test="isVip != null" >
+        is_vip,
+      </if>
+      <if test="vipLevel != null" >
+        vip_level,
+      </if>
+      <if test="isAttestation != null" >
+        is_attestation,
+      </if>
+      <if test="identificationNo != null" >
+        identification_no,
+      </if>
+      <if test="isMarriage != null" >
+        is_marriage,
+      </if>
+      <if test="homeAddress != null" >
+        home_address,
+      </if>
+      <if test="nowAddress != null" >
+        now_address,
+      </if>
+      <if test="cameSzTime != null" >
+        came_sz_time,
+      </if>
+      <if test="wechatNo != null" >
+        wechat_no,
+      </if>
+      <if test="immediateFamily != null" >
+        immediate_family,
+      </if>
+      <if test="immediateFamilyNo != null" >
+        immediate_family_no,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="custDesc != null" >
+        cust_desc,
+      </if>
+      <if test="index != null" >
+        index_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null" >
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null" >
+        #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="resReg != null" >
+        #{resReg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationTime != null" >
+        #{registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refereeUser != null and refereeUser!=''" >
+        #{refereeUser,jdbcType=VARCHAR},
+      </if>
+      <if test="referralCode != null and referralCode!=''" >
+        #{referralCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customerServiceUser != null" >
+        #{customerServiceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="totalStay != null" >
+        #{totalStay,jdbcType=DECIMAL},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="availablePoint != null" >
+        #{availablePoint,jdbcType=INTEGER},
+      </if>
+      <if test="empiricalValue != null" >
+        #{empiricalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="isBlacklist != null" >
+        #{isBlacklist,jdbcType=VARCHAR},
+      </if>
+      <if test="isForbidWithdraw != null" >
+        #{isForbidWithdraw,jdbcType=VARCHAR},
+      </if>
+      <if test="isForbidTransfer != null" >
+        #{isForbidTransfer,jdbcType=VARCHAR},
+      </if>
+      <if test="isFreeze != null" >
+        #{isFreeze,jdbcType=VARCHAR},
+      </if>
+      <if test="vipTime != null" >
+        #{vipTime,jdbcType=INTEGER},
+      </if>
+      <if test="isVip != null" >
+        #{isVip,jdbcType=VARCHAR},
+      </if>
+      <if test="vipLevel != null" >
+        #{vipLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="isAttestation != null" >
+        #{isAttestation,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationNo != null" >
+        #{identificationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isMarriage != null" >
+        #{isMarriage,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nowAddress != null" >
+        #{nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cameSzTime != null" >
+        #{cameSzTime,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatNo != null" >
+        #{wechatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="immediateFamily != null" >
+        #{immediateFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="immediateFamilyNo != null" >
+        #{immediateFamilyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custDesc != null" >
+        #{custDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null" >
+        #{index,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.CusTomer" >
+    update t_cust_customer
+    <set >
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="sname != null" >
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null" >
+        phone_no = #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="resReg != null" >
+        res_reg = #{resReg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationTime != null" >
+        registration_time = #{registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refereeUser != null and refereeUser != ''" >
+        referee_user = #{refereeUser,jdbcType=VARCHAR},
+      </if>
+       <if test="referralCode != null and referralCode!=''" >
+        referral_code = #{referralCode,jdbcType=VARCHAR},
+      </if>
+      <if test="customerServiceUser != null" >
+        customer_service_user = #{customerServiceUser,jdbcType=VARCHAR},
+      </if>
+      <if test="totalStay != null" >
+        total_stay = #{totalStay,jdbcType=DECIMAL},
+      </if>
+      <if test="availablePoint != null" >
+        available_point = #{availablePoint,jdbcType=INTEGER},
+      </if>
+      <if test="empiricalValue != null" >
+        empirical_value = #{empiricalValue,jdbcType=DECIMAL},
+      </if>
+      <if test="isBlacklist != null" >
+        is_blacklist = #{isBlacklist,jdbcType=VARCHAR},
+      </if>
+      <if test="isForbidWithdraw != null" >
+        is_forbid_withdraw = #{isForbidWithdraw,jdbcType=VARCHAR},
+      </if>
+      <if test="isForbidTransfer != null" >
+        is_forbid_transfer = #{isForbidTransfer,jdbcType=VARCHAR},
+      </if>
+      <if test="isFreeze != null" >
+        is_freeze = #{isFreeze,jdbcType=VARCHAR},
+      </if>
+      <if test="vipTime != null" >
+        vip_time = #{vipTime,jdbcType=INTEGER},
+      </if>
+      <if test="vipTimeTwo != null" >
+        vip_time = #{vipTimeTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isVip != null" >
+        is_vip = #{isVip,jdbcType=VARCHAR},
+      </if>
+      <if test="vipLevel != null" >
+        vip_level = #{vipLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="isAttestation != null" >
+        is_attestation = #{isAttestation,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationNo != null" >
+        identification_no = #{identificationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isMarriage != null" >
+        is_marriage = #{isMarriage,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        home_address = #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nowAddress != null" >
+        now_address = #{nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cameSzTime != null" >
+        came_sz_time = #{cameSzTime,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatNo != null" >
+        wechat_no = #{wechatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="immediateFamily != null" >
+        immediate_family = #{immediateFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="immediateFamilyNo != null" >
+        immediate_family_no = #{immediateFamilyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="custDesc != null" >
+        cust_desc = #{custDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileDeviceMachineCode != null" >
+        mobile_device_machine_code = #{mobileDeviceMachineCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.CusTomer" >
+    update t_cust_customer
+    set customer_name = #{customerName,jdbcType=VARCHAR},
+      sname = #{sname,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      password = #{password,jdbcType=VARCHAR},
+      phone_no = #{phoneNo,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      age = #{age,jdbcType=VARCHAR},
+      res_reg = #{resReg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      registration_time = #{registrationTime,jdbcType=TIMESTAMP},
+      referee_user = #{refereeUser,jdbcType=VARCHAR},
+      customer_service_user = #{customerServiceUser,jdbcType=VARCHAR},
+      total_stay = #{totalStay,jdbcType=DECIMAL},
+      available_point = #{availablePoint,jdbcType=INTEGER},
+      empirical_value = #{empiricalValue,jdbcType=DECIMAL},
+      is_blacklist = #{isBlacklist,jdbcType=VARCHAR},
+      is_forbid_withdraw = #{isForbidWithdraw,jdbcType=VARCHAR},
+      is_forbid_transfer = #{isForbidTransfer,jdbcType=VARCHAR},
+      is_freeze = #{isFreeze,jdbcType=VARCHAR},
+      vip_time = #{vipTime,jdbcType=INTEGER},
+      is_vip = #{isVip,jdbcType=VARCHAR},
+      vip_level = #{vipLevel,jdbcType=VARCHAR},
+      is_attestation = #{isAttestation,jdbcType=VARCHAR},
+      identification_no = #{identificationNo,jdbcType=VARCHAR},
+      is_marriage = #{isMarriage,jdbcType=VARCHAR},
+      home_address = #{homeAddress,jdbcType=VARCHAR},
+      now_address = #{nowAddress,jdbcType=VARCHAR},
+      came_sz_time = #{cameSzTime,jdbcType=VARCHAR},
+      wechat_no = #{wechatNo,jdbcType=VARCHAR},
+      immediate_family = #{immediateFamily,jdbcType=VARCHAR},
+      immediate_family_no = #{immediateFamilyNo,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      cust_desc = #{custDesc,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+
+<!--   根据pid来批量更新客服 -->
+  <update id="updatCusIdByPrimaryKey" parameterType="java.util.HashMap">
+  		update 
+	  		t_cust_customer tcc
+  		set 
+  			customer_service_user= #{map.cusmoterServiceUser,jdbcType=VARCHAR}
+		where tcc.pid in 
+		<foreach item="itemId" collection="map.idItem" open="(" separator="," close=")">
+		          #{itemId}
+		</foreach>
+  </update>
+  
+	<!-- 重置用户交易次数为0，累计时间为null-->
+  <update id="resetTradepwd" parameterType="java.lang.String">
+  		update 
+	  		t_cust_customer tcc
+  		set 
+  			tcc.trade_error_count = 0,
+  			tcc.trade_errot_time = null
+		where 
+			tcc.pid = #{customerId,jdbcType=VARCHAR}
+		
+  </update>
+	<!-- 冻结用户交易，并重置交易次数为0-->
+  <update id="freezeTrade">
+  		update 
+	  		t_cust_customer tcc
+  		set 
+  			tcc.trade_error_count = 0,
+  			tcc.trade_freeze_time = #{time,jdbcType=TIMESTAMP}
+		where 
+			tcc.pid = #{customerId,jdbcType=VARCHAR}
+		
+  </update>
+	<!-- 更新用户交易密码错误累计截止时间，并改成错误次数1次-->
+  <update id="addTradePwdErrorTime">
+  		update 
+	  		t_cust_customer tcc
+  		set 
+  			tcc.trade_error_count = 1,
+  			tcc.trade_errot_time = #{time,jdbcType=TIMESTAMP}
+		where 
+			tcc.pid = #{customerId,jdbcType=VARCHAR}
+		
+  </update>
+	<!-- 增加用户交易错误次数 -->
+  <update id="addTradePwdCount">
+  		update 
+	  		t_cust_customer tcc
+  		set 
+  			tcc.trade_error_count = tcc.trade_error_count + 1
+		where 
+			tcc.pid = #{customerId,jdbcType=VARCHAR}
+		
+  </update>
+  
+<!--   根据pid查询客服详情 -->
+  <select id="selectCusHistoryDetailedById" resultMap="BaseResultMap"  parameterType="java.lang.String">
+       <!--查客户详情信息 -->
+		SELECT <include refid="Base_Column_List1"></include>
+		FROM t_cust_customer tcc
+  		where tcc.PID=#{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!--  获取近7日新增客户数据 -->
+  <select id="selectNearlySevenNewCustomers" resultMap="BaseResultMap"  parameterType="map">
+	  	select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day1,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day1,jdbcType=VARCHAR},' 23:59:59' )
+		union all 
+		select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day2,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day2,jdbcType=VARCHAR},' 23:59:59' )
+		union all 
+		select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day3,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day3,jdbcType=VARCHAR},' 23:59:59' )
+		union all 
+		select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day4,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day4,jdbcType=VARCHAR},' 23:59:59' )
+		union all 
+		select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day5,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day5,jdbcType=VARCHAR},' 23:59:59' )
+		union all 
+		select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day6,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day6,jdbcType=VARCHAR},' 23:59:59' )
+		union all 
+		select count(1) as count from t_cust_customer where status = 1 and create_time <![CDATA[>=]]> concat(#{map.day7,jdbcType=VARCHAR},' 00:00:00' ) and create_time <![CDATA[<=]]> concat(#{map.day7,jdbcType=VARCHAR},' 23:59:59' )
+  </select>
+<!--   根据客户ID查投资奖励红包明细 -->
+<select id="selectHongbaoDetailsById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CusTomer">
+   SELECT tara.get_amount get_amount,
+		  tara.use_status use_status,
+		  tara.get_time get_time,
+		  tpr.red_desc red_desc
+	FROM t_act_redp_act_detail tara,
+		 t_pub_redpacket tpr
+	WHERE tara.redpacket_id=tpr.PID
+	and   tara.customer_id= #{cusTomer.pid,jdbcType=VARCHAR}
+</select>
+	
+	<!-- 所有客户的列表的字段 -->
+	<sql id="Authentication_Column_List">
+		cc.PID,cc.customer_name,cc.sname,cc.birthday,cc.res_reg,cc.age,cc.`password`,
+		cc.phone_no,cc.email,cc.sex,cc.`status`,cc.registration_time,cc.referee_user,
+		cc.customer_service_user,cc.total_stay,cc.available_point,
+		cc.empirical_value,cc.is_blacklist,cc.is_forbid_withdraw,cc.is_forbid_transfer,
+		cc.is_freeze,cc.vip_time,cc.vip_id,cc.is_vip,cc.vip_level,cc.is_attestation,
+		cc.attestation_status,cc.is_authentication,cc.identification_no,cc.is_marriage,
+		cc.home_address,cc.now_address,cc.came_sz_time,cc.wechat_no,cc.immediate_family,
+		cc.immediate_family_no,cc.create_user,cc.create_time,cc.last_update_user,
+		cc.last_update_time,cc.cust_desc
+	</sql>
+	
+	<!-- 查看所有提交实名认证的客户列表 -->
+	<select id="selectAuthenticationByCondition" resultMap="BaseResultMap" parameterType="map" >
+		select 
+		<include refid="Authentication_Column_List" />
+		from t_cust_customer as cc
+		where cc.is_authentication = 1
+	 	<if test="cusTomer.customerName != null and cusTomer.customerName != '' " >
+	        and  cc.customer_name like concat('%',#{cusTomer.customerName,jdbcType=VARCHAR},'%' )
+	  	</if>
+      	<if test="cusTomer.sname != null  and cusTomer.sname != '' " >
+       		and  cc.sname like concat('%',#{cusTomer.sname,jdbcType=VARCHAR},'%' )
+      	</if>
+      	<if test="cusTomer.phoneNo != null  and cusTomer.phoneNo != '' " >
+       		and  cc.phone_no = #{cusTomer.phoneNo,jdbcType=VARCHAR}
+      	</if>
+      	<if test="cusTomer.refereeUser != null  and cusTomer.refereeUser != '' " >
+       		and  cc.referee_user = #{cusTomer.refereeUser,jdbcType=VARCHAR}
+      	</if>
+      	<if test="cusTomer.attestationStatus != null  and cusTomer.attestationStatus != 0 " >
+       		and  cc.attestation_status = #{cusTomer.attestationStatus,jdbcType=VARCHAR}
+      	</if>
+	    <if test="cusTomer.happenBeginTime != null and cusTomer.happenBeginTime != '' " > 
+       		and  cc.registration_time <![CDATA[ >= ]]> #{cusTomer.happenBeginTime,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="cusTomer.happenEndTime != null and cusTomer.happenEndTime != '' " > 
+        	and  cc.registration_time <![CDATA[ <= ]]> #{cusTomer.happenEndTime,jdbcType=TIMESTAMP}
+	    </if>
+	</select>
+	
+	<!-- 获取旧数据ID，密码加密因子 -->
+	<select id="selectIndexByPid" resultType="Integer" parameterType="string" >
+		select t.index_ from t_cust_customer t where t.pid = #{pid,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 修改客户密码 -->
+	<update id="updatePwd"  parameterType="com.yscf.core.model.user.CusTomer" >
+		update t_cust_customer set password = #{password,jdbcType=VARCHAR} where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	
+		<!-- 修改客户交易密码 -->
+	<update id="updateTradPwd"  parameterType="com.yscf.core.model.user.CusTomer" >
+		update t_cust_customer tcc set tcc.tradePassword = #{tradePassword,jdbcType=VARCHAR} where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 修改客户认证状态和认证时间 -->
+	<update id="updateCusTomerByPid"  parameterType="com.yscf.core.model.user.CusTomer" >
+		update t_cust_customer 
+    	<set >
+    		<if test="isAttestation != null" >
+    			is_attestation = #{isAttestation,jdbcType=VARCHAR},
+    		</if>
+    		<if test="attestationStatus != null" >
+    			attestation_status = #{attestationStatus,jdbcType=VARCHAR},
+    		</if>
+    		<if test="sname != null" >
+    			sname = #{sname,jdbcType=VARCHAR},
+    		</if>
+    		<if test="identificationNo != null" >
+    			identification_no = #{identificationNo,jdbcType=VARCHAR},
+    		</if>
+    		<if test="sex != null" >
+    			sex = #{sex,jdbcType=VARCHAR},
+    		</if>
+    		<if test="birthday != null" >
+    			birthday = #{birthday,jdbcType=DATE},
+    		</if>
+    	</set>
+    	where PID = #{pid,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 查询提交实名认证的客户数  -->
+	<select id="selectAuthenticationCount" resultType="java.lang.Integer" >
+		select count(1) 
+		from t_cust_customer as cc
+		where cc.is_authentication = 1
+		and cc.status != -1 
+	</select>
+	
+	<!--   统计红包明细 -->
+	<select id="selectHongbaoDetailsByIdSum" resultType="java.util.Map" parameterType="com.yscf.core.model.user.CusTomer">
+	   SELECT sum(tara.get_amount)  "paychecksAmount"
+		FROM t_act_redp_act_detail tara,
+			 t_pub_redpacket tpr
+		WHERE tara.redpacket_id=tpr.PID
+		and   tara.customer_id= #{cusTomer.pid,jdbcType=VARCHAR}
+	</select>
+<!-- 	客户导出 -->
+<select id="selectCustomer" resultMap="BaseResultMap">
+        select 
+  			<include refid="Base_Column_List"></include>
+  			from t_cust_customer tcc
+  			where 1=1
+  	       <include refid="customerSearcher"></include>
+		   <include refid="export_query_sql"></include>
+		    
+</select>
+<!--     统计客户导出的数据 -->
+	<select id="selectSumCustomer" resultType="java.util.Map" parameterType="java.util.Map">
+        select 
+        	sum(ww.total_stay) "totalStay",
+        	sum(ww.available_balance) "availableBalance"
+         from
+        (
+         	select 
+  				<include refid="Base_Column_List"></include>
+  			from t_cust_customer tcc
+  			where 1=1
+  			and   tcc.pid = bca.customer_id
+  	       		<include refid="customerSearcher"></include>
+		   		<include refid="export_query_sql"></include>
+		) ww 
+	</select>
+  
+<!--   根据客户id查交易密码 -->
+	<select id="selectTradPwd" parameterType="java.lang.String" resultMap="BaseResultMap">
+	   select 
+	   	   tcc.tradePassword tradePassword,
+	   	   tcc.index_
+	    from t_cust_customer tcc where tcc.pid= #{customerId,jdbcType=VARCHAR}
+	</select>
+	<!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND tcc.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+		    order by create_time desc
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			order by create_time desc
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			order by create_time desc
+			limit #{expm.startCheckrecords,jdbcType=INTEGER},#{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+  
+  	  <!-- 统计用户（客户）总数 -->
+	  <select id="selectUserSum" parameterType="java.util.Map" resultType="Integer">
+	  	SELECT
+			SUM(1)
+		FROM
+			t_cust_customer c
+		WHERE c.status = 1
+			<if test="isAttestation == 1">
+				AND	c.is_attestation = 1
+			</if>
+			<if test="registrationTime != null">
+				AND DAY (c.registration_time) = DAY (#{registrationTime,jdbcType=DATE})
+				AND YEAR (c.registration_time) = YEAR (#{registrationTime,jdbcType=DATE})
+				AND MONTH (c.registration_time) = MONTH (#{registrationTime,jdbcType=DATE})
+			</if>
+	  </select>
+	   <!-- 统计今日实名制认证总数 -->
+	  <select id="selectTodayCertification" resultType="Integer">
+	  	SELECT
+			COUNT(1)
+		FROM
+			t_cust_authentication_his
+		WHERE status = 1
+			AND	DAY (oper_time) = DAY (curdate())
+			AND YEAR (oper_time) = YEAR (curdate())
+			AND MONTH (oper_time) = MONTH (curdate())
+	  </select>
+	  
+	  <!-- 按年月 统计用户（客户）报表 -->
+	  <select id="monthlyStatisticsCustomer" parameterType="java.util.Map" resultType="com.yscf.core.util.YTDDto">
+	 	<if test="isAttestation == null or isAttestation != 1">
+			SELECT
+				COUNT(PID) countD,
+				MONTH (registration_time) monthD
+			FROM
+				t_cust_customer
+			WHERE
+				status = 1
+				AND YEAR (registration_time) = YEAR (STR_TO_DATE(#{date,jdbcType=VARCHAR},'%Y'))
+			GROUP BY
+				monthD
+		</if>
+		<if test="isAttestation != null and isAttestation == 1">
+			SELECT
+				COUNT(PID) countD,
+				MONTH (oper_time) monthD
+			FROM
+				t_cust_authentication_his
+			WHERE
+				status = 1
+				AND YEAR (oper_time) = YEAR (STR_TO_DATE(#{date,jdbcType=VARCHAR},'%Y'))
+				
+			GROUP BY
+				monthD
+		</if>
+	  </select>
+	  
+	  <!-- 按月日 统计用户（客户）报表 -->
+	  <select id="monthDayStatisticsCustomer" parameterType="java.util.Map" resultType="com.yscf.core.util.YTDDto">
+	  	<if test="isAttestation == null or isAttestation != 1">
+	  		SELECT
+				COUNT(PID) countD,
+				DAY(registration_time) dayD
+			FROM
+				t_cust_customer
+			WHERE
+				status = 1
+				AND YEAR (registration_time) = YEAR (
+					STR_TO_DATE(#{date,jdbcType=VARCHAR}, '%Y-%m')
+				)
+				AND MONTH (registration_time) = MONTH (
+					STR_TO_DATE(#{date,jdbcType=VARCHAR}, '%Y-%m')
+				)
+			GROUP BY
+				dayD
+	  	</if>
+	  	<if test="isAttestation != null and isAttestation == 1">
+	  		SELECT
+				COUNT(PID) countD,
+				DAY (oper_time) dayD
+			FROM
+				t_cust_authentication_his
+			WHERE
+				STATUS = 1
+			AND YEAR (oper_time) = YEAR (
+				STR_TO_DATE(#{date,jdbcType=VARCHAR}, '%Y-%m')
+			)
+			AND MONTH (oper_time) = MONTH (
+				STR_TO_DATE(#{date,jdbcType=VARCHAR}, '%Y-%m')
+			)
+			GROUP BY
+				dayD
+	  	</if>
+	  </select>
+	  
+	    <!-- 查询手机号码人数 -->
+	  <select id="validatePhoneNo" resultType="Integer" parameterType="com.yscf.core.model.user.CusTomer">
+	  	SELECT
+			COUNT(1)
+		FROM t_cust_customer
+		where STATUS = 1 and phone_no = #{phoneNo,jdbcType=VARCHAR}
+	  </select>
+	  
+	   <!-- 查询手机号码人数 -->
+	  <select id="selectMaxIndex" resultType="Integer" >
+	  	SELECT max(index_) FROM t_cust_customer where STATUS = 1 
+	  </select>
+	  
+	  
+	   <!-- 根据登录名查询 -->
+	  <select id="selectByLoginName" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CusTomer">
+	  	SELECT
+			tcc.PID,
+			tcc.customer_name,
+			tcc.index_,
+			tcc.phone_no,
+			tcc.password,
+			tcc.locked_time,
+			tcc.error_time,
+			tcc.error_count,
+			tcc.email,
+			tcc.referral_code,
+			tcc.is_locked
+		FROM t_cust_customer tcc
+		where tcc.STATUS = 1 
+		and ( tcc.phone_no = #{sname,jdbcType=VARCHAR} 
+		or tcc.customer_name = #{sname,jdbcType=VARCHAR}
+		or tcc.email = #{sname,jdbcType=VARCHAR} )
+	  </select>
+	  
+	  <!-- 根据登录名查询 -->
+	  <select id="getIsBlacklist" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CusTomer">
+	  	SELECT
+			tcc.PID,
+			tcc.customer_name,
+			tcc.index_,
+			tcc.phone_no,
+			tcc.password,
+			tcc.locked_time,
+			tcc.error_time,
+			tcc.error_count,
+			tcc.email,
+			tcc.referral_code,
+			tcc.is_locked
+		FROM t_cust_customer tcc
+		where tcc.STATUS = 1 
+		and is_blacklist = 0
+		and ( tcc.phone_no = #{sname,jdbcType=VARCHAR} 
+		or tcc.customer_name = #{sname,jdbcType=VARCHAR}
+		or tcc.email = #{sname,jdbcType=VARCHAR} )
+	  </select>
+	  
+	  	  <!-- 根据登录名查询 -->
+	  <select id="getIsFreeze" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CusTomer">
+	  	SELECT
+			tcc.PID,
+			tcc.customer_name,
+			tcc.index_,
+			tcc.phone_no,
+			tcc.password,
+			tcc.locked_time,
+			tcc.error_time,
+			tcc.error_count,
+			tcc.email,
+			tcc.referral_code,
+			tcc.is_locked
+		FROM t_cust_customer tcc
+		where tcc.STATUS = 1 
+		and is_freeze = 0
+		and ( tcc.phone_no = #{sname,jdbcType=VARCHAR} 
+		or tcc.customer_name = #{sname,jdbcType=VARCHAR}
+		or tcc.email = #{sname,jdbcType=VARCHAR} )
+	  </select>
+	  
+	   <!-- 根据用户名查询 -->
+	  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="com.yscf.core.model.user.CusTomer">
+	  	SELECT
+			tcc.PID,
+			tcc.customer_name,
+			tcc.index_,
+			tcc.phone_no,
+			tcc.password,
+			tcc.locked_time,
+			tcc.error_time,
+			tcc.error_count,
+			tcc.is_locked
+		FROM t_cust_customer tcc
+		where tcc.STATUS = 1 
+		and ( tcc.phone_no = #{cusTomer.sname,jdbcType=VARCHAR} 
+		or tcc.customer_name = #{cusTomer.sname,jdbcType=VARCHAR}
+		or tcc.email = #{cusTomer.sname,jdbcType=VARCHAR} )
+		and tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR}
+	  </select>
+	  
+	 <!--根据客户id查推荐码 -->
+	 <select id="selectReferralCodeByCustd" resultMap="BaseResultMap" parameterType="java.lang.String">
+	     select referral_code from t_cust_customer tcc where tcc.status = 1 and tcc.pid= #{pid,jdbcType=VARCHAR} 
+	 </select>
+	 
+	  <!--查最后一个推荐码 -->
+	  <select id="selectLastReferralCode" resultMap="BaseResultMap">
+	   	 select referral_code from t_cust_customer tcc where tcc.status = 1 and tcc.referral_code is not null ORDER BY tcc.create_time DESC limit 1
+	  </select>
+	  
+	  <!--查我分享过的合伙人 -->
+	  <select id="selectMySharePartner" resultMap="BaseResultMap" parameterType="java.lang.String">
+<!-- 		 查我推荐的客户参与过活动，在流水表有记录的 -->
+		     SELECT  tcc.customer_name customer_name,
+			      tcc.registration_time registration_time,
+			      tcc.phone_no phone_no,
+				  cfw.fund_value fund_value
+	      from  t_cust_customer tcc ,
+				t_cust_fund_water cfw		
+	      where  tcc.pid=cfw.customer_id
+				and cfw.business_type='405'
+		    and     tcc.referee_user= #{userId,jdbcType=VARCHAR}
+			UNION ALL
+		<!--  查我推荐的客户，没参与过活动的 -->
+          SELECT  tcc.customer_name customer_name,
+			      tcc.registration_time registration_time,
+			      tcc.phone_no phone_no,
+						'0' as fund_value
+	      from  t_cust_customer tcc 
+	      where tcc.referee_user= #{userId,jdbcType=VARCHAR}
+          ORDER BY registration_time DESC;
+	  </select>
+	  
+	  <!-- 清空登录错误信息 -->
+	  <update id="clearLoginError" parameterType="com.yscf.core.model.user.CusTomer">
+	  	update t_cust_customer set locked_time = null,error_time = null,error_count = null,is_locked = null
+	  		where pid = #{pid,jdbcType=VARCHAR}
+	  </update>
+	  
+	   <!-- 清空登录错误信息 -->
+	  <update id="updateLoingError" parameterType="com.yscf.core.model.user.CusTomer">
+	  	update t_cust_customer 
+	  	<set >
+	  		<if test="errorCount != null and errorCount != ''" >
+    			error_count = #{errorCount,jdbcType=VARCHAR} ,
+    		</if>
+    		<if test="errorTime != null and errorTime != ''" >
+    			error_time = #{errorTime,jdbcType=VARCHAR} ,
+    		</if>
+    		<if test="isLocked != null and isLocked != ''" >
+    			is_locked = #{isLocked,jdbcType=VARCHAR} ,
+    		</if>
+    		<if test="lockedTime != null and lockedTime != ''" >
+    			locked_time = #{lockedTime,jdbcType=VARCHAR} 
+    		</if>
+    	</set>
+	  	where pid = #{pid,jdbcType=VARCHAR}
+	  </update>
+	  
+	<!--根据客户id更新vip时长 -->
+	<update id="updateCustVipTimeByCustId" parameterType="com.yscf.core.model.user.CusTomer">
+		 update t_cust_customer tcc
+		 set tcc.vip_time = #{cusTomer.vipTime,jdbcType=INTEGER}
+		 where tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR}
+	</update>  
+	  
+	<!--根据客户id修改客户名字-->
+    <update id="updateCusNameByCusPid" parameterType="com.yscf.core.model.user.CusTomer">
+        update t_cust_customer tcc 
+        set tcc.customer_name = #{cusTomer.customerName,jdbcType=VARCHAR} 
+        where tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR}
+    </update>
+	    
+    <!--根据客户id修改客户联系地址 -->
+    <update id="updateHomeAddressByCusPid" parameterType="com.yscf.core.model.user.CusTomer">
+        update t_cust_customer tcc 
+        set tcc.home_address = #{cusTomer.homeAddress,jdbcType=VARCHAR} 
+        where tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR}
+    </update>
+	    
+	<!--  根据推介码查询客户信息 -->
+	<select id="selectByReferralCode" parameterType="com.yscf.core.model.user.CusTomer" resultMap="BaseResultMap">
+ 		select 
+ 		<include refid="Base_Column_List2"></include>
+ 		from t_cust_customer tbrp where tbrp.status = 1 and tbrp.referral_code = #{referralCode,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 批量修改客户VIP信息 -->
+	<update id="batchUpdateVip" parameterType="java.util.List">
+       	<foreach collection="list" item="item" index="index" open="begin" close="end;" separator=";">
+			update t_cust_customer tcc
+			<set>
+				tcc.vip_level = #{item.vipLevel,VARCHAR}, 
+				tcc.is_vip = 1 , 
+				tcc.vip_time = #{item.vipTime,INTEGER} 
+			</set>
+			where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	<!-- 批量修改客户积分信息 -->
+	<update id="batchUpdatePoin" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close="end;" separator=";">
+			update t_cust_customer tcc
+			<set>
+				tcc.available_point = #{item.availablePoint,INTEGER}, 
+			</set>
+			where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	<!-- 批量修改客户经验信息 -->
+	<update id="batchUpdateExperience" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update t_cust_customer tcc
+			<set>
+				tcc.empirical_value = #{item.empiricalValue,jdbcType=INTEGER}, 
+			</set>
+			where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	
+	<update id="batchUpdate" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update t_cust_customer tcc
+			<set>
+				<if test="item.vipLevel != null and item.vipLevel != ''" >
+    				tcc.vip_level = #{item.vipLevel,jdbcType=VARCHAR}, 
+    			</if>
+    			<if test="item.empiricalValue != null and item.empiricalValue != ''" >
+    				tcc.empirical_value = #{item.empiricalValue,jdbcType=VARCHAR}, 
+    			</if>
+    			<if test="item.vipId != null and item.vipId != ''" >
+    				tcc.vip_id = #{item.vipId,jdbcType=VARCHAR}, 
+    			</if>
+    			<if test="item.lastUpdateTime != null and item.lastUpdateTime != ''" >
+    				last_update_time = #{item.lastUpdateTime,jdbcType=TIMESTAMP},
+    			</if>
+    			<if test="item.lastUpdateUser!= null and item.lastUpdateUser != ''" >
+    				last_update_user = #{item.lastUpdateUser,jdbcType=VARCHAR},
+    			</if>
+			</set>
+			where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	  
+	 <!-- 根据pid更新最后登录时间 -->
+	 <update id="updateLastLoginTime" parameterType="map">
+	 	update t_cust_customer tcc 
+	 	set tcc.last_login_time = #{createTime,jdbcType=VARCHAR}   
+	 	where tcc.PID = #{userId,jdbcType=VARCHAR}
+	 </update>
+	 
+	 <!-- 增加用户积分-->
+	 <update id="updateAddSrcPointByUserId" parameterType="java.lang.String">
+	 	update t_cust_customer tcc 
+	 	set tcc.available_point = IFNULL(available_point,0) + #{pointValue,jdbcType=INTEGER}   
+	 	where tcc.PID = #{customerId,jdbcType=VARCHAR}
+	 </update>
+	 
+	  <!-- 根据pid更新最后交易时间 -->
+	 <update id="updateLastTransacTime" parameterType="map">
+	 	update t_cust_customer tcc 
+	 	set tcc.last_trading_time = #{createTime,jdbcType=VARCHAR}   
+	 	where tcc.PID = #{userId,jdbcType=VARCHAR}
+	 </update>
+	  <select id="selectAllRelateUsers" resultMap="BaseResultMap">
+	  		select 
+ 				<include refid="Base_Column_List2"></include>
+ 			from t_cust_customer tbrp where tbrp.status = 1 tbrp.pid in 
+ 			<foreach item="customerIds" index="index" collection="list"
+		      open="(" separator="," close=")">
+		        #{customerIds}
+		    </foreach>
+	  </select>
+	  
+	  <!--api：校验原密码是否正确 -->
+	  <select id="validateOriginalPassWord"  resultType="java.lang.Integer" parameterType="com.yscf.core.model.user.CusTomer">
+	         select count(*) from t_cust_customer tcc
+	         				 where tcc.`password`=  #{cusTomer.password,jdbcType=VARCHAR}
+	         				 and tcc.PID = #{cusTomer.pid,jdbcType=VARCHAR}
+	  </select>
+	  
+	 <!--api:修改原密码 -->
+	 <update id="updateLoginPassWord" parameterType="com.yscf.core.model.user.CusTomer">
+	 		update t_cust_customer tcc set tcc.`password`= #{cusTomer.password,jdbcType=VARCHAR}
+	 								   where tcc.PID = #{cusTomer.pid,jdbcType=VARCHAR}
+	 </update>
+	 
+	 <!--api:设置交易密码 -->
+	 <update id="updateTradPassWord"  parameterType="com.yscf.core.model.user.CusTomer">
+	       update t_cust_customer tcc set tcc.tradePassword= #{cusTomer.tradePassword,jdbcType=VARCHAR} 
+	       							  WHERE tcc.PID= #{cusTomer.pid,jdbcType=VARCHAR} 
+	 </update>
+	 
+	  <!--api:校验交易密码 -->
+	 <select id="validataTradPassWord" resultType="java.lang.Integer" parameterType="com.yscf.core.model.user.CusTomer">
+	 		select count(*) from t_cust_customer tcc where tcc.tradePassword = #{cusTomer.tradePassword,jdbcType=VARCHAR} 
+	 												 and   tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR}
+	 </select>
+	 
+	 <!--api:查我的推荐码 -->
+	 <select id="selectReferralCode" resultType="java.lang.String" resultMap="BaseResultMap">
+	      select tcc.referral_code referral_code 
+	      			  from t_cust_customer tcc
+	      			  where tcc.pid= #{userId,jdbcType=VARCHAR}
+	 </select>
+	 
+	 <!--api 查我推荐的客户列表 -->
+	 <select id="selectMyReferralList" parameterType="java.lang.String" resultMap="BaseResultMap">
+<!-- 	 	 select  tcc.customer_name, -->
+<!--        			 tcc.create_time, -->
+<!-- 				 cfw.fund_value -->
+<!-- 	 	   from  t_cust_customer tcc, -->
+<!-- 				 t_cust_fund_water cfw -->
+<!-- 	 	    	 where tcc.pid=cfw.customer_id -->
+<!-- 				  and  cfw.business_type='405' -->
+<!-- 				  and  tcc.referee_user = #{userId,jdbcType=VARCHAR} -->
+<!--        查我推荐的客户参与过活动，在流水表有记录的 -->
+		     SELECT  tcc.customer_name customer_name,
+			      tcc.registration_time registration_time,
+			      tcc.phone_no phone_no,
+				  cfw.fund_value fund_value
+	      from  t_cust_customer tcc ,
+				t_cust_fund_water cfw		
+	      where  tcc.pid=cfw.customer_id
+				and cfw.business_type='405'
+		    and     tcc.referee_user= #{userId,jdbcType=VARCHAR}
+			UNION ALL
+		<!--  查我推荐的客户，没参与过活动的 -->
+          SELECT  tcc.customer_name customer_name,
+			      tcc.registration_time registration_time,
+			      tcc.phone_no phone_no,
+						'0' as fund_value
+	      from  t_cust_customer tcc 
+	      where tcc.referee_user= #{userId,jdbcType=VARCHAR}
+          ORDER BY registration_time DESC;
+	 </select>
+	 
+	 <!-- 兑换修改客户信息 -->
+	 <update id="updateCustTomerByExchange" parameterType="com.yscf.core.model.user.CusTomer" >
+	 	update t_cust_customer
+	 	<set >
+	      	<if test="availablePoint != null" >
+	        	available_point = #{availablePoint,jdbcType=INTEGER},
+	      	</if>
+	      	<if test="vipId != null" >
+	        	vip_id = #{vipId,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="isVip != null" >
+	        	is_vip = #{isVip,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="vipTime != null" >
+	        	vip_time = #{vipTime,jdbcType=INTEGER},
+	      	</if>
+	      	<if test="vipLevel != null" >
+	        	vip_level = #{vipLevel,jdbcType=VARCHAR},
+	      	</if>
+		    <if test="lastUpdateUser != null" >
+		        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="lastUpdateTime != null" >
+	        	last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      	</if>
+    	</set>
+    	where PID = #{pid,jdbcType=VARCHAR}
+	 </update>
+	 
+	<!--api:绑定手机号码 -->
+	<update id="bindPhone" parameterType="com.yscf.core.model.user.CusTomer">
+		 update t_cust_customer tcc 
+		 	set tcc.phone_no = #{cusTomer.phoneNo,jdbcType=VARCHAR} 
+	       	   WHERE tcc.PID = #{cusTomer.pid,jdbcType=VARCHAR}  
+	</update>
+	
+	 <!--api：修改客户名称 -->
+	 <update id="updateCustName" parameterType="com.yscf.core.model.user.CusTomer">
+	    update t_cust_customer tcc set tcc.customer_name =  #{cusTomer.customerName,jdbcType=VARCHAR} 
+	      where tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR} 
+	 </update>
+	 
+	 <!--更新vip时长 -->
+	 <update id="updateVipTime" parameterType="com.yscf.core.model.user.CusTomer">
+	 	update t_cust_customer tcc 
+	 	  set tcc.vip_time = #{cusTomer.vipTime,jdbcType=VARCHAR} 
+	 	  <if test="cusTomer.vipId !=null and cusTomer.vipId != ''">
+	 	 	 , tcc.vip_id = #{cusTomer.vipId,jdbcType=VARCHAR} 
+	 	  </if>
+	 	 where tcc.pid = #{cusTomer.pid,jdbcType=VARCHAR} 
+	 </update>
+	 <!-- 通过客户Id得到实名认证情况 -->
+	 <select id="selectIsAttestationById" parameterType="java.lang.String" resultType="java.lang.String">
+	 	select is_attestation from t_cust_customer where PID = #{custId,jdbcType=VARCHAR} 
+	 </select>
+	 
+	<!--根据客户id更新是否vip -->
+	<update id="updateIsVipByCustId" parameterType="java.lang.String">
+	    UPDATE t_cust_customer tcc set tcc.is_vip='1' where tcc.PID = #{custId,jdbcType=VARCHAR} 
+	</update>
+	
+    <!-- 查询未禁用，非黑名单，status =1的VIP的客户数据 -->
+	<select id="selectCustomerInfo" resultMap="BaseResultMap">
+				     SELECT 
+				     		tcc.* 
+				     from t_cust_customer tcc 
+					      where tcc.is_vip=1  
+					      and tcc.`status`='1'
+<!-- 					      and tcc.vip_time > 0  -->
+					      and tcc.vip_id !=''
+	</select>
+	<!-- 查询今天生日的客户数据 -->
+	<select id="selectCustomerByBirthdayToDay" resultMap="BaseResultMap">
+	     SELECT tcc.* from t_cust_customer tcc
+	     where date_format(tcc.birthday,'%m%d') =
+			date_format(now(),'%m%d')  
+	</select>
+	<!-- 根据活动设置的条件查询对应的客户 -->
+	<select id="selectCustByCondition" resultMap="BaseResultMap" parameterType="java.lang.String">
+	     SELECT * from t_cust_customer
+	     where 1=1 
+	     and pid in ( 
+	     <![CDATA[ ${conditionValue} ]]>
+	     )
+	</select>
+	
+	<!--批量更新vip经验值 -->
+	<update id="batchUpdateCusTomerEmpiricalValue" parameterType="java.util.List">
+	    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update t_cust_customer tcc
+			<set>
+			    tcc.empirical_value = #{item.empiricalValue,jdbcType=INTEGER}
+			</set>
+			where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+	
+	<!--把是vip的客户每天减去Vip时长 -->
+	<update id="updateViptimeByIsVip">
+	    update t_cust_customer tcc set tcc.vip_time=tcc.vip_time-1  where tcc.is_vip >'0';
+	</update>
+	
+	
+	<!-- 满足传入的客户集合 必须拥有邀请人-->
+  	<select id="passCustByCondition" resultMap="BaseResultMap" parameterType="map">
+	  	SELECT	<include refid="Base_Column_List"></include>
+		FROM t_cust_customer
+		WHERE
+		pid in 
+		<foreach item="customerId" collection="map.custList" open="(" separator="," close=")">
+			#{customerId}
+		</foreach> 
+			and referee_user != '' 
+  	</select>
+  	
+<!--   	查到vip到期的客户 -->
+  	<select id="selectVipInfo" resultMap="BaseResultMap">
+<!-- 		SELECT  clvw.customer_id -->
+<!-- 		from    t_cust_largess_vip_water clvw  -->
+<!-- 		LEFT JOIN t_cust_customer tcc  on clvw.customer_id=tcc.PID  -->
+<!-- 		where (tcc.vip_time = 0 || tcc.vip_time is null)  -->
+<!-- 		and tcc.is_vip = '1' -->
+<!-- 		and date_format(clvw.distribution_time,'%H:%i:%s') <![CDATA[ < ]]> right(NOW(),8) -->
+<!-- 		GROUP BY clvw.customer_id -->
+			select tcc.* from t_cust_customer tcc where tcc.vip_time=0 and tcc.is_vip=1
+	</select>
+	
+	<!--更新客户为非vip -->
+	<update id="updateCustIsVip" parameterType="java.util.List">
+	   <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update t_cust_customer tcc
+			<set>
+			    tcc.is_vip = 0
+			</set>
+			where tcc.pid = #{item.pid,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+	
+  </mapper>

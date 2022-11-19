@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.CustFundWaterMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.CustFundWater" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customer.customerName" jdbcType="VARCHAR" />
+    <result column="sname" property="customer.sname" jdbcType="VARCHAR" />
+    <result column="phone_no" property="customer.phoneNo" jdbcType="VARCHAR" />
+    <result column="fund_value" property="fundValue" jdbcType="DECIMAL" />
+    <result column="fund_type" property="fundType" jdbcType="VARCHAR" />
+    <result column="business_type" property="businessType" jdbcType="VARCHAR" />
+    <result column="business_type_value" property="businessTypeValue" jdbcType="VARCHAR" />
+    <result column="account_balance" property="accountBalance" jdbcType="DECIMAL" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="happen_time" property="happenTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="fun_wat_desc" property="funWatDesc" jdbcType="VARCHAR" />
+    <result column="fkey" property="fkey" jdbcType="VARCHAR" />
+    <result column="dict_cont_code" property="typeId" jdbcType="VARCHAR" />
+    <result column="dict_cont_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="ex_penditure" property="expenditure" jdbcType="VARCHAR" />
+    <result column="fkey" property="fkey" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cfw.PID, fund_value, fund_type, business_type, account_balance, cfw.customer_id, cfw.status, 
+    happen_time, cfw.create_user, cfw.create_time, cfw.last_update_user, cfw.last_update_time, fun_wat_desc,fkey,
+    cust.customer_name,cust.sname,cust.phone_no
+  </sql>
+   <sql id="Base_Column_List1" >
+    cfw.PID PID, 
+    cfw.fund_value fund_value,
+    cfw.fund_type fund_type,
+    cfw.customer_id customer_id, 
+    cfw.status status,
+    cfw.happen_time happen_time,
+    cfw.fun_wat_desc fun_wat_desc
+  </sql>
+
+<!--   客户资料账户总额查询 -->
+<select id="selectAllPages" resultMap="BaseResultMap" parameterType="com.yscf.core.model.financial.CustFundWater">
+     select cfw.PID, 
+      		cfw.happen_time happen_time,
+      		cfw.account_balance account_balance,
+		    CASE business_type
+			WHEN 1 THEN
+				'账户总额'
+			WHEN 2 THEN
+				'投资总额'
+			WHEN 3 THEN
+				'投标奖励'
+			WHEN 4 THEN
+				'推荐奖励'
+			WHEN 5 THEN
+				'净赚利息'
+			WHEN 6 THEN
+				'充值总额'
+			WHEN 7 THEN
+				'提现总额'
+			END business_type,
+		    IF(cfw.fund_type ='1', cfw.fund_value, 0) AS fund_value,
+		    IF(cfw.fund_type ='2', cfw.fund_value, 0) AS ex_penditure,
+		    cfw.fun_wat_desc fun_wat_desc
+	  from  t_cust_fund_water cfw,t_cust_customer tcc
+	  where 1=1
+	  and   cfw.customer_id = tcc.PID
+	  and   cfw.business_type= #{custFundWater.flag,jdbcType=VARCHAR}
+	  and   cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+	    <if test="custFundWater.happenBeginTime != null and custFundWater.happenBeginTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ >= ]]> #{custFundWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custFundWater.happenEndTime != null and custFundWater.happenEndTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ <= ]]> #{custFundWater.happenEndTime,jdbcType=DATE}
+        </if>
+</select>
+<!--   统计账户总额查询 -->
+<select id="selectAllPagesSum" resultType="java.util.Map" parameterType="com.yscf.core.model.financial.CustFundWater">
+     select sum(IF(cfw.fund_type ='1',cfw.fund_value, 0)) AS "fundValue",
+			sum(IF(cfw.fund_type ='2',cfw.fund_value, 0))  AS "exPenditure"
+	  from  t_cust_fund_water cfw,t_cust_customer tcc
+	  where 1=1
+	  and   cfw.customer_id = tcc.PID
+	  and   cfw.business_type= #{custFundWater.flag,jdbcType=VARCHAR}
+	  and   cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+	    <if test="custFundWater.happenBeginTime != null and custFundWater.happenBeginTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ >= ]]> #{custFundWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custFundWater.happenEndTime != null and custFundWater.happenEndTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ <= ]]> #{custFundWater.happenEndTime,jdbcType=DATE}
+        </if>
+</select>
+
+<!--   根据客户pid查询客户投资总额明细 -->
+<select id="selectTouziDetailsById" resultMap="BaseResultMap" parameterType="com.yscf.core.model.financial.CustFundWater">
+    select cfw.PID, 
+      		cfw.happen_time happen_time,
+      		cfw.account_balance account_balance,
+		    cfw.business_type fund_type,
+		    cfw.fund_value fund_value,
+		    cfw.fun_wat_desc fun_wat_desc
+      from  t_cust_fund_water cfw,
+			t_cust_customer tcc
+	  WHERE cfw.customer_id = tcc.PID
+		AND cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+</select>
+<!-- 查客户资金流水明细 -->
+<select id="selectZiJinWater" resultMap="BaseResultMap" parameterType="com.yscf.core.model.financial.CustFundWater">
+      select cfw.PID, 
+      		cfw.happen_time happen_time,
+      		cfw.account_balance account_balance,
+			(SELECT ts.dict_cont_name FROM t_sys_dictionary tsd,t_sys_dictionary_content ts
+						 						  WHERE tsd.PID = ts.dict_id
+												  AND tsd.dict_code = 'CUST_TRADE_TYPE'
+												  AND ts.dict_cont_code = cfw.business_type) business_type,
+			cfw.business_type business_type_value,	
+			cfw.fund_value fund_value,
+		    cfw.fun_wat_desc fun_wat_desc
+      from  t_cust_fund_water cfw,
+			t_cust_customer tcc
+	  WHERE cfw.customer_id = tcc.PID
+		AND cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+			<if test="custFundWater.happenBeginTime != null and custFundWater.happenBeginTime != '' " > 
+	        	and  cfw.happen_time <![CDATA[ >= ]]> #{custFundWater.happenBeginTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="custFundWater.happenEndTime != null and custFundWater.happenEndTime != '' " > 
+	        	and  cfw.happen_time <![CDATA[ <= ]]> #{custFundWater.happenEndTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 1 " > 
+	        	and  cfw.business_type ='302'
+	        </if>
+	        <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 2 " > 
+	        	and  cfw.business_type in ('401','403','405','407','409','411','413','415','419','421','423','425')
+	        </if>
+	         <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 3 " > 
+	        	and  cfw.business_type in ('101','103')
+	        </if>
+	        <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 4 " > 
+	        	and  cfw.business_type ='202'
+	        </if>
+	         <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 5 " > 
+	        	and  cfw.business_type in (select cfw.business_type from t_cust_fund_water cfw)
+	        </if>
+            <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 101" > 
+        		and  cfw.business_type in ('502','503','504','506','508','510','512','514','516','518','520','521')
+             </if>
+             order by cfw.happen_time
+</select>
+<!-- 没有带流水类型的查询统计 -->
+<select id="selectZiJinWaterSum" resultType="java.util.Map" parameterType="com.yscf.core.model.financial.CustFundWater">
+    	   select sum(if(CONVERT(cfw.business_type,SIGNED)%2=0,cfw.fund_value,0)) AS "exPenditure",
+    	   	      sum(if(CONVERT(cfw.business_type,SIGNED)%2=1,cfw.fund_value,0)) AS "fundValue"
+    	   from  t_cust_fund_water cfw, 
+				t_cust_customer tcc
+		  WHERE cfw.customer_id = tcc.PID
+		  AND cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+			<if test="custFundWater.happenBeginTime != null and custFundWater.happenBeginTime != '' " > 
+	        	and  cfw.happen_time <![CDATA[ >= ]]> #{custFundWater.happenBeginTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="custFundWater.happenEndTime != null and custFundWater.happenEndTime != '' " > 
+	        	and  cfw.happen_time <![CDATA[ <= ]]> #{custFundWater.happenEndTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 1 " > 
+	        	and  cfw.business_type ='302'
+	        </if>
+	        <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 2 " > 
+	        	and  cfw.business_type in ('401','403','405','407','409','411','413','415','419','421','423','425')
+	        </if>
+	         <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 3 " > 
+	        	and  cfw.business_type in ('101','103')
+	        </if>
+	        <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 4 " > 
+	        	and  cfw.business_type ='202'
+	        </if>
+	         <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 5 " > 
+	        	and  cfw.business_type in (select cfw.business_type from t_cust_fund_water cfw)
+	        </if>
+            <if test="custFundWater.waterType != null and custFundWater.waterType != '' and custFundWater.waterType == 101" > 
+        		and  cfw.business_type in ('502','503','504','506','508','510','512','514','516','518','520','521')
+             </if>
+             order by cfw.happen_time
+</select>
+      	 <!--查询流水 -->
+		<select id="selectWater" resultMap="BaseResultMap" parameterType="map">
+		       select   cfw.PID, 
+			      		cfw.happen_time happen_time,
+			      		cfw.account_balance account_balance,
+						(SELECT ts.dict_cont_name FROM t_sys_dictionary tsd,t_sys_dictionary_content ts
+						 						  WHERE tsd.PID = ts.dict_id
+												  AND tsd.dict_code = 'CUST_TRADE_TYPE'
+												  AND ts.dict_cont_code = cfw.business_type) business_type,
+						cfw.business_type business_type_value,						  
+					    cfw.fund_value fund_value,
+					    cfw.fun_wat_desc fun_wat_desc
+      		 from  t_cust_fund_water cfw,t_cust_customer tcc
+	  		 WHERE cfw.customer_id = tcc.PID
+		     AND   cfw.customer_id = #{map.userId,jdbcType=VARCHAR}
+			<if test="map.beginTime != null and map.beginTime != '' " > 
+	        	and  cfw.happen_time <![CDATA[ >= ]]> #{map.beginTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="map.endTime != null and map.endTime != '' " > 
+	        	and  cfw.happen_time <![CDATA[ <= ]]> #{map.endTime,jdbcType=TIMESTAMP}
+	        </if>
+	        <if test="map.waterType != null and map.waterType != '' and map.waterType == 1 " > 
+	        	and  cfw.business_type in ('302')
+	        </if>
+	        <if test="map.waterType != null and map.waterType != '' and map.waterType == 2 " > 
+	        	and  cfw.business_type in ('401','403','405','407','409','411','413','415','419','421','423','425')
+	        </if>
+	         <if test="map.waterType != null and map.waterType != '' and map.waterType == 3 " > 
+	        	and  cfw.business_type in ('101','103')
+	        </if>
+	        <if test="map.waterType != null and map.waterType != '' and map.waterType == 4 " > 
+	        	and  cfw.business_type in ('202')
+	        </if>
+            <if test="map.waterType != null and map.waterType != '' and map.waterType == 101" > 
+        		and  cfw.business_type in ('502','503','504','506','508','510','512','514','516','518','520','521')
+             </if>
+             order by cfw.happen_time desc
+		</select>
+
+<!-- 根据条件查询资金流水 -->
+<select id="selectZiJinWaterAllPage" resultMap="BaseResultMap" parameterType="map">
+		   select cfw.PID, 
+      		cfw.happen_time happen_time,
+      		cfw.account_balance account_balance,
+			(SELECT ts.dict_cont_name FROM t_sys_dictionary tsd,t_sys_dictionary_content ts
+						 						  WHERE tsd.PID = ts.dict_id
+												  AND tsd.dict_code = 'CUST_TRADE_TYPE'
+												  AND ts.dict_cont_code = cfw.business_type) business_type,
+			cfw.business_type business_type_value,	
+		    cfw.fun_wat_desc fun_wat_desc
+      from  t_cust_fund_water cfw,
+			t_cust_customer tcc
+	  WHERE cfw.customer_id = tcc.PID
+		AND cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+		<if test="custFundWater.happenBeginTime != null and custFundWater.happenBeginTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ >= ]]> #{custFundWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custFundWater.happenEndTime != null and custFundWater.happenEndTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ <= ]]> #{custFundWater.happenEndTime,jdbcType=DATE}
+        </if>
+        <if test="statusArr != null and statusArr != '' "> 
+        	and  cfw.business_type in 
+        	<foreach item="itemId" collection="statusArr" open="(" separator="," close=")">
+		          #{itemId}
+		    </foreach>
+        </if>
+</select>
+
+<!-- 统计 -->
+<select id="selectZiJinWaterAllSum" resultType="java.util.Map" parameterType="map">
+		   select 
+		   		  sum(IF(cfw.fund_type ='1',cfw.fund_value, 0)) AS "fundValue",
+			  	  sum(IF(cfw.fund_type ='2',cfw.fund_value, 0))  AS "exPenditure"
+	       from  t_cust_fund_water cfw,
+				t_cust_customer tcc
+		   WHERE cfw.customer_id = tcc.PID
+		   AND cfw.customer_id = #{custFundWater.customerId,jdbcType=VARCHAR}
+		<if test="custFundWater.happenBeginTime != null and custFundWater.happenBeginTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ >= ]]> #{custFundWater.happenBeginTime,jdbcType=DATE}
+        </if>
+        <if test="custFundWater.happenEndTime != null and custFundWater.happenEndTime != '' " > 
+        	and  cfw.happen_time <![CDATA[ <= ]]> #{custFundWater.happenEndTime,jdbcType=DATE}
+        </if>
+        <if test="statusArr != null and statusArr != '' "> 
+        	and  cfw.business_type in 
+        	<foreach item="itemId" collection="statusArr" open="(" separator="," close=")">
+		          #{itemId}
+		    </foreach>
+        </if>
+</select>
+  <select id="selectAllPage" resultMap="BaseResultMap" parameterType="map">
+		select 
+		<include refid="Base_Column_List" />
+		from t_cust_fund_water cfw
+		left join t_cust_customer cust
+   		on cfw.customer_id = cust.pid
+		where 1 = 1
+		and cfw.status >= 0
+		<if test="parasMap.customerName != null" >
+        and  cust.customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+       	</if>
+       	<if test="parasMap.sname != null" >
+        and  cust.sname like   concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+      	</if>
+        <if test="parasMap.phoneNo != null"  >
+        and  cust.phone_No like  concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+      	</if>
+      	<if test="parasMap.fundType != null"  >
+        and  cfw.fund_type = #{parasMap.fundType,jdbcType=VARCHAR}
+       </if>
+       <if test="parasMap.businessType != null and parasMap.businessType != 0"  >
+        and  cfw.business_type = #{parasMap.businessType,jdbcType=VARCHAR}
+       </if>
+       <if test="parasMap.happenTime != null"  >
+        and DATE_FORMAT(cfw.happen_time, '%Y-%m-%d') = DATE_FORMAT(#{parasMap.happenTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+       </if>
+		order by cfw.create_time desc
+	</select>
+  <select id="selectCustFundWaterEom" resultMap="BaseResultMap">
+  
+    select 
+    	*
+    from (
+    	select 
+    		*,
+    		(@rown := @rown + 1) rowns
+    	from (
+    	
+		select 
+		<include refid="Base_Column_List" />
+		from t_cust_fund_water cfw
+		left join t_cust_customer cust
+   		on cfw.customer_id = cust.pid
+		where 1 = 1
+		and cfw.status >= 0
+		<if test="parasMap.customerName != null" >
+        and  cust.customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+       	</if>
+       	<if test="parasMap.sname != null" >
+        and  cust.sname like   concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+      	</if>
+        <if test="parasMap.phoneNo != null"  >
+        and  cust.phone_No like  concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+      	</if>
+      	<if test="parasMap.fundType != null"  >
+        and  cfw.fund_type = #{parasMap.fundType,jdbcType=VARCHAR}
+       </if>
+       <if test="parasMap.businessType != null and parasMap.businessType != 0"  >
+        and  cfw.business_type = #{parasMap.businessType,jdbcType=VARCHAR}
+       </if>
+       <if test="parasMap.happenTime != null"  >
+        and DATE_FORMAT(cfw.happen_time, '%Y-%m-%d') = DATE_FORMAT(#{parasMap.happenTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+       </if>
+		order by cfw.create_time desc
+		)t,
+		(SELECT @rown := 0) b
+	) t where 1=1 		
+			<include refid="export_query_sql"></include>
+	</select>
+	
+	
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND t.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			AND t.rowns BETWEEN #{expm.startCheckrecords,jdbcType=INTEGER}
+				AND #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>
+	
+	<select id="getTotalData" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  		SELECT cfw.business_type business_type,
+			sum(cfw.account_balance) account_balance,
+			sum(cfw.fund_value)  fund_value
+			FROM
+		t_cust_fund_water cfw
+		left join t_cust_customer cust
+   		on cfw.customer_id = cust.pid
+		where 1=1 
+		and cfw.status >= 0
+		<if test="parasMap.customerName != null" >
+        and  cust.customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+       	</if>
+       	<if test="parasMap.sname != null" >
+        and  cust.sname like   concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+      	</if>
+        <if test="parasMap.phoneNo != null"  >
+        and  cust.phone_No like  concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+      	</if>
+      	<if test="parasMap.fundType != null"  >
+        and  cfw.fund_type = #{parasMap.fundType,jdbcType=VARCHAR}
+        </if>
+        <if test="parasMap.businessType != null and parasMap.businessType != 0"  >
+        and  cfw.business_type = #{parasMap.businessType,jdbcType=VARCHAR}
+        </if>
+        <if test="parasMap.happenTime != null"  >
+        and DATE_FORMAT(cfw.happen_time, '%Y-%m-%d') = DATE_FORMAT(#{parasMap.happenTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+        </if>
+		group by cfw.business_type
+		order by cfw.create_time desc
+   </select>
+   
+   <insert id="insert" parameterType="com.yscf.core.model.financial.CustFundWater" >
+    insert into t_cust_fund_water (PID, customer_id, fund_value, 
+      fund_type, business_type, account_balance, 
+      status, happen_time, create_user, 
+      create_time, last_update_user, last_update_time, 
+      fun_wat_desc,fkey)
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{fundValue,jdbcType=DECIMAL}, 
+      #{fundType,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, #{accountBalance,jdbcType=DOUBLE}, 
+      #{status,jdbcType=VARCHAR}, #{happenTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{funWatDesc,jdbcType=VARCHAR},#{fkey,jdbcType=VARCHAR}
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.CustFundWater" >
+    insert into t_cust_fund_water
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="fundValue != null" >
+        fund_value,
+      </if>
+      <if test="fundType != null" >
+        fund_type,
+      </if>
+      <if test="businessType != null" >
+        business_type,
+      </if>
+      <if test="accountBalance != null" >
+        account_balance,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="happenTime != null" >
+        happen_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="funWatDesc != null" >
+        fun_wat_desc,
+      </if>
+      <if test="fkey != null" >
+        fkey,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="fundValue != null" >
+        #{fundValue,jdbcType=DECIMAL},
+      </if>
+      <if test="fundType != null" >
+        #{fundType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBalance != null" >
+        #{accountBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="happenTime != null" >
+        #{happenTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="funWatDesc != null" >
+        #{funWatDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="fkey != null" >
+        #{fkey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+	<!-- api查询资金流水 -->
+	<select id="selectCapitalFlow" parameterType="java.lang.String" resultMap="BaseResultMap">
+	      select cfw.PID, 
+      		cfw.happen_time happen_time,
+      		cfw.account_balance account_balance,
+			(SELECT ts.dict_cont_name FROM t_sys_dictionary tsd,t_sys_dictionary_content ts
+						 						  WHERE tsd.PID = ts.dict_id
+												  AND tsd.dict_code = 'CUST_TRADE_TYPE'
+												  AND ts.dict_cont_code = cfw.business_type) business_type,
+			cfw.business_type business_type_value,	
+			cfw.fund_value fund_value,
+		    cfw.fun_wat_desc fun_wat_desc
+      from  t_cust_fund_water cfw,
+			t_cust_customer tcc
+	  WHERE cfw.customer_id = tcc.PID
+		AND cfw.customer_id = #{userId,jdbcType=VARCHAR}
+		ORDER BY cfw.happen_time DESC
+	</select>
+	<insert id="addFundWaters">
+		insert into t_cust_fund_water (PID, customer_id, fund_value, 
+        fund_type, business_type, account_balance, 
+        status, happen_time, create_time,
+        fun_wat_desc,fkey) values 
+        <foreach collection="custFWs" index="index" item="custFW" open="(" separator="," close=")">
+        	#{custFW.pid,jdbcType=VARCHAR}, #{custFW.customerId,jdbcType=VARCHAR}, #{custFW.fundValue,jdbcType=DECIMAL}, 
+	        #{custFW.fundType,jdbcType=VARCHAR}, #{custFW.businessType,jdbcType=VARCHAR}, #{custFW.accountBalance,jdbcType=DOUBLE}, 
+	        #{custFW.status,jdbcType=VARCHAR}, #{custFW.happenTime,jdbcType=TIMESTAMP},
+	        #{custFW.createTime,jdbcType=TIMESTAMP},#{custFW.funWatDesc,jdbcType=VARCHAR},#{custFW.fkey,jdbcType=VARCHAR}
+        </foreach>
+	</insert>
+</mapper>

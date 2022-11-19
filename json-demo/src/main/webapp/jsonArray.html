@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  /*
+  * 定义JSON数组格式
+  * */
+  var jsonArray=["k1","k2",100,9.9,true];
+  console.log(jsonArray)
+  console.log(jsonArray[1])
+  for (let i = 0; i < jsonArray.length; i++) {
+    console.log(jsonArray[i])
+  }
+  /*
+  * 定义JSON对象格式
+  * */
+  var json={
+    "name":"张三",
+    "age":18,
+  };
+  console.log(json)
+  console.log(json.name);
+  for (let jsonKey in json) {
+    console.log(jsonKey);
+  }
+</script>
+</html>

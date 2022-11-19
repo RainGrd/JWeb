@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.ptp.autobidding.AutoBiddingQueueMapper" >
+
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.ptp.autobidding.AutoBiddingQueue" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="auto_bidding_id" property="autoBiddingId" jdbcType="VARCHAR" />
+    <result column="queuetime" property="queuetime" jdbcType="TIMESTAMP" />
+    <result column="extfield1" property="extfield1" jdbcType="VARCHAR" />
+    <result column="extfield2" property="extfield2" jdbcType="VARCHAR" />
+    <result column="extfield3" property="extfield3" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 自动投标人员心理对象 -->
+  <resultMap id="BaseResultAutoBiddMap" type="com.yscf.core.model.ptp.autobidding.AutoBiddPersonModel" >
+    <id column="pid" property="pid" jdbcType="VARCHAR" />
+   	<result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="auto_bidding_id" property="autoPid" jdbcType="VARCHAR" />
+    <result column="automoney" property="automoney" jdbcType="DECIMAL" />
+    <result column="automoney_type" property="automoneyType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    pid, customer_id, auto_bidding_id, queuetime, extfield1, extfield2, extfield3, create_user, 
+    create_time, last_update_user, last_update_time, status, version, description
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    	<include refid="Base_Column_List" />
+    from t_auto_bidding_queue
+    where pid = #{pid,jdbcType=VARCHAR} 
+    	and	status = '1'
+  </select>
+  
+  <!-- 通过用户id和自动投标id查询排队信息 -->
+  <select id="selectByPrimaryUbdId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    	<include refid="Base_Column_List" />
+    from t_auto_bidding_queue
+    where 1 = 1 
+    	and	status = '1'
+    	and customer_id = #{userid,jdbcType=VARCHAR}
+    	<if test="autobdid != null and autobdid != ''">
+    		and auto_bidding_id = #{autobdid,jdbcType=VARCHAR}
+    	</if>
+  </select>
+  
+  <!-- 查寻满足自动投标队列数据 -->
+  <select id="selectInsertQeneList" resultMap="BaseResultAutoBiddMap" parameterType="java.util.HashMap" >
+    SELECT
+		tabq.pid,
+		tabq.customer_id,
+		tabq.auto_bidding_id,
+		CASE WHEN tab.amount IS NULL OR tab.amount <![CDATA[ <= ]]> 0 THEN
+			 tab.balanceratio * tuser.available_amount / 100
+		WHEN tab.balanceratio is null OR tab.balanceratio = 0 THEN 
+			tab.amount
+		END automoney,
+		CASE WHEN tab.amount IS NULL OR tab.amount <![CDATA[ <= ]]> 0 THEN
+			'0'
+		WHEN tab.balanceratio is null OR tab.balanceratio = 0 THEN 
+			'1'
+		END automoney_type
+	FROM
+		t_auto_bidding_queue tabq
+	LEFT JOIN t_biz_customer_account tuser ON tabq.customer_id = tuser.customer_id  
+	LEFT JOIN t_auto_bidding tab ON tabq.auto_bidding_id = tab.pid
+	WHERE 1 = 1 
+	AND tabq.status = '1'
+	AND tab.status = '1'
+	<!-- 进行判断满足条件的信息 -->
+	<!-- 1. 投资金额 -->
+	<if test="isTimesInvest != null and isTimesInvest != ''">
+		<if test="startMoney != null">
+		AND 
+			CASE (WHEN tab.amount IS NULL OR tab.amount <![CDATA[ <= ]]> 0) and ((tab.balanceratio/100) * tuser.available_amount)% #{startMoney,jdbcType=DECIMAL} == 0  THEN
+				<if test="endMoney != null and endMoney != 0">
+					(tab.balanceratio/100) * tuser.available_amount BETWEEN #{startMoney,jdbcType=DECIMAL} AND #{endMoney,jdbcType=DECIMAL}
+				</if>
+				<if test="endMoney == null or endMoney == 0">
+					(tab.balanceratio/100) * tuser.available_amount >= #{startMoney,jdbcType=DECIMAL}
+				</if>
+			WHEN (tab.balanceratio is null OR tab.balanceratio = 0) and ((tab.balanceratio/100) * tuser.available_amount)% #{startMoney,jdbcType=DECIMAL} == 0 THEN 
+				<if test="endMoney != null and endMoney != 0">
+					tab.amount BETWEEN #{startMoney,jdbcType=DECIMAL} AND #{endMoney,jdbcType=DECIMAL}
+				</if>
+				<if test="endMoney == null or endMoney == 0">
+					tab.amount >= #{startMoney,jdbcType=DECIMAL}
+				</if>
+			END
+		</if>	
+	</if>
+	<if test="isTimesInvest == null or isTimesInvest == ''">
+		<if test="startMoney != null">
+		AND 
+			CASE WHEN tab.amount IS NULL OR tab.amount <![CDATA[ <= ]]> 0 THEN 
+				<if test="endMoney != null and endMoney != 0">
+				 (tab.balanceratio/100) * tuser.available_amount BETWEEN #{startMoney,jdbcType=DECIMAL} AND #{endMoney,jdbcType=DECIMAL}
+				</if>
+				<if test="endMoney == null or endMoney == 0">
+				(tab.balanceratio/100) * tuser.available_amount >= #{startMoney,jdbcType=DECIMAL}
+				</if>
+			WHEN tab.balanceratio is null OR tab.balanceratio = 0 THEN 
+				<if test="endMoney != null and endMoney != 0">
+				tab.amount BETWEEN #{startMoney,jdbcType=DECIMAL} AND #{endMoney,jdbcType=DECIMAL}
+				</if>
+				<if test="endMoney == null or endMoney == 0">
+				tab.amount >= #{startMoney,jdbcType=DECIMAL}
+				</if>
+			END
+		</if>	
+	</if>
+	
+	<!-- 2.投资期限(期数) -->
+	<if test="deadline != null">
+	AND 
+		CASE WHEN tab.minborrowmonth > 0 OR tab.maxborrowmonth > 0 THEN 
+			#{deadline,jdbcType=VARCHAR} BETWEEN tab.minborrowmonth AND tab.maxborrowmonth 
+		ELSE
+			1 = 1 
+		END
+	</if>
+	<!-- 3. 收益率 -->
+	<if test="borrowApr != null">
+	AND 
+		CASE WHEN tab.minborrowrate > 0 OR tab.maxborrowrate > 0 THEN 
+			#{borrowApr,jdbcType=DECIMAL} BETWEEN tab.minborrowrate AND tab.maxborrowrate 
+		ELSE
+			1 = 1 
+		END 
+	</if>
+	<!-- 4. 投标类型 -->
+	<if test="borrowType != null">
+	AND FIND_IN_SET(#{borrowType,jdbcType=VARCHAR},tab.borrow_type) > 0
+	</if>
+	ORDER BY tabq.queuetime ASC
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_auto_bidding_queue
+    where pid = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueue" >
+    insert into t_auto_bidding_queue (pid, customer_id, auto_bidding_id, 
+      queuetime, extfield1, extfield2, 
+      extfield3, create_user, create_time, 
+      last_update_user, last_update_time, status, 
+      version, description)
+    values (#{pid,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{autoBiddingId,jdbcType=VARCHAR}, 
+      NOW(), #{extfield1,jdbcType=VARCHAR}, #{extfield2,jdbcType=VARCHAR}, 
+      #{extfield3,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, NOW(), 
+      #{lastUpdateUser,jdbcType=VARCHAR}, NOW(), '1', 
+      '1', #{description,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueue" >
+    insert into t_auto_bidding_queue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="autoBiddingId != null" >
+        auto_bidding_id,
+      </if>
+      <if test="queuetime != null" >
+        queuetime,
+      </if>
+      <if test="extfield1 != null" >
+        extfield1,
+      </if>
+      <if test="extfield2 != null" >
+        extfield2,
+      </if>
+      <if test="extfield3 != null" >
+        extfield3,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoBiddingId != null" >
+        #{autoBiddingId,jdbcType=VARCHAR},
+      </if>
+      <if test="queuetime != null" >
+        NOW(),
+      </if>
+      <if test="extfield1 != null" >
+        #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        NOW(),
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        NOW(),
+      </if>
+      <if test="status != null" >
+        '1',
+      </if>
+      <if test="version != null" >
+        '1',
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueue" >
+    update t_auto_bidding_queue
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="autoBiddingId != null" >
+        auto_bidding_id = #{autoBiddingId,jdbcType=VARCHAR},
+      </if>
+      <if test="queuetime != null" >
+        queuetime = #{queuetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extfield1 != null" >
+        extfield1 = #{extfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield2 != null" >
+        extfield2 = #{extfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="extfield3 != null" >
+        extfield3 = #{extfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      	last_update_time = NOW(),
+      <if test="status != null and status != ''" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+        version = version + 1,
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueue" >
+    update t_auto_bidding_queue
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      auto_bidding_id = #{autoBiddingId,jdbcType=VARCHAR},
+      queuetime = #{queuetime,jdbcType=TIMESTAMP},
+      extfield1 = #{extfield1,jdbcType=VARCHAR},
+      extfield2 = #{extfield2,jdbcType=VARCHAR},
+      extfield3 = #{extfield3,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = NOW(),
+      version = version + 1,
+      description = #{description,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 移除队列中的信息 -->
+  <update id="updateRemoveQueue" parameterType="com.yscf.core.model.ptp.autobidding.AutoBiddingQueue">
+  	update t_auto_bidding_queue 
+  	set 
+  		last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+        last_update_time = NOW(),
+        status = '0',
+        version = version + 1
+  	where 1 = 1 
+  		and status = '1' 
+  		<if test="customerId != null" >
+        	and customer_id = #{customerId,jdbcType=VARCHAR}
+      	</if>
+      	<if test="autoBiddingId != null" >
+        	and auto_bidding_id = #{autoBiddingId,jdbcType=VARCHAR}
+        </if>
+  </update>
+  
+</mapper>

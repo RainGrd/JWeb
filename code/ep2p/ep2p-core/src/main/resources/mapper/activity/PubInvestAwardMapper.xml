@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.PubInvestAwardMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.PubInvestAward" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="invest_award_name" property="investAwardName" jdbcType="VARCHAR" />
+	    <result column="invest_award_value" property="investAwardValue" jdbcType="DECIMAL" />
+	    <result column="invest_award_type" property="investAwardType" jdbcType="VARCHAR" />
+	    <result column="is_bir_privilege" property="isBirPrivilege" jdbcType="VARCHAR" />
+	    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+	    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	    <result column="inv_awa_desc" property="invAwaDesc" jdbcType="VARCHAR" />
+	    <result column="validity" property="validity" jdbcType="INTEGER" />
+	    <result column="interest" property="interest" jdbcType="INTEGER" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_create_user" property="lastCreateUser" jdbcType="VARCHAR" />
+	    <result column="last_create_time" property="lastCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <result column="exp_amount" property="expAmount" jdbcType="VARCHAR" />
+	    <result column="eff_time" property="effTime" jdbcType="VARCHAR" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+    	<!-- 外表数据字段 -->
+    	<result column="actCode" property="actCode" jdbcType="VARCHAR" />
+    	<result column="actTag" property="actTag" jdbcType="VARCHAR" />
+    	<result column="activityType" property="activityType" jdbcType="VARCHAR" />
+    	<result column="smsId" property="smsId" jdbcType="VARCHAR" />
+    	<result column="isSmsWarn" property="isSmsWarn" jdbcType="VARCHAR" />
+    	<result column="actDesc" property="actDesc" jdbcType="VARCHAR" />
+    	<result column="tempCode" property="tempCode" jdbcType="VARCHAR" />
+    	<result column="smsContent" property="smsContent" jdbcType="VARCHAR" />
+	   	<result column="createUserName" property="createUserName" jdbcType="VARCHAR" />
+	    <result column="actStatus" property="actStatus" jdbcType="VARCHAR" />
+	    <!-- 外表数据字段 -->
+	    <result column="amount" property="amount" jdbcType="VARCHAR" />
+	    <result column="couponType" property="couponType" jdbcType="VARCHAR" />
+	    <result column="dataTime" property="dataTime" jdbcType="VARCHAR" />
+	    <result column="useStatus" property="useStatus" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 查询列表所需字段 -->
+  	<sql id="Base_Column_List" >
+	    pia.PID, pia.invest_award_name, pia.invest_award_value, pia.invest_award_type, pia.validity,
+	    pia.is_bir_privilege, pia.start_time, pia.end_time, pia.inv_awa_desc, pia.status, pia.interest, 
+	    pia.create_user, pia.create_time, pia.last_create_user, pia.last_create_time, pia.version,
+	    (select name from t_sys_user user where user.PID = pia.create_user) as createUserName,aa.status actStatus,
+	    aa.act_code as actCode, aa.act_tag as actTag, aa.activity_type as activityType, aa.sms_id as smsId, 
+	    aa.is_sms_warn as isSmsWarn, aa.act_desc as actDesc,sst.temp_code as tempCode,sst.sms_content as smsContent
+  	</sql>
+  	
+  	<!-- 查询体验金信息列表,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+		SELECT
+  		<include refid="Base_Column_List" />
+  		FROM t_pub_invest_award pia  
+		LEFT JOIN t_act_activity aa 
+		on pia.pid = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+		where aa.activity_type = '4'
+		and pia.status != '-1'
+		<if test="pubInvestAward.actCode != null and pubInvestAward.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{pubInvestAward.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubInvestAward.investAwardName != null and pubInvestAward.investAwardName != '' " > 
+        	and  pia.invest_award_name like concat('%',#{pubInvestAward.investAwardName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubInvestAward.actTag != null and pubInvestAward.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{pubInvestAward.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubInvestAward.beginApplyStartData != null and pubInvestAward.beginApplyStartData != '' " > 
+        	and  pia.start_time <![CDATA[ >= ]]> #{pubInvestAward.beginApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubInvestAward.endApplyStartData != null and pubInvestAward.endApplyStartData != '' " > 
+        	and  pia.start_time <![CDATA[ <= ]]> #{pubInvestAward.endApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubInvestAward.beginApplyFinishData != null and pubInvestAward.beginApplyFinishData != '' " > 
+        	and  pia.end_time <![CDATA[ >= ]]> #{pubInvestAward.beginApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubInvestAward.endApplyFinishData != null and pubInvestAward.endApplyFinishData != '' " > 
+        	and  pia.end_time <![CDATA[ <= ]]> #{pubInvestAward.endApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubInvestAward.status != null and pubInvestAward.status != 0 " > 
+        	and  pia.status = #{pubInvestAward.status,jdbcType=VARCHAR}
+        </if>
+        ORDER BY pia.create_time desc 
+  	</select>
+  	
+  	<!-- 根据主键查询对象信息 -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    FROM t_pub_invest_award pia  
+		LEFT JOIN t_act_activity aa 
+		on pia.pid = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+		where aa.activity_type = '4'
+		and pia.status != '-1'
+	    and pia.PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+<!--   	根据客户id查我的赠劵 -->
+   <select id="selectMyCoupon" resultMap="BaseResultMap" parameterType="map">
+		SELECT cit.scale as amount,'仅限使用于允许使用加息券的投资项目' as couponType,datediff(cit.end_time,NOW()) as dataTime, cit.use_status as useStatus
+			FROM t_cust_interest_ticket cit
+			where cit.customer_id = #{map.customerId,jdbcType=VARCHAR}
+			AND cit.use_status='2'
+			and datediff(cit.end_time,NOW()) > 0
+			UNION ALL
+			select peg.exp_amount,'仅限使用于体验标',datediff(aead.expire_time,NOW()), aead.use_status as useStatus
+			FROM t_act_exp_act_detail aead,t_pub_exp_gold peg
+			WHERE aead.exp_id = peg.PID
+			and aead.customer_id = #{map.customerId,jdbcType=VARCHAR}
+			and aead.use_status = 2 
+			and datediff(aead.expire_time,NOW()) > 0  
+			ORDER BY dataTime ASC
+			LIMIT #{map.pageSize,jdbcType=INTEGER},#{map.pageIndex,jdbcType=INTEGER} 
+   </select>
+   
+  <!--查我的赠劵总记录数 -->
+   <select id="selectMyCouponCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+     select sum(tempCount) from (
+     SELECT count(cit.pid) as  tempCount
+			FROM t_cust_interest_ticket cit
+			where cit.customer_id = #{customerId,jdbcType=VARCHAR}
+			AND cit.use_status='2'
+			and datediff(cit.end_time,NOW()) > 0
+			UNION ALL
+			select count(aead.pid) as tempCount
+			FROM t_act_exp_act_detail aead,t_pub_exp_gold peg
+			WHERE aead.exp_id = peg.PID
+			and aead.use_status = '2'
+			and datediff(aead.expire_time,NOW()) > 0 
+			and aead.customer_id = #{customerId,jdbcType=VARCHAR} ) a
+   </select>
+   
+<!--    查我已过期的赠劵 -->
+   <select id="selectMyCouponExpired" parameterType="map" resultMap="BaseResultMap">
+       SELECT cit.scale as amount,'仅限使用于允许使用加息券的投资项目' as couponType, datediff(cit.end_time,NOW()) as dataTime,cit.use_status as useStatus
+			FROM t_cust_interest_ticket cit
+			where cit.customer_id = #{map.customerId,jdbcType=VARCHAR}
+			and datediff(cit.end_time,NOW()) <![CDATA[ < ]]> 0 
+			UNION ALL
+			select peg.exp_amount,'仅限使用于体验标', datediff(aead.expire_time,NOW()) as dataTime,aead.use_status as useStatus
+			FROM t_act_exp_act_detail aead,t_pub_exp_gold peg
+			WHERE aead.exp_id = peg.PID
+			and aead.customer_id = #{map.customerId,jdbcType=VARCHAR}
+		    and datediff(aead.expire_time,NOW()) <![CDATA[ < ]]>  0 
+			ORDER BY dataTime ASC
+			LIMIT #{map.pageSize,jdbcType=INTEGER},#{map.pageIndex,jdbcType=INTEGER} 
+   </select>
+   
+<!--    查我已过期的总数 -->
+   <select id="selectMyCouponExpiredCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+   		select sum(tempCount) from (
+     SELECT count(cit.pid) as  tempCount
+			FROM t_cust_interest_ticket cit
+			where cit.customer_id = #{customerId,jdbcType=VARCHAR}
+			AND cit.use_status='1'
+			UNION ALL
+			select count(aead.pid) as tempCount
+			FROM t_act_exp_act_detail aead,t_pub_exp_gold peg
+			WHERE aead.exp_id = peg.PID
+			and aead.use_status = 1 
+			and aead.customer_id = #{customerId,jdbcType=VARCHAR} ) a
+   </select>
+   
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_pub_invest_award
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.PubInvestAward" >
+	    insert into t_pub_invest_award (PID, invest_award_name, invest_award_value, 
+	      invest_award_type, is_bir_privilege, start_time, 
+	      end_time, inv_awa_desc, status, 
+	      create_user, create_time, last_create_user, 
+	      last_create_time, version,validity)
+	    values (#{pid,jdbcType=VARCHAR}, #{investAwardName,jdbcType=VARCHAR}, #{investAwardValue,jdbcType=DECIMAL}, 
+	      #{investAwardType,jdbcType=VARCHAR}, #{isBirPrivilege,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+	      #{endTime,jdbcType=TIMESTAMP}, #{invAwaDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+	      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastCreateUser,jdbcType=VARCHAR}, 
+	      #{lastCreateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}, #{validity,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.PubInvestAward" >
+	    insert into t_pub_invest_award
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="investAwardName != null" >
+	        invest_award_name,
+	      </if>
+	      <if test="investAwardValue != null" >
+	        invest_award_value,
+	      </if>
+	      <if test="investAwardType != null" >
+	        invest_award_type,
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege,
+	      </if>
+	      <if test="startTime != null" >
+	        start_time,
+	      </if>
+	      <if test="endTime != null" >
+	        end_time,
+	      </if>
+	      <if test="invAwaDesc != null" >
+	        inv_awa_desc,
+	      </if>
+	      <if test="validity != null" >
+	        validity,
+	      </if>
+	      <if test="interest != null" >
+	        interest,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user,
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="investAwardName != null" >
+	        #{investAwardName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="investAwardValue != null" >
+	        #{investAwardValue,jdbcType=DECIMAL},
+	      </if>
+	      <if test="investAwardType != null" >
+	        #{investAwardType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startTime != null" >
+	        #{startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endTime != null" >
+	        #{endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="invAwaDesc != null" >
+	        #{invAwaDesc,jdbcType=VARCHAR},
+	      </if>
+	       <if test="validity != null" >
+	         #{validity,jdbcType=INTEGER},
+	      </if>
+	      <if test="interest != null" >
+	        #{interest,jdbcType=INTEGER},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.PubInvestAward" >
+	    update t_pub_invest_award
+	    <set >
+	      <if test="investAwardName != null" >
+	        invest_award_name = #{investAwardName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="investAwardValue != null" >
+	        invest_award_value = #{investAwardValue,jdbcType=DECIMAL},
+	      </if>
+	      <if test="investAwardType != null" >
+	        invest_award_type = #{investAwardType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startTime != null" >
+	        start_time = #{startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endTime != null" >
+	        end_time = #{endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="invAwaDesc != null" >
+	        inv_awa_desc = #{invAwaDesc,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="validity != null" >
+	        validity = #{validity,jdbcType=INTEGER},
+	      </if>
+	      <if test="interest != null" >
+	        interest = #{interest,jdbcType=INTEGER},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastCreateUser != null" >
+	        last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastCreateTime != null" >
+	        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.PubInvestAward" >
+	    update t_pub_invest_award
+	    set invest_award_name = #{investAwardName,jdbcType=VARCHAR},
+	      invest_award_value = #{investAwardValue,jdbcType=DECIMAL},
+	      invest_award_type = #{investAwardType,jdbcType=VARCHAR},
+	      is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      start_time = #{startTime,jdbcType=TIMESTAMP},
+	      end_time = #{endTime,jdbcType=TIMESTAMP},
+	      inv_awa_desc = #{invAwaDesc,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_create_user = #{lastCreateUser,jdbcType=VARCHAR},
+	      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量删除体验金活动 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_pub_invest_award SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 修改活动的状态 -->
+  	<update id="updateActiivtyStatus" parameterType="java.lang.String">
+  		UPDATE t_pub_invest_award SET
+  		status = #{status,jdbcType=VARCHAR}
+  		where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+</mapper>

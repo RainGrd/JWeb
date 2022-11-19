@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.financial.BizWithdrawMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.financial.BizWithdraw" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customer.customerName" jdbcType="VARCHAR" />
+    <result column="sname" property="customer.sname" jdbcType="VARCHAR" />
+    <result column="phone_no" property="customer.phoneNo" jdbcType="VARCHAR" />
+    <result column="bankcard_no" property="bank.bankcardNo" jdbcType="VARCHAR" />
+    <result column="belonging_bank" property="bank.belongingBank" jdbcType="VARCHAR" />
+    <result column="open_address" property="bank.openAddress" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="transfered_time" property="transferedTime" jdbcType="TIMESTAMP" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="audit_status" property="auditStatus" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="bank_id" property="bankId" jdbcType="VARCHAR"/>
+    <result column="bank_type" property="bankType" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="transfered_user_id" property="transferedUserId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="wit_desc" property="witDesc" jdbcType="VARCHAR" />
+    <result column="cust_wit_desc" property="custWitDesc" jdbcType="VARCHAR" />
+    <result column="wit_sure_desc" property="witSureDesc" jdbcType="VARCHAR" />
+    <result column="desc_prompt_id" property="descPromptId" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 联合查询列字段 -->
+  <sql id="Base_Column_List" >
+    wh.PID,
+	wh.bank_id,
+	wh.account_id,
+	wh.transfered_time,
+	wh.audit_time,
+	wh.apply_time,
+	wh.audit_status,
+	wh.amount,
+	wh.cost,
+	wh.wit_sure_desc,
+	wh.fee,
+	wh.bank_type,
+	wh.user_id,
+	(select su.`name` from t_sys_user su where su.PID = wh.user_id) userName,
+	wh.transfered_user_id,
+	(select su.`name` from t_sys_user su where su.PID = wh.transfered_user_id) transferedUserName,
+	wh.STATUS,
+	wh.create_user,
+	wh.create_time,
+	wh.last_update_user,
+	wh.last_update_time,
+	wh.wit_desc,
+	wh.cust_wit_desc,
+	cust.pid customer_id,
+	cust.customer_name,
+	cust.sname,
+	cust.phone_no,
+	bk.bankcard_no,
+	bk.belonging_bank,
+	bk.open_address
+  </sql>
+  <!-- 联合查询列字段 -->
+  <sql id="VO_Column_List" >
+    t.PID,
+	t.bank_id,
+	t.account_id,
+	t.transfered_time,
+	t.audit_time,
+	t.apply_time,
+	t.audit_status,
+	t.amount,
+	t.cost,
+	t.wit_sure_desc,
+	t.fee,
+	t.bank_type,
+	t.user_id,
+	t.transfered_user_id,
+	t.STATUS,
+	t.create_user,
+	t.create_time,
+	t.last_update_user,
+	t.last_update_time,
+	t.wit_desc,
+	t.cust_wit_desc,
+	t.customer_name,
+	t.sname,
+	t.phone_no,
+	t.bankcard_no,
+	t.belonging_bank,
+	t.open_address
+  </sql>
+  <!-- 联合查询  选择查询  提现管理 -->
+  <select id="selectSelectivePage" resultMap="BaseResultMap" parameterType="map">
+	SELECT 
+		<include refid="Base_Column_List" />
+	FROM t_biz_withdraw wh
+		LEFT JOIN t_cust_customer cust ON wh.customer_id = cust.pid
+		LEFT JOIN t_cust_bank bk ON wh.bank_id = bk.PID
+	WHERE wh.status >= 0
+	<if test="parasMap.customerName != null" >
+		AND  customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+    </if>
+	<if test="parasMap.sname != null" >
+		AND  cust.sname like concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+	</if>
+	<if test="parasMap.phoneNo != null"  >
+		AND  phone_No like  concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+	</if>
+	<if test="parasMap.auditStatus != null" >
+		AND  wh.audit_status = #{parasMap.auditStatus,jdbcType=VARCHAR}
+	</if>
+	<if test="parasMap.applyTime != null" >
+		AND DATE_FORMAT(wh.apply_time, '%Y-%m-%d') = DATE_FORMAT(#{parasMap.applyTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+	</if>
+    <if test="parasMap.queryStatus == 1">
+    	<if test="parasMap.auditStatus == null">
+    		AND  wh.audit_status in (1,3)
+    	</if>
+    </if>
+    <if test="parasMap.queryStatus == 2">
+	    <if test="parasMap.auditStatus == null">
+	    	AND  wh.audit_status = (2)
+	    </if>
+    </if>
+    <if test="parasMap.queryStatus == 3">
+    	<if test="parasMap.auditStatus == null">
+    		AND wh.audit_status in (4,5)
+    	</if>
+    </if>
+    <if test="parasMap.queryStatus == 4">
+    </if>
+		ORDER BY wh.apply_time DESC
+	</select>
+	
+  <!-- 联合查询  选择查询  提现管理 -->
+  <select id="selectBizWithdrawVOEom" resultMap="BaseResultMap">
+  
+    select 
+    	<include refid="VO_Column_List" />
+    from (
+    	select 
+    		<include refid="VO_Column_List" />,
+    		(@rown := @rown + 1) rowns
+    	from (
+    	
+  
+	SELECT 
+		<include refid="Base_Column_List" />
+	FROM t_biz_withdraw wh
+		LEFT JOIN t_cust_customer cust ON wh.customer_id = cust.pid
+		LEFT JOIN t_cust_bank bk ON wh.bank_id = bk.PID
+	WHERE wh.status >= 0
+	<if test="parasMap.customerName != null" >
+		AND  customer_name like  concat('%',#{parasMap.customerName,jdbcType=VARCHAR},'%' )
+    </if>
+	<if test="parasMap.sname != null" >
+		AND  cust.sname like concat('%',#{parasMap.sname,jdbcType=VARCHAR},'%' )
+	</if>
+	<if test="parasMap.phoneNo != null"  >
+		AND  phone_No like  concat('%',#{parasMap.phoneNo,jdbcType=VARCHAR},'%' )
+	</if>
+	<if test="parasMap.auditStatus != null" >
+		AND  wh.audit_status = #{parasMap.auditStatus,jdbcType=VARCHAR}
+	</if>
+	<if test="parasMap.applyTime != null" >
+		AND DATE_FORMAT(wh.apply_time, '%Y-%m-%d') = DATE_FORMAT(#{parasMap.applyTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+	</if>
+    <if test="parasMap.queryStatus == 1">
+    	<if test="parasMap.auditStatus == null">
+    		AND  wh.audit_status in (1,3)
+    	</if>
+    </if>
+    <if test="parasMap.queryStatus == 2">
+	    <if test="parasMap.auditStatus == null">
+	    	AND  wh.audit_status = (2)
+	    </if>
+    </if>
+    <if test="parasMap.queryStatus == 3">
+    	<if test="parasMap.auditStatus == null">
+    		AND wh.audit_status in (4,5)
+    	</if>
+    </if>
+    <if test="parasMap.queryStatus == 4">
+    </if>
+		ORDER BY wh.audit_time DESC
+		
+			)t,
+		(SELECT @rown := 0) b
+	) t where 1=1 		
+			<include refid="export_query_sql"></include>
+		
+	</select>
+	
+
+  <!-- 导出查询条件 -->
+  <sql id="export_query_sql">
+  	<if test="expm.exportSet != null and expm.exportSet != ''">
+  		<!-- 选择情况一 -->
+  		<if test="expm.exportSet == 1 and expm.checkrows != null">
+  			AND t.pid IN 
+  			<foreach collection="expm.checkrows" index="index" item="item" open="(" separator="," close=")">  
+		        #{item,jdbcType=VARCHAR} 
+		    </foreach>  
+  		</if>
+  		
+  		<!-- 选择情况二 -->
+  		<if test="expm.exportSet == 2 and expm.startCheckpage != null and expm.endCheckpage != null">
+  			limit #{expm.startCheckpage,jdbcType=INTEGER},#{expm.endCheckpage,jdbcType=INTEGER}
+  		</if>
+  		
+  		<!-- 选择情况三 -->
+  		<if test="expm.exportSet == 3 and expm.startCheckrecords != null and expm.endCheckrecords != null">
+			AND t.rowns BETWEEN #{expm.startCheckrecords,jdbcType=INTEGER}
+				AND #{expm.endCheckrecords,jdbcType=INTEGER} 
+  		</if>
+  	</if>
+  </sql>	
+	<!-- 联合查询  选择查询  提现管理  总金额 -->
+	<select id="selectSumAmountSelective" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT 
+			SUM(wh.amount) AS "amount",
+			SUM(wh.cost) AS "cost",
+			SUM(wh.fee) AS "fee"
+		FROM t_biz_withdraw wh
+			LEFT JOIN t_cust_customer cust ON wh.customer_id = cust.pid
+			LEFT JOIN t_cust_bank bk ON wh.bank_id = bk.PID
+		WHERE wh.status >= 0
+		<if test="customerName != null" >
+			AND  customer_name like  concat('%',#{customerName,jdbcType=VARCHAR},'%' )
+	    </if>
+		<if test="sname != null" >
+			AND  cust.sname like concat('%',#{sname,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="phoneNo != null"  >
+			AND  phone_No like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+		</if>
+		<if test="auditStatus != null" >
+			AND  wh.audit_status = #{auditStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="applyTime != null" >
+			AND DATE_FORMAT(wh.apply_time, '%Y-%m-%d') = DATE_FORMAT(#{applyTime,jdbcType=VARCHAR}, '%Y-%m-%d')
+		</if>
+	    <if test="queryStatus == 1">
+	    	<if test="auditStatus == null">
+	    		AND  wh.audit_status in (1,3)
+	    	</if>
+	    </if>
+	    <if test="queryStatus == 2">
+		    <if test="auditStatus == null">
+		    	AND  wh.audit_status = 2
+		    </if>
+	    </if>
+	    <if test="queryStatus == 3">
+	    	<if test="auditStatus == null">
+	    		AND wh.audit_status in (4,5)
+	    	</if>
+	    </if>
+	    <if test="queryStatus == 4">
+	    </if>
+	</select>
+	
+	<select id="selectAll" resultMap="BaseResultMap"
+		parameterType="com.yscf.core.model.financial.BizWithdraw">
+		select
+		<include refid="Base_Column_List" />
+		from t_biz_withdraw wh
+		left join t_cust_customer cust
+   		on wh.customer_id = cust.pid
+   		left join t_cust_bank bk
+		on wh.bank_id = bk.PID
+		where 1 = 1
+		and wh.status >= 0
+		<if test="accountNo != null" >
+        and  cust.account_no like  concat('%',#{accountNo,jdbcType=VARCHAR},'%' )
+       	</if>
+       	<if test="sname != null" >
+        and  cust.sname like   concat('%',#{sname,jdbcType=VARCHAR},'%' )
+      	</if>
+        <if test="phoneNo != null"  >
+        and  cust.phone_No like  concat('%',#{phoneNo,jdbcType=VARCHAR},'%' )
+      	</if>
+       <if test="auditStatus != null" >
+        and  wh.audit_status like  concat('%',#{auditStatus,jdbcType=VARCHAR},'%' )
+      	</if>
+		order by wh.audit_time desc
+	</select>
+   <!-- 查询总记录条数  根据审核状态audit_status -->
+  <select id="getTotalCountByAuditStatus" resultType="Integer" parameterType="String">
+  	SELECT
+		count(1)
+	FROM
+		t_biz_withdraw w
+	WHERE
+		w.audit_status = #{auditStatus,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    	<include refid="Base_Column_List" />
+    from t_biz_withdraw wh
+	    left join t_cust_customer cust
+	    on wh.customer_id = cust.pid
+	    left join t_cust_bank bk
+		on wh.bank_id = bk.PID
+    where wh.PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_withdraw
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.financial.BizWithdraw" >
+    insert into t_biz_withdraw (PID, customer_id, bank_id, 
+      account_id, transfered_time, audit_time,audit_status,
+      amount, cost, fee, 
+      bank_type, user_id, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, wit_desc,cust_wit_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{customer.pid,jdbcType=VARCHAR}, #{bank.pid,jdbcType=VARCHAR}, 
+      #{accountId,jdbcType=VARCHAR}, #{transferedTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP}, 
+      #{amount,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL}, 
+      #{bankType,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{witDesc,jdbcType=VARCHAR},#{auditStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.financial.BizWithdraw" >
+    insert into t_biz_withdraw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="customer != null and customer.pid != null" >
+        customer_id,
+      </if>
+      <if test="bank != null and bank.pid != null" >
+        bank_id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="transferedTime != null" >
+        transfered_time,
+      </if>
+      <if test="applyTime != null">
+      	apply_time,
+      </if>
+      <if test="auditTime != null" >
+        audit_time,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="cost != null" >
+        cost,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="bankType != null" >
+        bank_type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="witDesc != null" >
+        wit_desc,
+      </if>
+      <if test="custWitDesc != null" >
+        cust_wit_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="customer != null and customer.pid != null" >
+        #{customer.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null and bank.pid != null" >
+        #{bank.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="transferedTime != null" >
+        #{transferedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyTime != null">
+      	#{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="bankType != null" >
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="witDesc != null" >
+        #{witDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="custWitDesc != null" >
+        #{custWitDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.financial.BizWithdraw" >
+    update t_biz_withdraw
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="transferedTime != null" >
+        transfered_time = #{transferedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null" >
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="auditStatus != null" >
+        audit_Status = #{auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null" >
+        cost = #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="bankType != null" >
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="witDesc != null" >
+        wit_desc = #{witDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.financial.BizWithdraw" >
+    update t_biz_withdraw
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=VARCHAR},
+      account_id = #{accountId,jdbcType=VARCHAR},
+      transfered_time = #{transferedTime,jdbcType=TIMESTAMP},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      audit_status = #{auditStatus,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      cost = #{cost,jdbcType=DECIMAL},
+      fee = #{fee,jdbcType=DECIMAL},
+      bank_type = #{bankType,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      wit_desc = #{witDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  	<!-- 批量删除提现申请列表 -->
+	<delete id="deleteBtach" parameterType="java.util.List">
+		update
+		t_biz_withdraw
+		set
+		status=-1
+		where pid in
+		<foreach item="itemId" collection="list" open="(" separator=","
+			close=")">
+			#{itemId}
+		</foreach>
+	</delete>
+	
+	<!--批量审核提现申请列表 -->
+	<update id="batchAudit" parameterType="java.util.HashMap">
+		update t_biz_withdraw 
+			<set > 
+				<if test="map.auditStatus != null">
+					audit_status = #{map.auditStatus,jdbcType=VARCHAR},
+				</if>
+				<if test="map.witDesc != null">
+					wit_desc = #{map.witDesc,jdbcType=VARCHAR},
+				</if>
+				<if test="map.witSureDesc != null">
+					wit_sure_desc = #{map.witSureDesc,jdbcType=VARCHAR},
+				</if>
+				<if test="map.descPromptId != null">
+					desc_prompt_id = #{map.descPromptId,jdbcType=VARCHAR},
+				</if>
+				<if test="map.transferedTime != null">
+					transfered_time = #{map.transferedTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="map.userId != null">
+					 user_id = #{map.userId,jdbcType=VARCHAR},
+				</if>
+				<if test="map.transferedUserId != null">
+					 transfered_user_id = #{map.transferedUserId,jdbcType=VARCHAR},
+				</if>
+			</set>
+		where PID in
+		<foreach item="idItem" collection="map.idItem" open="("
+			separator="," close=")">
+			#{idItem}
+		</foreach>
+	</update>
+  <!--批量审核提现申请列表 -->
+	<update id="batchAuditTransferService" parameterType="java.util.HashMap" >
+    update t_biz_withdraw set audit_status = #{map.auditStatus,jdbcType=VARCHAR},
+    wit_sure_desc = #{map.witSureDesc,jdbcType=VARCHAR},
+    desc_prompt_id = #{map.descPromptId,jdbcType=VARCHAR}
+    where PID in 
+    <foreach item="idItem" collection="map.idItem" open="(" separator="," close=")">
+		#{idItem}
+	</foreach>
+  </update>
+  
+  
+</mapper>

@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.user.BankMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.user.Bank" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="bankcard_no" property="bankcardNo" jdbcType="VARCHAR" />
+    <result column="bankcard_name" property="bankcardName" jdbcType="VARCHAR" />
+    <result column="bankcard_identification" property="bankcardIdentification" jdbcType="VARCHAR" />
+    <result column="belonging_bank" property="belongingBank" jdbcType="VARCHAR" />
+    <result column="belonging_province" property="belongingProvince" jdbcType="VARCHAR" />
+    <result column="belonging_city" property="belongingCity" jdbcType="VARCHAR" />
+    <result column="open_address" property="openAddress" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="bank_desc" property="bankDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tcb.PID, 
+    tcb.bankcard_no bankcard_no, 
+    tcb.bankcard_name bankcard_name, 
+    tcb.bankcard_identification bankcard_identification,
+    tcb.belonging_bank belonging_bank, 
+    tcb.belonging_province belonging_province, 
+    tcb.belonging_city belonging_city,
+    tcb.open_address open_address,
+    tcb.customer_id customer_id,
+    CASE tcb.`status`
+		WHEN 1 THEN
+		'正常'
+		WHEN 2 THEN
+		'解绑'
+	END `status`,
+    tcb.create_user create_user, 
+    tcb.create_time create_time, 
+    tcb.last_update_user last_update_user, 
+    tcb.last_update_time last_update_time,
+    tcb.bank_desc bank_desc
+  </sql>
+  
+  <!-- 根据客户 id 查询银行账户总记录条数 -->
+  <select id="selectBankCountByCusId" parameterType="Integer" resultType="Integer">
+  	SELECT
+		count(1)
+	FROM
+		t_cust_bank cb
+	WHERE
+		cb.status = 1
+		and cb.customer_id = #{cusId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据客户id查绑定银行卡账户信息 -->
+	<select id="selectBankInfoById" resultMap="BaseResultMap" parameterType="java.lang.String">
+	       SELECT  <include refid="Base_Column_List"></include>
+					 from  t_cust_bank tcb,
+	       				  t_cust_customer tcc
+	       		    WHERE tcb.customer_id=tcc.PID 
+	       		    AND   tcb.status > '0'
+	       		    AND   tcb.customer_id= #{pid,jdbcType=VARCHAR}
+	       		    order by tcb.create_time 
+	</select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cust_bank tcb
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+   
+<!--    根据银行卡号校验交易密码是否正确  解绑银行卡时需要输入交易密码 -->
+  <select id="selectBankTradingPwdByBankCar" parameterType="com.yscf.core.model.user.Bank" resultType="java.lang.Integer">
+        select count(*)
+         from   t_cust_bank tcb,
+        		t_cust_customer tcc 
+        	    where tcb.customer_id=tcc.PID 
+        	    and   tcb.status >0
+        	    <if test="bank.bankcardNo != null and bank.bankcardNo !=''" >
+       				  and  tcb.bankcard_no like concat('%',#{bank.bankcardNo,jdbcType=VARCHAR},'%' )
+      		    </if>
+        	    <if test="bank.passWord != null and bank.passWord !=''" >
+        	   		  and  tcc.tradePassword = #{bank.passWord,jdbcType=VARCHAR}
+        	    </if>
+        	    <if test="bank.customerId != null and bank.customerId !=''" >
+        	   	      and  tcc.pid = #{bank.customerId,jdbcType=VARCHAR}
+        	    </if>
+  </select>
+  
+<!--   校验登录密码是否正确 -->
+  <select id="validateTradingPwd" parameterType="com.yscf.core.model.user.Bank" resultType="java.lang.Integer">
+     select count(*) from t_cust_customer tcc 
+     where tcc.`password`= #{bank.passWord,jdbcType=VARCHAR}  
+     and tcc.PID =#{bank.pid,jdbcType=VARCHAR}
+  </select>
+  
+  <!--查询用户名在系统是否存在 -->
+  <select id="selectUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    	select count(count_num) from (
+			select 1 as count_num from t_cust_customer t where t.status = 1 and t.customer_name = #{userName,jdbcType=VARCHAR}
+			union all 
+			select 1 as count_num from t_sys_user ts where ts.status = 1 and ts.account_no = #{userName,jdbcType=VARCHAR}
+		) validateUserName
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_cust_bank
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yscf.core.model.user.Bank" >
+    insert into t_cust_bank (PID, bankcard_no, bankcard_name, 
+      bankcard_identification, belonging_bank, 
+      belonging_province, belonging_city, open_address, 
+      customer_id, status, create_user, 
+      create_time, last_update_user, last_update_time, 
+      bank_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{bankcardNo,jdbcType=VARCHAR}, #{bankcardName,jdbcType=VARCHAR}, 
+      #{bankcardIdentification,jdbcType=VARCHAR}, #{belongingBank,jdbcType=VARCHAR}, 
+      #{belongingProvince,jdbcType=VARCHAR}, #{belongingCity,jdbcType=VARCHAR}, #{openAddress,jdbcType=VARCHAR}, 
+      #{customerId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{bankDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yscf.core.model.user.Bank" >
+    insert into t_cust_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="bankcardNo != null" >
+        bankcard_no,
+      </if>
+      <if test="bankcardName != null" >
+        bankcard_name,
+      </if>
+      <if test="bankcardIdentification != null" >
+        bankcard_identification,
+      </if>
+      <if test="belongingBank != null" >
+        belonging_bank,
+      </if>
+      <if test="belongingProvince != null" >
+        belonging_province,
+      </if>
+      <if test="belongingCity != null" >
+        belonging_city,
+      </if>
+      <if test="openAddress != null" >
+        open_address,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="bankDesc != null" >
+        bank_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcardNo != null" >
+        #{bankcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcardName != null" >
+        #{bankcardName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcardIdentification != null" >
+        #{bankcardIdentification,jdbcType=VARCHAR},
+      </if>
+      <if test="belongingBank != null" >
+        #{belongingBank,jdbcType=VARCHAR},
+      </if>
+      <if test="belongingProvince != null" >
+        #{belongingProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="belongingCity != null" >
+        #{belongingCity,jdbcType=VARCHAR},
+      </if>
+      <if test="openAddress != null" >
+        #{openAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankDesc != null" >
+        #{bankDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.user.Bank" >
+    update t_cust_bank
+    <set >
+      <if test="bankcardNo != null" >
+        bankcard_no = #{bankcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcardName != null" >
+        bankcard_name = #{bankcardName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcardIdentification != null" >
+        bankcard_identification = #{bankcardIdentification,jdbcType=VARCHAR},
+      </if>
+      <if test="belongingBank != null" >
+        belonging_bank = #{belongingBank,jdbcType=VARCHAR},
+      </if>
+      <if test="belongingProvince != null" >
+        belonging_province = #{belongingProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="belongingCity != null" >
+        belonging_city = #{belongingCity,jdbcType=VARCHAR},
+      </if>
+      <if test="openAddress != null" >
+        open_address = #{openAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankDesc != null" >
+        bank_desc = #{bankDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.user.Bank" >
+    update t_cust_bank
+    set bankcard_no = #{bankcardNo,jdbcType=VARCHAR},
+      bankcard_name = #{bankcardName,jdbcType=VARCHAR},
+      bankcard_identification = #{bankcardIdentification,jdbcType=VARCHAR},
+      belonging_bank = #{belongingBank,jdbcType=VARCHAR},
+      belonging_province = #{belongingProvince,jdbcType=VARCHAR},
+      belonging_city = #{belongingCity,jdbcType=VARCHAR},
+      open_address = #{openAddress,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      bank_desc = #{bankDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+<!--   修改银行卡状态 -->
+  <update id="updateBankStatus" parameterType="com.yscf.core.model.user.Bank">
+     update t_cust_bank tcb  
+     set tcb.`status`='-1'
+     where tcb.pid = #{bank.pid,jdbcType=VARCHAR}
+  </update>
+  
+<!--   修改交易密码 -->
+  <update id="saveTradingPwd" parameterType="com.yscf.core.model.user.Bank">
+      update t_cust_customer tcc set  tcc.tradePassword = #{bank.newPwd} where tcc.pid= #{bank.customerId}
+  </update>
+  
+<!--   修改登录密码 -->
+  <update id="updateLoginPwd" parameterType="com.yscf.core.model.user.Bank">
+      update t_cust_customer tcc set tcc.`password` = #{bank.loginPassWord} where tcc.pid= #{bank.customerId}
+  </update>
+  
+	<!-- api添加银行卡 -->
+  <insert id="addBankInfo" parameterType="java.util.Map">
+  		insert into t_cust_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="map.pid != null" >
+        PID,
+      </if>
+      <if test="map.bankcardNo != null" >
+        bankcard_no,
+      </if>
+      <if test="map.bankcardName != null" >
+        bankcard_name,
+      </if>
+      <if test="map.bankcardIdentification != null" >
+        bankcard_identification,
+      </if>
+      <if test="map.belongingBank != null" >
+        belonging_bank,
+      </if>
+      <if test="map.belongingProvince != null" >
+        belonging_province,
+      </if>
+      <if test="map.belongingCity != null" >
+        belonging_city,
+      </if>
+      <if test="map.openAddress != null" >
+        open_address,
+      </if>
+      <if test="map.customerId != null" >
+        customer_id,
+      </if>
+      <if test="map.status != null" >
+        status,
+      </if>
+      <if test="map.createUser != null" >
+        create_user,
+      </if>
+      <if test="map.createTime != null" >
+        create_time,
+      </if>
+      <if test="map.lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="map.lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="map.bankDesc != null" >
+        bank_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="map.pid != null" >
+        #{map.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="map.bankcardNo != null" >
+        #{map.bankcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="map.bankcardName != null" >
+        #{map.bankcardName,jdbcType=VARCHAR},
+      </if>
+      <if test="map.bankcardIdentification != null" >
+        #{map.bankcardIdentification,jdbcType=VARCHAR},
+      </if>
+      <if test="map.belongingBank != null" >
+        #{map.belongingBank,jdbcType=VARCHAR},
+      </if>
+      <if test="map.belongingProvince != null" >
+        #{map.belongingProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="map.belongingCity != null" >
+        #{map.belongingCity,jdbcType=VARCHAR},
+      </if>
+      <if test="map.openAddress != null" >
+        #{map.openAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="map.customerId != null" >
+        #{map.customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="map.status != null" >
+        #{map.status,jdbcType=VARCHAR},
+      </if>
+      <if test="map.createUser != null" >
+        #{map.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="map.createTime != null" >
+        #{map.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="map.lastUpdateUser != null" >
+        #{map.lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="map.lastUpdateTime != null" >
+        #{map.lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="map.bankDesc != null" >
+        #{map.bankDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+	  <!--完善银行卡信息 -->
+	  <update id="updateBankInfoApi" parameterType="com.yscf.core.model.user.Bank">
+	       update t_cust_bank cb 
+	          set cb.belonging_city = #{bank.belongingCity},
+	              cb.open_address=  #{bank.openAddress}
+	        where cb.bankcard_no =  #{bank.bankcardNo}
+	  </update>
+	  
+<!-- api查客户是否可快捷支付 -->
+   <select id="selectQuickPayment" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+			count(*)
+		FROM
+			t_biz_recharge_online bro
+		WHERE
+			bro.pay_config_id = '2'
+		AND bro.`status` = '1'
+		AND bro.rec_status = '3'
+		AND bro.bank_id = #{bankCardId}
+   </select>
+   <!-- 通过银行卡号查询银行卡 -->
+   <select id="selectByBankCard" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_cust_bank tcb
+    where tcb.bankcard_no = #{bankCard,jdbcType=VARCHAR}
+    and tcb.status = '1'
+  </select>
+</mapper>

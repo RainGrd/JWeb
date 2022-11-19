@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.statistics.CusBorrowStatisticsMapper" >
+
+	<!-- 借款人区域分布统计	按省份统计 -->
+	<select id="selectBorCusStatisticsGroupProvince" parameterType="java.util.Map" resultType="com.yscf.core.model.statistics.CusBorrowStatistics">
+		SELECT
+			SUM(bb.borrow_money) borrowMoneySum,
+			bb.province,
+			SUM(bb.customer_id) customerCount
+		FROM
+			(
+				SELECT
+					sum(b.borrow_money) borrow_money,
+				 	b.province,
+					COUNT(DISTINCT b.customer_id) customer_id
+				FROM
+					t_biz_borrow b
+				WHERE
+					b. STATUS = 1
+				AND b.borrow_type IN (1, 2)
+				AND b.bor_status <![CDATA[>=]]> 4
+				GROUP BY
+					b.city
+			) bb
+		GROUP BY
+			province
+		ORDER BY
+			<if test="orderByType != null and orderByType == 1">
+				borrowMoneySum DESC
+			</if>
+			<if test="orderByType != null and orderByType == 2">
+				customerCount DESC
+			</if>
+	</select>
+	
+	<!-- 借款人区域分布统计	按市统计 -->
+	<select id="selectBorCusStatisticsGroupCity" parameterType="java.util.Map" resultType="com.yscf.core.model.statistics.CusBorrowStatistics">
+		SELECT
+			sum(b.borrow_money) borrowMoneySum,
+			b.city,
+			COUNT(DISTINCT b.customer_id) customerCount
+		FROM
+			t_biz_borrow b
+		LEFT JOIN t_cust_customer c ON b.customer_id = c.PID
+		WHERE
+			b.status = 1
+			AND b.borrow_type in (1,2)
+			AND b.bor_status <![CDATA[>=]]> 4
+			AND b.province = #{province,jdbcType=VARCHAR}
+		GROUP BY
+			b.city
+		ORDER BY
+			<if test="orderByType != null and orderByType == 1">
+				borrowMoneySum DESC
+			</if>
+			<if test="orderByType != null and orderByType == 2">
+				customerCount DESC
+			</if>
+	</select>
+</mapper>

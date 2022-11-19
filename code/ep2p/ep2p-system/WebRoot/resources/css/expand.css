@@ -1,0 +1,120 @@
+@CHARSET "UTF-8";
+
+/* 各地区用户分布统计 样式*/
+h3.area_sh_h{
+	text-align: left;
+}
+div#area_statisticResult{
+	text-align: left;
+	padding-left: 10px;
+}
+table.area_st_table{
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #a9c6c9;
+	border-collapse: collapse;
+}
+table.area_st_table th {
+	background-color:#cccccc;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #cccccc;
+}
+table.area_st_table tr td{
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #cccccc;
+	text-align: center;
+}
+
+
+/* 统计管理-报表样式 */
+div.amount_money_date{
+	width: 100%;
+	min-width:940px;
+	height:25px;
+	display: block;
+	position: relative;
+	border-bottom:2px solid #DBDBDB;
+	background-color:#FCFCFC;
+}
+div.amount_money_date p{
+	height: 25px;
+	line-height: 23px;
+	margin-left: 70%;
+}
+
+div.amount_money_titles{
+	width: 100%;
+	min-width:940px;
+	height:86px;
+	display: block;
+	position: relative;
+	border-bottom:2px solid #DBDBDB;
+	background-color:#FCFCFC;
+}
+
+div.platform_panle{
+	width: 20%;
+	min-width:230px;
+	height: 74px;
+	display: block;
+	float: left;
+	border:2px solid #DBDBDB;
+	border-radius:3px;
+	-moz-border-radius:3px; /* Old Firefox */
+	padding-top: 10px;
+}
+div.platform_panle:hover{
+	border:2px solid #B8B8B8;
+	background-color:#FAFAFA;
+	cursor: pointer;
+}
+div.platform_panle_hov{
+	border:2px solid #B8B8B8;
+	background-color:#FAFAFA;
+}
+div.platform_panle p{
+	height: 20px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 20px;
+	margin-top:10px;
+	margin-bottom: 0px;
+}
+
+div.amount_money_from{
+	width: 100%;
+	min-width:940px;
+	position: relative;
+	height: 60px;
+	margin-top:15px;
+}
+div.ml10{
+	margin-left: 10px;
+}
+div.amount_money_col{
+	width: 80%;
+	min-width:500px;
+	display: block;
+	position: relative;
+	height:30px;
+	line-height:30px;
+	font-size: 16px;
+	font-weight: 500;
+	float: left;
+	margin-left: 40px
+}
+
+div.amount_money_view{
+	width: 100%;
+	min-width:940px;
+	position: relative;
+	height: auto;
+	margin-top:30px;
+}

@@ -1,0 +1,32 @@
+(function(){
+	$(".help_list_o").click(function(){
+		$(".help_list_o").siblings(".h_list_s").slideUp();
+		$(".help_list_o").siblings(".h_list_a").slideUp();
+		$(this).siblings(".h_list_s").show();
+		$(this).siblings(".h_list_a").show();
+		
+	})
+	$(".h_list_i").click(function(){
+		var eq = $(this).index(".h_list_i");
+		$(".jian_help").html("");
+		$(".jian_help").eq(eq).html(">");
+	})
+	$(".i_cl").click(function(){
+		if($(this).attr("v")=='1'){
+			$(this).attr("v","0");
+			$(this).children(".list_ace").html("-");
+			$(this).siblings().show();
+		}else{
+			$(this).attr("v","1");
+			$(this).children(".list_ace").html("+");
+			$(this).siblings().hide();
+		}
+	})
+})();
+//$(".help_list_o").toggle(function(){
+	//$(this).siblings(".h_list_s").slideDown();
+	//$(this).siblings(".h_list_a").slideDown();
+	//},function(){
+		//$(this).siblings(".h_list_s").slideUp();
+		//$(this).siblings(".h_list_a").slideUp();	
+	//});

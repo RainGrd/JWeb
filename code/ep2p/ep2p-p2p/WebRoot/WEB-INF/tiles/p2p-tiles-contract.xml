@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- 债权合同模板-->
+	<definition name="temp.contract.transfer" template="/WEB-INF/templates/contract.jsp">
+		<put-attribute name="title" value="e生财富 yscf.com - 债权转让合同 "></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/view/contract/contract.jsp"></put-attribute>
+	</definition>
+	
+</tiles-definitions>

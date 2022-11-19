@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.content.BizBorrowAgreementMapper" >
+  <resultMap id="BaseResultMap" type="com.yscf.core.model.content.BizBorrowAgreement" >
+    <id column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="bor_agr_code" property="borAgrCode" jdbcType="VARCHAR" />
+    <result column="bor_agr_anme" property="borAgrAnme" jdbcType="VARCHAR" />
+    <result column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="agr_con_tem_id" property="agrConTemId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="bor_agr_desc" property="borAgrDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 列对象信息 -->
+  <sql id="Base_Column_List" >
+    PID, bor_agr_code, bor_agr_anme, file_id, agr_con_tem_id, status, create_user, create_time, 
+    last_update_user, last_update_time, bor_agr_desc
+  </sql>
+  
+  <!-- 通过主键查询信息 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_borrow_agreement
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <!-- 通过主键查询信息 -->
+  <select id="getByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_biz_borrow_agreement
+    where bor_agr_anme = #{name,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 通过对象信息进行查询 -->
+  <select id="selectByPrimaryObj" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    	<include refid="Base_Column_List" />
+    from t_biz_borrow_agreement
+    where 1 = 1 
+      <if test="bbam.pid != null and bbam.pid != ''">
+       and pid = #{bbam.pid,jdbcType=VARCHAR}
+      </if>
+      <if test="bbam.borAgrCode != null and bbam.borAgrCode != ''" >
+       and bor_agr_code like concat('%', #{bbam.borAgrCode,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="bbam.borAgrAnme != null and bbam.borAgrAnme != ''" >
+       and bor_agr_anme like concat('%', #{bbam.borAgrAnme,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="bbam.fileId != null and bbam.fileId != ''" >
+       and file_id = #{bbam.fileId,jdbcType=VARCHAR}
+      </if>
+      <if test="bbam.agrConTemId != null and bbam.agrConTemId != ''" >
+       and agr_con_tem_id = #{bbam.agrConTemId,jdbcType=VARCHAR}
+      </if>
+      <if test="bbam.status != null and bbam.status != '' " >
+       and status = #{bbam.status,jdbcType=VARCHAR}
+      </if>
+      <if test="bbam.status == null or bbam.status == ''" >
+       and status != 0 
+      </if>
+      <if test="bbam.createUser != null and bbam.createUser != ''" >
+       and create_user like concat('%', #{bbam.createUser,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="bbam.createTime != null" >
+       and create_time = #{bbam.createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="bbam.lastUpdateUser != null and bbam.lastUpdateUser != ''" >
+       and last_update_user like concat('%', #{bbam.lastUpdateUser,jdbcType=VARCHAR},'%') 
+      </if>
+      <if test="bbam.lastUpdateTime != null" >
+       and last_update_time = #{bbam.lastUpdateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="bbam.borAgrDesc != null and bbam.borAgrDesc != ''" >
+       and bor_agr_desc = #{bbam.borAgrDesc,jdbcType=VARCHAR}
+      </if>
+      <!--  时间查询条件  -->
+      <if test="bbam.startCTime != null and bbam.startCTime != '' and (bbam.endCtime == null or bbam.endCtime == '')" >
+       and create_time <![CDATA[>=]]> #{bbam.startCTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="(bbam.startCTime == null or bbam.startCTime == '') and bbam.endCtime != null and bbam.endCtime != ''" >
+       and create_time <![CDATA[<=]]> #{bbam.endCtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="bbam.startCTime != null and bbam.startCTime != '' and bbam.endCtime != null and bbam.endCtime != ''" >
+       and create_time between #{bbam.startCTime,jdbcType=TIMESTAMP} and #{bbam.endCtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="bbam.startLupTime != null and bbam.startLupTime != '' and (bbam.endLuptime == null or bbam.endLuptime == '')" >
+       and last_update_time <![CDATA[>=]]> #{bbam.startLupTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="(bbam.startLupTime == null or bbam.startLupTime == '') and bbam.endLuptime != null and bbam.endLuptime != ''" >
+       and last_update_time <![CDATA[<=]]> #{bbam.endLuptime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="bbam.startLupTime != null and bbam.startLupTime != '' and bbam.endLuptime != null and bbam.endLuptime != ''" >
+       and last_update_time between #{bbam.startLupTime,jdbcType=TIMESTAMP} and #{bbam.endLuptime,jdbcType=TIMESTAMP}
+      </if>
+        order by create_time desc
+  </select>
+  
+  <!-- 通过主键删除删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_biz_borrow_agreement
+    where PID = #{pid,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 插入合同信息 -->
+  <insert id="insert" parameterType="com.yscf.core.model.content.BizBorrowAgreement" >
+    insert into t_biz_borrow_agreement (PID, bor_agr_code, bor_agr_anme, 
+      file_id, agr_con_tem_id, status, 
+      create_user, create_time, last_update_user, 
+      last_update_time, bor_agr_desc)
+    values (#{pid,jdbcType=VARCHAR}, #{borAgrCode,jdbcType=VARCHAR}, #{borAgrAnme,jdbcType=VARCHAR}, 
+      #{fileId,jdbcType=VARCHAR}, #{agrConTemId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{borAgrDesc,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 通过条件进行插入 -->
+  <insert id="insertSelective" parameterType="com.yscf.core.model.content.BizBorrowAgreement" >
+    insert into t_biz_borrow_agreement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="borAgrCode != null" >
+        bor_agr_code,
+      </if>
+      <if test="borAgrAnme != null" >
+        bor_agr_anme,
+      </if>
+      <if test="fileId != null" >
+        file_id,
+      </if>
+      <if test="agrConTemId != null" >
+        agr_con_tem_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="borAgrDesc != null" >
+        bor_agr_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="borAgrCode != null" >
+        #{borAgrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="borAgrAnme != null" >
+        #{borAgrAnme,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="agrConTemId != null" >
+        #{agrConTemId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borAgrDesc != null" >
+        #{borAgrDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 通过主键修改其他字段信息 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.content.BizBorrowAgreement" >
+    update t_biz_borrow_agreement
+    <set >
+      <if test="borAgrCode != null" >
+        bor_agr_code = #{borAgrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="borAgrAnme != null" >
+        bor_agr_anme = #{borAgrAnme,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null" >
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="agrConTemId != null" >
+        agr_con_tem_id = #{agrConTemId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borAgrDesc != null" >
+        bor_agr_desc = #{borAgrDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 修改信息 -->
+  <update id="updateByPrimaryKey" parameterType="com.yscf.core.model.content.BizBorrowAgreement" >
+    update t_biz_borrow_agreement
+    set bor_agr_code = #{borAgrCode,jdbcType=VARCHAR},
+      bor_agr_anme = #{borAgrAnme,jdbcType=VARCHAR},
+      file_id = #{fileId,jdbcType=VARCHAR},
+      agr_con_tem_id = #{agrConTemId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      bor_agr_desc = #{borAgrDesc,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

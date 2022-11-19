@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<meta name="keywords" content="e生财富,力泰金融" />
+<meta name="description" content="e生财富" />
+<link rel="stylesheet" type="text/css" href="../style/layout.css">
+<script src="../javascripts/jquery-1.11.2.min.js" type="text/javascript"></script>
+<!--<script src="../javascripts/common.js" type="text/javascript"></script>-->
+<script src="../javascripts/eplan.js" type="text/javascript"></script>
+<title>投资成功</title>
+</head>
+<body>
+<section id="web_wrap">
+	<!--<div class="downloadBox">
+    	<a href="javascript:;" class="downloadBtn">下载e生财富客户端</a><a href="javascript:;" class="downloadClose"></a>
+    </div>-->
+    <header><a href="javascript:;">我的账户</a><a class="none" href="javascript:;">登录</a><a class="none" href="javascript:;">注册</a></header>
+    <!--内容-->
+    <section class="eplanSuccess">
+    	<img src="../images/Success.png" />
+        <h4>恭喜您，投资成功！</h4>
+        <p>D15110199a</p>
+    </section>
+    <div class="eplanSuccessTop"></div>
+    <div class=" eplanInfoList eplanSuccessCon">
+        <p>投资金额<span>￥1200.00</span></p>
+        <p>投资奖励<span>￥12.00</span></p>
+        <p>预期收益<span>￥200.00</span></p>
+        <p>期限<span>12月</span></p>
+        <p>年化率<span>16%</span></p>
+     </div>
+    <div class="eplanSuccessBottom"></div>
+    <a href="" class="btn eplanSuccessBtn">查看已投项目</a>
+    <!--内容End-->
+    <!--底部-->
+    <!--<footer>
+    	<h4><a href="#">触屏版</a><a href="#">电脑版</a><a href="#" >APP</a></h4>
+        <p>Copyright © 2015 e生财富. All Rights Reserved<br />
+            粤ICP备13050568号<br />
+            客服电话：<span>4009-998-992</span></p>
+    </footer>-->
+    <!--底部End-->
+
+</section>
+
+
+
+</body>
+</html>

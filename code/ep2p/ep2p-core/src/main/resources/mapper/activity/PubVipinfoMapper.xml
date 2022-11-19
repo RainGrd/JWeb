@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscf.core.dao.activity.PubVipinfoMapper" >
+  	<resultMap id="BaseResultMap" type="com.yscf.core.model.activity.PubVipinfo" >
+	    <id column="PID" property="pid" jdbcType="VARCHAR" />
+	    <result column="vip" property="vip" jdbcType="VARCHAR" />
+	    <result column="vip_name" property="vipName" jdbcType="VARCHAR" />
+	    <result column="vip_ico" property="vipIco" jdbcType="VARCHAR" />
+	    <result column="vip_level" property="vipLevel" jdbcType="VARCHAR" />
+	    <result column="valid_time" property="validTime" jdbcType="DECIMAL" />
+	    <result column="discount" property="discount" jdbcType="DECIMAL" />
+	    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+	    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	    <result column="is_bir_privilege" property="isBirPrivilege" jdbcType="VARCHAR" />
+	    <result column="status" property="status" jdbcType="VARCHAR" />
+	    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+	    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="version" property="version" jdbcType="VARCHAR" />
+	    <!-- 外表数据字段 -->
+	   	<result column="actCode" property="actCode" jdbcType="VARCHAR" />
+	   	<result column="actTag" property="actTag" jdbcType="VARCHAR" />
+	   	<result column="activityType" property="activityType" jdbcType="VARCHAR" />
+	   	<result column="smsId" property="smsId" jdbcType="VARCHAR" />
+	   	<result column="isSmsWarn" property="isSmsWarn" jdbcType="VARCHAR" />
+	   	<result column="actDesc" property="actDesc" jdbcType="VARCHAR" />
+	   	<result column="tempCode" property="tempCode" jdbcType="VARCHAR" />
+	   	<result column="smsContent" property="smsContent" jdbcType="VARCHAR" />
+	   	<result column="createUserName" property="createUserName" jdbcType="VARCHAR" />
+	    <result column="actStatus" property="actStatus" jdbcType="VARCHAR" />
+  	</resultMap>
+  	
+  	<!-- 查询所需的字段 -->
+  	<sql id="link_column_list" >
+	    pv.PID, pv.vip_name, pv.vip_ico, pv.vip_level, pv.is_bir_privilege, pv.valid_time, pv.discount,pv.start_time,
+	    pv.end_time, pv.status, pv.create_user, pv.create_time, pv.last_update_user, pv.last_update_time, pv.version,
+	    aa.act_code as actCode, aa.act_tag as actTag, aa.activity_type as activityType, aa.sms_id as smsId, 
+	    (select name from t_sys_user user where user.PID = pv.create_user) as createUserName,aa.status actStatus,
+	    aa.is_sms_warn as isSmsWarn, aa.act_desc as actDesc,sst.temp_code as tempCode,sst.sms_content as smsContent
+  	</sql>
+  	
+  	<!-- 查询VIP的字段 -->
+  	<sql id="vip_column_list" >
+	    pv.PID, pv.vip_name, pv.vip_ico, pv.vip_level, pv.is_bir_privilege, pv.valid_time, pv.discount,pv.start_time,
+	    pv.end_time, pv.status, pv.create_user, pv.create_time, pv.last_update_user, pv.last_update_time, pv.version
+	   
+  	</sql>
+  	
+  	<!-- 查询VIP信息列表,带分页 -->
+  	<select id="selectAllPage" resultMap="BaseResultMap" parameterType="map" >
+  		SELECT 
+  		<include refid="link_column_list" />
+  		FROM t_pub_vipinfo pv 
+		LEFT JOIN t_act_activity aa 
+		on pv.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 1  
+  		AND pv.status != -1 
+  		<if test="pubVipinfo.actCode != null and pubVipinfo.actCode != '' " > 
+        	and  aa.act_code like concat('%',#{pubVipinfo.actCode,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubVipinfo.vipName != null and pubVipinfo.vipName != '' " > 
+        	and  pv.vip_name like concat('%',#{pubVipinfo.vipName,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubVipinfo.actTag != null and pubVipinfo.actTag != '' " > 
+        	and  aa.act_tag like concat('%',#{pubVipinfo.actTag,jdbcType=VARCHAR},'%' )
+        </if>
+        <if test="pubVipinfo.beginApplyStartData != null and pubVipinfo.beginApplyStartData != '' " > 
+        	and  pv.start_time <![CDATA[ >= ]]> #{pubVipinfo.beginApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubVipinfo.endApplyStartData != null and pubVipinfo.endApplyStartData != '' " > 
+        	and  pv.start_time <![CDATA[ <= ]]> #{pubVipinfo.endApplyStartData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubVipinfo.beginApplyFinishData != null and pubVipinfo.beginApplyFinishData != '' " > 
+        	and  pv.end_time <![CDATA[ >= ]]> #{pubVipinfo.beginApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubVipinfo.endApplyFinishData != null and pubVipinfo.endApplyFinishData != '' " > 
+        	and  pv.end_time <![CDATA[ <= ]]> #{pubVipinfo.endApplyFinishData,jdbcType=TIMESTAMP}
+        </if>
+        <if test="pubVipinfo.status != null and pubVipinfo.status != 0 " > 
+        	and  pv.status = #{pubVipinfo.status,jdbcType=VARCHAR}
+        </if>
+        ORDER BY pv.create_time desc 
+  	</select>
+  	
+  	<!-- 根据PID查询体VIP信息  -->
+  	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="link_column_list" />
+  		FROM t_pub_vipinfo pv 
+		LEFT JOIN t_act_activity aa 
+		on pv.PID = aa.object_id
+		LEFT JOIN t_sys_sms_templates sst
+		on aa.sms_id = sst.PID
+  		WHERE aa.activity_type = 1  
+  		AND pv.status != -1 
+	    AND pv.PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 根据PID查询体VIP信息  -->
+  	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="vip_column_list" />
+  		FROM t_pub_vipinfo pv 
+  		WHERE  pv.PID = #{pid,jdbcType=VARCHAR}
+  	</select>
+  
+  	<!-- 删除VIP信息根据PID -->
+  	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from t_pub_vipinfo
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</delete>
+  	
+  	<!-- 新增VIP信息 -->
+  	<insert id="insert" parameterType="com.yscf.core.model.activity.PubVipinfo" >
+	    insert into t_pub_vipinfo (PID, vip, vip_name, 
+	      vip_ico, vip_level, valid_time, 
+	      discount, start_time, end_time, 
+	      is_bir_privilege, status, create_user, 
+	      create_time, last_update_user, last_update_time, 
+	      version)
+	    values (#{pid,jdbcType=VARCHAR}, #{vip,jdbcType=VARCHAR}, #{vipName,jdbcType=VARCHAR}, 
+	      #{vipIco,jdbcType=VARCHAR}, #{vipLevel,jdbcType=VARCHAR}, #{validTime,jdbcType=DECIMAL}, 
+	      #{discount,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+	      #{isBirPrivilege,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+	      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateUser,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+	      #{version,jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<!-- 新增体VIP信息(判断字段是否为空) -->
+  	<insert id="insertSelective" parameterType="com.yscf.core.model.activity.PubVipinfo" >
+	    insert into t_pub_vipinfo
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        PID,
+	      </if>
+	      <if test="vip != null" >
+	        vip,
+	      </if>
+	      <if test="vipName != null" >
+	        vip_name,
+	      </if>
+	      <if test="vipIco != null" >
+	        vip_ico,
+	      </if>
+	      <if test="vipLevel != null" >
+	        vip_level,
+	      </if>
+	      <if test="validTime != null" >
+	        valid_time,
+	      </if>
+	      <if test="discount != null" >
+	        discount,
+	      </if>
+	      <if test="startTime != null" >
+	        start_time,
+	      </if>
+	      <if test="endTime != null" >
+	        end_time,
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="createUser != null" >
+	        create_user,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user,
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time,
+	      </if>
+	      <if test="version != null" >
+	        version,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="pid != null" >
+	        #{pid,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vip != null" >
+	        #{vip,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipName != null" >
+	        #{vipName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipIco != null" >
+	        #{vipIco,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipLevel != null" >
+	        #{vipLevel,jdbcType=VARCHAR},
+	      </if>
+	      <if test="validTime != null" >
+	        #{validTime,jdbcType=DECIMAL},
+	      </if>
+	      <if test="discount != null" >
+	        #{discount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="startTime != null" >
+	        #{startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endTime != null" >
+	        #{endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        #{version,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<!-- 修改VIP信息(判断是否为空) -->
+  	<update id="updateByPrimaryKeySelective" parameterType="com.yscf.core.model.activity.PubVipinfo" >
+	    update t_pub_vipinfo
+	    <set >
+	      <if test="vip != null" >
+	        vip = #{vip,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipName != null" >
+	        vip_name = #{vipName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipIco != null" >
+	        vip_ico = #{vipIco,jdbcType=VARCHAR},
+	      </if>
+	      <if test="vipLevel != null" >
+	        vip_level = #{vipLevel,jdbcType=VARCHAR},
+	      </if>
+	      <if test="validTime != null" >
+	        valid_time = #{validTime,jdbcType=DECIMAL},
+	      </if>
+	      <if test="discount != null" >
+	        discount = #{discount,jdbcType=DECIMAL},
+	      </if>
+	      <if test="startTime != null" >
+	        start_time = #{startTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="endTime != null" >
+	        end_time = #{endTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="isBirPrivilege != null" >
+	        is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createUser != null" >
+	        create_user = #{createUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="lastUpdateUser != null" >
+	        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateTime != null" >
+	        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="version != null" >
+	        version = #{version,jdbcType=VARCHAR},
+	      </if>
+	    </set>
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 修改VIP信息 -->
+  	<update id="updateByPrimaryKey" parameterType="com.yscf.core.model.activity.PubVipinfo" >
+	    update t_pub_vipinfo
+	    set vip = #{vip,jdbcType=VARCHAR},
+	      vip_name = #{vipName,jdbcType=VARCHAR},
+	      vip_ico = #{vipIco,jdbcType=VARCHAR},
+	      vip_level = #{vipLevel,jdbcType=VARCHAR},
+	      valid_time = #{validTime,jdbcType=DECIMAL},
+	      discount = #{discount,jdbcType=DECIMAL},
+	      start_time = #{startTime,jdbcType=TIMESTAMP},
+	      end_time = #{endTime,jdbcType=TIMESTAMP},
+	      is_bir_privilege = #{isBirPrivilege,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=VARCHAR},
+	      create_user = #{createUser,jdbcType=VARCHAR},
+	      create_time = #{createTime,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+	      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+	      version = #{version,jdbcType=VARCHAR}
+	    where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+  	<!-- 批量删除VIP信息 -->
+  	<update id="deleteBatch" parameterType="java.lang.String">
+  		UPDATE t_pub_vipinfo SET
+  		status = -1 
+	    where PID in 
+  		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+  	</update>
+  	
+  	<!-- 修改活动的状态 -->
+  	<update id="updateActiivtyStatus" parameterType="java.lang.String">
+  		UPDATE t_pub_vipinfo SET
+  		status = #{status,jdbcType=VARCHAR}
+  		where PID = #{pid,jdbcType=VARCHAR}
+  	</update>
+  	
+</mapper>
